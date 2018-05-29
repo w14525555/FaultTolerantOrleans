@@ -1,0 +1,8 @@
+F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\ChatRoom\OrleansFaultTolerance\bin\Debug\netcoreapp2.0\OrleansFaultTolerance.deps.json
+F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\ChatRoom\OrleansFaultTolerance\bin\Debug\netcoreapp2.0\OrleansFaultTolerance.runtimeconfig.json
+F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\ChatRoom\OrleansFaultTolerance\bin\Debug\netcoreapp2.0\OrleansFaultTolerance.runtimeconfig.dev.json
+F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\ChatRoom\OrleansFaultTolerance\bin\Debug\netcoreapp2.0\OrleansFaultTolerance.dll
+F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\ChatRoom\OrleansFaultTolerance\obj\Debug\netcoreapp2.0\OrleansFaultTolerance.csprojResolveAssemblyReference.cache
+F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\ChatRoom\OrleansFaultTolerance\obj\Debug\netcoreapp2.0\OrleansFaultTolerance.csproj.CoreCompileInputs.cache
+F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\ChatRoom\OrleansFaultTolerance\obj\Debug\netcoreapp2.0\OrleansFaultTolerance.AssemblyInfoInputs.cache
+F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\ChatRoom\OrleansFaultTolerance\obj\Debug\netcoreapp2.0\OrleansFaultTolerance.AssemblyInfo.cs
