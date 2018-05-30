@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using GrainInterfaces.Model;
 using Orleans;
 
-namespace GrainInterfaces.Interfaces
+namespace GrainInterfaces
 {
-	public interface IStreamSource : IGrainWithStringKey
+	public interface IChannel : IGrainWithStringKey
 	{
 	    Task<Guid> Join(string nickname);
 	    Task<Guid> Leave(string nickname);

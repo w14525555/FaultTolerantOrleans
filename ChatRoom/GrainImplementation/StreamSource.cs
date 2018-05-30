@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GrainInterfaces.Interfaces;
+using GrainInterfaces;
 using GrainInterfaces.Model;
 using Orleans;
 using Orleans.Streams;
@@ -10,7 +10,7 @@ using Utils;
 
 namespace GrainImplementation
 {
-	public class StreamSource : Grain, IStreamSource
+	public class StreamSource : Grain, IChannel
 	{
 		private readonly List<StreamMessage> messages = new List<StreamMessage>(100);
 		private readonly List<string> onlineMembers = new List<string>(10);

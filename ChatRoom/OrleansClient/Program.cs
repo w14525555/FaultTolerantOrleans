@@ -49,7 +49,7 @@ namespace OrleansClient
                             options.ServiceId = Constants.ServiceId;
                         })
                         .UseLocalhostClustering()
-                        .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(IStreamSource).Assembly).WithReferences())
+                        .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(IChannel).Assembly).WithReferences())
                         .ConfigureLogging(logging => logging.AddConsole())
                         //Depends on your application requirements, you can configure your client with other stream providers, which can provide other features, 
                         //such as persistence or recoverability. For more information, please see http://dotnet.github.io/orleans/Documentation/Orleans-Streams/Stream-Providers.html
@@ -134,7 +134,7 @@ namespace OrleansClient
 
         private static async Task ShowChannelMembers(IClusterClient client)
         {
-            var room = client.GetGrain<IStreamSource>(joinedChannel);
+            var room = client.GetGrain<IChannel>(joinedChannel);
             var members = await room.GetMembers();
 
             PrettyConsole.Line($"====== Members for '{joinedChannel}' Channel ======", ConsoleColor.DarkGreen);
@@ -147,7 +147,7 @@ namespace OrleansClient
 
         private static async Task ShowCurrentChannelHistory(IClusterClient client)
         {
-            var room = client.GetGrain<IStreamSource>(joinedChannel);
+            var room = client.GetGrain<IChannel>(joinedChannel);
             var history = await room.ReadHistory(1000);
 
             PrettyConsole.Line($"====== History for '{joinedChannel}' Channel ======", ConsoleColor.DarkGreen);
@@ -160,7 +160,7 @@ namespace OrleansClient
 
         private static async Task SendMessage(IClusterClient client, string messageText)
         {
-            var room = client.GetGrain<IStreamSource>(joinedChannel);
+            var room = client.GetGrain<IChannel>(joinedChannel);
             await room.Message(new StreamMessage(userName, messageText));
         }
 
@@ -174,7 +174,7 @@ namespace OrleansClient
             }
             PrettyConsole.Line($"Joining to channel {channelName}");
             joinedChannel = channelName;
-            var room = client.GetGrain<IStreamSource>(joinedChannel);
+            var room = client.GetGrain<IChannel>(joinedChannel);
             var streamId = await room.Join(userName);
             var stream = client.GetStreamProvider(Constants.ChatRoomStreamProvider)
                 .GetStream<StreamMessage>(streamId, Constants.CharRoomStreamNameSpace);
@@ -188,7 +188,7 @@ namespace OrleansClient
         private static async Task LeaveChannel(IClusterClient client)
         {
             PrettyConsole.Line($"Leaving channel {joinedChannel}");
-            var room = client.GetGrain<IStreamSource>(joinedChannel);
+            var room = client.GetGrain<IChannel>(joinedChannel);
             var streamId = await room.Leave(userName);
             var stream = client.GetStreamProvider(Constants.ChatRoomStreamProvider)
                 .GetStream<StreamMessage>(streamId, Constants.CharRoomStreamNameSpace);

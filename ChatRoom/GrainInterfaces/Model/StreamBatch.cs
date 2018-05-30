@@ -43,7 +43,7 @@ namespace GrainInterfaces.Model
             barrierList.Add(barrierInfo);
         }
 
-        public void CompleteOneMessageTracking(StreamMessage msg)
+        public void CompleteOneMessageTracking(ChatMsg msg)
         {
             BarrierMsgTrackingInfo msgInfo = msg.barrierInfo;
             foreach (BarrierMsgTrackingInfo item in barrierList)

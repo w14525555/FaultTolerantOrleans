@@ -3,11 +3,11 @@ using Orleans;
 using Orleans.Streams;
 using System.Threading.Tasks;
 
-namespace GrainInterfaces.Interfaces
+namespace GrainInterfaces
 {
     public interface IBatchManager: IGrainWithStringKey
     {
-        Task SetChannelAndRegisterTimer(IAsyncStream<StreamMessage> stream, IStreamSource channel);
+        Task SetChannelAndRegisterTimer(IAsyncStream<ChatMsg> stream, IChannel channel);
 
         Task StartCommit(int ID);
     }
