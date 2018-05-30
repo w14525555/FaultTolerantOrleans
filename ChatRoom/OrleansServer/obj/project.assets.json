@@ -2942,13 +2942,13 @@
     },
     "GrainImplementation/1.0.0": {
       "type": "project",
-      "path": "../GrainImplementation/GrainImplementation.csproj",
-      "msbuildProject": "../GrainImplementation/GrainImplementation.csproj"
+      "path": "../GrainImplementation/SystemImplementation.csproj",
+      "msbuildProject": "../GrainImplementation/SystemImplementation.csproj"
     },
     "GrainInterfaces/1.0.0": {
       "type": "project",
-      "path": "../GrainInterfaces/GrainInterfaces.csproj",
-      "msbuildProject": "../GrainInterfaces/GrainInterfaces.csproj"
+      "path": "../GrainInterfaces/SystemInterfaces.csproj",
+      "msbuildProject": "../GrainInterfaces/SystemInterfaces.csproj"
     },
     "Utils/1.0.0": {
       "type": "project",
@@ -3001,14 +3001,14 @@
       "frameworks": {
         "net462": {
           "projectReferences": {
+            "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\GrainInterfaces\\SystemInterfaces.csproj": {
+              "projectPath": "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\GrainInterfaces\\SystemInterfaces.csproj"
+            },
             "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\Utils\\Utils.csproj": {
               "projectPath": "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\Utils\\Utils.csproj"
             },
-            "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\GrainImplementation\\GrainImplementation.csproj": {
-              "projectPath": "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\GrainImplementation\\GrainImplementation.csproj"
-            },
-            "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\GrainInterfaces\\GrainInterfaces.csproj": {
-              "projectPath": "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\GrainInterfaces\\GrainInterfaces.csproj"
+            "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\GrainImplementation\\SystemImplementation.csproj": {
+              "projectPath": "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\GrainImplementation\\SystemImplementation.csproj"
             }
           }
         }

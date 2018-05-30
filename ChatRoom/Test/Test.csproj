@@ -213,13 +213,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GrainImplementation\GrainImplementation.csproj">
+    <ProjectReference Include="..\GrainImplementation\SystemImplementation.csproj">
       <Project>{3eb4ecc9-10dd-4c28-a269-350e177966e0}</Project>
-      <Name>GrainImplementation</Name>
+      <Name>SystemImplementation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\GrainInterfaces\GrainInterfaces.csproj">
+    <ProjectReference Include="..\GrainInterfaces\SystemInterfaces.csproj">
       <Project>{513aec9e-ad28-4d5f-a351-7fa8a32421dd}</Project>
-      <Name>GrainInterfaces</Name>
+      <Name>SystemInterfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\OrleansClient\SampleClient.csproj">
       <Project>{31BA90B8-8CED-425B-9A4B-189BC294A72E}</Project>

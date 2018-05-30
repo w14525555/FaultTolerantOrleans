@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleServer", "OrleansServ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleClient", "OrleansClient\SampleClient.csproj", "{31BA90B8-8CED-425B-9A4B-189BC294A72E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrainInterfaces", "GrainInterfaces\GrainInterfaces.csproj", "{513AEC9E-AD28-4D5F-A351-7FA8A32421DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SystemInterfaces", "GrainInterfaces\SystemInterfaces.csproj", "{513AEC9E-AD28-4D5F-A351-7FA8A32421DD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrainImplementation", "GrainImplementation\GrainImplementation.csproj", "{3EB4ECC9-10DD-4C28-A269-350E177966E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SystemImplementation", "GrainImplementation\SystemImplementation.csproj", "{3EB4ECC9-10DD-4C28-A269-350E177966E0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utils", "Utils\Utils.csproj", "{2BFBB174-20E8-4BC1-925C-2CA7AC0DD0FF}"
 EndProject

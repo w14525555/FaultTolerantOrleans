@@ -563,8 +563,8 @@
     },
     "GrainInterfaces/1.0.0": {
       "type": "project",
-      "path": "../GrainInterfaces/GrainInterfaces.csproj",
-      "msbuildProject": "../GrainInterfaces/GrainInterfaces.csproj"
+      "path": "../GrainInterfaces/SystemInterfaces.csproj",
+      "msbuildProject": "../GrainInterfaces/SystemInterfaces.csproj"
     },
     "Utils/1.0.0": {
       "type": "project",
@@ -591,9 +591,9 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\GrainImplementation\\GrainImplementation.csproj",
+      "projectUniqueName": "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\GrainImplementation\\SystemImplementation.csproj",
       "projectName": "GrainImplementation",
-      "projectPath": "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\GrainImplementation\\GrainImplementation.csproj",
+      "projectPath": "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\GrainImplementation\\SystemImplementation.csproj",
       "packagesPath": "C:\\Users\\wuyou\\.nuget\\packages\\",
       "outputPath": "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\GrainImplementation\\obj\\",
       "projectStyle": "PackageReference",
@@ -616,11 +616,11 @@
       "frameworks": {
         "net462": {
           "projectReferences": {
+            "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\GrainInterfaces\\SystemInterfaces.csproj": {
+              "projectPath": "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\GrainInterfaces\\SystemInterfaces.csproj"
+            },
             "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\Utils\\Utils.csproj": {
               "projectPath": "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\Utils\\Utils.csproj"
-            },
-            "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\GrainInterfaces\\GrainInterfaces.csproj": {
-              "projectPath": "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\GrainInterfaces\\GrainInterfaces.csproj"
             }
           }
         }

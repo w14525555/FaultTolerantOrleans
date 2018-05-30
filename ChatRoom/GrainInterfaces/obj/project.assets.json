@@ -570,9 +570,9 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\GrainInterfaces\\GrainInterfaces.csproj",
+      "projectUniqueName": "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\GrainInterfaces\\SystemInterfaces.csproj",
       "projectName": "GrainInterfaces",
-      "projectPath": "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\GrainInterfaces\\GrainInterfaces.csproj",
+      "projectPath": "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\GrainInterfaces\\SystemInterfaces.csproj",
       "packagesPath": "C:\\Users\\wuyou\\.nuget\\packages\\",
       "outputPath": "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\GrainInterfaces\\obj\\",
       "projectStyle": "PackageReference",

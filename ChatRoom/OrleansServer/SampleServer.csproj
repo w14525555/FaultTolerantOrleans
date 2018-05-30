@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GrainInterfaces\GrainInterfaces.csproj" />
-    <ProjectReference Include="..\GrainImplementation\GrainImplementation.csproj" />
+    <ProjectReference Include="..\GrainImplementation\SystemImplementation.csproj" />
+    <ProjectReference Include="..\GrainInterfaces\SystemInterfaces.csproj" />
     <ProjectReference Include="..\Utils\Utils.csproj" />
   </ItemGroup>
 
