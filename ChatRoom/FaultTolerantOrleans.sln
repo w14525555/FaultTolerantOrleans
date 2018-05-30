@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrleansServer", "OrleansServer\OrleansServer.csproj", "{862E276B-06B3-47BD-9BD0-2732BD67BD47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleServer", "OrleansServer\SampleServer.csproj", "{862E276B-06B3-47BD-9BD0-2732BD67BD47}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrleansClient", "OrleansClient\OrleansClient.csproj", "{31BA90B8-8CED-425B-9A4B-189BC294A72E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleClient", "OrleansClient\SampleClient.csproj", "{31BA90B8-8CED-425B-9A4B-189BC294A72E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrainInterfaces", "GrainInterfaces\GrainInterfaces.csproj", "{513AEC9E-AD28-4D5F-A351-7FA8A32421DD}"
 EndProject

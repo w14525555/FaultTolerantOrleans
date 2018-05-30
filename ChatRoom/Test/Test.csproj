@@ -221,9 +221,9 @@
       <Project>{513aec9e-ad28-4d5f-a351-7fa8a32421dd}</Project>
       <Name>GrainInterfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OrleansClient\OrleansClient.csproj">
+    <ProjectReference Include="..\OrleansClient\SampleClient.csproj">
       <Project>{31BA90B8-8CED-425B-9A4B-189BC294A72E}</Project>
-      <Name>OrleansClient</Name>
+      <Name>SampleClient</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utils\Utils.csproj">
       <Project>{2bfbb174-20e8-4bc1-925c-2ca7ac0dd0ff}</Project>

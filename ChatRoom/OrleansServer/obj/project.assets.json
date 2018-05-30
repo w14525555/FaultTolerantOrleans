@@ -2976,9 +2976,9 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\OrleansServer\\OrleansServer.csproj",
+      "projectUniqueName": "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\OrleansServer\\SampleServer.csproj",
       "projectName": "OrleansServer",
-      "projectPath": "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\OrleansServer\\OrleansServer.csproj",
+      "projectPath": "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\OrleansServer\\SampleServer.csproj",
       "packagesPath": "C:\\Users\\wuyou\\.nuget\\packages\\",
       "outputPath": "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\ChatRoom\\OrleansServer\\obj\\",
       "projectStyle": "PackageReference",
