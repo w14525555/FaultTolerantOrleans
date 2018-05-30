@@ -245,7 +245,7 @@ namespace Test
                 })
                 .UseLocalhostClustering()
                 .Configure<EndpointOptions>(options => options.AdvertisedIPAddress = IPAddress.Loopback)
-                .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(Channel).Assembly).WithReferences())
+                .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(StreamSource).Assembly).WithReferences())
                 //need to configure a grain storage called "PubSubStore" for using streaming with ExplicitSubscribe pubsub type
                 .AddMemoryGrainStorage("PubSubStore")
                 //Depends on your application requirements, you can configure your silo with other stream providers, which can provide other features, 

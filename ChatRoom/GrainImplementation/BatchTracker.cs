@@ -10,18 +10,16 @@ namespace GrainImplementation
 {
     public class BatchTracker : Grain, IBatchTracker
     {
-        private Dictionary<int, TopLevelBatch> batchTrackingMap;
+        private Dictionary<int, StreamBatch> batchTrackingMap;
         private IBatchManager batchManager;
-        private List<ChatMsg> messageBuffer;
         private int initialID;
 
         public override Task OnActivateAsync()
         {
-            messageBuffer = new List<ChatMsg>();
             //A batch map <BatchID, batch>
-            batchTrackingMap = new Dictionary<int, TopLevelBatch>();
+            batchTrackingMap = new Dictionary<int, StreamBatch>();
             initialID = 0;
-            TopLevelBatch initialBatch = new TopLevelBatch(initialID);
+            StreamBatch initialBatch = new StreamBatch(initialID);
             batchTrackingMap.Add(initialID, initialBatch);
             return base.OnActivateAsync();
         }
@@ -35,7 +33,7 @@ namespace GrainImplementation
             }
             else if (msg.BatchID > 0)
             {
-                TopLevelBatch newBatch = new TopLevelBatch(msg.BatchID);
+                StreamBatch newBatch = new StreamBatch(msg.BatchID);
                 PrettyConsole.Line("Tracking a new batch!");
                 newBatch.AddBarrierMsgTrackingHelper(msg.barrierInfo);
                 batchTrackingMap.Add(msg.BatchID, newBatch);
@@ -58,7 +56,7 @@ namespace GrainImplementation
             else
             {
                 PrettyConsole.Line("Finish Tracking batchID: " + msg.BatchID);
-                TopLevelBatch targetBatch = batchTrackingMap[msg.BatchID];
+                StreamBatch targetBatch = batchTrackingMap[msg.BatchID];
                 targetBatch.CompleteOneMessageTracking(msg);
                 if (targetBatch.readForCommitting)
                 {

@@ -7,7 +7,7 @@ namespace GrainInterfaces.Model
     //This should main all the states of certain task for 
     //One batch. Once all the task is finished, it should 
     //send the commit message. 
-    public class TopLevelBatch
+    public class StreamBatch
     {
         private int batchID;
         public bool readForCommitting { get; set; }
@@ -15,7 +15,7 @@ namespace GrainInterfaces.Model
         private IBatchTracker batchTracker;
         private List<BarrierMsgTrackingInfo> barrierList;
 
-        public TopLevelBatch(int id)
+        public StreamBatch(int id)
         {
             readForCommitting = false;
             isAGroupOfMessageProcessed = false;

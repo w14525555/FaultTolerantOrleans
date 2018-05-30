@@ -21,7 +21,7 @@ namespace OrleansServer
 		        })
 		        .UseLocalhostClustering()
 		        .Configure<EndpointOptions>(options => options.AdvertisedIPAddress = IPAddress.Loopback)
-                .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(Channel).Assembly).WithReferences())
+                .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(StreamSource).Assembly).WithReferences())
 		        .ConfigureLogging(logging => logging.AddConsole())
                 //need to configure a grain storage called "PubSubStore" for using streaming with ExplicitSubscribe pubsub type
                 .AddMemoryGrainStorage("PubSubStore")

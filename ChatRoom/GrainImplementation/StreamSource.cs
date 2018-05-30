@@ -10,7 +10,7 @@ using Utils;
 
 namespace GrainImplementation
 {
-	public class Channel : Grain, IChannel
+	public class StreamSource : Grain, IChannel
 	{
 		private readonly List<ChatMsg> messages = new List<ChatMsg>(100);
 		private readonly List<string> onlineMembers = new List<string>(10);
