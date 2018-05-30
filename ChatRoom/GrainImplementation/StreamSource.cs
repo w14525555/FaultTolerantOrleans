@@ -12,15 +12,15 @@ namespace GrainImplementation
 {
 	public class StreamSource : Grain, IStreamSource
 	{
-		private readonly List<StreamMessage> messages = new List<StreamMessage>(100);
-		private readonly List<string> onlineMembers = new List<string>(10);
         private StreamMessage barrierMsg = new StreamMessage(Constants.Barrier_Key, Constants.System_Value);
         private StreamMessage commitMsg = new StreamMessage(Constants.Commit_Key, Constants.System_Value);
+        private readonly List<StreamMessage> messages = new List<StreamMessage>(100);
+		private readonly List<string> onlineMembers = new List<string>(10);
+
         private IBatchManager batchManager;
         private IBatchTracker batchTracker;
-        private int currentBatchID;
-
 		private IAsyncStream<StreamMessage> stream;
+        private int currentBatchID;
 
 		public override Task OnActivateAsync()
 		{

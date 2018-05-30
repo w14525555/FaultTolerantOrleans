@@ -13,6 +13,7 @@ namespace GrainInterfaces
 	    Task<StreamMessage[]> ReadHistory(int numberOfMessages);
 	    Task<string[]> GetMembers();
         Task<Task> ProduceMessageAsync(StreamMessage msg);
+
         //Use for testing purpose
         Task<IBatchManager> GetBatchManager();
         Task<IBatchTracker> GetBatchTracker();

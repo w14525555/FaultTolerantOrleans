@@ -13,9 +13,12 @@ namespace GrainImplementation
         //A Batch Manager should send batch barrier 
         private StreamMessage barrierMsg = new StreamMessage(Constants.Barrier_Key, Constants.System_Value);
         private StreamMessage commitMsg = new StreamMessage(Constants.Commit_Key, Constants.System_Value);
-        //private Boolean isCommitting;
-        private IStreamSource channel;
-        private static TimeSpan barrierTimeInterval = TimeSpan.FromSeconds(10);
+
+        private const int Barrier_Interval = 10;
+        private TimeSpan barrierTimeInterval = TimeSpan.FromSeconds(Barrier_Interval);
+
+        private IStreamSource source;
+       
 
         private int currentBatchID { get; set; }
 
@@ -27,17 +30,17 @@ namespace GrainImplementation
             return base.OnActivateAsync();
         }
 
-        public Task SetChannelAndRegisterTimer(IAsyncStream<StreamMessage> stream, IStreamSource channel)
+        public Task SetChannelAndRegisterTimer(IAsyncStream<StreamMessage> stream, IStreamSource source)
         {
             RegisterTimer(SendBarrierOnPeriodOfTime, null, barrierTimeInterval, barrierTimeInterval);
-            this.channel = channel;
+            this.source = source;
             return Task.CompletedTask;
         }
 
         private Task SendBarrierOnPeriodOfTime(object arg)
         {
             SetBatchID(barrierMsg);
-            channel.ProduceMessageAsync(barrierMsg);
+            source.ProduceMessageAsync(barrierMsg);
             currentBatchID++;
             return Task.CompletedTask;
         }
@@ -57,7 +60,7 @@ namespace GrainImplementation
         public Task StartCommit(int ID)
         {
             commitMsg.BatchID = ID;
-            channel.ProduceMessageAsync(commitMsg);
+            source.ProduceMessageAsync(commitMsg);
             return Task.CompletedTask;
         }
     }

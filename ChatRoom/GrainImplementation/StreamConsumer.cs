@@ -218,7 +218,7 @@ namespace GrainImplementation
 
         private Task SaveStateToFile(Dictionary<string, string> state)
         {
-            PrettyConsole.Line("Open file");
+            PrettyConsole.Line("Save the incremental log to D:\batch.dat");
             try
             {
                 WriteToBinaryFile(@"D:\batch.dat", state);
