@@ -1,0 +1,130 @@
+/in:obj\Debug\net462\codegen\GrainInterfaces.dll
+/out:F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\FaultTolerantOrleans\GrainInterfaces\obj\Debug\net462\GrainInterfaces.orleans.g.cs
+/loglevel:Warning
+/r:C:\Users\wuyou\.nuget\packages\microsoft.extensions.configuration.abstractions\2.0.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.Abstractions.dll
+/r:C:\Users\wuyou\.nuget\packages\microsoft.extensions.dependencyinjection.abstractions\2.0.0\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/r:C:\Users\wuyou\.nuget\packages\microsoft.extensions.logging.abstractions\2.0.0\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll
+/r:C:\Users\wuyou\.nuget\packages\microsoft.extensions.logging.console\2.0.0\lib\netstandard2.0\Microsoft.Extensions.Logging.Console.dll
+/r:C:\Users\wuyou\.nuget\packages\microsoft.extensions.logging\2.0.0\lib\netstandard2.0\Microsoft.Extensions.Logging.dll
+/r:C:\Users\wuyou\.nuget\packages\microsoft.extensions.options\2.0.0\lib\netstandard2.0\Microsoft.Extensions.Options.dll
+/r:C:\Users\wuyou\.nuget\packages\microsoft.extensions.primitives\2.0.0\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\Microsoft.Win32.Primitives.dll
+/r:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\mscorlib.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\netfx.force.conflicts.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\netstandard.dll
+/r:C:\Users\wuyou\.nuget\packages\microsoft.orleans.core.abstractions\2.0.0\lib\netstandard2.0\Orleans.Core.Abstractions.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.AppContext.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Collections.Concurrent.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Collections.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Collections.NonGeneric.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Collections.Specialized.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.ComponentModel.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.ComponentModel.EventBasedAsync.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.ComponentModel.Primitives.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.ComponentModel.TypeConverter.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Console.dll
+/r:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Core.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Data.Common.dll
+/r:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Data.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Diagnostics.Contracts.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Diagnostics.Debug.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Diagnostics.FileVersionInfo.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Diagnostics.Process.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Diagnostics.StackTrace.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Diagnostics.TextWriterTraceListener.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Diagnostics.Tools.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Diagnostics.TraceSource.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Diagnostics.Tracing.dll
+/r:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.dll
+/r:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Drawing.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Drawing.Primitives.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Dynamic.Runtime.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Globalization.Calendars.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Globalization.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Globalization.Extensions.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.IO.Compression.dll
+/r:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.IO.Compression.FileSystem.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.IO.Compression.ZipFile.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.IO.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.IO.FileSystem.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.IO.FileSystem.DriveInfo.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.IO.FileSystem.Primitives.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.IO.FileSystem.Watcher.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.IO.IsolatedStorage.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.IO.MemoryMappedFiles.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.IO.Pipes.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.IO.UnmanagedMemoryStream.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Linq.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Linq.Expressions.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Linq.Parallel.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Linq.Queryable.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Net.Http.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Net.NameResolution.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Net.NetworkInformation.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Net.Ping.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Net.Primitives.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Net.Requests.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Net.Security.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Net.Sockets.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Net.WebHeaderCollection.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Net.WebSockets.Client.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Net.WebSockets.dll
+/r:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Numerics.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.ObjectModel.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Reflection.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Reflection.Extensions.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Reflection.Primitives.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Resources.Reader.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Resources.ResourceManager.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Resources.Writer.dll
+/r:C:\Users\wuyou\.nuget\packages\system.runtime.compilerservices.unsafe\4.4.0\ref\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Runtime.CompilerServices.VisualC.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Runtime.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Runtime.Extensions.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Runtime.Handles.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Runtime.InteropServices.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net462\lib\System.Runtime.InteropServices.RuntimeInformation.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Runtime.Numerics.dll
+/r:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Runtime.Serialization.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Runtime.Serialization.Formatters.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Runtime.Serialization.Json.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Runtime.Serialization.Primitives.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Runtime.Serialization.Xml.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Security.Claims.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Security.Cryptography.Algorithms.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Security.Cryptography.Csp.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Security.Cryptography.Encoding.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Security.Cryptography.Primitives.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Security.Cryptography.X509Certificates.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Security.Principal.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Security.SecureString.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Text.Encoding.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Text.Encoding.Extensions.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Text.RegularExpressions.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Threading.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Threading.Overlapped.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Threading.Tasks.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Threading.Tasks.Parallel.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Threading.Thread.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Threading.ThreadPool.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Threading.Timer.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.ValueTuple.dll
+/r:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Xml.dll
+/r:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Xml.Linq.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Xml.ReaderWriter.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Xml.XDocument.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Xml.XmlDocument.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Xml.XmlSerializer.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Xml.XPath.dll
+/r:E:\software\vs17\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Xml.XPath.XDocument.dll
+/r:F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\FaultTolerantOrleans\Utils\bin\Debug\net462\Utils.dll
+/r:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\Facades\System.ComponentModel.Annotations.dll
+/r:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\Facades\System.Reflection.Emit.dll
+/r:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\Facades\System.Reflection.Emit.ILGeneration.dll
+/r:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\Facades\System.Reflection.Emit.Lightweight.dll
+/r:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\Facades\System.Runtime.InteropServices.WindowsRuntime.dll
+/r:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\Facades\System.ServiceModel.Duplex.dll
+/r:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\Facades\System.ServiceModel.Http.dll
+/r:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\Facades\System.ServiceModel.NetTcp.dll
+/r:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\Facades\System.ServiceModel.Primitives.dll
+/r:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\Facades\System.ServiceModel.Security.dll

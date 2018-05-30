@@ -1,0 +1,625 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETFramework,Version=v4.6.2": {
+      "Microsoft.Extensions.Configuration.Abstractions/2.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Primitives": "2.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Extensions.Configuration.Abstractions.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Extensions.Configuration.Abstractions.dll": {}
+        }
+      },
+      "Microsoft.Extensions.DependencyInjection.Abstractions/2.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {}
+        }
+      },
+      "Microsoft.Extensions.Logging/2.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "2.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "2.0.0",
+          "Microsoft.Extensions.Options": "2.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Extensions.Logging.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Extensions.Logging.dll": {}
+        }
+      },
+      "Microsoft.Extensions.Logging.Abstractions/2.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.dll": {}
+        }
+      },
+      "Microsoft.Extensions.Logging.Console/2.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "2.0.0",
+          "Microsoft.Extensions.Logging": "2.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Extensions.Logging.Console.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Extensions.Logging.Console.dll": {}
+        }
+      },
+      "Microsoft.Extensions.Options/2.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "2.0.0",
+          "Microsoft.Extensions.Primitives": "2.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Extensions.Options.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Extensions.Options.dll": {}
+        }
+      },
+      "Microsoft.Extensions.Primitives/2.0.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Runtime.CompilerServices.Unsafe": "4.4.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Extensions.Primitives.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Extensions.Primitives.dll": {}
+        }
+      },
+      "Microsoft.Orleans.Core.Abstractions/2.0.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Runtime.Serialization.Formatters": "4.3.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Orleans.Core.Abstractions.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Orleans.Core.Abstractions.dll": {}
+        }
+      },
+      "Microsoft.Orleans.OrleansCodeGenerator.Build/2.0.3": {
+        "type": "package",
+        "build": {
+          "build/Microsoft.Orleans.OrleansCodeGenerator.Build.targets": {}
+        },
+        "buildMultiTargeting": {
+          "buildMultiTargeting/Microsoft.Orleans.OrleansCodeGenerator.Build.targets": {}
+        }
+      },
+      "System.Runtime.CompilerServices.Unsafe/4.4.0": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll": {}
+        }
+      },
+      "System.Runtime.Serialization.Formatters/4.3.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Runtime.Serialization.Primitives": "4.3.0"
+        },
+        "frameworkAssemblies": [
+          "mscorlib"
+        ],
+        "compile": {
+          "ref/net46/System.Runtime.Serialization.Formatters.dll": {}
+        },
+        "runtime": {
+          "lib/net46/System.Runtime.Serialization.Formatters.dll": {}
+        }
+      },
+      "System.Runtime.Serialization.Primitives/4.3.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.Runtime.Serialization",
+          "mscorlib"
+        ],
+        "compile": {
+          "ref/net46/System.Runtime.Serialization.Primitives.dll": {}
+        },
+        "runtime": {
+          "lib/net46/System.Runtime.Serialization.Primitives.dll": {}
+        }
+      },
+      "Utils/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6.2",
+        "dependencies": {
+          "Microsoft.Extensions.Logging.Console": "2.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Utils.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Utils.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Microsoft.Extensions.Configuration.Abstractions/2.0.0": {
+      "sha512": "rHFrXqMIvQNq51H8RYTO4IWmDOYh8NUzyqGlh0xHWTP6XYnKk7Ryinys2uDs+Vu88b3AMlM3gBBSs78m6OQpYQ==",
+      "type": "package",
+      "path": "microsoft.extensions.configuration.abstractions/2.0.0",
+      "files": [
+        "lib/netstandard2.0/Microsoft.Extensions.Configuration.Abstractions.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.Configuration.Abstractions.xml",
+        "microsoft.extensions.configuration.abstractions.2.0.0.nupkg.sha512",
+        "microsoft.extensions.configuration.abstractions.nuspec"
+      ]
+    },
+    "Microsoft.Extensions.DependencyInjection.Abstractions/2.0.0": {
+      "sha512": "eUdJ0Q/GfVyUJc0Jal5L1QZLceL78pvEM9wEKcHeI24KorqMDoVX+gWsMGLulQMfOwsUaPtkpQM2pFERTzSfSg==",
+      "type": "package",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/2.0.0",
+      "files": [
+        "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
+        "microsoft.extensions.dependencyinjection.abstractions.2.0.0.nupkg.sha512",
+        "microsoft.extensions.dependencyinjection.abstractions.nuspec"
+      ]
+    },
+    "Microsoft.Extensions.Logging/2.0.0": {
+      "sha512": "VP10syWV/vxYYMKgZ2eDESmUsz3gPxvBn5J6tkVN8lI4M+dF43RN8fWsEPbcAneDmZrHl3Pv23z05nmyGkJlpg==",
+      "type": "package",
+      "path": "microsoft.extensions.logging/2.0.0",
+      "files": [
+        "lib/netstandard2.0/Microsoft.Extensions.Logging.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.Logging.xml",
+        "microsoft.extensions.logging.2.0.0.nupkg.sha512",
+        "microsoft.extensions.logging.nuspec"
+      ]
+    },
+    "Microsoft.Extensions.Logging.Abstractions/2.0.0": {
+      "sha512": "6ZCllUYGFukkymSTx3Yr0G/ajRxoNJp7/FqSxSB4fGISST54ifBhgu4Nc0ItGi3i6DqwuNd8SUyObmiC++AO2Q==",
+      "type": "package",
+      "path": "microsoft.extensions.logging.abstractions/2.0.0",
+      "files": [
+        "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.xml",
+        "microsoft.extensions.logging.abstractions.2.0.0.nupkg.sha512",
+        "microsoft.extensions.logging.abstractions.nuspec"
+      ]
+    },
+    "Microsoft.Extensions.Logging.Console/2.0.0": {
+      "sha512": "NBjNp899FW7byDsex2ch/CkwNd2GbuHQIXCbvUVqOzSbnIsYrxOaR//BY2h2apJhnqm10IPLGkcjXxUyfAcIKA==",
+      "type": "package",
+      "path": "microsoft.extensions.logging.console/2.0.0",
+      "files": [
+        "lib/netstandard2.0/Microsoft.Extensions.Logging.Console.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.Logging.Console.xml",
+        "microsoft.extensions.logging.console.2.0.0.nupkg.sha512",
+        "microsoft.extensions.logging.console.nuspec"
+      ]
+    },
+    "Microsoft.Extensions.Options/2.0.0": {
+      "sha512": "sAKBgjl2gWsECBLLR9K54T7/uZaP2n9GhMYHay/oOLfvpvX0+iNAlQ2NJgVE352C9Fs5CDV3VbNTK8T2aNKQFA==",
+      "type": "package",
+      "path": "microsoft.extensions.options/2.0.0",
+      "files": [
+        "lib/netstandard2.0/Microsoft.Extensions.Options.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.Options.xml",
+        "microsoft.extensions.options.2.0.0.nupkg.sha512",
+        "microsoft.extensions.options.nuspec"
+      ]
+    },
+    "Microsoft.Extensions.Primitives/2.0.0": {
+      "sha512": "ukg53qNlqTrK38WA30b5qhw0GD7y3jdI9PHHASjdKyTcBHTevFM2o23tyk3pWCgAV27Bbkm+CPQ2zUe1ZOuYSA==",
+      "type": "package",
+      "path": "microsoft.extensions.primitives/2.0.0",
+      "files": [
+        "lib/netstandard2.0/Microsoft.Extensions.Primitives.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.Primitives.xml",
+        "microsoft.extensions.primitives.2.0.0.nupkg.sha512",
+        "microsoft.extensions.primitives.nuspec"
+      ]
+    },
+    "Microsoft.Orleans.Core.Abstractions/2.0.0": {
+      "sha512": "bk8iBJB8/+3LhUQ7tQTGkmiqI6p0haWa1RYWQ04M/xD8ZxIVnPLiWctP6IjSKjmCp91Idh3S5j64LGVAYbs3fA==",
+      "type": "package",
+      "path": "microsoft.orleans.core.abstractions/2.0.0",
+      "files": [
+        "lib/netstandard2.0/Orleans.Core.Abstractions.dll",
+        "lib/netstandard2.0/Orleans.Core.Abstractions.xml",
+        "microsoft.orleans.core.abstractions.2.0.0.nupkg.sha512",
+        "microsoft.orleans.core.abstractions.nuspec"
+      ]
+    },
+    "Microsoft.Orleans.OrleansCodeGenerator.Build/2.0.3": {
+      "sha512": "+gLvZOtCNqtsCsLoETKQtDOHGf0Z5QM45PpxEaou1M2RBP1nXzlFkv7ZqqT/toQ8RZHo/U0WPbVY/yOJz+fGDQ==",
+      "type": "package",
+      "path": "microsoft.orleans.orleanscodegenerator.build/2.0.3",
+      "files": [
+        "build/Microsoft.Orleans.OrleansCodeGenerator.Build.targets",
+        "buildMultiTargeting/Microsoft.Orleans.OrleansCodeGenerator.Build.targets",
+        "microsoft.orleans.orleanscodegenerator.build.2.0.3.nupkg.sha512",
+        "microsoft.orleans.orleanscodegenerator.build.nuspec",
+        "tasks/net461/Microsoft.Build.Framework.dll",
+        "tasks/net461/Microsoft.Build.Utilities.Core.dll",
+        "tasks/net461/Microsoft.CodeAnalysis.CSharp.dll",
+        "tasks/net461/Microsoft.CodeAnalysis.dll",
+        "tasks/net461/Microsoft.DotNet.PlatformAbstractions.dll",
+        "tasks/net461/Microsoft.Extensions.Configuration.Abstractions.dll",
+        "tasks/net461/Microsoft.Extensions.Configuration.Binder.dll",
+        "tasks/net461/Microsoft.Extensions.Configuration.dll",
+        "tasks/net461/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "tasks/net461/Microsoft.Extensions.DependencyInjection.dll",
+        "tasks/net461/Microsoft.Extensions.DependencyModel.dll",
+        "tasks/net461/Microsoft.Extensions.Logging.Abstractions.dll",
+        "tasks/net461/Microsoft.Extensions.Logging.Console.dll",
+        "tasks/net461/Microsoft.Extensions.Logging.dll",
+        "tasks/net461/Microsoft.Extensions.Options.ConfigurationExtensions.dll",
+        "tasks/net461/Microsoft.Extensions.Options.dll",
+        "tasks/net461/Microsoft.Extensions.Primitives.dll",
+        "tasks/net461/Microsoft.Win32.Primitives.dll",
+        "tasks/net461/Newtonsoft.Json.dll",
+        "tasks/net461/Orleans.CodeGeneration.Build.deps.json",
+        "tasks/net461/Orleans.CodeGeneration.Build.exe",
+        "tasks/net461/Orleans.CodeGeneration.Build.exe.config",
+        "tasks/net461/Orleans.CodeGeneration.Build.xml",
+        "tasks/net461/Orleans.CodeGeneration.dll",
+        "tasks/net461/Orleans.CodeGeneration.pdb",
+        "tasks/net461/Orleans.CodeGeneration.xml",
+        "tasks/net461/Orleans.Core.Abstractions.dll",
+        "tasks/net461/Orleans.Core.Abstractions.pdb",
+        "tasks/net461/Orleans.Core.Abstractions.xml",
+        "tasks/net461/Orleans.Core.dll",
+        "tasks/net461/Orleans.Core.pdb",
+        "tasks/net461/Orleans.Core.xml",
+        "tasks/net461/System.AppContext.dll",
+        "tasks/net461/System.Collections.Concurrent.dll",
+        "tasks/net461/System.Collections.Immutable.dll",
+        "tasks/net461/System.Collections.NonGeneric.dll",
+        "tasks/net461/System.Collections.Specialized.dll",
+        "tasks/net461/System.Collections.dll",
+        "tasks/net461/System.ComponentModel.EventBasedAsync.dll",
+        "tasks/net461/System.ComponentModel.Primitives.dll",
+        "tasks/net461/System.ComponentModel.TypeConverter.dll",
+        "tasks/net461/System.ComponentModel.dll",
+        "tasks/net461/System.Console.dll",
+        "tasks/net461/System.Data.Common.dll",
+        "tasks/net461/System.Diagnostics.Contracts.dll",
+        "tasks/net461/System.Diagnostics.Debug.dll",
+        "tasks/net461/System.Diagnostics.FileVersionInfo.dll",
+        "tasks/net461/System.Diagnostics.Process.dll",
+        "tasks/net461/System.Diagnostics.StackTrace.dll",
+        "tasks/net461/System.Diagnostics.TextWriterTraceListener.dll",
+        "tasks/net461/System.Diagnostics.Tools.dll",
+        "tasks/net461/System.Diagnostics.TraceSource.dll",
+        "tasks/net461/System.Diagnostics.Tracing.dll",
+        "tasks/net461/System.Drawing.Primitives.dll",
+        "tasks/net461/System.Dynamic.Runtime.dll",
+        "tasks/net461/System.Globalization.Calendars.dll",
+        "tasks/net461/System.Globalization.Extensions.dll",
+        "tasks/net461/System.Globalization.dll",
+        "tasks/net461/System.IO.Compression.ZipFile.dll",
+        "tasks/net461/System.IO.Compression.dll",
+        "tasks/net461/System.IO.FileSystem.DriveInfo.dll",
+        "tasks/net461/System.IO.FileSystem.Primitives.dll",
+        "tasks/net461/System.IO.FileSystem.Watcher.dll",
+        "tasks/net461/System.IO.FileSystem.dll",
+        "tasks/net461/System.IO.IsolatedStorage.dll",
+        "tasks/net461/System.IO.MemoryMappedFiles.dll",
+        "tasks/net461/System.IO.Pipes.dll",
+        "tasks/net461/System.IO.UnmanagedMemoryStream.dll",
+        "tasks/net461/System.IO.dll",
+        "tasks/net461/System.Linq.Expressions.dll",
+        "tasks/net461/System.Linq.Parallel.dll",
+        "tasks/net461/System.Linq.Queryable.dll",
+        "tasks/net461/System.Linq.dll",
+        "tasks/net461/System.Net.Http.dll",
+        "tasks/net461/System.Net.NameResolution.dll",
+        "tasks/net461/System.Net.NetworkInformation.dll",
+        "tasks/net461/System.Net.Ping.dll",
+        "tasks/net461/System.Net.Primitives.dll",
+        "tasks/net461/System.Net.Requests.dll",
+        "tasks/net461/System.Net.Security.dll",
+        "tasks/net461/System.Net.Sockets.dll",
+        "tasks/net461/System.Net.WebHeaderCollection.dll",
+        "tasks/net461/System.Net.WebSockets.Client.dll",
+        "tasks/net461/System.Net.WebSockets.dll",
+        "tasks/net461/System.ObjectModel.dll",
+        "tasks/net461/System.Reflection.Extensions.dll",
+        "tasks/net461/System.Reflection.Metadata.dll",
+        "tasks/net461/System.Reflection.Primitives.dll",
+        "tasks/net461/System.Reflection.TypeExtensions.dll",
+        "tasks/net461/System.Reflection.dll",
+        "tasks/net461/System.Resources.Reader.dll",
+        "tasks/net461/System.Resources.ResourceManager.dll",
+        "tasks/net461/System.Resources.Writer.dll",
+        "tasks/net461/System.Runtime.CompilerServices.Unsafe.dll",
+        "tasks/net461/System.Runtime.CompilerServices.VisualC.dll",
+        "tasks/net461/System.Runtime.Extensions.dll",
+        "tasks/net461/System.Runtime.Handles.dll",
+        "tasks/net461/System.Runtime.InteropServices.RuntimeInformation.dll",
+        "tasks/net461/System.Runtime.InteropServices.dll",
+        "tasks/net461/System.Runtime.Loader.dll",
+        "tasks/net461/System.Runtime.Numerics.dll",
+        "tasks/net461/System.Runtime.Serialization.Formatters.dll",
+        "tasks/net461/System.Runtime.Serialization.Json.dll",
+        "tasks/net461/System.Runtime.Serialization.Primitives.dll",
+        "tasks/net461/System.Runtime.Serialization.Xml.dll",
+        "tasks/net461/System.Runtime.dll",
+        "tasks/net461/System.Security.Claims.dll",
+        "tasks/net461/System.Security.Cryptography.Algorithms.dll",
+        "tasks/net461/System.Security.Cryptography.Csp.dll",
+        "tasks/net461/System.Security.Cryptography.Encoding.dll",
+        "tasks/net461/System.Security.Cryptography.Primitives.dll",
+        "tasks/net461/System.Security.Cryptography.X509Certificates.dll",
+        "tasks/net461/System.Security.Principal.dll",
+        "tasks/net461/System.Security.SecureString.dll",
+        "tasks/net461/System.Text.Encoding.CodePages.dll",
+        "tasks/net461/System.Text.Encoding.Extensions.dll",
+        "tasks/net461/System.Text.Encoding.dll",
+        "tasks/net461/System.Text.RegularExpressions.dll",
+        "tasks/net461/System.Threading.Overlapped.dll",
+        "tasks/net461/System.Threading.Tasks.Parallel.dll",
+        "tasks/net461/System.Threading.Tasks.dll",
+        "tasks/net461/System.Threading.Thread.dll",
+        "tasks/net461/System.Threading.ThreadPool.dll",
+        "tasks/net461/System.Threading.Timer.dll",
+        "tasks/net461/System.Threading.dll",
+        "tasks/net461/System.ValueTuple.dll",
+        "tasks/net461/System.Xml.ReaderWriter.dll",
+        "tasks/net461/System.Xml.XDocument.dll",
+        "tasks/net461/System.Xml.XPath.XDocument.dll",
+        "tasks/net461/System.Xml.XPath.XmlDocument.dll",
+        "tasks/net461/System.Xml.XPath.dll",
+        "tasks/net461/System.Xml.XmlDocument.dll",
+        "tasks/net461/System.Xml.XmlSerializer.dll",
+        "tasks/net461/netstandard.dll",
+        "tasks/netcoreapp2.0/Microsoft.Build.Framework.dll",
+        "tasks/netcoreapp2.0/Microsoft.Build.Utilities.Core.dll",
+        "tasks/netcoreapp2.0/Microsoft.CodeAnalysis.CSharp.dll",
+        "tasks/netcoreapp2.0/Microsoft.CodeAnalysis.dll",
+        "tasks/netcoreapp2.0/Microsoft.DotNet.PlatformAbstractions.dll",
+        "tasks/netcoreapp2.0/Microsoft.Extensions.Configuration.Abstractions.dll",
+        "tasks/netcoreapp2.0/Microsoft.Extensions.Configuration.Binder.dll",
+        "tasks/netcoreapp2.0/Microsoft.Extensions.Configuration.dll",
+        "tasks/netcoreapp2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "tasks/netcoreapp2.0/Microsoft.Extensions.DependencyInjection.dll",
+        "tasks/netcoreapp2.0/Microsoft.Extensions.DependencyModel.dll",
+        "tasks/netcoreapp2.0/Microsoft.Extensions.Logging.Abstractions.dll",
+        "tasks/netcoreapp2.0/Microsoft.Extensions.Logging.Console.dll",
+        "tasks/netcoreapp2.0/Microsoft.Extensions.Logging.dll",
+        "tasks/netcoreapp2.0/Microsoft.Extensions.Options.ConfigurationExtensions.dll",
+        "tasks/netcoreapp2.0/Microsoft.Extensions.Options.dll",
+        "tasks/netcoreapp2.0/Microsoft.Extensions.Primitives.dll",
+        "tasks/netcoreapp2.0/Newtonsoft.Json.dll",
+        "tasks/netcoreapp2.0/Orleans.CodeGeneration.Build.deps.json",
+        "tasks/netcoreapp2.0/Orleans.CodeGeneration.Build.dll",
+        "tasks/netcoreapp2.0/Orleans.CodeGeneration.Build.dll.config",
+        "tasks/netcoreapp2.0/Orleans.CodeGeneration.Build.runtimeconfig.json",
+        "tasks/netcoreapp2.0/Orleans.CodeGeneration.Build.xml",
+        "tasks/netcoreapp2.0/Orleans.CodeGeneration.dll",
+        "tasks/netcoreapp2.0/Orleans.CodeGeneration.pdb",
+        "tasks/netcoreapp2.0/Orleans.CodeGeneration.xml",
+        "tasks/netcoreapp2.0/Orleans.Core.Abstractions.dll",
+        "tasks/netcoreapp2.0/Orleans.Core.Abstractions.pdb",
+        "tasks/netcoreapp2.0/Orleans.Core.Abstractions.xml",
+        "tasks/netcoreapp2.0/Orleans.Core.dll",
+        "tasks/netcoreapp2.0/Orleans.Core.pdb",
+        "tasks/netcoreapp2.0/Orleans.Core.xml",
+        "tasks/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.dll",
+        "tasks/netcoreapp2.0/System.Xml.XPath.XmlDocument.dll",
+        "tasks/netcoreapp2.0/runtimes/unix/lib/netstandard1.3/System.Text.Encoding.CodePages.dll",
+        "tasks/netcoreapp2.0/runtimes/win/lib/netstandard1.3/System.Text.Encoding.CodePages.dll"
+      ]
+    },
+    "System.Runtime.CompilerServices.Unsafe/4.4.0": {
+      "sha512": "9dLLuBxr5GNmOfl2jSMcsHuteEg32BEfUotmmUkmZjpR3RpVHE8YQwt0ow3p6prwA1ME8WqDVZqrr8z6H8G+Kw==",
+      "type": "package",
+      "path": "system.runtime.compilerservices.unsafe/4.4.0",
+      "files": [
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+        "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.xml",
+        "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
+        "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.xml",
+        "ref/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+        "ref/netstandard1.0/System.Runtime.CompilerServices.Unsafe.xml",
+        "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
+        "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.xml",
+        "system.runtime.compilerservices.unsafe.4.4.0.nupkg.sha512",
+        "system.runtime.compilerservices.unsafe.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
+    "System.Runtime.Serialization.Formatters/4.3.0": {
+      "sha512": "KT591AkTNFOTbhZlaeMVvfax3RqhH1EJlcwF50Wm7sfnBLuHiOeZRRKrr1ns3NESkM20KPZ5Ol/ueMq5vg4QoQ==",
+      "type": "package",
+      "path": "system.runtime.serialization.formatters/4.3.0",
+      "files": [
+        "ThirdPartyNotices.txt",
+        "dotnet_library_license.txt",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/System.Runtime.Serialization.Formatters.dll",
+        "lib/netstandard1.4/System.Runtime.Serialization.Formatters.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net46/System.Runtime.Serialization.Formatters.dll",
+        "ref/netstandard1.3/System.Runtime.Serialization.Formatters.dll",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "system.runtime.serialization.formatters.4.3.0.nupkg.sha512",
+        "system.runtime.serialization.formatters.nuspec"
+      ]
+    },
+    "System.Runtime.Serialization.Primitives/4.3.0": {
+      "sha512": "Wz+0KOukJGAlXjtKr+5Xpuxf8+c8739RI1C+A2BoQZT+wMCCoMDDdO8/4IRHfaVINqL78GO8dW8G2lW/e45Mcw==",
+      "type": "package",
+      "path": "system.runtime.serialization.primitives/4.3.0",
+      "files": [
+        "ThirdPartyNotices.txt",
+        "dotnet_library_license.txt",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net45/_._",
+        "lib/net46/System.Runtime.Serialization.Primitives.dll",
+        "lib/netcore50/System.Runtime.Serialization.Primitives.dll",
+        "lib/netstandard1.3/System.Runtime.Serialization.Primitives.dll",
+        "lib/portable-net45+win8+wp8+wpa81/_._",
+        "lib/win8/_._",
+        "lib/wp80/_._",
+        "lib/wpa81/_._",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net45/_._",
+        "ref/net46/System.Runtime.Serialization.Primitives.dll",
+        "ref/netcore50/System.Runtime.Serialization.Primitives.dll",
+        "ref/netcore50/System.Runtime.Serialization.Primitives.xml",
+        "ref/netcore50/de/System.Runtime.Serialization.Primitives.xml",
+        "ref/netcore50/es/System.Runtime.Serialization.Primitives.xml",
+        "ref/netcore50/fr/System.Runtime.Serialization.Primitives.xml",
+        "ref/netcore50/it/System.Runtime.Serialization.Primitives.xml",
+        "ref/netcore50/ja/System.Runtime.Serialization.Primitives.xml",
+        "ref/netcore50/ko/System.Runtime.Serialization.Primitives.xml",
+        "ref/netcore50/ru/System.Runtime.Serialization.Primitives.xml",
+        "ref/netcore50/zh-hans/System.Runtime.Serialization.Primitives.xml",
+        "ref/netcore50/zh-hant/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.0/System.Runtime.Serialization.Primitives.dll",
+        "ref/netstandard1.0/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.0/de/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.0/es/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.0/fr/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.0/it/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.0/ja/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.0/ko/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.0/ru/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.0/zh-hans/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.0/zh-hant/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.3/System.Runtime.Serialization.Primitives.dll",
+        "ref/netstandard1.3/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.3/de/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.3/es/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.3/fr/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.3/it/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.3/ja/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.3/ko/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.3/ru/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.3/zh-hans/System.Runtime.Serialization.Primitives.xml",
+        "ref/netstandard1.3/zh-hant/System.Runtime.Serialization.Primitives.xml",
+        "ref/portable-net45+win8+wp8+wpa81/_._",
+        "ref/win8/_._",
+        "ref/wp80/_._",
+        "ref/wpa81/_._",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "runtimes/aot/lib/netcore50/System.Runtime.Serialization.Primitives.dll",
+        "system.runtime.serialization.primitives.4.3.0.nupkg.sha512",
+        "system.runtime.serialization.primitives.nuspec"
+      ]
+    },
+    "Utils/1.0.0": {
+      "type": "project",
+      "path": "../Utils/Utils.csproj",
+      "msbuildProject": "../Utils/Utils.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETFramework,Version=v4.6.2": [
+      "Microsoft.Orleans.Core.Abstractions >= 2.*",
+      "Microsoft.Orleans.OrleansCodeGenerator.Build >= 2.*",
+      "Utils >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\wuyou\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restoreSettings": {
+      "hideWarningsAndErrors": true
+    },
+    "restore": {
+      "projectUniqueName": "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\FaultTolerantOrleans\\GrainInterfaces\\SystemInterfaces.csproj",
+      "projectName": "GrainInterfaces",
+      "projectPath": "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\FaultTolerantOrleans\\GrainInterfaces\\SystemInterfaces.csproj",
+      "packagesPath": "C:\\Users\\wuyou\\.nuget\\packages\\",
+      "outputPath": "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\FaultTolerantOrleans\\GrainInterfaces\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\",
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\wuyou\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.Fallback.config"
+      ],
+      "originalTargetFrameworks": [
+        "net462"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net462": {
+          "projectReferences": {
+            "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\FaultTolerantOrleans\\Utils\\Utils.csproj": {
+              "projectPath": "F:\\repo\\OrleansRepo\\FaultTolerantOrleans\\FaultTolerantOrleans\\FaultTolerantOrleans\\Utils\\Utils.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net462": {
+        "dependencies": {
+          "Microsoft.Orleans.Core.Abstractions": {
+            "target": "Package",
+            "version": "[2.*, )"
+          },
+          "Microsoft.Orleans.OrleansCodeGenerator.Build": {
+            "target": "Package",
+            "version": "[2.*, )"
+          }
+        }
+      }
+    }
+  }
+}
