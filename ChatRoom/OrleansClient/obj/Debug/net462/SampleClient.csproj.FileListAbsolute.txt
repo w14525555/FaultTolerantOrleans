@@ -130,3 +130,4 @@ F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\ChatRoom\OrleansCl
 F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\ChatRoom\OrleansClient\obj\Debug\net462\SampleClient.AssemblyInfo.cs
 F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\ChatRoom\OrleansClient\obj\Debug\net462\OrleansClient.exe
 F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\ChatRoom\OrleansClient\obj\Debug\net462\OrleansClient.pdb
+F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\ChatRoom\OrleansClient\obj\Debug\net462\SampleClient.csprojResolveAssemblyReference.cache

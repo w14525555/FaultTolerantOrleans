@@ -13,8 +13,7 @@ namespace OrleansClient
         private ILogger logger;
         private IConsumer consumer;
         private IBatchTracker tracker;
-        private static StreamMessage barrierMsg = new StreamMessage("System", $"Barrier");
-        private static StreamMessage commitMsg = new StreamMessage("System", $"Commit");
+
         public StreamObserver(ILogger logger)
         {
             this.logger = logger;
@@ -56,11 +55,11 @@ namespace OrleansClient
             //processed. 
             PrettyConsole.Line("Receice");
 
-            if (item.Value == barrierMsg.Value)
+            if (item.Key == Constants.Barrier_Key)
             {
                 TellTrackMessageSent(item);
             }
-            else if (item.Value == commitMsg.Value)
+            else if (item.Key == Constants.Commit_Key)
             {
                 //Commit Here
                 PrettyConsole.Line("Commit and Update Logs");

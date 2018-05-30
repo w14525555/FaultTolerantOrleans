@@ -11,8 +11,8 @@ namespace GrainImplementation
     public class BatchManager : Grain, IBatchManager
     {
         //A Batch Manager should send batch barrier 
-        private readonly StreamMessage barrierMsg = new StreamMessage("System", $"Barrier");
-        private readonly StreamMessage commitMsg = new StreamMessage("System", $"Commit");
+        private StreamMessage barrierMsg = new StreamMessage(Constants.Barrier_Key, Constants.System_Value);
+        private StreamMessage commitMsg = new StreamMessage(Constants.Commit_Key, Constants.System_Value);
         //private Boolean isCommitting;
         private IStreamSource channel;
         private static TimeSpan barrierTimeInterval = TimeSpan.FromSeconds(10);

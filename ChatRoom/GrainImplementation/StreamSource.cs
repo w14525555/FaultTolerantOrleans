@@ -14,8 +14,8 @@ namespace GrainImplementation
 	{
 		private readonly List<StreamMessage> messages = new List<StreamMessage>(100);
 		private readonly List<string> onlineMembers = new List<string>(10);
-        private readonly StreamMessage barrierMsg = new StreamMessage("System", $"Barrier");
-        private readonly StreamMessage commitMsg = new StreamMessage("System", $"Commit");
+        private StreamMessage barrierMsg = new StreamMessage(Constants.Barrier_Key, Constants.System_Value);
+        private StreamMessage commitMsg = new StreamMessage(Constants.Commit_Key, Constants.System_Value);
         private IBatchManager batchManager;
         private IBatchTracker batchTracker;
         private int currentBatchID;
