@@ -10,9 +10,9 @@ namespace GrainInterfaces
     //emitted batch seeder.
     public interface IBatchTracker: IGrainWithStringKey
     {
-        Task TrackingBarrierMessages(ChatMsg msg);
+        Task TrackingBarrierMessages(StreamMessage msg);
 
-        Task CompleteTracking(ChatMsg msg);
+        Task CompleteTracking(StreamMessage msg);
 
         Task<bool> IsReadForCommit(int batchID);
 

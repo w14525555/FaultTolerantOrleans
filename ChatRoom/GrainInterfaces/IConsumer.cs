@@ -6,7 +6,7 @@ namespace GrainInterfaces
 {
     public interface IConsumer: IGrainWithStringKey
     {
-        Task ConsumeMessage(ChatMsg msg);
+        Task ConsumeMessage(StreamMessage msg);
 
         //Method that used for testing. 
         Task<string> GetState(string key);
@@ -20,7 +20,7 @@ namespace GrainInterfaces
         Task UpdateIncrementalLog();
 
         //For testing
-        Task UpdateOperation(ChatMsg msg);
+        Task UpdateOperation(StreamMessage msg);
 
     }
 }

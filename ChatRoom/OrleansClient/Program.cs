@@ -153,7 +153,7 @@ namespace OrleansClient
             PrettyConsole.Line($"====== History for '{joinedChannel}' Channel ======", ConsoleColor.DarkGreen);
             foreach (var chatMsg in history)
             {
-                PrettyConsole.Line($" ({chatMsg.Created:g}) {chatMsg.Author}> {chatMsg.Text}", ConsoleColor.DarkGreen);
+                PrettyConsole.Line($" ({chatMsg.Created:g}) {chatMsg.Key}> {chatMsg.Value}", ConsoleColor.DarkGreen);
             }
             PrettyConsole.Line("============", ConsoleColor.DarkGreen);
         }
@@ -161,7 +161,7 @@ namespace OrleansClient
         private static async Task SendMessage(IClusterClient client, string messageText)
         {
             var room = client.GetGrain<IChannel>(joinedChannel);
-            await room.Message(new ChatMsg(userName, messageText));
+            await room.Message(new StreamMessage(userName, messageText));
         }
 
         private static async Task JoinChannel(IClusterClient client, string channelName)
@@ -177,7 +177,7 @@ namespace OrleansClient
             var room = client.GetGrain<IChannel>(joinedChannel);
             var streamId = await room.Join(userName);
             var stream = client.GetStreamProvider(Constants.ChatRoomStreamProvider)
-                .GetStream<ChatMsg>(streamId, Constants.CharRoomStreamNameSpace);
+                .GetStream<StreamMessage>(streamId, Constants.CharRoomStreamNameSpace);
             //subscribe to the stream to receiver furthur messages sent to the chatroom
             consumer = client.GetGrain<IConsumer>("Consumer");
             tracker = await room.GetBatchTracker();
@@ -191,7 +191,7 @@ namespace OrleansClient
             var room = client.GetGrain<IChannel>(joinedChannel);
             var streamId = await room.Leave(userName);
             var stream = client.GetStreamProvider(Constants.ChatRoomStreamProvider)
-                .GetStream<ChatMsg>(streamId, Constants.CharRoomStreamNameSpace);
+                .GetStream<StreamMessage>(streamId, Constants.CharRoomStreamNameSpace);
 
             //unsubscribe from the channel/stream since client left, so that client won't
             //receive furture messages from this channel/stream

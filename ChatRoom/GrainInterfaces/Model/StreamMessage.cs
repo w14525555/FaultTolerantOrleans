@@ -3,19 +3,19 @@
 namespace GrainInterfaces.Model
 {
 	[Serializable]
-	public class ChatMsg
+	public class StreamMessage
 	{
 		public DateTimeOffset Created { get; set; } = DateTimeOffset.Now;
-		public string Author { get; set; } = "Alexey";
-		public string Text { get; set; }
+		public string Key { get; set; } = "Alexey";
+		public string Value { get; set; }
         public int BatchID { get; set; }
         public Operation operation { get; set; }
         public BarrierMsgTrackingInfo barrierInfo { get; set; }
 
-		public ChatMsg(string author, string msg)
+		public StreamMessage(string key, string value)
 		{
-			Author = author;
-			Text = msg;
+			Key = key;
+			Value = value;
         }
     }
 

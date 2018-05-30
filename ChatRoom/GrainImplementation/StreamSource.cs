@@ -12,20 +12,20 @@ namespace GrainImplementation
 {
 	public class StreamSource : Grain, IChannel
 	{
-		private readonly List<ChatMsg> messages = new List<ChatMsg>(100);
+		private readonly List<StreamMessage> messages = new List<StreamMessage>(100);
 		private readonly List<string> onlineMembers = new List<string>(10);
-        private readonly ChatMsg barrierMsg = new ChatMsg("System", $"Barrier");
-        private readonly ChatMsg commitMsg = new ChatMsg("System", $"Commit");
+        private readonly StreamMessage barrierMsg = new StreamMessage("System", $"Barrier");
+        private readonly StreamMessage commitMsg = new StreamMessage("System", $"Commit");
         private IBatchManager batchManager;
         private IBatchTracker batchTracker;
         private int currentBatchID;
 
-		private IAsyncStream<ChatMsg> stream;
+		private IAsyncStream<StreamMessage> stream;
 
 		public override Task OnActivateAsync()
 		{
 			var streamProvider = GetStreamProvider(Constants.ChatRoomStreamProvider);
-            stream = streamProvider.GetStream<ChatMsg>(Guid.NewGuid(), Constants.CharRoomStreamNameSpace);
+            stream = streamProvider.GetStream<StreamMessage>(Guid.NewGuid(), Constants.CharRoomStreamNameSpace);
             SetUpBatchManager();
             SetUpBatchTracker();
             currentBatchID = 0;
@@ -50,7 +50,7 @@ namespace GrainImplementation
 		{
 			onlineMembers.Add(nickname);
 
-            await ProduceMessageAsync(new ChatMsg("System", $"{nickname} joins the chat '{this.GetPrimaryKeyString()}' ..."));
+            await ProduceMessageAsync(new StreamMessage("System", $"{nickname} joins the chat '{this.GetPrimaryKeyString()}' ..."));
 
 			return stream.Guid;
 		}
@@ -59,12 +59,12 @@ namespace GrainImplementation
 		{
 			onlineMembers.Remove(nickname);
 
-            await ProduceMessageAsync(new ChatMsg("System", $"{nickname} leaves the chat..."));
+            await ProduceMessageAsync(new StreamMessage("System", $"{nickname} leaves the chat..."));
 
 			return stream.Guid;
 		}
 
-		public async Task<bool> Message(ChatMsg msg)
+		public async Task<bool> Message(StreamMessage msg)
 		{
 			messages.Add(msg);
             await ProduceMessageAsync(msg);
@@ -73,7 +73,7 @@ namespace GrainImplementation
 
         //This method has to be async because you have to wait
         //the stream sends messages to all its subscribers
-         public async Task<Task> ProduceMessageAsync(ChatMsg msg)
+         public async Task<Task> ProduceMessageAsync(StreamMessage msg)
         {
             await CheckIfBarrierOrCommitMsg(msg);
             await stream.OnNextAsync(msg);
@@ -83,16 +83,16 @@ namespace GrainImplementation
         //If it is barrier message, batch manager will start to track it
         //by using BarrierMsgTrackingInfo which keep and ID and the number of 
         //client it sent to. 
-        private Task CheckIfBarrierOrCommitMsg(ChatMsg msg)
+        private Task CheckIfBarrierOrCommitMsg(StreamMessage msg)
         {
-            if (msg.Text == barrierMsg.Text)
+            if (msg.Value == barrierMsg.Value)
             {
                 currentBatchID = msg.BatchID + 1;
                 msg.barrierInfo = new BarrierMsgTrackingInfo(Guid.NewGuid(), onlineMembers.Count);
                 PrettyConsole.Line("Send and Start Tracking BatchID: " + msg.BatchID);
                 TrackingBarrierMessages(msg);
             }
-            else if (msg.Text == commitMsg.Text)
+            else if (msg.Value == commitMsg.Value)
             {
                 PrettyConsole.Line("Send comit message for BatchID: " + msg.BatchID);
             }
@@ -103,7 +103,7 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        private Task TrackingBarrierMessages(ChatMsg msg)
+        private Task TrackingBarrierMessages(StreamMessage msg)
         {
             batchTracker.TrackingBarrierMessages(msg);
             return Task.CompletedTask;
@@ -115,7 +115,7 @@ namespace GrainImplementation
 	        return Task.FromResult(onlineMembers.ToArray());
 	    }
 
-	    public Task<ChatMsg[]> ReadHistory(int numberOfMessages)
+	    public Task<StreamMessage[]> ReadHistory(int numberOfMessages)
 	    {
 	        var response = messages
 	            .OrderByDescending(x => x.Created)

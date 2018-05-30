@@ -9,13 +9,13 @@ using Utils;
 
 namespace OrleansClient
 {
-    public class StreamObserver : IAsyncObserver<ChatMsg>
+    public class StreamObserver : IAsyncObserver<StreamMessage>
     {
         private ILogger logger;
         private IConsumer consumer;
         private IBatchTracker tracker;
-        private static ChatMsg barrierMsg = new ChatMsg("System", $"Barrier");
-        private static ChatMsg commitMsg = new ChatMsg("System", $"Commit");
+        private static StreamMessage barrierMsg = new StreamMessage("System", $"Barrier");
+        private static StreamMessage commitMsg = new StreamMessage("System", $"Commit");
         public StreamObserver(ILogger logger)
         {
             this.logger = logger;
@@ -46,9 +46,9 @@ namespace OrleansClient
             return Task.CompletedTask;
         }
 
-        public Task OnNextAsync(ChatMsg item, StreamSequenceToken token = null)
+        public Task OnNextAsync(StreamMessage item, StreamSequenceToken token = null)
         {
-            this.logger.LogInformation($"=={item.Created}==         {item.Author} said: {item.Text}");
+            this.logger.LogInformation($"=={item.Created}==         {item.Key} said: {item.Value}");
             //When a consumer receive messages from stream,
             //the consumer needs to consume to the message
             //and its state may change
@@ -57,11 +57,11 @@ namespace OrleansClient
             //processed. 
             PrettyConsole.Line("Receice");
 
-            if (item.Text == barrierMsg.Text)
+            if (item.Value == barrierMsg.Value)
             {
                 TellTrackMessageSent(item);
             }
-            else if (item.Text == commitMsg.Text)
+            else if (item.Value == commitMsg.Value)
             {
                 //Commit Here
                 PrettyConsole.Line("Commit and Update Logs");
@@ -84,7 +84,7 @@ namespace OrleansClient
             return Task.CompletedTask;
         }
 
-        private Task TellTrackMessageSent(ChatMsg item)
+        private Task TellTrackMessageSent(StreamMessage item)
         {
             if (tracker != null)
             {

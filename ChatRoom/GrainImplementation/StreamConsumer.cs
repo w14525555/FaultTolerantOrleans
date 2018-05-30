@@ -27,7 +27,7 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        public Task ConsumeMessage(ChatMsg msg)
+        public Task ConsumeMessage(StreamMessage msg)
         {
             if (msg.operation != Operation.Null)
             {
@@ -83,35 +83,35 @@ namespace GrainImplementation
             }
         }
 
-        private Task DeleteOperation(ChatMsg msg)
+        private Task DeleteOperation(StreamMessage msg)
         {
-            if (statesMap.ContainsKey(msg.Author))
+            if (statesMap.ContainsKey(msg.Key))
             {
-                HandleReverseLogOnDelete(msg.Author);
-                statesMap.Remove(msg.Author);
+                HandleReverseLogOnDelete(msg.Key);
+                statesMap.Remove(msg.Key);
                 HandleIncrementalLogOnDelete(msg);
             }
             return Task.CompletedTask;
         }
 
 
-        private Task InsertOperation(ChatMsg msg)
+        private Task InsertOperation(StreamMessage msg)
         {
-            if (!statesMap.ContainsKey(msg.Author))
+            if (!statesMap.ContainsKey(msg.Key))
             {
-                HandleReverseLogOnInsert(msg.Author);
-                statesMap.Add(msg.Author, msg.Text);
+                HandleReverseLogOnInsert(msg.Key);
+                statesMap.Add(msg.Key, msg.Value);
                 HandleIncrementalLogOnInsert(msg);
             }
             return Task.CompletedTask;
         }
 
-        public Task UpdateOperation(ChatMsg msg)
+        public Task UpdateOperation(StreamMessage msg)
         {
-            if (statesMap.ContainsKey(msg.Author))
+            if (statesMap.ContainsKey(msg.Key))
             {
-                HandleReverseLogOnUpdate(msg.Author);
-                statesMap[msg.Author] = msg.Text;
+                HandleReverseLogOnUpdate(msg.Key);
+                statesMap[msg.Key] = msg.Value;
                 HandleIncrementalLogOnUpdate(msg);
             }
             return Task.CompletedTask;
@@ -159,44 +159,44 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        private Task HandleIncrementalLogOnInsert(ChatMsg msg)
+        private Task HandleIncrementalLogOnInsert(StreamMessage msg)
         {
-            if (incrementalLog.ContainsKey(msg.Author))
+            if (incrementalLog.ContainsKey(msg.Key))
             {
-                incrementalLog[msg.Author] = msg.Text;
+                incrementalLog[msg.Key] = msg.Value;
             }
             else
             {
                 //Add key and value 
-                incrementalLog.Add(msg.Author, msg.Text);
+                incrementalLog.Add(msg.Key, msg.Value);
             }
             return Task.CompletedTask;
         }
 
-        private Task HandleIncrementalLogOnUpdate(ChatMsg msg)
+        private Task HandleIncrementalLogOnUpdate(StreamMessage msg)
         {
-            if (!incrementalLog.ContainsKey(msg.Author))
+            if (!incrementalLog.ContainsKey(msg.Key))
             {
-                incrementalLog.Add(msg.Author, msg.Text);
+                incrementalLog.Add(msg.Key, msg.Value);
             }
             else
             {
                 //Save the value before changing it
-                incrementalLog[msg.Author] = msg.Text;
+                incrementalLog[msg.Key] = msg.Value;
             }
             return Task.CompletedTask;
         }
 
-        private Task HandleIncrementalLogOnDelete(ChatMsg msg)
+        private Task HandleIncrementalLogOnDelete(StreamMessage msg)
         {
-            if (!incrementalLog.ContainsKey(msg.Author))
+            if (!incrementalLog.ContainsKey(msg.Key))
             {
-                incrementalLog.Add(msg.Author, msg.Text);
+                incrementalLog.Add(msg.Key, msg.Value);
             }
             else
             {
                 //save the deleted key
-                incrementalLog[msg.Author] = null;
+                incrementalLog[msg.Key] = null;
             }
             return Task.CompletedTask;
         }

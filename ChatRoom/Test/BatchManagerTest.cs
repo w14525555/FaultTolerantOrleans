@@ -28,12 +28,12 @@ namespace Test
         private static string joinedChannel = "general";
         private static string userName = "You Wu";
         private const string NOT_EXIST = "Not Exist";
-        private static ChatMsg msg1 = new ChatMsg("initial", "message 1");
-        private static ChatMsg msg2 = new ChatMsg("second", "message 2");
-        private static ChatMsg msg3 = new ChatMsg("initial", "message 3");
-        private static ChatMsg msg4 = new ChatMsg("initial", "message 4");
-        private static ChatMsg barrierMsg = new ChatMsg("System", $"Barrier");
-        private static ChatMsg commitMsg = new ChatMsg("System", $"Commit");
+        private static StreamMessage msg1 = new StreamMessage("initial", "message 1");
+        private static StreamMessage msg2 = new StreamMessage("second", "message 2");
+        private static StreamMessage msg3 = new StreamMessage("initial", "message 3");
+        private static StreamMessage msg4 = new StreamMessage("initial", "message 4");
+        private static StreamMessage barrierMsg = new StreamMessage("System", $"Barrier");
+        private static StreamMessage commitMsg = new StreamMessage("System", $"Commit");
 
 
         [TestInitialize]
@@ -80,7 +80,7 @@ namespace Test
             msg1.operation = Operation.Update;
             await room.Message(msg1);
             string updatedState = await consumer.GetState("initial");
-            Assert.AreEqual(msg1.Text, updatedState);
+            Assert.AreEqual(msg1.Value, updatedState);
         }
 
         [TestMethod]
@@ -90,7 +90,7 @@ namespace Test
             msg2.operation = Operation.Insert;
             await room.Message(msg2);
             string insertedState = await consumer.GetState("second");
-            Assert.AreEqual(msg2.Text, insertedState);
+            Assert.AreEqual(msg2.Value, insertedState);
         }
 
         [TestMethod]
@@ -178,7 +178,7 @@ namespace Test
             msg1.operation = Operation.Update;
             await consumer.UpdateOperation(msg1);
             string updatedState = await consumer.GetStateInIncrementalLog("initial");
-            Assert.AreEqual(msg1.Text, updatedState);
+            Assert.AreEqual(msg1.Value, updatedState);
         }
 
         [TestMethod]
@@ -198,7 +198,7 @@ namespace Test
             msg2.operation = Operation.Insert;
             await room.Message(msg2);
             string insertedStateInIncrementalLog = await consumer.GetStateInIncrementalLog("second");
-            Assert.AreEqual(msg2.Text, insertedStateInIncrementalLog);
+            Assert.AreEqual(msg2.Value, insertedStateInIncrementalLog);
         }
 
         // Batch Processing Tests
@@ -292,7 +292,7 @@ namespace Test
             room = client.GetGrain<IChannel>(joinedChannel);
             var streamId = await room.Join(userName);
             var stream = client.GetStreamProvider(Constants.ChatRoomStreamProvider)
-                .GetStream<ChatMsg>(streamId, Constants.CharRoomStreamNameSpace);
+                .GetStream<StreamMessage>(streamId, Constants.CharRoomStreamNameSpace);
             //subscribe to the stream to receiver furthur messages sent to the chatroom
             consumer = client.GetGrain<IConsumer>("Consumer");
             Mock<ILogger> mockLogger = new Mock<ILogger>();
