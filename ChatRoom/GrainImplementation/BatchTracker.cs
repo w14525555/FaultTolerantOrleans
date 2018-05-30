@@ -24,7 +24,7 @@ namespace GrainImplementation
             return base.OnActivateAsync();
         }
 
-        public Task TrackingBarrierMessages(ChatMsg msg)
+        public Task TrackingBarrierMessages(StreamMessage msg)
         {
             if (batchTrackingMap.ContainsKey(msg.BatchID))
             {
@@ -47,7 +47,7 @@ namespace GrainImplementation
         }
 
         //Should find the target task in the currentBatch
-        public Task CompleteTracking(ChatMsg msg)
+        public Task CompleteTracking(StreamMessage msg)
         {
             if (!batchTrackingMap.ContainsKey(msg.BatchID))
             {

@@ -9,7 +9,8 @@ namespace Utils
         public const string ClusterId = "chatroom-deployment1";
         public const string ServiceId = "ChatRoomApp";
         public const string Barrier_Key = "Barrier";
-        public const string Barrier_Value = "System";
+        public const string Commit_Key = "Commit";
+        public const string System_Message_Value = "System";
 
 	}
 }

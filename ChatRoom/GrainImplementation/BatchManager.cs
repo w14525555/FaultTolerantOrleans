@@ -1,4 +1,4 @@
-﻿using GrainInterfaces;
+﻿using GrainInterfaces.Interfaces;
 using GrainInterfaces.Model;
 using Orleans;
 using Orleans.Streams;
@@ -11,11 +11,12 @@ namespace GrainImplementation
     public class BatchManager : Grain, IBatchManager
     {
         //A Batch Manager should send batch barrier 
-        private readonly ChatMsg barrierMsg = new ChatMsg("System", $"Barrier");
-        private readonly ChatMsg commitMsg = new ChatMsg("System", $"Commit");
-        //private Boolean isCommitting;
-        private IChannel channel;
-        private static TimeSpan barrierTimeInterval = TimeSpan.FromSeconds(10);
+        private StreamMessage barrierMsg = new StreamMessage(Constants.Barrier_Key, Constants.System_Message_Value);
+        private StreamMessage commitMsg = new StreamMessage(Constants.Commit_Key, Constants.System_Message_Value);
+
+        private IStreamSource source;
+        private const int Barrier_Time_Interval = 10; 
+        private static TimeSpan barrierTimeInterval = TimeSpan.FromSeconds(Barrier_Time_Interval);
 
         private int currentBatchID { get; set; }
 
@@ -23,26 +24,25 @@ namespace GrainImplementation
         {
             currentBatchID = 0;
             PrettyConsole.Line("Register Timer");
-            var streamProvider = GetStreamProvider(Constants.ChatRoomStreamProvider);
             return base.OnActivateAsync();
         }
 
-        public Task SetChannelAndRegisterTimer(IAsyncStream<ChatMsg> stream, IChannel channel)
+        public Task SetChannelAndRegisterTimer(IAsyncStream<StreamMessage> stream, IStreamSource channel)
         {
             RegisterTimer(SendBarrierOnPeriodOfTime, null, barrierTimeInterval, barrierTimeInterval);
-            this.channel = channel;
+            this.source = channel;
             return Task.CompletedTask;
         }
 
         private Task SendBarrierOnPeriodOfTime(object arg)
         {
             SetBatchID(barrierMsg);
-            channel.ProduceMessageAsync(barrierMsg);
+            source.ProduceMessageAsync(barrierMsg);
             currentBatchID++;
             return Task.CompletedTask;
         }
 
-        private Task SetBatchID(ChatMsg msg)
+        private Task SetBatchID(StreamMessage msg)
         {
             msg.BatchID = currentBatchID;
             return Task.CompletedTask;
@@ -57,7 +57,7 @@ namespace GrainImplementation
         public Task StartCommit(int ID)
         {
             commitMsg.BatchID = ID;
-            channel.ProduceMessageAsync(commitMsg);
+            source.ProduceMessageAsync(commitMsg);
             return Task.CompletedTask;
         }
     }
