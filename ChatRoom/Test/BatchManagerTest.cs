@@ -20,20 +20,20 @@ namespace Test
     {
         private ISiloHost silo;
         private IClusterClient client;
-        private string[] members;
         private IStreamSource room;
         private IConsumer consumer;
         private IBatchTracker batchTracker;
         private StreamObserver streamObserver;
         private static string joinedChannel = "general";
         private static string userName = "You Wu";
-        private const string NOT_EXIST = "Not Exist";
+        private static string NOT_EXIST = "Not Exist";
+        private static string[] members;
         private static StreamMessage msg1 = new StreamMessage("initial", "message 1");
         private static StreamMessage msg2 = new StreamMessage("second", "message 2");
         private static StreamMessage msg3 = new StreamMessage("initial", "message 3");
         private static StreamMessage msg4 = new StreamMessage("initial", "message 4");
-        private static StreamMessage barrierMsg = new StreamMessage("System", $"Barrier");
-        private static StreamMessage commitMsg = new StreamMessage("System", $"Commit");
+        private static StreamMessage barrierMsg = new StreamMessage(Constants.Barrier_Key, Constants.System_Value);
+        private static StreamMessage commitMsg = new StreamMessage(Constants.Commit_Key, Constants.System_Value);
 
 
         [TestInitialize]
