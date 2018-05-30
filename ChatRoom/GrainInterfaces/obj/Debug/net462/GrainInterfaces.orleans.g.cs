@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGenec215fe49eFeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGenbe911cbabcFeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace GrainInterfaces
@@ -67,7 +67,7 @@ namespace GrainInterfaces
                 case -282978199:
                     switch (methodId)
                     {
-                        case 1110266283:
+                        case 1666765210:
                             return @"SetChannelAndRegisterTimer";
                         case -76047527:
                             return @"StartCommit";
@@ -87,9 +87,9 @@ namespace GrainInterfaces
             }
         }
 
-        public global::System.Threading.Tasks.Task SetChannelAndRegisterTimer(global::Orleans.Streams.IAsyncStream<global::GrainInterfaces.Model.ChatMsg> stream, global::GrainInterfaces.IChannel channel)
+        public global::System.Threading.Tasks.Task SetChannelAndRegisterTimer(global::Orleans.Streams.IAsyncStream<global::GrainInterfaces.Model.StreamMessage> stream, global::GrainInterfaces.IChannel channel)
         {
-            return base.InvokeMethodAsync<global::System.Object>(1110266283, new global::System.Object[]{stream, channel is global::Orleans.Grain ? channel.AsReference<global::GrainInterfaces.IChannel>() : channel});
+            return base.InvokeMethodAsync<global::System.Object>(1666765210, new global::System.Object[]{stream, channel is global::Orleans.Grain ? channel.AsReference<global::GrainInterfaces.IChannel>() : channel});
         }
 
         public global::System.Threading.Tasks.Task StartCommit(global::System.Int32 ID)
@@ -113,8 +113,8 @@ namespace GrainInterfaces
                 case -282978199:
                     switch (methodId)
                     {
-                        case 1110266283:
-                            await ((global::GrainInterfaces.IBatchManager)grain).SetChannelAndRegisterTimer((global::Orleans.Streams.IAsyncStream<global::GrainInterfaces.Model.ChatMsg>)arguments[0], (global::GrainInterfaces.IChannel)arguments[1]);
+                        case 1666765210:
+                            await ((global::GrainInterfaces.IBatchManager)grain).SetChannelAndRegisterTimer((global::Orleans.Streams.IAsyncStream<global::GrainInterfaces.Model.StreamMessage>)arguments[0], (global::GrainInterfaces.IChannel)arguments[1]);
                             return null;
                         case -76047527:
                             await ((global::GrainInterfaces.IBatchManager)grain).StartCommit((global::System.Int32)arguments[0]);
@@ -203,9 +203,9 @@ namespace GrainInterfaces
                 case 471147186:
                     switch (methodId)
                     {
-                        case -573728033:
+                        case -638353305:
                             return @"TrackingBarrierMessages";
-                        case 279074321:
+                        case -51905502:
                             return @"CompleteTracking";
                         case 99336213:
                             return @"IsReadForCommit";
@@ -227,14 +227,14 @@ namespace GrainInterfaces
             }
         }
 
-        public global::System.Threading.Tasks.Task TrackingBarrierMessages(global::GrainInterfaces.Model.ChatMsg msg)
+        public global::System.Threading.Tasks.Task TrackingBarrierMessages(global::GrainInterfaces.Model.StreamMessage msg)
         {
-            return base.InvokeMethodAsync<global::System.Object>(-573728033, new global::System.Object[]{msg});
+            return base.InvokeMethodAsync<global::System.Object>(-638353305, new global::System.Object[]{msg});
         }
 
-        public global::System.Threading.Tasks.Task CompleteTracking(global::GrainInterfaces.Model.ChatMsg msg)
+        public global::System.Threading.Tasks.Task CompleteTracking(global::GrainInterfaces.Model.StreamMessage msg)
         {
-            return base.InvokeMethodAsync<global::System.Object>(279074321, new global::System.Object[]{msg});
+            return base.InvokeMethodAsync<global::System.Object>(-51905502, new global::System.Object[]{msg});
         }
 
         public global::System.Threading.Tasks.Task<global::System.Boolean> IsReadForCommit(global::System.Int32 batchID)
@@ -263,11 +263,11 @@ namespace GrainInterfaces
                 case 471147186:
                     switch (methodId)
                     {
-                        case -573728033:
-                            await ((global::GrainInterfaces.IBatchTracker)grain).TrackingBarrierMessages((global::GrainInterfaces.Model.ChatMsg)arguments[0]);
+                        case -638353305:
+                            await ((global::GrainInterfaces.IBatchTracker)grain).TrackingBarrierMessages((global::GrainInterfaces.Model.StreamMessage)arguments[0]);
                             return null;
-                        case 279074321:
-                            await ((global::GrainInterfaces.IBatchTracker)grain).CompleteTracking((global::GrainInterfaces.Model.ChatMsg)arguments[0]);
+                        case -51905502:
+                            await ((global::GrainInterfaces.IBatchTracker)grain).CompleteTracking((global::GrainInterfaces.Model.StreamMessage)arguments[0]);
                             return null;
                         case 99336213:
                             return await ((global::GrainInterfaces.IBatchTracker)grain).IsReadForCommit((global::System.Int32)arguments[0]);
@@ -362,13 +362,13 @@ namespace GrainInterfaces
                             return @"Join";
                         case 2006074335:
                             return @"Leave";
-                        case 1038952544:
+                        case 85341399:
                             return @"Message";
                         case -921051725:
                             return @"ReadHistory";
                         case -1374740813:
                             return @"GetMembers";
-                        case -1272899119:
+                        case -516386485:
                             return @"ProduceMessageAsync";
                         case -1703564846:
                             return @"GetBatchManager";
@@ -400,14 +400,14 @@ namespace GrainInterfaces
             return base.InvokeMethodAsync<global::System.Guid>(2006074335, new global::System.Object[]{nickname});
         }
 
-        public global::System.Threading.Tasks.Task<global::System.Boolean> Message(global::GrainInterfaces.Model.ChatMsg msg)
+        public global::System.Threading.Tasks.Task<global::System.Boolean> Message(global::GrainInterfaces.Model.StreamMessage msg)
         {
-            return base.InvokeMethodAsync<global::System.Boolean>(1038952544, new global::System.Object[]{msg});
+            return base.InvokeMethodAsync<global::System.Boolean>(85341399, new global::System.Object[]{msg});
         }
 
-        public global::System.Threading.Tasks.Task<global::GrainInterfaces.Model.ChatMsg[]> ReadHistory(global::System.Int32 numberOfMessages)
+        public global::System.Threading.Tasks.Task<global::GrainInterfaces.Model.StreamMessage[]> ReadHistory(global::System.Int32 numberOfMessages)
         {
-            return base.InvokeMethodAsync<global::GrainInterfaces.Model.ChatMsg[]>(-921051725, new global::System.Object[]{numberOfMessages});
+            return base.InvokeMethodAsync<global::GrainInterfaces.Model.StreamMessage[]>(-921051725, new global::System.Object[]{numberOfMessages});
         }
 
         public global::System.Threading.Tasks.Task<global::System.String[]> GetMembers()
@@ -415,9 +415,9 @@ namespace GrainInterfaces
             return base.InvokeMethodAsync<global::System.String[]>(-1374740813, null);
         }
 
-        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> ProduceMessageAsync(global::GrainInterfaces.Model.ChatMsg msg)
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> ProduceMessageAsync(global::GrainInterfaces.Model.StreamMessage msg)
         {
-            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-1272899119, new global::System.Object[]{msg});
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-516386485, new global::System.Object[]{msg});
         }
 
         public global::System.Threading.Tasks.Task<global::GrainInterfaces.IBatchManager> GetBatchManager()
@@ -450,14 +450,14 @@ namespace GrainInterfaces
                             return await ((global::GrainInterfaces.IChannel)grain).Join((global::System.String)arguments[0]);
                         case 2006074335:
                             return await ((global::GrainInterfaces.IChannel)grain).Leave((global::System.String)arguments[0]);
-                        case 1038952544:
-                            return await ((global::GrainInterfaces.IChannel)grain).Message((global::GrainInterfaces.Model.ChatMsg)arguments[0]);
+                        case 85341399:
+                            return await ((global::GrainInterfaces.IChannel)grain).Message((global::GrainInterfaces.Model.StreamMessage)arguments[0]);
                         case -921051725:
                             return await ((global::GrainInterfaces.IChannel)grain).ReadHistory((global::System.Int32)arguments[0]);
                         case -1374740813:
                             return await ((global::GrainInterfaces.IChannel)grain).GetMembers();
-                        case -1272899119:
-                            return await ((global::GrainInterfaces.IChannel)grain).ProduceMessageAsync((global::GrainInterfaces.Model.ChatMsg)arguments[0]);
+                        case -516386485:
+                            return await ((global::GrainInterfaces.IChannel)grain).ProduceMessageAsync((global::GrainInterfaces.Model.StreamMessage)arguments[0]);
                         case -1703564846:
                             return await ((global::GrainInterfaces.IChannel)grain).GetBatchManager();
                         case -877775908:
@@ -546,7 +546,7 @@ namespace GrainInterfaces
                 case 1353896143:
                     switch (methodId)
                     {
-                        case 1003244257:
+                        case 1682940905:
                             return @"ConsumeMessage";
                         case -1226735009:
                             return @"GetState";
@@ -558,7 +558,7 @@ namespace GrainInterfaces
                             return @"ClearReverseLog";
                         case 1771832207:
                             return @"UpdateIncrementalLog";
-                        case -36047526:
+                        case 285651182:
                             return @"UpdateOperation";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 1353896143 + @",methodId=" + methodId);
@@ -576,9 +576,9 @@ namespace GrainInterfaces
             }
         }
 
-        public global::System.Threading.Tasks.Task ConsumeMessage(global::GrainInterfaces.Model.ChatMsg msg)
+        public global::System.Threading.Tasks.Task ConsumeMessage(global::GrainInterfaces.Model.StreamMessage msg)
         {
-            return base.InvokeMethodAsync<global::System.Object>(1003244257, new global::System.Object[]{msg});
+            return base.InvokeMethodAsync<global::System.Object>(1682940905, new global::System.Object[]{msg});
         }
 
         public global::System.Threading.Tasks.Task<global::System.String> GetState(global::System.String key)
@@ -606,9 +606,9 @@ namespace GrainInterfaces
             return base.InvokeMethodAsync<global::System.Object>(1771832207, null);
         }
 
-        public global::System.Threading.Tasks.Task UpdateOperation(global::GrainInterfaces.Model.ChatMsg msg)
+        public global::System.Threading.Tasks.Task UpdateOperation(global::GrainInterfaces.Model.StreamMessage msg)
         {
-            return base.InvokeMethodAsync<global::System.Object>(-36047526, new global::System.Object[]{msg});
+            return base.InvokeMethodAsync<global::System.Object>(285651182, new global::System.Object[]{msg});
         }
     }
 
@@ -627,8 +627,8 @@ namespace GrainInterfaces
                 case 1353896143:
                     switch (methodId)
                     {
-                        case 1003244257:
-                            await ((global::GrainInterfaces.IConsumer)grain).ConsumeMessage((global::GrainInterfaces.Model.ChatMsg)arguments[0]);
+                        case 1682940905:
+                            await ((global::GrainInterfaces.IConsumer)grain).ConsumeMessage((global::GrainInterfaces.Model.StreamMessage)arguments[0]);
                             return null;
                         case -1226735009:
                             return await ((global::GrainInterfaces.IConsumer)grain).GetState((global::System.String)arguments[0]);
@@ -642,8 +642,8 @@ namespace GrainInterfaces
                         case 1771832207:
                             await ((global::GrainInterfaces.IConsumer)grain).UpdateIncrementalLog();
                             return null;
-                        case -36047526:
-                            await ((global::GrainInterfaces.IConsumer)grain).UpdateOperation((global::GrainInterfaces.Model.ChatMsg)arguments[0]);
+                        case 285651182:
+                            await ((global::GrainInterfaces.IConsumer)grain).UpdateOperation((global::GrainInterfaces.Model.StreamMessage)arguments[0]);
                             return null;
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 1353896143 + @",methodId=" + methodId);
@@ -684,23 +684,23 @@ namespace OrleansGeneratedCode38151279
     using global::Orleans;
     using global::System.Reflection;
 
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.SerializerAttribute(typeof (global::GrainInterfaces.Model.ChatMsg))]
-    internal sealed class OrleansCodeGenGrainInterfaces_Model_ChatMsgSerializer
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.SerializerAttribute(typeof (global::GrainInterfaces.Model.StreamMessage))]
+    internal sealed class OrleansCodeGenGrainInterfaces_Model_StreamMessageSerializer
     {
-        public OrleansCodeGenGrainInterfaces_Model_ChatMsgSerializer(global::Orleans.Serialization.IFieldUtils fieldUtils)
+        public OrleansCodeGenGrainInterfaces_Model_StreamMessageSerializer(global::Orleans.Serialization.IFieldUtils fieldUtils)
         {
         }
 
         [global::Orleans.CodeGeneration.CopierMethodAttribute]
         public global::System.Object DeepCopier(global::System.Object original, global::Orleans.Serialization.ICopyContext context)
         {
-            global::GrainInterfaces.Model.ChatMsg input = ((global::GrainInterfaces.Model.ChatMsg)original);
-            global::GrainInterfaces.Model.ChatMsg result = (global::GrainInterfaces.Model.ChatMsg)global::System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof (global::GrainInterfaces.Model.ChatMsg));
+            global::GrainInterfaces.Model.StreamMessage input = ((global::GrainInterfaces.Model.StreamMessage)original);
+            global::GrainInterfaces.Model.StreamMessage result = (global::GrainInterfaces.Model.StreamMessage)global::System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof (global::GrainInterfaces.Model.StreamMessage));
             context.RecordCopy(original, result);
-            result.Author = input.Author;
             result.BatchID = input.BatchID;
             result.Created = (global::System.DateTimeOffset)context.DeepCopyInner(input.Created);
-            result.Text = input.Text;
+            result.Key = input.Key;
+            result.Value = input.Value;
             result.barrierInfo = (global::GrainInterfaces.Model.BarrierMsgTrackingInfo)context.DeepCopyInner(input.barrierInfo);
             result.operation = input.operation;
             return result;
@@ -709,11 +709,11 @@ namespace OrleansGeneratedCode38151279
         [global::Orleans.CodeGeneration.SerializerMethodAttribute]
         public void Serializer(global::System.Object untypedInput, global::Orleans.Serialization.ISerializationContext context, global::System.Type expected)
         {
-            global::GrainInterfaces.Model.ChatMsg input = (global::GrainInterfaces.Model.ChatMsg)untypedInput;
-            context.SerializeInner(input.Author, typeof (global::System.String));
+            global::GrainInterfaces.Model.StreamMessage input = (global::GrainInterfaces.Model.StreamMessage)untypedInput;
             context.SerializeInner(input.BatchID, typeof (global::System.Int32));
             context.SerializeInner(input.Created, typeof (global::System.DateTimeOffset));
-            context.SerializeInner(input.Text, typeof (global::System.String));
+            context.SerializeInner(input.Key, typeof (global::System.String));
+            context.SerializeInner(input.Value, typeof (global::System.String));
             context.SerializeInner(input.barrierInfo, typeof (global::GrainInterfaces.Model.BarrierMsgTrackingInfo));
             context.SerializeInner(input.operation, typeof (global::GrainInterfaces.Model.Operation));
         }
@@ -721,15 +721,15 @@ namespace OrleansGeneratedCode38151279
         [global::Orleans.CodeGeneration.DeserializerMethodAttribute]
         public global::System.Object Deserializer(global::System.Type expected, global::Orleans.Serialization.IDeserializationContext context)
         {
-            global::GrainInterfaces.Model.ChatMsg result = (global::GrainInterfaces.Model.ChatMsg)global::System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof (global::GrainInterfaces.Model.ChatMsg));
+            global::GrainInterfaces.Model.StreamMessage result = (global::GrainInterfaces.Model.StreamMessage)global::System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof (global::GrainInterfaces.Model.StreamMessage));
             context.RecordObject(result);
-            result.Author = (global::System.String)context.DeserializeInner(typeof (global::System.String));
             result.BatchID = (global::System.Int32)context.DeserializeInner(typeof (global::System.Int32));
             result.Created = (global::System.DateTimeOffset)context.DeserializeInner(typeof (global::System.DateTimeOffset));
-            result.Text = (global::System.String)context.DeserializeInner(typeof (global::System.String));
+            result.Key = (global::System.String)context.DeserializeInner(typeof (global::System.String));
+            result.Value = (global::System.String)context.DeserializeInner(typeof (global::System.String));
             result.barrierInfo = (global::GrainInterfaces.Model.BarrierMsgTrackingInfo)context.DeserializeInner(typeof (global::GrainInterfaces.Model.BarrierMsgTrackingInfo));
             result.operation = (global::GrainInterfaces.Model.Operation)context.DeserializeInner(typeof (global::GrainInterfaces.Model.Operation));
-            return (global::GrainInterfaces.Model.ChatMsg)result;
+            return (global::GrainInterfaces.Model.StreamMessage)result;
         }
     }
 
@@ -792,7 +792,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGenec215fe49eFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGenbe911cbabcFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {
@@ -808,7 +808,7 @@ namespace OrleansGeneratedCode
 
         public void Populate(global::Orleans.Serialization.SerializerFeature feature)
         {
-            feature.AddSerializerType(typeof (global::GrainInterfaces.Model.ChatMsg), typeof (OrleansGeneratedCode38151279.OrleansCodeGenGrainInterfaces_Model_ChatMsgSerializer));
+            feature.AddSerializerType(typeof (global::GrainInterfaces.Model.StreamMessage), typeof (OrleansGeneratedCode38151279.OrleansCodeGenGrainInterfaces_Model_StreamMessageSerializer));
             feature.AddSerializerType(typeof (global::GrainInterfaces.Model.BarrierMsgTrackingInfo), typeof (OrleansGeneratedCode38151279.OrleansCodeGenGrainInterfaces_Model_BarrierMsgTrackingInfoSerializer));
             feature.AddKnownType(@"EmptyArray`1", @"EmptyArray`1'1");
             feature.AddKnownType(@"FXAssembly", @"FXAssembly");
@@ -3699,9 +3699,9 @@ namespace OrleansGeneratedCode
             feature.AddKnownType(@"GrainInterfaces.IChannel,GrainInterfaces", @"GrainInterfaces.IChannel");
             feature.AddKnownType(@"GrainInterfaces.IConsumer,GrainInterfaces", @"GrainInterfaces.IConsumer");
             feature.AddKnownType(@"GrainInterfaces.Model.BarrierMsgTrackingInfo,GrainInterfaces", @"GrainInterfaces.Model.BarrierMsgTrackingInfo");
-            feature.AddKnownType(@"GrainInterfaces.Model.ChatMsg,GrainInterfaces", @"GrainInterfaces.Model.ChatMsg");
-            feature.AddKnownType(@"GrainInterfaces.Model.Operation,GrainInterfaces", @"GrainInterfaces.Model.Operation");
             feature.AddKnownType(@"GrainInterfaces.Model.StreamBatch,GrainInterfaces", @"GrainInterfaces.Model.StreamBatch");
+            feature.AddKnownType(@"GrainInterfaces.Model.StreamMessage,GrainInterfaces", @"GrainInterfaces.Model.StreamMessage");
+            feature.AddKnownType(@"GrainInterfaces.Model.Operation,GrainInterfaces", @"GrainInterfaces.Model.Operation");
         }
     }
 }
