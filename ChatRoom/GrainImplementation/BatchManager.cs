@@ -14,7 +14,7 @@ namespace GrainImplementation
         private readonly StreamMessage barrierMsg = new StreamMessage("System", $"Barrier");
         private readonly StreamMessage commitMsg = new StreamMessage("System", $"Commit");
         //private Boolean isCommitting;
-        private IChannel channel;
+        private IStreamSource channel;
         private static TimeSpan barrierTimeInterval = TimeSpan.FromSeconds(10);
 
         private int currentBatchID { get; set; }
@@ -27,7 +27,7 @@ namespace GrainImplementation
             return base.OnActivateAsync();
         }
 
-        public Task SetChannelAndRegisterTimer(IAsyncStream<StreamMessage> stream, IChannel channel)
+        public Task SetChannelAndRegisterTimer(IAsyncStream<StreamMessage> stream, IStreamSource channel)
         {
             RegisterTimer(SendBarrierOnPeriodOfTime, null, barrierTimeInterval, barrierTimeInterval);
             this.channel = channel;

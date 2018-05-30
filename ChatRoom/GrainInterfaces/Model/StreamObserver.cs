@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Threading.Tasks;
 using GrainInterfaces;
 using GrainInterfaces.Model;
@@ -111,7 +110,5 @@ namespace OrleansClient
             consumer.UpdateIncrementalLog();
             return Task.CompletedTask;
         }
-
-
     } 
 }

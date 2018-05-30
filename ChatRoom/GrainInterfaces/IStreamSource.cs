@@ -5,7 +5,7 @@ using Orleans;
 
 namespace GrainInterfaces
 {
-	public interface IChannel : IGrainWithStringKey
+	public interface IStreamSource : IGrainWithStringKey
 	{
 	    Task<Guid> Join(string nickname);
 	    Task<Guid> Leave(string nickname);
@@ -16,7 +16,5 @@ namespace GrainInterfaces
         //Use for testing purpose
         Task<IBatchManager> GetBatchManager();
         Task<IBatchTracker> GetBatchTracker();
-        
-
     }
 }

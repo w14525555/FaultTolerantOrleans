@@ -670,7 +670,8 @@
         "framework": ".NETFramework,Version=v4.6.2",
         "dependencies": {
           "Microsoft.Orleans.Core.Abstractions": "2.0.0",
-          "Microsoft.Orleans.OrleansCodeGenerator.Build": "2.0.0"
+          "Microsoft.Orleans.OrleansCodeGenerator.Build": "2.0.0",
+          "Utils": "1.0.0"
         },
         "compile": {
           "bin/placeholder/GrainInterfaces.dll": {}
@@ -1290,7 +1291,8 @@
         "framework": ".NETFramework,Version=v4.6.2",
         "dependencies": {
           "Microsoft.Orleans.Core.Abstractions": "2.0.0",
-          "Microsoft.Orleans.OrleansCodeGenerator.Build": "2.0.0"
+          "Microsoft.Orleans.OrleansCodeGenerator.Build": "2.0.0",
+          "Utils": "1.0.0"
         },
         "compile": {
           "bin/placeholder/GrainInterfaces.dll": {}

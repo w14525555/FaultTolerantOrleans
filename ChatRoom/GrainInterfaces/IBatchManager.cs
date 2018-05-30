@@ -7,7 +7,7 @@ namespace GrainInterfaces
 {
     public interface IBatchManager: IGrainWithStringKey
     {
-        Task SetChannelAndRegisterTimer(IAsyncStream<StreamMessage> stream, IChannel channel);
+        Task SetChannelAndRegisterTimer(IAsyncStream<StreamMessage> stream, IStreamSource channel);
 
         Task StartCommit(int ID);
     }

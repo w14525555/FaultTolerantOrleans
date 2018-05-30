@@ -200,3 +200,13 @@ F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\ChatRoom\GrainInte
 F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\ChatRoom\GrainInterfaces\bin\Debug\net462\System.Xml.XPath.XDocument.dll
 F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\ChatRoom\GrainInterfaces\obj\Debug\net462\codegen\GrainInterfaces.csproj.CoreCompileInputs.cache
 F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\ChatRoom\GrainInterfaces\obj\Debug\net462\codegen\GrainInterfaces.AssemblyInfoInputs.cache
+F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\ChatRoom\GrainInterfaces\bin\Debug\net462\Microsoft.Extensions.Configuration.Abstractions.dll
+F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\ChatRoom\GrainInterfaces\bin\Debug\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\ChatRoom\GrainInterfaces\bin\Debug\net462\Microsoft.Extensions.Logging.dll
+F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\ChatRoom\GrainInterfaces\bin\Debug\net462\Microsoft.Extensions.Logging.Abstractions.dll
+F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\ChatRoom\GrainInterfaces\bin\Debug\net462\Microsoft.Extensions.Logging.Console.dll
+F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\ChatRoom\GrainInterfaces\bin\Debug\net462\Microsoft.Extensions.Options.dll
+F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\ChatRoom\GrainInterfaces\bin\Debug\net462\Microsoft.Extensions.Primitives.dll
+F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\ChatRoom\GrainInterfaces\bin\Debug\net462\System.Runtime.CompilerServices.Unsafe.dll
+F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\ChatRoom\GrainInterfaces\bin\Debug\net462\Utils.dll
+F:\repo\OrleansRepo\FaultTolerantOrleans\FaultTolerantOrleans\ChatRoom\GrainInterfaces\bin\Debug\net462\Utils.pdb

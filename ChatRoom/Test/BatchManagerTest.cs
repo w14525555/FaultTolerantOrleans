@@ -21,7 +21,7 @@ namespace Test
         private ISiloHost silo;
         private IClusterClient client;
         private string[] members;
-        private IChannel room;
+        private IStreamSource room;
         private IConsumer consumer;
         private IBatchTracker batchTracker;
         private StreamObserver streamObserver;
@@ -271,7 +271,7 @@ namespace Test
                 options.ServiceId = Constants.ServiceId;
             })
                         .UseLocalhostClustering()
-                        .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(IChannel).Assembly).WithReferences())
+                        .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(IStreamSource).Assembly).WithReferences())
                         //Depends on your application requirements, you can configure your client with other stream providers, which can provide other features, 
                         //such as persistence or recoverability. For more information, please see http://dotnet.github.io/orleans/Documentation/Orleans-Streams/Stream-Providers.html
                         .AddSimpleMessageStreamProvider(Constants.ChatRoomStreamProvider)
@@ -289,7 +289,7 @@ namespace Test
 
         private async Task<Task> SetUpRoom()
         {
-            room = client.GetGrain<IChannel>(joinedChannel);
+            room = client.GetGrain<IStreamSource>(joinedChannel);
             var streamId = await room.Join(userName);
             var stream = client.GetStreamProvider(Constants.ChatRoomStreamProvider)
                 .GetStream<StreamMessage>(streamId, Constants.CharRoomStreamNameSpace);
