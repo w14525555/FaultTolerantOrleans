@@ -21,7 +21,7 @@ namespace Test
         private ISiloHost silo;
         private IClusterClient client;
         private IStreamSource room;
-        private IConsumer consumer;
+        private IOperator consumer;
         private IBatchTracker batchTracker;
         private StreamObserver streamObserver;
         private static string joinedChannel = "general";
@@ -294,7 +294,7 @@ namespace Test
             var stream = client.GetStreamProvider(Constants.ChatRoomStreamProvider)
                 .GetStream<StreamMessage>(streamId, Constants.CharRoomStreamNameSpace);
             //subscribe to the stream to receiver furthur messages sent to the chatroom
-            consumer = client.GetGrain<IConsumer>("Consumer");
+            consumer = client.GetGrain<IOperator>("Consumer");
             Mock<ILogger> mockLogger = new Mock<ILogger>();
             streamObserver = new StreamObserver(mockLogger.Object, consumer);
             await stream.SubscribeAsync(streamObserver);

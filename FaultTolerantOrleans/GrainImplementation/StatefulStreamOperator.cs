@@ -12,7 +12,7 @@ namespace GrainImplementation
     //Once a consumer grain receive messages, it should increment itself
     //when it finishes, it should tell the tracker that the task is completed. 
 
-    public class StreamOperator : Grain, IConsumer
+    public class StatefulStreamOperator : Grain, IOperator
     {
         private Dictionary<string, string> statesMap = new Dictionary<string, string>();
         private Dictionary<string, string> reverseLog = new Dictionary<string, string>();

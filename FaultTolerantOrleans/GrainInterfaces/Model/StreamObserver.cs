@@ -11,7 +11,7 @@ namespace OrleansClient
     public class StreamObserver : IAsyncObserver<StreamMessage>
     {
         private ILogger logger;
-        private IConsumer consumer;
+        private IOperator consumer;
         private IBatchTracker tracker;
 
         public StreamObserver(ILogger logger)
@@ -19,13 +19,13 @@ namespace OrleansClient
             this.logger = logger;
         }
 
-        public StreamObserver(ILogger logger, IConsumer consumer)
+        public StreamObserver(ILogger logger, IOperator consumer)
         {
             this.consumer = consumer;
             this.logger = logger;
         }
 
-        public StreamObserver(ILogger logger, IConsumer consumer, IBatchTracker tracker)
+        public StreamObserver(ILogger logger, IOperator consumer, IBatchTracker tracker)
         {
             this.consumer = consumer;
             this.logger = logger;
