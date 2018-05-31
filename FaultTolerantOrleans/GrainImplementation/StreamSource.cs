@@ -17,7 +17,7 @@ namespace GrainImplementation
         private readonly List<StreamMessage> messages = new List<StreamMessage>(100);
 		private readonly List<string> onlineMembers = new List<string>(10);
 
-        private IBatchManager batchManager;
+        private IBatchCoordinator batchManager;
         private IBatchTracker batchTracker;
 		private IAsyncStream<StreamMessage> stream;
         private int currentBatchID;
@@ -34,7 +34,7 @@ namespace GrainImplementation
 
         private Task SetUpBatchManager()
         {
-            batchManager = GrainFactory.GetGrain<IBatchManager>("Manager");
+            batchManager = GrainFactory.GetGrain<IBatchCoordinator>("Manager");
             batchManager.SetChannelAndRegisterTimer(stream, this);
             return Task.CompletedTask;
         }
@@ -126,7 +126,7 @@ namespace GrainImplementation
 	        return Task.FromResult(response);
 	    }
 
-        public Task<IBatchManager> GetBatchManager()
+        public Task<IBatchCoordinator> GetBatchManager()
         {
             return Task.FromResult(batchManager);
         }

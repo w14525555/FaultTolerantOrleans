@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GrainInterfaces
 {
-    public interface IBatchManager: IGrainWithStringKey
+    public interface IBatchCoordinator: IGrainWithStringKey
     {
         Task SetChannelAndRegisterTimer(IAsyncStream<StreamMessage> stream, IStreamSource channel);
 

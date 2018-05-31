@@ -11,7 +11,7 @@ namespace GrainImplementation
     public class BatchTracker : Grain, IBatchTracker
     {
         private Dictionary<int, StreamBatch> batchTrackingMap;
-        private IBatchManager batchManager;
+        private IBatchCoordinator batchManager;
         private int initialID;
 
         public override Task OnActivateAsync()
@@ -70,7 +70,7 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        public Task SetBatchManager(IBatchManager batchManager)
+        public Task SetBatchManager(IBatchCoordinator batchManager)
         {
             this.batchManager = batchManager;
             return Task.CompletedTask;

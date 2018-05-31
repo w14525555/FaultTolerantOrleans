@@ -8,7 +8,7 @@ using Utils;
 
 namespace GrainImplementation
 {
-    public class BatchManager : Grain, IBatchManager
+    public class BatchCoodinator : Grain, IBatchCoordinator
     {
         //A Batch Manager should send batch barrier 
         private StreamMessage barrierMsg = new StreamMessage(Constants.Barrier_Key, Constants.System_Value);

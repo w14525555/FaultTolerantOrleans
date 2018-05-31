@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGena7742b1430FeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGenb59619e524FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainImplementation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace OrleansGeneratedCode55A989F1
@@ -20,7 +20,7 @@ namespace OrleansGeneratedCode55A989F1
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGena7742b1430FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGenb59619e524FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {
@@ -28,9 +28,9 @@ namespace OrleansGeneratedCode
 
         public void Populate(global::Orleans.Metadata.GrainClassFeature feature)
         {
-            feature.Classes.Add(new global::Orleans.Metadata.GrainClassMetadata(typeof (global::GrainImplementation.BatchManager)));
+            feature.Classes.Add(new global::Orleans.Metadata.GrainClassMetadata(typeof (global::GrainImplementation.BatchCoodinator)));
             feature.Classes.Add(new global::Orleans.Metadata.GrainClassMetadata(typeof (global::GrainImplementation.BatchTracker)));
-            feature.Classes.Add(new global::Orleans.Metadata.GrainClassMetadata(typeof (global::GrainImplementation.StreamConsumer)));
+            feature.Classes.Add(new global::Orleans.Metadata.GrainClassMetadata(typeof (global::GrainImplementation.StreamOperator)));
             feature.Classes.Add(new global::Orleans.Metadata.GrainClassMetadata(typeof (global::GrainImplementation.StreamSource)));
         }
 
@@ -915,9 +915,9 @@ namespace OrleansGeneratedCode
             feature.AddKnownType(@"Interop+BCrypt+BCryptBufferDesc,System.Core", @"BCryptBufferDesc");
             feature.AddKnownType(@"Interop+BCrypt+BCRYPT_ECC_PARAMETER_HEADER,System.Core", @"BCRYPT_ECC_PARAMETER_HEADER");
             feature.AddKnownType(@"__DynamicallyInvokableAttribute,System.Core", @"__DynamicallyInvokableAttribute");
-            feature.AddKnownType(@"GrainImplementation.BatchManager,GrainImplementation", @"GrainImplementation.BatchManager");
+            feature.AddKnownType(@"GrainImplementation.BatchCoodinator,GrainImplementation", @"GrainImplementation.BatchCoodinator");
             feature.AddKnownType(@"GrainImplementation.BatchTracker,GrainImplementation", @"GrainImplementation.BatchTracker");
-            feature.AddKnownType(@"GrainImplementation.StreamConsumer,GrainImplementation", @"GrainImplementation.StreamConsumer");
+            feature.AddKnownType(@"GrainImplementation.StreamOperator,GrainImplementation", @"GrainImplementation.StreamOperator");
             feature.AddKnownType(@"GrainImplementation.StreamSource,GrainImplementation", @"GrainImplementation.StreamSource");
         }
     }

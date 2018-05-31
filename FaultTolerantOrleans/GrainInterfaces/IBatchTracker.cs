@@ -16,6 +16,6 @@ namespace GrainInterfaces
 
         Task<bool> IsReadForCommit(int batchID);
 
-        Task SetBatchManager(IBatchManager batchManager);
+        Task SetBatchManager(IBatchCoordinator batchManager);
     }
 }

@@ -15,7 +15,7 @@ namespace GrainInterfaces
         Task<Task> ProduceMessageAsync(StreamMessage msg);
 
         //Use for testing purpose
-        Task<IBatchManager> GetBatchManager();
+        Task<IBatchCoordinator> GetBatchManager();
         Task<IBatchTracker> GetBatchTracker();
     }
 }
