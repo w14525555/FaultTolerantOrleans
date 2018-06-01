@@ -181,7 +181,7 @@ namespace OrleansClient
             //subscribe to the stream to receiver furthur messages sent to the chatroom
             consumer = client.GetGrain<IOperator>("Consumer");
             tracker = await room.GetBatchTracker();
-            await stream.SubscribeAsync(new StreamObserver(client.ServiceProvider.GetService<ILoggerFactory>()
+            await stream.SubscribeAsync(new StatefulStreamObserver(client.ServiceProvider.GetService<ILoggerFactory>()
                 .CreateLogger($"{joinedChannel} channel"), consumer, tracker));
         }
 

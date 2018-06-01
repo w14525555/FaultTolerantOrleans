@@ -23,7 +23,7 @@ namespace Test
         private IStreamSource room;
         private IOperator consumer;
         private IBatchTracker batchTracker;
-        private StreamObserver streamObserver;
+        private StatefulStreamObserver streamObserver;
         private static string joinedChannel = "general";
         private static string userName = "You Wu";
         private static string NOT_EXIST = "Not Exist";
@@ -296,7 +296,7 @@ namespace Test
             //subscribe to the stream to receiver furthur messages sent to the chatroom
             consumer = client.GetGrain<IOperator>("Consumer");
             Mock<ILogger> mockLogger = new Mock<ILogger>();
-            streamObserver = new StreamObserver(mockLogger.Object, consumer);
+            streamObserver = new StatefulStreamObserver(mockLogger.Object, consumer);
             await stream.SubscribeAsync(streamObserver);
             members = await room.GetMembers();
             return Task.CompletedTask;

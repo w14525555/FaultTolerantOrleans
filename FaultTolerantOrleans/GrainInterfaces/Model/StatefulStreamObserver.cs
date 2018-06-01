@@ -8,24 +8,24 @@ using Utils;
 
 namespace OrleansClient
 {
-    public class StreamObserver : IAsyncObserver<StreamMessage>
+    public class StatefulStreamObserver : IAsyncObserver<StreamMessage>
     {
         private ILogger logger;
         private IOperator consumer;
         private IBatchTracker tracker;
 
-        public StreamObserver(ILogger logger)
+        public StatefulStreamObserver(ILogger logger)
         {
             this.logger = logger;
         }
 
-        public StreamObserver(ILogger logger, IOperator consumer)
+        public StatefulStreamObserver(ILogger logger, IOperator consumer)
         {
             this.consumer = consumer;
             this.logger = logger;
         }
 
-        public StreamObserver(ILogger logger, IOperator consumer, IBatchTracker tracker)
+        public StatefulStreamObserver(ILogger logger, IOperator consumer, IBatchTracker tracker)
         {
             this.consumer = consumer;
             this.logger = logger;
