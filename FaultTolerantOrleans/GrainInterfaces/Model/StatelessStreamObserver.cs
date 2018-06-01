@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using GrainInterfaces;
 using GrainInterfaces.Model;
 using Microsoft.Extensions.Logging;
 using Orleans.Streams;
+using Utils;
 
 namespace SystemInterfaces.Model
 {
@@ -11,7 +13,9 @@ namespace SystemInterfaces.Model
     {
         private IStatelessOperator statelessStreamOperator;
         private IBatchTracker tracker;
+        private List<StreamMessage> messagesBuffer;
         private ILogger logger;
+        private int currentBatchID = -1;
 
         public StatelessStreamObserver(ILogger logger)
         {
@@ -43,9 +47,36 @@ namespace SystemInterfaces.Model
             return Task.CompletedTask;
         }
 
-        public Task OnNextAsync(StreamMessage item, StreamSequenceToken token = null)
+        public Task OnNextAsync(StreamMessage msg, StreamSequenceToken token = null)
         {
-            throw new NotImplementedException();
+            if (currentBatchID == -1)
+            {
+                currentBatchID = msg.BatchID;
+            }
+            else
+            {
+                if (msg.BatchID == currentBatchID)
+                {
+                    FilterFunction();
+                }
+                else
+                {
+                    SaveMessageToBuffer(msg);
+                }
+            }
+            return Task.CompletedTask;
+        }
+
+        private Task FilterFunction()
+        {
+            PrettyConsole.Line("Filtered in stateless function");
+            return Task.CompletedTask;
+        }
+
+        private Task SaveMessageToBuffer(StreamMessage msg)
+        {
+            messagesBuffer.Add(msg);
+            return Task.CompletedTask;
         }
     }
 }

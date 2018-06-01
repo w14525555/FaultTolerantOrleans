@@ -19,7 +19,7 @@ namespace OrleansClient
         //client can send messages to the channel , and receive messages sent to the channel/stream from other clients. 
         private static string joinedChannel = "general";
         private static string userName = "UserWithNoName";
-        public static IOperator consumer;
+        public static IStatefulOperator consumer;
         private static IBatchTracker tracker;
         public static void Main(string[] args)
         {
@@ -179,7 +179,7 @@ namespace OrleansClient
             var stream = client.GetStreamProvider(Constants.ChatRoomStreamProvider)
                 .GetStream<StreamMessage>(streamId, Constants.CharRoomStreamNameSpace);
             //subscribe to the stream to receiver furthur messages sent to the chatroom
-            consumer = client.GetGrain<IOperator>("Consumer");
+            consumer = client.GetGrain<IStatefulOperator>("Consumer");
             tracker = await room.GetBatchTracker();
             await stream.SubscribeAsync(new StatefulStreamObserver(client.ServiceProvider.GetService<ILoggerFactory>()
                 .CreateLogger($"{joinedChannel} channel"), consumer, tracker));

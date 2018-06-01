@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace GrainInterfaces
 {
-    public interface IOperator: IGrainWithStringKey
+    public interface IStatefulOperator: IGrainWithStringKey
     {
         Task ConsumeMessage(StreamMessage msg);
 

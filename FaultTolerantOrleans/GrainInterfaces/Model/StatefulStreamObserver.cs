@@ -11,7 +11,7 @@ namespace OrleansClient
     public class StatefulStreamObserver : IAsyncObserver<StreamMessage>
     {
         private ILogger logger;
-        private IOperator consumer;
+        private IStatefulOperator statefulOperator;
         private IBatchTracker tracker;
 
         public StatefulStreamObserver(ILogger logger)
@@ -19,15 +19,15 @@ namespace OrleansClient
             this.logger = logger;
         }
 
-        public StatefulStreamObserver(ILogger logger, IOperator consumer)
+        public StatefulStreamObserver(ILogger logger, IStatefulOperator consumer)
         {
-            this.consumer = consumer;
+            this.statefulOperator = consumer;
             this.logger = logger;
         }
 
-        public StatefulStreamObserver(ILogger logger, IOperator consumer, IBatchTracker tracker)
+        public StatefulStreamObserver(ILogger logger, IStatefulOperator consumer, IBatchTracker tracker)
         {
-            this.consumer = consumer;
+            this.statefulOperator = consumer;
             this.logger = logger;
             this.tracker = tracker;
         }
@@ -63,7 +63,7 @@ namespace OrleansClient
             {
                 //Commit Here
                 PrettyConsole.Line("Commit and Update Logs");
-                if (consumer != null)
+                if (statefulOperator != null)
                 {
                     //Update the reverse log and incremental log. 
                     ClearReverseLog();
@@ -74,9 +74,9 @@ namespace OrleansClient
             }
             else
             {
-                if (consumer != null)
+                if (statefulOperator != null)
                 {
-                    consumer.ConsumeMessage(item);
+                    statefulOperator.ConsumeMessage(item);
                 }
             }
             return Task.CompletedTask;
@@ -100,13 +100,13 @@ namespace OrleansClient
 
         private Task ClearReverseLog()
         {
-            consumer.ClearReverseLog();
+            statefulOperator.ClearReverseLog();
             return Task.CompletedTask;
         }
 
         private Task UpdateIncrementalLog()
         {
-            consumer.UpdateIncrementalLog();
+            statefulOperator.UpdateIncrementalLog();
             return Task.CompletedTask;
         }
     } 
