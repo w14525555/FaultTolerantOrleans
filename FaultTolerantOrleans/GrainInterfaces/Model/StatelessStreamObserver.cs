@@ -13,26 +13,16 @@ namespace SystemInterfaces.Model
     {
         private IStatelessOperator statelessStreamOperator;
         private IBatchTracker tracker;
-        private List<StreamMessage> messagesBuffer;
         private ILogger logger;
+        private List<StreamMessage> messagesBuffer;
         private int currentBatchID = -1;
-
-        public StatelessStreamObserver(ILogger logger)
-        {
-            this.logger = logger;
-        }
-
-        public StatelessStreamObserver(ILogger logger, IStatelessOperator statelessStreamOperator)
-        {
-            this.statelessStreamOperator = statelessStreamOperator;
-            this.logger = logger;
-        }
 
         public StatelessStreamObserver(ILogger logger, IStatelessOperator statelessStreamOperator, IBatchTracker tracker)
         {
             this.statelessStreamOperator = statelessStreamOperator;
             this.logger = logger;
             this.tracker = tracker;
+            this.messagesBuffer = new List<StreamMessage>();
         }
 
         public Task OnCompletedAsync()
