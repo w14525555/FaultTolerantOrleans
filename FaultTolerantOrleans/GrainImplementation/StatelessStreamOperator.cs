@@ -1,49 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GrainInterfaces;
+﻿using System.Threading.Tasks;
 using GrainInterfaces.Model;
 using Orleans;
+using SystemInterfaces;
 
 namespace SystemImplementation
 {
-    class StatelessStreamOperator : Grain, IOperator
+    class StatelessStreamOperator : Grain, IStatelessOperator
     {
-        public Task ClearReverseLog()
-        {
-            throw new NotImplementedException();
-        }
-
+        //The StatelessConsumer does not have state. 
         public Task ConsumeMessage(StreamMessage msg)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<string> GetState(string key)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<string> GetStateInIncrementalLog(string key)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<string> GetStateInReverseLog(string key)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateIncrementalLog()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateOperation(StreamMessage msg)
-        {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
     }
 }
