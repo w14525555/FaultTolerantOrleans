@@ -96,6 +96,7 @@ namespace OrleansClient
                     UpdateIncrementalLog();
                     PrettyConsole.Line("Update Incremental Log");
                     currentBatchID++;
+                    CheckIfBufferHasNextBatchMessages();
                 }
             }
             else
@@ -139,6 +140,18 @@ namespace OrleansClient
         private Task UpdateIncrementalLog()
         {
             statefulOperator.UpdateIncrementalLog();
+            return Task.CompletedTask;
+        }
+
+        private Task CheckIfBufferHasNextBatchMessages()
+        {
+            foreach (StreamMessage msg in messagesBuffer)
+            {
+                if (msg.BatchID == currentBatchID)
+                {
+                    ProcessMessages(msg);
+                }
+            }
             return Task.CompletedTask;
         }
     } 

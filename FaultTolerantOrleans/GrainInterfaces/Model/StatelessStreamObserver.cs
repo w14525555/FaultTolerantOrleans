@@ -68,6 +68,7 @@ namespace SystemInterfaces.Model
             else if (msg.Key == Constants.Commit_Key)
             {
                 currentBatchID++;
+                CheckIfBufferHasNextBatchMessages();
             }
             else
             {
@@ -93,6 +94,18 @@ namespace SystemInterfaces.Model
             {
                 tracker.CompleteTracking(item);
                 PrettyConsole.Line("Complete one msg");
+            }
+            return Task.CompletedTask;
+        }
+
+        private Task CheckIfBufferHasNextBatchMessages()
+        {
+            foreach (StreamMessage msg in messagesBuffer)
+            {
+                if (msg.BatchID == currentBatchID)
+                {
+                    ProcessMessage(msg);
+                }
             }
             return Task.CompletedTask;
         }
