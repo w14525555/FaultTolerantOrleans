@@ -42,13 +42,13 @@ namespace SystemInterfaces.Model
             if (currentBatchID == -1)
             {
                 currentBatchID = msg.BatchID;
-                FilterFunction();
+                ProcessMessage(msg);
             }
             else
             {
                 if (msg.BatchID == currentBatchID)
                 {
-                    FilterFunction();
+                    ProcessMessage(msg);
                 }
                 else
                 {
@@ -58,15 +58,42 @@ namespace SystemInterfaces.Model
             return Task.CompletedTask;
         }
 
-        private Task FilterFunction()
+        private Task ProcessMessage(StreamMessage msg)
         {
             PrettyConsole.Line("Filtered in stateless function");
+            if (msg.Key == Constants.Barrier_Key)
+            {
+                TellTrackMessageSent(msg);
+            }
+            else if (msg.Key == Constants.Commit_Key)
+            {
+                currentBatchID++;
+            }
+            else
+            {
+                OperationFunction(msg);
+            }
+            return Task.CompletedTask;
+        }
+
+        private Task OperationFunction(StreamMessage msg)
+        {
             return Task.CompletedTask;
         }
 
         private Task SaveMessageToBuffer(StreamMessage msg)
         {
             messagesBuffer.Add(msg);
+            return Task.CompletedTask;
+        }
+
+        private Task TellTrackMessageSent(StreamMessage item)
+        {
+            if (tracker != null)
+            {
+                tracker.CompleteTracking(item);
+                PrettyConsole.Line("Complete one msg");
+            }
             return Task.CompletedTask;
         }
     }

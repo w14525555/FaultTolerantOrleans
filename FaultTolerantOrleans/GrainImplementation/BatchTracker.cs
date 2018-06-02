@@ -12,15 +12,11 @@ namespace GrainImplementation
     {
         private Dictionary<int, StreamBatch> batchTrackingMap;
         private IBatchCoordinator batchManager;
-        private int initialID;
 
         public override Task OnActivateAsync()
         {
             //A batch map <BatchID, batch>
             batchTrackingMap = new Dictionary<int, StreamBatch>();
-            initialID = 0;
-            StreamBatch initialBatch = new StreamBatch(initialID);
-            batchTrackingMap.Add(initialID, initialBatch);
             return base.OnActivateAsync();
         }
 
@@ -31,10 +27,10 @@ namespace GrainImplementation
                 var targetBatch = batchTrackingMap[msg.BatchID];
                 targetBatch.AddBarrierMsgTrackingHelper(msg.barrierInfo);
             }
-            else if (msg.BatchID > 0)
+            else if (msg.BatchID >= 0)
             {
                 StreamBatch newBatch = new StreamBatch(msg.BatchID);
-                PrettyConsole.Line("Tracking a new batch!");
+                PrettyConsole.Line("Tracking batch ID " + msg.BatchID);
                 newBatch.AddBarrierMsgTrackingHelper(msg.barrierInfo);
                 batchTrackingMap.Add(msg.BatchID, newBatch);
             }

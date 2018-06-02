@@ -40,4 +40,9 @@ of next batches.
 If one operator receive the a message from its source, it firstly checks
 which batch it belongs to. If it is not current batch, it will save it into a
 message buffer. If it is, it will check the message type and it can be normal 
-message, barrier message and commit messages. 
+message, barrier message and commit messages.
+Normal Message: Process the message. 
+Barrier Message: tell the tracker the barrier message has been received. 
+Commit Message:If it does not have state, just increment the batch ID. 
+If yes, it will update the reverse log, incremental log, and incrment the 
+batch ID.
