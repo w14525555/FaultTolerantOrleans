@@ -13,9 +13,10 @@ namespace OrleansClient
     {
         private ILogger logger;
         private IStatefulOperator statefulOperator;
-        private List<StreamMessage> messagesBuffer;
         private IBatchTracker tracker;
         private int currentBatchID = -1;
+
+        private List<StreamMessage> messagesBuffer = new List<StreamMessage>();
 
         public StatefulStreamObserver(ILogger logger)
         {
