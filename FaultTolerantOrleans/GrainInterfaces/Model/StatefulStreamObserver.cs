@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using GrainInterfaces;
 using GrainInterfaces.Model;
@@ -12,7 +13,9 @@ namespace OrleansClient
     {
         private ILogger logger;
         private IStatefulOperator statefulOperator;
+        private List<StreamMessage> messagesBuffer;
         private IBatchTracker tracker;
+        private int currentBatchID = -1;
 
         public StatefulStreamObserver(ILogger logger)
         {
@@ -34,32 +37,53 @@ namespace OrleansClient
 
         public Task OnCompletedAsync()
         {
-            this.logger.LogInformation("Chatroom message stream received stream completed event");
+            this.logger.LogInformation("Message stream received stream completed event");
             return Task.CompletedTask;
         }
 
         public Task OnErrorAsync(Exception ex)
         {
-            this.logger.LogInformation($"Chatroom is experiencing message delivery failure, ex :{ex}");
+            this.logger.LogInformation($"Experiencing message delivery failure, ex :{ex}");
             return Task.CompletedTask;
         }
 
-        public Task OnNextAsync(StreamMessage item, StreamSequenceToken token = null)
+        public Task OnNextAsync(StreamMessage msg, StreamSequenceToken token = null)
         {
-            this.logger.LogInformation($"=={item.Created}==         {item.Key} said: {item.Value}");
-            //When a consumer receive messages from stream,
+            //When a consumer receive a message from stream,
+            //It firstly checks which batch this belongs 
             //the consumer needs to consume to the message
             //and its state may change
             //Besides, when they receive messages,
             //They should tell the tracker the message has been 
             //processed. 
-            PrettyConsole.Line("Receice");
-
-            if (item.Key == Constants.Barrier_Key)
+            if (currentBatchID == -1)
             {
-                TellTrackMessageSent(item);
+                currentBatchID = msg.BatchID;
+                ProcessMessages(msg);
             }
-            else if (item.Key == Constants.Commit_Key)
+            else
+            {
+                if (currentBatchID == msg.BatchID)
+                {
+                    ProcessMessages(msg);
+                }
+                else
+                {
+                    SaveMessageToBuffer(msg);
+                }
+            }
+            return Task.CompletedTask;
+        }
+
+        private Task ProcessMessages(StreamMessage msg)
+        {
+            PrettyConsole.Line("Stateful Operator Receice A Message");
+
+            if (msg.Key == Constants.Barrier_Key)
+            {
+                TellTrackMessageSent(msg);
+            }
+            else if (msg.Key == Constants.Commit_Key)
             {
                 //Commit Here
                 PrettyConsole.Line("Commit and Update Logs");
@@ -70,13 +94,14 @@ namespace OrleansClient
                     PrettyConsole.Line("Clear Reverse Log");
                     UpdateIncrementalLog();
                     PrettyConsole.Line("Update Incremental Log");
+                    currentBatchID++;
                 }
             }
             else
             {
                 if (statefulOperator != null)
                 {
-                    statefulOperator.ConsumeMessage(item);
+                    statefulOperator.ConsumeMessage(msg);
                 }
             }
             return Task.CompletedTask;
@@ -89,6 +114,12 @@ namespace OrleansClient
                 tracker.CompleteTracking(item);
                 PrettyConsole.Line("Complete one msg");
             }
+            return Task.CompletedTask;
+        }
+
+        private Task SaveMessageToBuffer(StreamMessage msg)
+        {
+            messagesBuffer.Add(msg);
             return Task.CompletedTask;
         }
 

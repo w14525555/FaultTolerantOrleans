@@ -32,4 +32,12 @@ one source.
 
 ##System Implementation Details. 
 
+**Batch Processing**: 
+Each operator has a buffer to store messages that are not in currentbach. 
+Once current batch has been committed, it will start to proceed the messages
+of next batches. 
 
+If one operator receive the a message from its source, it firstly checks
+which batch it belongs to. If it is not current batch, it will save it into a
+message buffer. If it is, it will check the message type and it can be normal 
+message, barrier message and commit messages. 

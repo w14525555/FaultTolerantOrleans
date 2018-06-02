@@ -42,6 +42,7 @@ namespace SystemInterfaces.Model
             if (currentBatchID == -1)
             {
                 currentBatchID = msg.BatchID;
+                FilterFunction();
             }
             else
             {
