@@ -204,14 +204,6 @@ namespace Test
         // Batch Processing Tests
 
         [TestMethod]
-        public async Task TestBatchIDStartsWithZero()
-        {
-            await SetUpRoom();
-            await room.Message(msg1);
-            Assert.AreEqual(0, msg1.BatchID);
-        }
-
-        [TestMethod]
         public async Task TestEmtyBatchSentThenTheBatchIsReadForCommit()
         {
             await SetUpRoom();
