@@ -1,9 +1,9 @@
-﻿using GrainInterfaces;
-using GrainInterfaces.Model;
-using Orleans;
+﻿using Orleans;
 using Orleans.Streams;
 using System;
 using System.Threading.Tasks;
+using SystemInterfaces;
+using SystemInterfaces.Model;
 using Utils;
 
 namespace GrainImplementation

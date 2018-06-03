@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using GrainInterfaces;
-using GrainInterfaces.Model;
 using Microsoft.Extensions.Logging;
 using Orleans.Streams;
+using SystemInterfaces;
+using SystemInterfaces.Model;
 using Utils;
 
 namespace OrleansClient

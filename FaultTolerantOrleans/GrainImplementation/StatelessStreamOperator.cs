@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using GrainInterfaces.Model;
 using Orleans;
 using SystemInterfaces;
+using SystemInterfaces.Model;
 
 namespace SystemImplementation
 {

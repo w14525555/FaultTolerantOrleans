@@ -1,8 +1,8 @@
-﻿using GrainInterfaces.Model;
-using Orleans;
+﻿using Orleans;
 using System.Threading.Tasks;
+using SystemInterfaces.Model;
 
-namespace GrainInterfaces
+namespace SystemInterfaces
 {
     //Once the batch seeder for a batch Bi is emitted by the coordinator,
     //the status of batch Bi in the coordinator is set as

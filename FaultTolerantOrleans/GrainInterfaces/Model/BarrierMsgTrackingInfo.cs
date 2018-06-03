@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GrainInterfaces.Model
+namespace SystemInterfaces.Model
 {
     public class BarrierMsgTrackingInfo
     {

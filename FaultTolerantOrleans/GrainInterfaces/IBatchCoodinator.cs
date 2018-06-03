@@ -1,9 +1,9 @@
-﻿using GrainInterfaces.Model;
-using Orleans;
+﻿using Orleans;
 using Orleans.Streams;
 using System.Threading.Tasks;
+using SystemInterfaces.Model;
 
-namespace GrainInterfaces
+namespace SystemInterfaces
 {
     public interface IBatchCoordinator: IGrainWithStringKey
     {

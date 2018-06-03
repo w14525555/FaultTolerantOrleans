@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using GrainInterfaces.Model;
 using Orleans;
+using SystemInterfaces.Model;
 
-namespace GrainInterfaces
+namespace SystemInterfaces
 {
 	public interface IStreamSource : IGrainWithStringKey
 	{

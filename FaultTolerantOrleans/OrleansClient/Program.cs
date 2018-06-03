@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using GrainInterfaces;
-using GrainInterfaces.Model;
 using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Utils;
+using SystemInterfaces;
+using SystemInterfaces.Model;
 
 namespace OrleansClient
 {

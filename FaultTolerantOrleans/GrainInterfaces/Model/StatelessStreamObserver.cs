@@ -1,21 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using GrainInterfaces;
-using GrainInterfaces.Model;
 using Microsoft.Extensions.Logging;
 using Orleans.Streams;
 using Utils;
 
 namespace SystemInterfaces.Model
 {
-    class StatelessStreamObserver : IAsyncObserver<StreamMessage>
+    public class StatelessStreamObserver : IAsyncObserver<StreamMessage>
     {
         private IStatelessOperator statelessStreamOperator;
         private IBatchTracker tracker;
         private ILogger logger;
         private List<StreamMessage> messagesBuffer;
         private int currentBatchID = -1;
+
+        public StatelessStreamObserver(ILogger logger, IStatelessOperator statelessStreamOperator)
+        {
+            this.statelessStreamOperator = statelessStreamOperator;
+            this.logger = logger;
+            this.messagesBuffer = new List<StreamMessage>();
+        }
 
         public StatelessStreamObserver(ILogger logger, IStatelessOperator statelessStreamOperator, IBatchTracker tracker)
         {
@@ -107,6 +112,12 @@ namespace SystemInterfaces.Model
                     ProcessMessage(msg);
                 }
             }
+            return Task.CompletedTask;
+        }
+
+        public Task SetTracker(IBatchTracker batchTracker)
+        {
+            this.tracker = batchTracker;
             return Task.CompletedTask;
         }
     }

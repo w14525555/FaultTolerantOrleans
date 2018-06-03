@@ -1,8 +1,8 @@
-﻿using GrainInterfaces.Model;
-using Orleans;
+﻿using Orleans;
 using System.Threading.Tasks;
+using SystemInterfaces.Model;
 
-namespace GrainInterfaces
+namespace SystemInterfaces
 {
     public interface IStatefulOperator: IGrainWithStringKey
     {

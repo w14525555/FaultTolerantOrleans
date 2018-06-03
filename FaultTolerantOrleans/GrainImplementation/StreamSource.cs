@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GrainInterfaces;
-using GrainInterfaces.Model;
 using Orleans;
 using Orleans.Streams;
+using SystemInterfaces;
+using SystemInterfaces.Model;
 using Utils;
 
 namespace GrainImplementation

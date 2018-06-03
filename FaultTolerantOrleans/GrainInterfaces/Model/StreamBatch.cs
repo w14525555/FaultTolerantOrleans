@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GrainInterfaces.Model
+namespace SystemInterfaces.Model
 {
     //This now used for batch manager to track messages. 
     //This should main all the states of certain task for 
