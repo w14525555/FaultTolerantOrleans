@@ -47,9 +47,10 @@ Commit Message:If it does not have state, just increment the batch ID.
 If yes, it will update the reverse log, incremental log, and incrment the 
 batch ID.
 
-##Batch Commit** 
 
-##Batch Recovery##
+**Batch Commit** 
+
+**Batch Recovery**
 
 Batch Recovery is controlled by batch manager. As running of the system, 
 the batch manager will detect any possible failure in the systems. Since 
