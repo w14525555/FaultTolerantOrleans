@@ -21,9 +21,7 @@ namespace GrainImplementation
         public override Task OnActivateAsync()
         {
             //Add a initial state for testing usage
-            statesMap.Add("initial", "hello");
-            reverseLog.Add("initial", null);
-            incrementalLog.Add("initial", "hello");
+            statesMap.Add("initialKey", "initialValue");
             return Task.CompletedTask;
         }
 
@@ -147,14 +145,11 @@ namespace GrainImplementation
 
         private Task HandleReverseLogOnUpdate(string key)
         {
+            //For the update operation, the reverse log
+            //will save the value on before the first change
             if (!reverseLog.ContainsKey(key))
             {
                 reverseLog.Add(key, statesMap[key]);
-            }
-            else
-            {
-                //Save the value before changing it
-                reverseLog[key] = statesMap[key];
             }
             return Task.CompletedTask;
         }

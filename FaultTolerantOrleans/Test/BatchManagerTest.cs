@@ -32,10 +32,10 @@ namespace Test
         private static string userName2 = "Wu You";
         private static string NOT_EXIST = "Not Exist";
         private static string[] members;
-        private static StreamMessage msg1 = new StreamMessage("initial", "message 1");
-        private static StreamMessage msg2 = new StreamMessage("second", "message 2");
-        private static StreamMessage msg3 = new StreamMessage("initial", "message 3");
-        private static StreamMessage msg4 = new StreamMessage("initial", "message 4");
+        private static StreamMessage msg1 = new StreamMessage("key1", "value1");
+        private static StreamMessage msg2 = new StreamMessage("key1", "value2");
+        private static StreamMessage msg3 = new StreamMessage("initialKey", "newValue");
+        private static StreamMessage msg4 = new StreamMessage("initialKey", "delete");
         private static StreamMessage barrierMsg = new StreamMessage(Constants.Barrier_Key, Constants.System_Value);
         private static StreamMessage commitMsg = new StreamMessage(Constants.Commit_Key, Constants.System_Value);
 
@@ -70,139 +70,116 @@ namespace Test
         // Test For State Management 
 
         [TestMethod]
-        public async Task TestClientInitialState()
+        public async Task TestClientInsertState()
         {
             await SetUpSource();
-            string initialState = await statefulOperator.GetState("initial");
-            Assert.AreEqual("hello", initialState);
+            msg1.operation = Operation.Insert;
+            await room.Message(msg1);
+            string insertedState = await statefulOperator.GetState(msg1.Key);
+            Assert.AreEqual(msg1.Value, insertedState);
         }
 
         [TestMethod]
         public async Task TestClientUpdateState()
         {
             await SetUpSource();
-            msg1.operation = Operation.Update;
+            msg1.operation = Operation.Insert;
             await room.Message(msg1);
-            string updatedState = await statefulOperator.GetState("initial");
-            Assert.AreEqual(msg1.Value, updatedState);
-        }
-
-        [TestMethod]
-        public async Task TestClientInsertState()
-        {
-            await SetUpSource();
-            msg2.operation = Operation.Insert;
+            msg2.operation = Operation.Update;
             await room.Message(msg2);
-            string insertedState = await statefulOperator.GetState("second");
-            Assert.AreEqual(msg2.Value, insertedState);
+            string updatedState = await statefulOperator.GetState(msg1.Key);
+            Assert.AreEqual(msg2.Value, updatedState);
         }
 
         [TestMethod]
         public async Task TestClientDeleteState()
         {
             await SetUpSource();
-            msg1.operation = Operation.Delete;
+            msg1.operation = Operation.Insert;
             await room.Message(msg1);
-            string deletedState = await statefulOperator.GetState("initial");
-            Assert.AreEqual(NOT_EXIST, deletedState);
+            msg2.operation = Operation.Delete;
+            await room.Message(msg2);
+            string deletedKeyState = await statefulOperator.GetState(msg1.Key);
+            Assert.AreEqual(NOT_EXIST, deletedKeyState);
         }
 
         // Reverse Log Tests
 
         [TestMethod]
-        public async Task TestReverseLogInitialState()
-        {
-            await SetUpSource();
-            string initialState = await statefulOperator.GetStateInReverseLog("initial");
-            Assert.AreEqual(null, initialState);
-        }
-
-        [TestMethod]
         public async Task TestReverseLogClearAfterCommit()
         {
             await SetUpSource();
+            msg1.operation = Operation.Insert;
+            await room.Message(msg1);
             await statefulOperator.ClearReverseLog();
-            string stateAfterCommit = await statefulOperator.GetStateInReverseLog("initial");
+            string stateAfterCommit = await statefulOperator.GetStateInReverseLog(msg1.Key);
             Assert.AreEqual(NOT_EXIST, stateAfterCommit);
         }
 
         [TestMethod]
-        public async Task TestReverseLogUpdateState()
+        public async Task TestReverseLogOnUpdateState()
         {
             await SetUpSource();
-            msg1.operation = Operation.Update;
-            await room.Message(msg1);
-            string updatedState = await statefulOperator.GetStateInReverseLog("initial");
-            Assert.AreEqual("hello", updatedState);
+            msg3.operation = Operation.Update;
+            await room.Message(msg3);
+            string previousState = await statefulOperator.GetStateInReverseLog(msg3.Key);
+            Assert.AreEqual("initialValue", previousState);
         }
 
         [TestMethod]
         public async Task TestReverseLogDeleteState()
         {
             await SetUpSource();
-            msg1.operation = Operation.Delete;
-            await room.Message(msg1);
-            string previousState = await statefulOperator.GetStateInReverseLog("initial");
-            Assert.AreEqual("hello", previousState);
+            msg4.operation = Operation.Delete;
+            await room.Message(msg4);
+            string previousState = await statefulOperator.GetStateInReverseLog(msg3.Key);
+            Assert.AreEqual("initialValue", previousState);
         }
 
         [TestMethod]
         public async Task TestReverseLogInsertState()
         {
             await SetUpSource();
-            msg2.operation = Operation.Insert;
-            await room.Message(msg2);
-            string insertedStateInReverseLog = await statefulOperator.GetStateInReverseLog("second");
+            msg1.operation = Operation.Insert;
+            await room.Message(msg1);
+            string insertedStateInReverseLog = await statefulOperator.GetStateInReverseLog(msg1.Key);
             Assert.AreEqual(null, insertedStateInReverseLog);
         }
 
         // Incremental Log Tests
 
         [TestMethod]
-        public async Task TestIncrementalLogInitialState()
+        public async Task TestIncrementalLogInsertState()
         {
             await SetUpSource();
-            string initialState = await statefulOperator.GetStateInIncrementalLog("initial");
-            Assert.AreEqual("hello", initialState);
-        }
-
-        [TestMethod]
-        public async Task TestIncrementalLogClearAfterCommit()
-        {
-            await SetUpSource();
-            await statefulOperator.UpdateIncrementalLog();
-            string stateAfterCommit = await statefulOperator.GetStateInIncrementalLog("initial");
-            Assert.AreEqual(NOT_EXIST, stateAfterCommit);
+            msg1.operation = Operation.Insert;
+            await room.Message(msg1);
+            string insertedStateInIncrementalLog = await statefulOperator.GetStateInIncrementalLog(msg1.Key);
+            Assert.AreEqual(msg1.Value, insertedStateInIncrementalLog);
         }
 
         [TestMethod]
         public async Task TestIncrementalLogUpdateState()
         {
             await SetUpSource();
-            msg1.operation = Operation.Update;
-            await statefulOperator.UpdateOperation(msg1);
-            string updatedState = await statefulOperator.GetStateInIncrementalLog("initial");
-            Assert.AreEqual(msg1.Value, updatedState);
+            msg1.operation = Operation.Insert;
+            await room.Message(msg1);
+            msg2.operation = Operation.Update;
+            await statefulOperator.UpdateOperation(msg2);
+            string updatedState = await statefulOperator.GetStateInIncrementalLog(msg1.Key);
+            Assert.AreEqual(msg2.Value, updatedState);
         }
 
         [TestMethod]
         public async Task TestIncrementalLogDeleteState()
         {
             await SetUpSource();
-            msg1.operation = Operation.Delete;
+            msg1.operation = Operation.Insert;
             await room.Message(msg1);
-            string stateAfterDelete = await statefulOperator.GetStateInIncrementalLog("initial");
-            Assert.AreEqual(null, stateAfterDelete);
-        }
-
-        [TestMethod]
-        public async Task TestIncrementalLogInsertState()
-        {
-            await SetUpSource();
-            msg2.operation = Operation.Insert;
+            msg2.operation = Operation.Delete;
             await room.Message(msg2);
-            string insertedStateInIncrementalLog = await statefulOperator.GetStateInIncrementalLog("second");
-            Assert.AreEqual(msg2.Value, insertedStateInIncrementalLog);
+            string stateAfterDelete = await statefulOperator.GetStateInIncrementalLog(msg1.Key);
+            Assert.AreEqual(null, stateAfterDelete);
         }
 
         // Batch Processing Tests
