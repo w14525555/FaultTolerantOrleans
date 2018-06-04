@@ -65,7 +65,7 @@ namespace SystemInterfaces.Model
 
         private Task ProcessMessage(StreamMessage msg)
         {
-            PrettyConsole.Line("Filtered in stateless function");
+            PrettyConsole.Line("Process a message in Stateless Operator");
             if (msg.Key == Constants.Barrier_Key)
             {
                 TellTrackMessageSent(msg);
@@ -98,7 +98,7 @@ namespace SystemInterfaces.Model
             if (tracker != null)
             {
                 tracker.CompleteTracking(item);
-                PrettyConsole.Line("Complete one msg");
+                PrettyConsole.Line("Complete one barrier");
             }
             return Task.CompletedTask;
         }

@@ -114,7 +114,7 @@ namespace OrleansClient
             if (tracker != null)
             {
                 tracker.CompleteTracking(item);
-                PrettyConsole.Line("Complete one msg");
+                PrettyConsole.Line("Complete one barrier");
             }
             return Task.CompletedTask;
         }
