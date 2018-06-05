@@ -61,7 +61,7 @@ deactived after long-time idle state. So we just active a new grain and load
 the data from the previous grain's incremental log. For other grains, batch manager
 will broadcast message to them so that they can load data from their reverse log.
 
-On failures
+**On failures**
 1. Detect the failures by finding exception in method call. Stop broadcasting barriers. 
 2. Find the failed grains and reactive new grain for each of them. (Impossible because the manager can only get a handle)
 3. Let the new grain load their incremental log. 
@@ -72,8 +72,16 @@ On failures
 8. Clear the reverse log and incremental log(memory) of every grains.
 9. Restart the timer of barriers. 
 
-Orleans Recovery Mechanism: 
+**Orleans Recovery Mechanism**: 
+
 If a grain is not active anymore, Orleans will reactivate it in the next method call. The
 thing you need to handle and make sure is correct in the context of your application is the
 state. A grain's state can be partially updated or the operation might be something which 
 should be done across multiple grains and is carried on partially. 
+
+After you see a grain operation fail you can do one or more of the following.
+
+1. Simply retry your action, especially if it doesn't involve any state changes which might be half done. This is by far the most typical case.
+2. Try to fix/reset the partially changed state by calling a method which resets the state to the last known correct state or just reads it from storage by calling ReadStateAsync.
+3. Reset the state of all related activations as well to ensure a clean state for all of them.
+4. Perform multi-grain state manipulations using a Process Manager or database transaction to make sure it's either done completely or nothing is changed to avoid the state being partially updated.
