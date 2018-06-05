@@ -36,6 +36,7 @@ namespace GrainImplementation
         {
             batchManager = GrainFactory.GetGrain<IBatchCoordinator>("Manager");
             batchManager.SetChannelAndRegisterTimer(stream, this);
+
             return Task.CompletedTask;
         }
 

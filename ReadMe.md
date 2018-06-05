@@ -62,8 +62,8 @@ the data from the previous grain's incremental log. For other grains, batch mana
 will broadcast message to them so that they can load data from their reverse log.
 
 On failures
-1. Detect the failures. Stop broadcasting barriers. 
-2. Find the failed grains and reactive new grain for each of them. 
+1. Detect the failures by finding exception in method call. Stop broadcasting barriers. 
+2. Find the failed grains and reactive new grain for each of them. (Impossible because the manager can only get a handle)
 3. Let the new grain load their incremental log. 
 4. Remove the failure grains from observer list.
 5. Broadcast the rollback message to unfailed grain and revert the state from reverse log.
@@ -71,3 +71,9 @@ On failures
 7. Clear the tracking information in tracker.
 8. Clear the reverse log and incremental log(memory) of every grains.
 9. Restart the timer of barriers. 
+
+Orleans Recovery Mechanism: 
+If a grain is not active anymore, Orleans will reactivate it in the next method call. The
+thing you need to handle and make sure is correct in the context of your application is the
+state. A grain's state can be partially updated or the operation might be something which 
+should be done across multiple grains and is carried on partially. 
