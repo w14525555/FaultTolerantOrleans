@@ -17,10 +17,14 @@ namespace SystemInterfaces
 
         Task ClearReverseLog();
 
-        Task UpdateIncrementalLog();
+        Task<Task> UpdateIncrementalLog();
 
+        Task RevertStateFromReverseLog();
+
+        Task ReloadStateFromIncrementalLog();
         //For testing
         Task UpdateOperation(StreamMessage msg);
+
 
     }
 }

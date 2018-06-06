@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen5274e6b099FeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen5739190d18FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -370,6 +370,10 @@ namespace SystemInterfaces
                             return @"ClearReverseLog";
                         case 1771832207:
                             return @"UpdateIncrementalLog";
+                        case 1459863785:
+                            return @"RevertStateFromReverseLog";
+                        case -1900104612:
+                            return @"ReloadStateFromIncrementalLog";
                         case -1322794566:
                             return @"UpdateOperation";
                         default:
@@ -413,9 +417,19 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Object>(-1449456680, null);
         }
 
-        public global::System.Threading.Tasks.Task UpdateIncrementalLog()
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> UpdateIncrementalLog()
         {
-            return base.InvokeMethodAsync<global::System.Object>(1771832207, null);
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(1771832207, null);
+        }
+
+        public global::System.Threading.Tasks.Task RevertStateFromReverseLog()
+        {
+            return base.InvokeMethodAsync<global::System.Object>(1459863785, null);
+        }
+
+        public global::System.Threading.Tasks.Task ReloadStateFromIncrementalLog()
+        {
+            return base.InvokeMethodAsync<global::System.Object>(-1900104612, null);
         }
 
         public global::System.Threading.Tasks.Task UpdateOperation(global::SystemInterfaces.Model.StreamMessage msg)
@@ -452,7 +466,12 @@ namespace SystemInterfaces
                             await ((global::SystemInterfaces.IStatefulOperator)grain).ClearReverseLog();
                             return null;
                         case 1771832207:
-                            await ((global::SystemInterfaces.IStatefulOperator)grain).UpdateIncrementalLog();
+                            return await ((global::SystemInterfaces.IStatefulOperator)grain).UpdateIncrementalLog();
+                        case 1459863785:
+                            await ((global::SystemInterfaces.IStatefulOperator)grain).RevertStateFromReverseLog();
+                            return null;
+                        case -1900104612:
+                            await ((global::SystemInterfaces.IStatefulOperator)grain).ReloadStateFromIncrementalLog();
                             return null;
                         case -1322794566:
                             await ((global::SystemInterfaces.IStatefulOperator)grain).UpdateOperation((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
@@ -928,7 +947,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen5274e6b099FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGen5739190d18FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {

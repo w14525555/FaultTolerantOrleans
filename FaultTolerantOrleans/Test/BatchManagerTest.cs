@@ -30,12 +30,14 @@ namespace Test
         private static string joinedChannel = "general";
         private static string userName = "You Wu";
         private static string userName2 = "Wu You";
-        private static string NOT_EXIST = "Not Exist";
+        private const string NOT_EXIST = "Not Exist";
+        private const string INITIAL_KEY = "initialKey";
+        private const string INITIAL_VALUE = "initialValue";
         private static string[] members;
         private static StreamMessage msg1 = new StreamMessage("key1", "value1");
         private static StreamMessage msg2 = new StreamMessage("key1", "value2");
-        private static StreamMessage msg3 = new StreamMessage("initialKey", "newValue");
-        private static StreamMessage msg4 = new StreamMessage("initialKey", "delete");
+        private static StreamMessage msg3 = new StreamMessage(INITIAL_KEY, "newValue");
+        private static StreamMessage msg4 = new StreamMessage(INITIAL_KEY, "delete");
         private static StreamMessage barrierMsg = new StreamMessage(Constants.Barrier_Key, Constants.System_Value);
         private static StreamMessage commitMsg = new StreamMessage(Constants.Commit_Key, Constants.System_Value);
 
@@ -73,8 +75,7 @@ namespace Test
         public async Task TestClientInsertState()
         {
             await SetUpSource();
-            msg1.operation = Operation.Insert;
-            await room.Message(msg1);
+            await InsertOperation();
             string insertedState = await statefulOperator.GetState(msg1.Key);
             Assert.AreEqual(msg1.Value, insertedState);
         }
@@ -83,24 +84,18 @@ namespace Test
         public async Task TestClientUpdateState()
         {
             await SetUpSource();
-            msg1.operation = Operation.Insert;
-            await room.Message(msg1);
-            msg2.operation = Operation.Update;
-            await room.Message(msg2);
-            string updatedState = await statefulOperator.GetState(msg1.Key);
-            Assert.AreEqual(msg2.Value, updatedState);
+            await UpdateOperation();
+            string finalState = await statefulOperator.GetState(msg3.Key);
+            Assert.AreEqual(msg3.Value, finalState);
         }
 
         [TestMethod]
         public async Task TestClientDeleteState()
         {
             await SetUpSource();
-            msg1.operation = Operation.Insert;
-            await room.Message(msg1);
-            msg2.operation = Operation.Delete;
-            await room.Message(msg2);
-            string deletedKeyState = await statefulOperator.GetState(msg1.Key);
-            Assert.AreEqual(NOT_EXIST, deletedKeyState);
+            await DeleteOperation();
+            string finalState = await statefulOperator.GetState(msg3.Key);
+            Assert.AreEqual(NOT_EXIST, finalState);
         }
 
         // Reverse Log Tests
@@ -109,8 +104,7 @@ namespace Test
         public async Task TestReverseLogClearAfterCommit()
         {
             await SetUpSource();
-            msg1.operation = Operation.Insert;
-            await room.Message(msg1);
+            await InsertOperation();
             await statefulOperator.ClearReverseLog();
             string stateAfterCommit = await statefulOperator.GetStateInReverseLog(msg1.Key);
             Assert.AreEqual(NOT_EXIST, stateAfterCommit);
@@ -120,8 +114,7 @@ namespace Test
         public async Task TestReverseLogOnUpdateState()
         {
             await SetUpSource();
-            msg3.operation = Operation.Update;
-            await room.Message(msg3);
+            await UpdateOperation();
             string previousState = await statefulOperator.GetStateInReverseLog(msg3.Key);
             Assert.AreEqual("initialValue", previousState);
         }
@@ -130,8 +123,7 @@ namespace Test
         public async Task TestReverseLogDeleteState()
         {
             await SetUpSource();
-            msg4.operation = Operation.Delete;
-            await room.Message(msg4);
+            await DeleteOperation();
             string previousState = await statefulOperator.GetStateInReverseLog(msg3.Key);
             Assert.AreEqual("initialValue", previousState);
         }
@@ -140,10 +132,59 @@ namespace Test
         public async Task TestReverseLogInsertState()
         {
             await SetUpSource();
-            msg1.operation = Operation.Insert;
-            await room.Message(msg1);
+            await InsertOperation();
             string insertedStateInReverseLog = await statefulOperator.GetStateInReverseLog(msg1.Key);
             Assert.AreEqual(null, insertedStateInReverseLog);
+        }
+
+        // Recovery Tests from Revert Log
+
+        [TestMethod]
+        public async Task TestRevertStateAfterInsert()
+        {
+            await SetUpSource();
+            await InsertOperation();
+            await statefulOperator.RevertStateFromReverseLog();
+            string insertedState = await statefulOperator.GetState(msg1.Key);
+            Assert.AreEqual(NOT_EXIST, insertedState);
+        }
+
+        [TestMethod]
+        public async Task TestRevertStateAfterUpdate()
+        {
+            await SetUpSource();
+            await UpdateOperation();
+            await statefulOperator.RevertStateFromReverseLog();
+            string finalState = await statefulOperator.GetState(msg3.Key);
+            Assert.AreEqual(INITIAL_VALUE, finalState);
+        }
+
+        [TestMethod]
+        public async Task TestRevertStateAfterDelete()
+        {
+            await SetUpSource();
+            await DeleteOperation();
+            await statefulOperator.RevertStateFromReverseLog();
+            string finalState = await statefulOperator.GetState(msg3.Key);
+            Assert.AreEqual(INITIAL_VALUE, finalState);
+        }
+
+        private async Task InsertOperation()
+        {
+            msg1.operation = Operation.Insert;
+            await room.Message(msg1);
+        }
+
+        private async Task UpdateOperation()
+        {
+            msg3.operation = Operation.Update;
+            await room.Message(msg3);
+        }
+
+        private async Task DeleteOperation()
+        {
+            msg4.operation = Operation.Delete;
+            await room.Message(msg4);
         }
 
         // Incremental Log Tests

@@ -202,11 +202,11 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        public Task UpdateIncrementalLog()
+        public async Task<Task> UpdateIncrementalLog()
         {
             //Once save the state to files, then clear
             //The incremental log
-            SaveStateToFile(incrementalLog);
+            await SaveStateToFile(incrementalLog);
             incrementalLog.Clear();
             return Task.CompletedTask;
         }
@@ -236,6 +236,43 @@ namespace GrainImplementation
                 binaryFormatter.Serialize(stream, objectToWrite);
             }
 
+            return Task.CompletedTask;
+        }
+
+        public Task RevertStateFromReverseLog()
+        {
+            //Here three cases rollback the states
+            //in reverse log. 
+            //Insert: Should remove the value from map
+            //Update: revert the value
+            //delete: add the key and value back
+            foreach (var item in reverseLog)
+            {
+                //If delete, the statemap does not contain the key
+                if (!statesMap.ContainsKey(item.Key))
+                {
+                    statesMap.Add(item.Key, item.Value);
+                }
+                else
+                {
+                    //If null, means it was inserted value
+                    if (item.Value == null)
+                    {
+                        statesMap.Remove(item.Key);
+                    }
+                    else
+                    {
+                        //The last case is reverting updated value 
+                        statesMap[item.Key] = item.Value;
+                    }
+                }
+            }
+            return Task.CompletedTask;
+        }
+
+        public Task ReloadStateFromIncrementalLog()
+        {
+            //TODO
             return Task.CompletedTask;
         }
 
