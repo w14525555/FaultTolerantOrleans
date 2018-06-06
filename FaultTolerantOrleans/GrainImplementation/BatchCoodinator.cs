@@ -63,5 +63,17 @@ namespace GrainImplementation
             source.ProduceMessageAsync(commitMsg);
             return Task.CompletedTask;
         }
+
+        public Task StartRecovery()
+        {
+            //TODO
+            //1. Stop the timer
+            //2. Broadcast the rollback
+            //3. Clean information in the tracker
+            //4. Reset the batch ID. 
+            //5. Make sure everything is right
+            //6. Start new batch
+            return Task.CompletedTask;
+        }
     }
 }

@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen5739190d18FeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen7386387f18FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -947,7 +947,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen5739190d18FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGen7386387f18FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {
@@ -3850,19 +3850,15 @@ namespace OrleansGeneratedCode
             feature.AddKnownType(@"System.Runtime.InteropServices.WindowsRuntime.WindowsRuntimeMarshal+NativeOrStaticEventRegistrationImpl+ReaderWriterLockTimedOutException", @"ReaderWriterLockTimedOutException");
             feature.AddKnownType(@"System.Runtime.InteropServices.WindowsRuntime.WindowsRuntimeMarshal+NativeOrStaticEventRegistrationImpl+MyReaderWriterLock", @"MyReaderWriterLock");
             feature.AddKnownType(@"__DynamicallyInvokableAttribute", @"__DynamicallyInvokableAttribute");
-            feature.AddKnownType(@"OrleansClient.StatefulStreamObserver,GrainInterfaces", @"OrleansClient.StatefulStreamObserver");
-            feature.AddKnownType(@"SystemInterfaces.Model.StreamMessage,GrainInterfaces", @"SystemInterfaces.Model.StreamMessage");
             feature.AddKnownType(@"SystemInterfaces.IBatchCoordinator,GrainInterfaces", @"SystemInterfaces.IBatchCoordinator");
             feature.AddKnownType(@"SystemInterfaces.IBatchTracker,GrainInterfaces", @"SystemInterfaces.IBatchTracker");
             feature.AddKnownType(@"SystemInterfaces.IStatefulOperator,GrainInterfaces", @"SystemInterfaces.IStatefulOperator");
             feature.AddKnownType(@"SystemInterfaces.IStatelessOperator,GrainInterfaces", @"SystemInterfaces.IStatelessOperator");
             feature.AddKnownType(@"SystemInterfaces.IStreamSource,GrainInterfaces", @"SystemInterfaces.IStreamSource");
             feature.AddKnownType(@"SystemInterfaces.Model.BarrierMsgTrackingInfo,GrainInterfaces", @"SystemInterfaces.Model.BarrierMsgTrackingInfo");
-            feature.AddKnownType(@"SystemInterfaces.Model.StatelessStreamObserver,GrainInterfaces", @"SystemInterfaces.Model.StatelessStreamObserver");
             feature.AddKnownType(@"SystemInterfaces.Model.StreamBatch,GrainInterfaces", @"SystemInterfaces.Model.StreamBatch");
+            feature.AddKnownType(@"SystemInterfaces.Model.StreamMessage,GrainInterfaces", @"SystemInterfaces.Model.StreamMessage");
             feature.AddKnownType(@"SystemInterfaces.Model.Operation,GrainInterfaces", @"SystemInterfaces.Model.Operation");
-            feature.AddKnownType(@"Utils.Constants,Utils", @"Utils.Constants");
-            feature.AddKnownType(@"Utils.PrettyConsole,Utils", @"Utils.PrettyConsole");
         }
     }
 }

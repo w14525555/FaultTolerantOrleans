@@ -225,6 +225,10 @@
       <Project>{31BA90B8-8CED-425B-9A4B-189BC294A72E}</Project>
       <Name>SampleClient</Name>
     </ProjectReference>
+    <ProjectReference Include="..\StatelessClientSample\StatelessClientSample.csproj">
+      <Project>{9445a390-677a-426e-8461-54480d5ddad9}</Project>
+      <Name>StatelessClientSample</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utils\Utils.csproj">
       <Project>{2bfbb174-20e8-4bc1-925c-2ca7ac0dd0ff}</Project>
       <Name>Utils</Name>

@@ -22,6 +22,10 @@ namespace SystemInterfaces
         Task RevertStateFromReverseLog();
 
         Task ReloadStateFromIncrementalLog();
+
+        Task<OperatorSettings> GetSettings();
+
+        Task LoadSettings(OperatorSettings operatorSettings);
         //For testing
         Task UpdateOperation(StreamMessage msg);
 

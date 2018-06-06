@@ -17,11 +17,13 @@ namespace GrainImplementation
         private Dictionary<string, string> statesMap = new Dictionary<string, string>();
         private Dictionary<string, string> reverseLog = new Dictionary<string, string>();
         private Dictionary<string, string> incrementalLog = new Dictionary<string, string>();
-        
+        public OperatorSettings operatorSettings;
+
         public override Task OnActivateAsync()
         {
             //Add a initial state for testing usage
             statesMap.Add("initialKey", "initialValue");
+            operatorSettings.incrementalLogAddress = @"D:\batch.dat";
             return Task.CompletedTask;
         }
 
@@ -213,10 +215,10 @@ namespace GrainImplementation
 
         private Task SaveStateToFile(Dictionary<string, string> state)
         {
-            PrettyConsole.Line("Save the incremental log to D:\batch.dat");
+            PrettyConsole.Line("Save the incremental log to " + operatorSettings.incrementalLogAddress);
             try
             {
-                WriteToBinaryFile(@"D:\batch.dat", state);
+                WriteToBinaryFile(operatorSettings.incrementalLogAddress, state);
             }
             catch (Exception e)
             {
@@ -273,6 +275,17 @@ namespace GrainImplementation
         public Task ReloadStateFromIncrementalLog()
         {
             //TODO
+            return Task.CompletedTask;
+        }
+
+        public Task<OperatorSettings> GetSettings()
+        {
+            return Task.FromResult(operatorSettings);
+        }
+
+        public Task LoadSettings(OperatorSettings operatorSettings)
+        {
+            this.operatorSettings = operatorSettings;
             return Task.CompletedTask;
         }
 

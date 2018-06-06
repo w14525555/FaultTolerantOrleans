@@ -9,7 +9,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Utils;
 using SystemInterfaces;
 using SystemInterfaces.Model;
-using OrleansClient;
 
 namespace StatelessClientSample
 {
