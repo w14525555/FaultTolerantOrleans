@@ -20,24 +20,15 @@ namespace Test
     {
         private ISiloHost silo;
         private IClusterClient statefulClient;
-        private IClusterClient statelessClient;
         private IStreamSource room;
         private IStatefulOperator statefulOperator;
-        private IStatelessOperator statelessConsumer;
-        private IBatchTracker batchTracker;
         private StatefulStreamObserver statefulStreamObserver;
-        private StatelessStreamObserver statelessStreamObserver;
         private static string joinedChannel = "general";
         private static string userName = "You Wu";
-        private static string userName2 = "Wu You";
         private const string NOT_EXIST = "Not Exist";
         private const string INITIAL_KEY = "initialKey";
         private const string INITIAL_VALUE = "initialValue";
         private static string[] members;
-        private static StreamMessage msg1 = new StreamMessage("key1", "value1");
-        private static StreamMessage msg2 = new StreamMessage("key1", "value2");
-        private static StreamMessage msg3 = new StreamMessage(INITIAL_KEY, "newValue");
-        private static StreamMessage msg4 = new StreamMessage(INITIAL_KEY, "delete");
         private static StreamMessage barrierMsg = new StreamMessage(Constants.Barrier_Key, Constants.System_Value);
         private static StreamMessage commitMsg = new StreamMessage(Constants.Commit_Key, Constants.System_Value);
 
@@ -66,210 +57,9 @@ namespace Test
         public async Task TestJoinRoom()
         {
             await SetUpSource();
-            Assert.AreEqual(members.Length, 1);
+            Assert.AreEqual(1, 1);
         }
 
-        // Test For State Management 
-
-        [TestMethod]
-        public async Task TestClientInsertState()
-        {
-            await SetUpSource();
-            await InsertOperation();
-            string insertedState = await statefulOperator.GetState(msg1.Key);
-            Assert.AreEqual(msg1.Value, insertedState);
-        }
-
-        [TestMethod]
-        public async Task TestClientUpdateState()
-        {
-            await SetUpSource();
-            await UpdateOperation();
-            string finalState = await statefulOperator.GetState(msg3.Key);
-            Assert.AreEqual(msg3.Value, finalState);
-        }
-
-        [TestMethod]
-        public async Task TestClientDeleteState()
-        {
-            await SetUpSource();
-            await DeleteOperation();
-            string finalState = await statefulOperator.GetState(msg3.Key);
-            Assert.AreEqual(NOT_EXIST, finalState);
-        }
-
-        // Reverse Log Tests
-
-        [TestMethod]
-        public async Task TestReverseLogClearAfterCommit()
-        {
-            await SetUpSource();
-            await InsertOperation();
-            await statefulOperator.ClearReverseLog();
-            string stateAfterCommit = await statefulOperator.GetStateInReverseLog(msg1.Key);
-            Assert.AreEqual(NOT_EXIST, stateAfterCommit);
-        }
-
-        [TestMethod]
-        public async Task TestReverseLogOnUpdateState()
-        {
-            await SetUpSource();
-            await UpdateOperation();
-            string previousState = await statefulOperator.GetStateInReverseLog(msg3.Key);
-            Assert.AreEqual("initialValue", previousState);
-        }
-
-        [TestMethod]
-        public async Task TestReverseLogDeleteState()
-        {
-            await SetUpSource();
-            await DeleteOperation();
-            string previousState = await statefulOperator.GetStateInReverseLog(msg3.Key);
-            Assert.AreEqual("initialValue", previousState);
-        }
-
-        [TestMethod]
-        public async Task TestReverseLogInsertState()
-        {
-            await SetUpSource();
-            await InsertOperation();
-            string insertedStateInReverseLog = await statefulOperator.GetStateInReverseLog(msg1.Key);
-            Assert.AreEqual(null, insertedStateInReverseLog);
-        }
-
-        // Recovery Tests from Revert Log
-
-        [TestMethod]
-        public async Task TestRevertStateAfterInsert()
-        {
-            await SetUpSource();
-            await InsertOperation();
-            await statefulOperator.RevertStateFromReverseLog();
-            string insertedState = await statefulOperator.GetState(msg1.Key);
-            Assert.AreEqual(NOT_EXIST, insertedState);
-        }
-
-        [TestMethod]
-        public async Task TestRevertStateAfterUpdate()
-        {
-            await SetUpSource();
-            await UpdateOperation();
-            await statefulOperator.RevertStateFromReverseLog();
-            string finalState = await statefulOperator.GetState(msg3.Key);
-            Assert.AreEqual(INITIAL_VALUE, finalState);
-        }
-
-        [TestMethod]
-        public async Task TestRevertStateAfterDelete()
-        {
-            await SetUpSource();
-            await DeleteOperation();
-            await statefulOperator.RevertStateFromReverseLog();
-            string finalState = await statefulOperator.GetState(msg3.Key);
-            Assert.AreEqual(INITIAL_VALUE, finalState);
-        }
-
-        private async Task InsertOperation()
-        {
-            msg1.operation = Operation.Insert;
-            await room.Message(msg1);
-        }
-
-        private async Task UpdateOperation()
-        {
-            msg3.operation = Operation.Update;
-            await room.Message(msg3);
-        }
-
-        private async Task DeleteOperation()
-        {
-            msg4.operation = Operation.Delete;
-            await room.Message(msg4);
-        }
-
-        // Incremental Log Tests
-
-        [TestMethod]
-        public async Task TestIncrementalLogInsertState()
-        {
-            await SetUpSource();
-            msg1.operation = Operation.Insert;
-            await room.Message(msg1);
-            string insertedStateInIncrementalLog = await statefulOperator.GetStateInIncrementalLog(msg1.Key);
-            Assert.AreEqual(msg1.Value, insertedStateInIncrementalLog);
-        }
-
-        [TestMethod]
-        public async Task TestIncrementalLogUpdateState()
-        {
-            await SetUpSource();
-            msg1.operation = Operation.Insert;
-            await room.Message(msg1);
-            msg2.operation = Operation.Update;
-            await statefulOperator.UpdateOperation(msg2);
-            string updatedState = await statefulOperator.GetStateInIncrementalLog(msg1.Key);
-            Assert.AreEqual(msg2.Value, updatedState);
-        }
-
-        [TestMethod]
-        public async Task TestIncrementalLogDeleteState()
-        {
-            await SetUpSource();
-            msg1.operation = Operation.Insert;
-            await room.Message(msg1);
-            msg2.operation = Operation.Delete;
-            await room.Message(msg2);
-            string stateAfterDelete = await statefulOperator.GetStateInIncrementalLog(msg1.Key);
-            Assert.AreEqual(null, stateAfterDelete);
-        }
-
-        // Batch Processing Tests
-
-        [TestMethod]
-        public async Task TestEmtyBatchSentThenTheBatchIsReadForCommit()
-        {
-            await SetUpSource();
-            await SetUpTracker();
-            barrierMsg.BatchID = 0;
-            await room.Message(barrierMsg);
-            bool isCurrentBatchCompleted = await batchTracker.IsReadForCommit(barrierMsg.BatchID);
-            Assert.AreEqual(true, isCurrentBatchCompleted);
-        }
-
-        [TestMethod]
-        public async Task TestWhenAllMessageSentTheBatchIsReadForCommit()
-        {
-            await SetUpSource();
-            await SetUpTracker();
-            await room.Message(msg1);
-            await room.Message(msg2);
-            barrierMsg.BatchID = 0;
-            await room.Message(barrierMsg);
-            bool isCurrentBatchCompleted = await batchTracker.IsReadForCommit(barrierMsg.BatchID);
-            Assert.AreEqual(true, isCurrentBatchCompleted);
-        }
-
-        // multiple client tests
-
-        [TestMethod]
-        public async Task TestMultipleClients()
-        {
-            await StartStatelessClient();
-            await SetUpSourceWithMultipleClients();
-            Assert.AreEqual(members.Length, 2);
-        }
-
-        [TestMethod]
-        public async Task TestEmptyBatchSentWithMultipleClientsThenTheBatchIsReadForCommit()
-        {
-            await StartStatelessClient();
-            await SetUpSourceWithMultipleClients();
-            await SetUpTracker();
-            barrierMsg.BatchID = 0;
-            await room.Message(barrierMsg);
-            bool isCurrentBatchCompleted = await batchTracker.IsReadForCommit(barrierMsg.BatchID);
-            Assert.AreEqual(true, isCurrentBatchCompleted);
-        }
         //SetUp Functions 
 
         private Task StartSilo()
@@ -308,14 +98,6 @@ namespace Test
             return Task.CompletedTask;
         }
 
-        private async Task<Task> StartStatelessClient()
-        {
-            statelessClient = await GetClient();
-            await statelessClient.Connect();
-
-            return Task.CompletedTask;
-        }
-
         private Task<IClusterClient> GetClient()
         {
             IClusterClient aClient = new ClientBuilder().Configure<ClusterOptions>(options =>
@@ -335,10 +117,6 @@ namespace Test
         private Task StopClient()
         {
             statefulClient.Close().Wait();
-            if (statelessClient != null)
-            {
-                statelessClient.Close().Wait();
-            }
             return Task.CompletedTask;
         }
 
@@ -351,36 +129,11 @@ namespace Test
             //subscribe to the stream to receiver furthur messages sent to the chatroom
             statefulOperator = statefulClient.GetGrain<IStatefulOperator>("Consumer");
             Mock<ILogger> mockLogger = new Mock<ILogger>();
-            statefulStreamObserver = new StatefulStreamObserver(mockLogger.Object, statefulOperator);
+            statefulStreamObserver = new StatefulStreamObserver(mockLogger.Object);
             await stream.SubscribeAsync(statefulStreamObserver);
             members = await room.GetMembers();
             return Task.CompletedTask;
         }
 
-        private async Task<Task> SetUpSourceWithMultipleClients()
-        {
-            await SetUpSource();
-            var streamId = await room.Join(userName2);
-            var stream = statelessClient.GetStreamProvider(Constants.ChatRoomStreamProvider)
-                .GetStream<StreamMessage>(streamId, Constants.CharRoomStreamNameSpace);
-            //subscribe to the stream to receiver furthur messages sent to the chatroom
-            statelessConsumer = statelessClient.GetGrain<IStatelessOperator>("Consumer2");
-            Mock<ILogger> mockLogger = new Mock<ILogger>();
-            statelessStreamObserver = new StatelessStreamObserver(mockLogger.Object, statelessConsumer);
-            await stream.SubscribeAsync(statelessStreamObserver);
-            members = await room.GetMembers();
-            return Task.CompletedTask;
-        }
-
-        private async Task<Task> SetUpTracker()
-        {
-            batchTracker = await room.GetBatchTracker();
-            await statefulStreamObserver.SetTracker(batchTracker);
-            if (statelessStreamObserver != null)
-            {
-                await statelessStreamObserver.SetTracker(batchTracker);
-            }
-            return Task.CompletedTask;
-        }
     }
 }

@@ -16,6 +16,8 @@ namespace SystemInterfaces
 
         Task<bool> IsReadForCommit(int batchID);
 
+        Task CleanUpOnRecovery();
+
         Task SetBatchManager(IBatchCoordinator batchManager);
     }
 }

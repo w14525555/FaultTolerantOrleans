@@ -11,6 +11,7 @@ namespace Utils
         public const string Barrier_Key = "Barrier";
         public const string System_Value = "System";
         public const string Commit_Key = "Commit";
+        public const string Recovery_Key = "Recovery";
 
 	}
 }

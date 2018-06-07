@@ -16,21 +16,35 @@ namespace GrainImplementation
         private StreamMessage commitMsg = new StreamMessage(Constants.Commit_Key, Constants.System_Value);
         private readonly List<StreamMessage> messages = new List<StreamMessage>(100);
 		private readonly List<string> onlineMembers = new List<string>(10);
+        private HashSet<IStatelessOperator> statelessOperators;
 
         private IBatchCoordinator batchManager;
         private IBatchTracker batchTracker;
 		private IAsyncStream<StreamMessage> stream;
         private int currentBatchID;
+        private string downStreamStatelessOne = "statelessOne";
+        private string downStreamStatelessTwo = "statelessTwo";
+        private string downStreamStatelessThree = "statelessThree";
 
-		public override Task OnActivateAsync()
+        public override Task OnActivateAsync()
 		{
 			var streamProvider = GetStreamProvider(Constants.ChatRoomStreamProvider);
             stream = streamProvider.GetStream<StreamMessage>(Guid.NewGuid(), Constants.CharRoomStreamNameSpace);
             SetUpBatchManager();
             SetUpBatchTracker();
             currentBatchID = 0;
-            return base.OnActivateAsync();
+            InitOperators();
+          return base.OnActivateAsync();
 		}
+
+        private Task InitOperators()
+        {
+            statelessOperators = new HashSet<IStatelessOperator>();
+            statelessOperators.Add(GrainFactory.GetGrain<IStatelessOperator>(downStreamStatelessOne));
+            statelessOperators.Add(GrainFactory.GetGrain<IStatelessOperator>(downStreamStatelessTwo));
+            statelessOperators.Add(GrainFactory.GetGrain<IStatelessOperator>(downStreamStatelessThree));
+            return Task.CompletedTask;
+        }
 
         private Task SetUpBatchManager()
         {
@@ -50,7 +64,6 @@ namespace GrainImplementation
 		public async Task<Guid> Join(string nickname)
 		{
 			onlineMembers.Add(nickname);
-
             await ProduceMessageAsync(new StreamMessage("System", $"{nickname} joins the chat '{this.GetPrimaryKeyString()}' ..."));
 
 			return stream.Guid;
@@ -76,8 +89,13 @@ namespace GrainImplementation
         //the stream sends messages to all its subscribers
          public async Task<Task> ProduceMessageAsync(StreamMessage msg)
         {
-            await CheckIfBarrierOrCommitMsg(msg);
-            await stream.OnNextAsync(msg);
+            if (msg.Key != "System")
+            {
+                await CheckIfBarrierOrCommitMsg(msg);
+                //At first find a operator by hashing
+                IStatelessOperator statelessOp = await SystemImplementation.PartitionFunction.PartitionStatelessByKey(msg.Key, statelessOperators);
+                await statelessOp.ExecuteMessage(msg);
+            }
             return Task.CompletedTask;
         }
 
@@ -109,7 +127,6 @@ namespace GrainImplementation
             batchTracker.TrackingBarrierMessages(msg);
             return Task.CompletedTask;
         }
-
 
         public Task<string[]> GetMembers()
 	    {

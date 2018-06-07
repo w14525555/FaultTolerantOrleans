@@ -6,28 +6,26 @@ namespace SystemInterfaces
 {
     public interface IStatefulOperator: IGrainWithStringKey
     {
-        Task ConsumeMessage(StreamMessage msg);
+        Task ExecuteMessage(StreamMessage msg);
 
         //Method that used for testing. 
-        Task<string> GetState(string key);
+        Task<int> GetState(string key);
 
-        Task<string> GetStateInReverseLog(string key);
+        Task<int> GetStateInReverseLog(string key);
 
-        Task<string> GetStateInIncrementalLog(string key);
+        Task<int> GetStateInIncrementalLog(string key);
 
         Task ClearReverseLog();
 
         Task<Task> UpdateIncrementalLog();
 
-        Task RevertStateFromReverseLog();
+        //Task RevertStateFromReverseLog();
 
         Task ReloadStateFromIncrementalLog();
 
         Task<OperatorSettings> GetSettings();
 
         Task LoadSettings(OperatorSettings operatorSettings);
-        //For testing
-        Task UpdateOperation(StreamMessage msg);
 
 
     }

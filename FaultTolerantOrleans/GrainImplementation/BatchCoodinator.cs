@@ -13,18 +13,23 @@ namespace GrainImplementation
         //A Batch Manager should send batch barrier 
         private StreamMessage barrierMsg = new StreamMessage(Constants.Barrier_Key, Constants.System_Value);
         private StreamMessage commitMsg = new StreamMessage(Constants.Commit_Key, Constants.System_Value);
+        private StreamMessage recoveryMsg = new StreamMessage(Constants.Recovery_Key, 0.ToString());
 
         private const int Barrier_Interval = 10;
+        private IDisposable disposable;
         private TimeSpan barrierTimeInterval = TimeSpan.FromSeconds(Barrier_Interval);
 
         private IStreamSource source;
+        private IBatchTracker tracker;
        
 
         private int currentBatchID { get; set; }
+        private int committedID { get; set; }
 
         public override Task OnActivateAsync()
         {
             currentBatchID = 0;
+            committedID = 0;
             PrettyConsole.Line("Register Timer");
             var streamProvider = GetStreamProvider(Constants.ChatRoomStreamProvider);
             return base.OnActivateAsync();
@@ -32,7 +37,7 @@ namespace GrainImplementation
 
         public Task SetChannelAndRegisterTimer(IAsyncStream<StreamMessage> stream, IStreamSource source)
         {
-            RegisterTimer(SendBarrierOnPeriodOfTime, null, barrierTimeInterval, barrierTimeInterval);
+            disposable = RegisterTimer(SendBarrierOnPeriodOfTime, null, barrierTimeInterval, barrierTimeInterval);
             this.source = source;
             return Task.CompletedTask;
         }
@@ -60,7 +65,14 @@ namespace GrainImplementation
         public Task StartCommit(int ID)
         {
             commitMsg.BatchID = ID;
+            committedID = ID;
             source.ProduceMessageAsync(commitMsg);
+            return Task.CompletedTask;
+        }
+
+        public Task SetTracker(IBatchTracker tracker)
+        {
+            this.tracker = tracker;
             return Task.CompletedTask;
         }
 
@@ -68,11 +80,15 @@ namespace GrainImplementation
         {
             //TODO
             //1. Stop the timer
-            //2. Broadcast the rollback
-            //3. Clean information in the tracker
-            //4. Reset the batch ID. 
+            disposable.Dispose();
+            //2. Broadcast the rollback and reset batchID
+            recoveryMsg.Value = committedID.ToString();
+            source.ProduceMessageAsync(recoveryMsg);
+            //3. Clean information in the tracker()
+            tracker.CleanUpOnRecovery();
             //5. Make sure everything is right
-            //6. Start new batch
+            //6. Register new timer
+            disposable = RegisterTimer(SendBarrierOnPeriodOfTime, null, barrierTimeInterval, barrierTimeInterval);
             return Task.CompletedTask;
         }
     }

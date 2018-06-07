@@ -14,52 +14,45 @@ namespace GrainImplementation
 
     public class StatefulStreamOperator : Grain, IStatefulOperator
     {
-        private Dictionary<string, string> statesMap = new Dictionary<string, string>();
-        private Dictionary<string, string> reverseLog = new Dictionary<string, string>();
-        private Dictionary<string, string> incrementalLog = new Dictionary<string, string>();
+        private Dictionary<string, int> statesMap = new Dictionary<string, int>();
+        private Dictionary<string, int> reverseLog = new Dictionary<string, int>();
+        private Dictionary<string, int> incrementalLog = new Dictionary<string, int>();
         public OperatorSettings operatorSettings;
 
         public override Task OnActivateAsync()
         {
             //Add a initial state for testing usage
-            statesMap.Add("initialKey", "initialValue");
             operatorSettings.incrementalLogAddress = @"D:\batch.dat";
             return Task.CompletedTask;
         }
 
-        public Task ConsumeMessage(StreamMessage msg)
+        //This function get the words and count
+        public Task ExecuteMessage(StreamMessage msg)
         {
-            if (msg.operation != Operation.Null)
+            if (statesMap.ContainsKey(msg.Key))
             {
-                if (msg.operation == Operation.Delete)
-                {
-                    DeleteOperation(msg);
-                }
-                else if (msg.operation == Operation.Insert)
-                {
-                    InsertOperation(msg);
-                }
-                else if(msg.operation == Operation.Update)
-                {
-                    UpdateOperation(msg);
-                }
+                statesMap[msg.Key]++;
+            }
+            else
+            {
+                statesMap.Add(msg.Key, 1);
             }
             return Task.CompletedTask;
         }
 
-        public Task<string> GetState(string key)
-        {
+        public Task<int> GetState(string key)
+        { 
             if (statesMap.ContainsKey(key))
             {
                 return Task.FromResult(statesMap[key]);
             }
             else
             {
-                return Task.FromResult("Not Exist");
+                return Task.FromResult(-1);
             }
         }
 
-        public Task<string> GetStateInReverseLog(string key)
+        public Task<int> GetStateInReverseLog(string key)
         {
             if (reverseLog.ContainsKey(key))
             {
@@ -67,11 +60,11 @@ namespace GrainImplementation
             }
             else
             {
-                return Task.FromResult("Not Exist");
+                return Task.FromResult(-1);
             }
         }
 
-        public Task<string> GetStateInIncrementalLog(string key)
+        public Task<int> GetStateInIncrementalLog(string key)
         {
             if (incrementalLog.ContainsKey(key))
             {
@@ -79,123 +72,8 @@ namespace GrainImplementation
             }
             else
             {
-                return Task.FromResult("Not Exist");
+                return Task.FromResult(-1);
             }
-        }
-
-        private Task DeleteOperation(StreamMessage msg)
-        {
-            if (statesMap.ContainsKey(msg.Key))
-            {
-                HandleReverseLogOnDelete(msg.Key);
-                statesMap.Remove(msg.Key);
-                HandleIncrementalLogOnDelete(msg);
-            }
-            return Task.CompletedTask;
-        }
-
-
-        private Task InsertOperation(StreamMessage msg)
-        {
-            if (!statesMap.ContainsKey(msg.Key))
-            {
-                HandleReverseLogOnInsert(msg.Key);
-                statesMap.Add(msg.Key, msg.Value);
-                HandleIncrementalLogOnInsert(msg);
-            }
-            return Task.CompletedTask;
-        }
-
-        public Task UpdateOperation(StreamMessage msg)
-        {
-            if (statesMap.ContainsKey(msg.Key))
-            {
-                HandleReverseLogOnUpdate(msg.Key);
-                statesMap[msg.Key] = msg.Value;
-                HandleIncrementalLogOnUpdate(msg);
-            }
-            return Task.CompletedTask;
-        }
-
-        private Task HandleReverseLogOnDelete(string key)
-        {
-            if (!reverseLog.ContainsKey(key))
-            {
-                reverseLog.Add(key, statesMap[key]);
-            }
-            else
-            {
-                //save the value before deleting it
-                reverseLog[key] = statesMap[key];
-            }
-            return Task.CompletedTask;
-        }
-
-        private Task HandleReverseLogOnInsert(string key)
-        {
-            if (reverseLog.ContainsKey(key))
-            {
-                reverseLog.Add(key, null);
-            }
-            else
-            {
-                //only add the key
-                reverseLog.Add(key, null);
-            }
-            return Task.CompletedTask;
-        }
-
-        private Task HandleReverseLogOnUpdate(string key)
-        {
-            //For the update operation, the reverse log
-            //will save the value on before the first change
-            if (!reverseLog.ContainsKey(key))
-            {
-                reverseLog.Add(key, statesMap[key]);
-            }
-            return Task.CompletedTask;
-        }
-
-        private Task HandleIncrementalLogOnInsert(StreamMessage msg)
-        {
-            if (incrementalLog.ContainsKey(msg.Key))
-            {
-                incrementalLog[msg.Key] = msg.Value;
-            }
-            else
-            {
-                //Add key and value 
-                incrementalLog.Add(msg.Key, msg.Value);
-            }
-            return Task.CompletedTask;
-        }
-
-        private Task HandleIncrementalLogOnUpdate(StreamMessage msg)
-        {
-            if (!incrementalLog.ContainsKey(msg.Key))
-            {
-                incrementalLog.Add(msg.Key, msg.Value);
-            }
-            else
-            {
-                //Save the value before changing it
-                incrementalLog[msg.Key] = msg.Value;
-            }
-            return Task.CompletedTask;
-        }
-
-        private Task HandleIncrementalLogOnDelete(StreamMessage msg)
-        {
-            if (!incrementalLog.ContainsKey(msg.Key))
-            {
-                incrementalLog.Add(msg.Key, msg.Value);
-            }
-            else
-            {
-                //save the deleted key
-                incrementalLog[msg.Key] = null;
-            }
-            return Task.CompletedTask;
         }
 
         public Task ClearReverseLog()
@@ -213,7 +91,7 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        private Task SaveStateToFile(Dictionary<string, string> state)
+        private Task SaveStateToFile(Dictionary<string, int> state)
         {
             PrettyConsole.Line("Save the incremental log to " + operatorSettings.incrementalLogAddress);
             try
@@ -241,36 +119,36 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        public Task RevertStateFromReverseLog()
-        {
-            //Here three cases rollback the states
-            //in reverse log. 
-            //Insert: Should remove the value from map
-            //Update: revert the value
-            //delete: add the key and value back
-            foreach (var item in reverseLog)
-            {
-                //If delete, the statemap does not contain the key
-                if (!statesMap.ContainsKey(item.Key))
-                {
-                    statesMap.Add(item.Key, item.Value);
-                }
-                else
-                {
-                    //If null, means it was inserted value
-                    if (item.Value == null)
-                    {
-                        statesMap.Remove(item.Key);
-                    }
-                    else
-                    {
-                        //The last case is reverting updated value 
-                        statesMap[item.Key] = item.Value;
-                    }
-                }
-            }
-            return Task.CompletedTask;
-        }
+        //public Task RevertStateFromReverseLog()
+        //{
+        //    //Here three cases rollback the states
+        //    //in reverse log. 
+        //    //Insert: Should remove the value from map
+        //    //Update: revert the value
+        //    //delete: add the key and value back
+        //    foreach (var item in reverseLog)
+        //    {
+        //        //If delete, the statemap does not contain the key
+        //        if (!statesMap.ContainsKey(item.Key))
+        //        {
+        //            statesMap.Add(item.Key, item.Value);
+        //        }
+        //        else
+        //        {
+        //            //If null, means it was inserted value
+        //            if (item.Value == null)
+        //            {
+        //                statesMap.Remove(item.Key);
+        //            }
+        //            else
+        //            {
+        //                //The last case is reverting updated value 
+        //                statesMap[item.Key] = item.Value;
+        //            }
+        //        }
+        //    }
+        //    return Task.CompletedTask;
+        //}
 
         public Task ReloadStateFromIncrementalLog()
         {

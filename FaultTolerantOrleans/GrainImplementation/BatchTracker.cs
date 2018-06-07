@@ -84,6 +84,12 @@ namespace GrainImplementation
             }
         }
 
+        public Task CleanUpOnRecovery()
+        {
+            batchTrackingMap.Clear();
+            return Task.CompletedTask;
+        }
+
     }
 
 
