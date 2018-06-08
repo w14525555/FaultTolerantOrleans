@@ -110,18 +110,18 @@ namespace GrainImplementation
         //If it is barrier message, batch manager will start to track it
         //by using BarrierMsgTrackingInfo which keep and ID and the number of 
         //client it sent to. 
-        private Task ProcessSpecialMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
+        private async Task<Task> ProcessSpecialMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
             if (msg.Value == Constants.Barrier_Value)
             {
-                HandleBarrierMessages(msg);
+                await HandleBarrierMessages(msg);
+                await BroadcastSpecialMessage(msg, stream);
             }
             else if (msg.Value == Constants.Commit_Value)
             {
                 PrettyConsole.Line("Send comit message for BatchID: " + msg.BatchID);
+                await BroadcastSpecialMessage(msg, stream);
             }
-            //Maybe need await here
-            BroadcastSpecialMessage(msg, stream);
             return Task.CompletedTask;
         }
 
@@ -129,7 +129,8 @@ namespace GrainImplementation
         {
             currentBatchID = msg.BatchID + 1;
             msg.barrierInfo = new BarrierMsgTrackingInfo(Guid.NewGuid(), statelessOperators.Count);
-            //PrettyConsole.Line("Send and Start Tracking BatchID: " + msg.BatchID);
+            msg.barrierInfo.BatchID = msg.BatchID;
+            PrettyConsole.Line("Tracking Batch " + msg.BatchID + " with " + statelessOperators.Count);
             batchTracker.TrackingBarrierMessages(msg);
             return Task.CompletedTask;
         }

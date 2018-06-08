@@ -47,11 +47,11 @@ namespace GrainImplementation
         {
             if (!batchTrackingMap.ContainsKey(msgInfo.BatchID))
             {
-                throw new InvalidOperationException("The key is not exist");
+                PrettyConsole.Line("The key " + msgInfo.BatchID + " is not exist");
             }
             else
             {
-                PrettyConsole.Line("Finish Tracking one message in batchID: " + msgInfo.BatchID);
+                //PrettyConsole.Line("Finish Tracking one message in batchID: " + msgInfo.BatchID);
                 StreamBatch targetBatch = batchTrackingMap[msgInfo.BatchID];
                 targetBatch.CompleteOneMessageTracking(msgInfo);
                 if (targetBatch.readForCommitting)
@@ -60,7 +60,7 @@ namespace GrainImplementation
                     {
                         PrettyConsole.Line("Commit!");
                         //batchManager.StartCommit(msg.BatchID);
-                        //batchTrackingMap.Remove(msg.BatchID);
+                        batchTrackingMap.Remove(msgInfo.BatchID);
                     }
                 }
             }

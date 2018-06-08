@@ -62,6 +62,7 @@ namespace GrainImplementation
             if (msg.Value == Constants.Barrier_Value)
             {
                 //Just complete the tracking
+                msg.barrierInfo.BatchID = msg.BatchID;
                 batchTracker.CompleteTracking(msg.barrierInfo);
             }
             else if (msg.Value == Constants.Commit_Value)

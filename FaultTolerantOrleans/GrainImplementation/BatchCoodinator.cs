@@ -42,10 +42,10 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        private Task SendBarrierOnPeriodOfTime(object arg)
+        private async Task<Task> SendBarrierOnPeriodOfTime(object arg)
         {
-            SetBatchID(barrierMsg);
-            source.ProduceMessageAsync(barrierMsg);
+            await SetBatchID(barrierMsg);
+            await source.ProduceMessageAsync(barrierMsg);
             currentBatchID++;
             return Task.CompletedTask;
         }

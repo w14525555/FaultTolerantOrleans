@@ -24,10 +24,8 @@ namespace SystemImplementation
         private Task InitOperators()
         {
             statefulOperators = new HashSet<IStatefulOperator>();
-            var operatorOne = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
-            var operatorTwo = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
-            operatorOne.SetTracker(batchTracker);
-            operatorTwo.SetTracker(batchTracker);
+            IStatefulOperator operatorOne = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
+            IStatefulOperator operatorTwo = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
             statefulOperators.Add(operatorOne);
             statefulOperators.Add(operatorTwo);
             return Task.CompletedTask;
@@ -66,9 +64,9 @@ namespace SystemImplementation
             {
                 BarrierMsgTrackingInfo info = new BarrierMsgTrackingInfo(msg.barrierInfo.GetID(), msg.barrierInfo.numberOfClientSent);
                 info.BatchID = msg.BatchID;
-                //await HandleBarrierMessages(msg);
+                await HandleBarrierMessages(msg);
                 await batchTracker.CompleteTracking(info);
-                //await BroadcastSpecialMessage(msg, stream);
+                await BroadcastSpecialMessage(msg, stream);
             }
             else if (msg.Value == Constants.Commit_Value)
             {
@@ -82,6 +80,7 @@ namespace SystemImplementation
         private Task HandleBarrierMessages(StreamMessage msg)
         {
             msg.barrierInfo = new BarrierMsgTrackingInfo(Guid.NewGuid(), statefulOperators.Count);
+            PrettyConsole.Line("Tracking Batch " + msg.BatchID + " with " + statefulOperators.Count);
             if (batchTracker != null)
             {
                 batchTracker.TrackingBarrierMessages(msg);
@@ -95,7 +94,7 @@ namespace SystemImplementation
 
         private Task BroadcastSpecialMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
-            foreach (IStatelessOperator item in statefulOperators)
+            foreach (IStatefulOperator item in statefulOperators)
             {
                 item.ExecuteMessage(msg, stream);
             }
@@ -105,6 +104,10 @@ namespace SystemImplementation
         public Task SetBatchTracker(IBatchTracker batchTracker)
         {
             this.batchTracker = batchTracker;
+            foreach (IStatefulOperator statefulOp in statefulOperators)
+            {
+                statefulOp.SetTracker(batchTracker);
+            }
             return Task.CompletedTask;
         }
 
