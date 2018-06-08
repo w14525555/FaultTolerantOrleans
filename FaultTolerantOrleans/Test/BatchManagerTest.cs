@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using Moq;
 using SystemInterfaces;
+using System;
 
 namespace Test
 {
@@ -29,8 +30,8 @@ namespace Test
         private const string INITIAL_KEY = "initialKey";
         private const string INITIAL_VALUE = "initialValue";
         private static string[] members;
-        private static StreamMessage barrierMsg = new StreamMessage(Constants.Barrier_Key, Constants.System_Value);
-        private static StreamMessage commitMsg = new StreamMessage(Constants.Commit_Key, Constants.System_Value);
+        private static StreamMessage barrierMsg = new StreamMessage(Constants.Barrier_Value, Constants.System_Key);
+        private static StreamMessage commitMsg = new StreamMessage(Constants.Commit_Value, Constants.System_Key);
 
 
         [TestInitialize]
@@ -127,7 +128,7 @@ namespace Test
             var stream = statefulClient.GetStreamProvider(Constants.ChatRoomStreamProvider)
                 .GetStream<StreamMessage>(streamId, Constants.CharRoomStreamNameSpace);
             //subscribe to the stream to receiver furthur messages sent to the chatroom
-            statefulOperator = statefulClient.GetGrain<IStatefulOperator>("Consumer");
+            statefulOperator = statefulClient.GetGrain<IStatefulOperator>(Guid.NewGuid());
             Mock<ILogger> mockLogger = new Mock<ILogger>();
             statefulStreamObserver = new StatefulStreamObserver(mockLogger.Object);
             await stream.SubscribeAsync(statefulStreamObserver);

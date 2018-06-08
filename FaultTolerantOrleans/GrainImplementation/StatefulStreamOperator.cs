@@ -1,11 +1,10 @@
 ﻿using Orleans;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using System;
 using Utils;
-using System.IO;
 using SystemInterfaces;
 using SystemInterfaces.Model;
+using Orleans.Streams;
 
 namespace GrainImplementation
 {
@@ -17,25 +16,58 @@ namespace GrainImplementation
         private Dictionary<string, int> statesMap = new Dictionary<string, int>();
         private Dictionary<string, int> reverseLog = new Dictionary<string, int>();
         private Dictionary<string, int> incrementalLog = new Dictionary<string, int>();
+        private IBatchTracker batchTracker;
         public OperatorSettings operatorSettings;
 
         public override Task OnActivateAsync()
         {
             //Add a initial state for testing usage
+            operatorSettings = new OperatorSettings();
             operatorSettings.incrementalLogAddress = @"D:\batch.dat";
             return Task.CompletedTask;
         }
 
         //This function get the words and count
-        public Task ExecuteMessage(StreamMessage msg)
+        public Task ExecuteMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
+        {
+            if (msg.Key != Constants.System_Key)
+            {
+                CountWord(msg, stream);
+            }
+            else
+            {
+                ProcessSpecialMessage(msg);
+            }
+
+            return Task.CompletedTask;
+        }
+
+        private Task CountWord(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
             if (statesMap.ContainsKey(msg.Key))
             {
                 statesMap[msg.Key]++;
+                stream.OnNextAsync(new StreamMessage(msg.Key, statesMap[msg.Key].ToString()));
             }
             else
             {
                 statesMap.Add(msg.Key, 1);
+                stream.OnNextAsync(new StreamMessage(msg.Key, "1"));
+            }
+            return Task.CompletedTask;
+        }
+
+        private Task ProcessSpecialMessage(StreamMessage msg)
+        {
+            if (msg.Value == Constants.Barrier_Value)
+            {
+                //Just complete the tracking
+                batchTracker.CompleteTracking(msg.barrierInfo);
+            }
+            else if (msg.Value == Constants.Commit_Value)
+            {
+                //TODO recovery
+                PrettyConsole.Line(IdentityString + " Send comit message for BatchID: " + msg.BatchID);
             }
             return Task.CompletedTask;
         }
@@ -76,48 +108,48 @@ namespace GrainImplementation
             }
         }
 
-        public Task ClearReverseLog()
-        {
-            reverseLog.Clear();
-            return Task.CompletedTask;
-        }
+        //public Task ClearReverseLog()
+        //{
+        //    reverseLog.Clear();
+        //    return Task.CompletedTask;
+        //}
 
-        public async Task<Task> UpdateIncrementalLog()
-        {
-            //Once save the state to files, then clear
-            //The incremental log
-            await SaveStateToFile(incrementalLog);
-            incrementalLog.Clear();
-            return Task.CompletedTask;
-        }
+        //public async Task<Task> UpdateIncrementalLog()
+        //{
+        //    //Once save the state to files, then clear
+        //    //The incremental log
+        //    await SaveStateToFile(incrementalLog);
+        //    incrementalLog.Clear();
+        //    return Task.CompletedTask;
+        //}
 
-        private Task SaveStateToFile(Dictionary<string, int> state)
-        {
-            PrettyConsole.Line("Save the incremental log to " + operatorSettings.incrementalLogAddress);
-            try
-            {
-                WriteToBinaryFile(operatorSettings.incrementalLogAddress, state);
-            }
-            catch (Exception e)
-            {
-                PrettyConsole.Line("Error " + e);
-            }
+        //private Task SaveStateToFile(Dictionary<string, int> state)
+        //{
+        //    PrettyConsole.Line("Save the incremental log to " + operatorSettings.incrementalLogAddress);
+        //    try
+        //    {
+        //        WriteToBinaryFile(operatorSettings.incrementalLogAddress, state);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        PrettyConsole.Line("Error " + e);
+        //    }
 
-            return Task.CompletedTask;
-        }
+        //    return Task.CompletedTask;
+        //}
 
-        /// <summary>
-        /// Writes the given object instance to a binary file.
-        public static Task WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = false)
-        {
-            using (Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create))
-            {
-                var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                binaryFormatter.Serialize(stream, objectToWrite);
-            }
+        ///// <summary>
+        ///// Writes the given object instance to a binary file.
+        //public static Task WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = false)
+        //{
+        //    using (Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create))
+        //    {
+        //        var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+        //        binaryFormatter.Serialize(stream, objectToWrite);
+        //    }
 
-            return Task.CompletedTask;
-        }
+        //    return Task.CompletedTask;
+        //}
 
         //public Task RevertStateFromReverseLog()
         //{
@@ -164,6 +196,12 @@ namespace GrainImplementation
         public Task LoadSettings(OperatorSettings operatorSettings)
         {
             this.operatorSettings = operatorSettings;
+            return Task.CompletedTask;
+        }
+
+        public Task SetTracker(IBatchTracker tracker)
+        {
+            batchTracker = tracker;
             return Task.CompletedTask;
         }
 

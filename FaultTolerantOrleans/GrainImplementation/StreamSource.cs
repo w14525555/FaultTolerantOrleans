@@ -12,8 +12,6 @@ namespace GrainImplementation
 {
 	public class StreamSource : Grain, IStreamSource
 	{
-        private StreamMessage barrierMsg = new StreamMessage(Constants.Barrier_Key, Constants.System_Value);
-        private StreamMessage commitMsg = new StreamMessage(Constants.Commit_Key, Constants.System_Value);
         private readonly List<StreamMessage> messages = new List<StreamMessage>(100);
 		private readonly List<string> onlineMembers = new List<string>(10);
         private HashSet<IStatelessOperator> statelessOperators;
@@ -22,9 +20,6 @@ namespace GrainImplementation
         private IBatchTracker batchTracker;
 		private IAsyncStream<StreamMessage> stream;
         private int currentBatchID;
-        private string downStreamStatelessOne = "statelessOne";
-        private string downStreamStatelessTwo = "statelessTwo";
-        private string downStreamStatelessThree = "statelessThree";
 
         public override Task OnActivateAsync()
 		{
@@ -40,9 +35,16 @@ namespace GrainImplementation
         private Task InitOperators()
         {
             statelessOperators = new HashSet<IStatelessOperator>();
-            statelessOperators.Add(GrainFactory.GetGrain<IStatelessOperator>(downStreamStatelessOne));
-            statelessOperators.Add(GrainFactory.GetGrain<IStatelessOperator>(downStreamStatelessTwo));
-            statelessOperators.Add(GrainFactory.GetGrain<IStatelessOperator>(downStreamStatelessThree));
+            var operatorOne = GrainFactory.GetGrain<IStatelessOperator>(Guid.NewGuid());
+            var operatorTwo = GrainFactory.GetGrain<IStatelessOperator>(Guid.NewGuid());
+            var operatorThree = GrainFactory.GetGrain<IStatelessOperator>(Guid.NewGuid());
+            //If too many use for loop
+            operatorOne.SetBatchTracker(batchTracker);
+            operatorTwo.SetBatchTracker(batchTracker);
+            operatorThree.SetBatchTracker(batchTracker);
+            statelessOperators.Add(operatorOne);
+            statelessOperators.Add(operatorTwo);
+            statelessOperators.Add(operatorThree);
             return Task.CompletedTask;
         }
 
@@ -89,42 +91,55 @@ namespace GrainImplementation
         //the stream sends messages to all its subscribers
          public async Task<Task> ProduceMessageAsync(StreamMessage msg)
         {
-            if (msg.Key != "System")
+            if (msg.Key != Constants.System_Key)
             {
-                await CheckIfBarrierOrCommitMsg(msg);
                 //At first find a operator by hashing
+                msg.BatchID = currentBatchID;
                 IStatelessOperator statelessOp = await SystemImplementation.PartitionFunction.PartitionStatelessByKey(msg.Key, statelessOperators);
-                await statelessOp.ExecuteMessage(msg);
-            }
-            return Task.CompletedTask;
-        }
-
-        //If it is barrier message, batch manager will start to track it
-        //by using BarrierMsgTrackingInfo which keep and ID and the number of 
-        //client it sent to. 
-        private Task CheckIfBarrierOrCommitMsg(StreamMessage msg)
-        {
-            if (msg.Value == barrierMsg.Value)
-            {
-                currentBatchID = msg.BatchID + 1;
-                msg.barrierInfo = new BarrierMsgTrackingInfo(Guid.NewGuid(), onlineMembers.Count);
-                PrettyConsole.Line("Send and Start Tracking BatchID: " + msg.BatchID);
-                TrackingBarrierMessages(msg);
-            }
-            else if (msg.Value == commitMsg.Value)
-            {
-                PrettyConsole.Line("Send comit message for BatchID: " + msg.BatchID);
+                await statelessOp.ExecuteMessage(msg, stream);
             }
             else
             {
-                msg.BatchID = currentBatchID;
+                await ProcessSpecialMessage(msg, stream);
             }
             return Task.CompletedTask;
         }
 
-        private Task TrackingBarrierMessages(StreamMessage msg)
+
+        //If it is special message, it has to send to all the operators. 
+        //If it is barrier message, batch manager will start to track it
+        //by using BarrierMsgTrackingInfo which keep and ID and the number of 
+        //client it sent to. 
+        private Task ProcessSpecialMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
+            if (msg.Value == Constants.Barrier_Value)
+            {
+                HandleBarrierMessages(msg);
+            }
+            else if (msg.Value == Constants.Commit_Value)
+            {
+                PrettyConsole.Line("Send comit message for BatchID: " + msg.BatchID);
+            }
+            //Maybe need await here
+            BroadcastSpecialMessage(msg, stream);
+            return Task.CompletedTask;
+        }
+
+        private Task HandleBarrierMessages(StreamMessage msg)
+        {
+            currentBatchID = msg.BatchID + 1;
+            msg.barrierInfo = new BarrierMsgTrackingInfo(Guid.NewGuid(), statelessOperators.Count);
+            //PrettyConsole.Line("Send and Start Tracking BatchID: " + msg.BatchID);
             batchTracker.TrackingBarrierMessages(msg);
+            return Task.CompletedTask;
+        }
+
+        private Task BroadcastSpecialMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
+        {
+            foreach(IStatelessOperator item in statelessOperators)
+            {
+                item.ExecuteMessage(msg, stream);
+            }
             return Task.CompletedTask;
         }
 

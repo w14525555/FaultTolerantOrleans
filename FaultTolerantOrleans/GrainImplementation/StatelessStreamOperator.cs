@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Orleans;
+using Utils;
 using SystemInterfaces;
 using SystemInterfaces.Model;
+using System;
+using Orleans.Streams;
 
 namespace SystemImplementation
 {
@@ -12,8 +13,7 @@ namespace SystemImplementation
     {
         //The StatelessConsumer does not have state.
         private HashSet<IStatefulOperator> statefulOperators;
-        private string downStreamStatefulOne = "statefulOne";
-        private string downStreamStatefulTwo = "statefulTwo";
+        private IBatchTracker batchTracker;
 
         public override Task OnActivateAsync()
         {
@@ -24,22 +24,87 @@ namespace SystemImplementation
         private Task InitOperators()
         {
             statefulOperators = new HashSet<IStatefulOperator>();
-            statefulOperators.Add(GrainFactory.GetGrain<IStatefulOperator>(downStreamStatefulOne));
-            statefulOperators.Add(GrainFactory.GetGrain<IStatefulOperator>(downStreamStatefulTwo));
+            var operatorOne = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
+            var operatorTwo = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
+            operatorOne.SetTracker(batchTracker);
+            operatorTwo.SetTracker(batchTracker);
+            statefulOperators.Add(operatorOne);
+            statefulOperators.Add(operatorTwo);
             return Task.CompletedTask;
         }
 
-        public async Task<Task> ExecuteMessage(StreamMessage msg)
+        public async Task<Task> ExecuteMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
             //At first split text into words
+            if (msg.Key != Constants.System_Key)
+            {
+                await SplitWordsAndExcuteMsg(msg, stream);
+            }
+            else
+            {
+                await ProcessSpecialMessageAsync(msg, stream);
+            }
+            return Task.CompletedTask;
+        }
+
+        private async Task<Task> SplitWordsAndExcuteMsg(StreamMessage msg, IAsyncStream<StreamMessage> stream)
+        {
             List<string> words = Utils.Functions.SpiltIntoWords(msg.Value);
             //Then find a operator
             foreach (string word in words)
             {
                 IStatefulOperator statefulOperator = await SystemImplementation.PartitionFunction.PartitionStatefulByKey(msg.Key, statefulOperators);
-                await statefulOperator.ExecuteMessage(new StreamMessage(word, null));
+                await statefulOperator.ExecuteMessage(new StreamMessage(word, null), stream);
             }
-   
+            return Task.CompletedTask;
+        }
+
+        private async Task<Task> ProcessSpecialMessageAsync(StreamMessage msg, IAsyncStream<StreamMessage> stream)
+        {
+           
+            if (msg.Value == Constants.Barrier_Value)
+            {
+                BarrierMsgTrackingInfo info = new BarrierMsgTrackingInfo(msg.barrierInfo.GetID(), msg.barrierInfo.numberOfClientSent);
+                info.BatchID = msg.BatchID;
+                //await HandleBarrierMessages(msg);
+                await batchTracker.CompleteTracking(info);
+                //await BroadcastSpecialMessage(msg, stream);
+            }
+            else if (msg.Value == Constants.Commit_Value)
+            {
+                PrettyConsole.Line(IdentityString + " Send comit message for BatchID: " + msg.BatchID);
+                await BroadcastSpecialMessage(msg, stream);
+            }
+            
+            return Task.CompletedTask;
+        }
+
+        private Task HandleBarrierMessages(StreamMessage msg)
+        {
+            msg.barrierInfo = new BarrierMsgTrackingInfo(Guid.NewGuid(), statefulOperators.Count);
+            if (batchTracker != null)
+            {
+                batchTracker.TrackingBarrierMessages(msg);
+            }
+            else
+            {
+                throw new NullReferenceException();
+            }
+            return Task.CompletedTask;
+        }
+
+        private Task BroadcastSpecialMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
+        {
+            foreach (IStatelessOperator item in statefulOperators)
+            {
+                item.ExecuteMessage(msg, stream);
+            }
+            return Task.CompletedTask;
+        }
+
+        public Task SetBatchTracker(IBatchTracker batchTracker)
+        {
+            this.batchTracker = batchTracker;
             return Task.CompletedTask;
         }
 

@@ -132,8 +132,8 @@ namespace OrleansClient
 
         private static async Task ShowChannelMembers(IClusterClient client)
         {
-            var room = client.GetGrain<IStreamSource>(joinedChannel);
-            var members = await room.GetMembers();
+            var source = client.GetGrain<IStreamSource>(joinedChannel);
+            var members = await source.GetMembers();
 
             PrettyConsole.Line($"====== Members for '{joinedChannel}' Channel ======", ConsoleColor.DarkGreen);
             foreach (var member in members)
@@ -145,8 +145,8 @@ namespace OrleansClient
 
         private static async Task ShowCurrentChannelHistory(IClusterClient client)
         {
-            var room = client.GetGrain<IStreamSource>(joinedChannel);
-            var history = await room.ReadHistory(1000);
+            var source = client.GetGrain<IStreamSource>(joinedChannel);
+            var history = await source.ReadHistory(1000);
 
             PrettyConsole.Line($"====== History for '{joinedChannel}' Channel ======", ConsoleColor.DarkGreen);
             foreach (var chatMsg in history)
@@ -185,8 +185,8 @@ namespace OrleansClient
         private static async Task LeaveChannel(IClusterClient client)
         {
             PrettyConsole.Line($"Leaving channel {joinedChannel}");
-            var room = client.GetGrain<IStreamSource>(joinedChannel);
-            var streamId = await room.Leave(userName);
+            var source = client.GetGrain<IStreamSource>(joinedChannel);
+            var streamId = await source.Leave(userName);
             var stream = client.GetStreamProvider(Constants.ChatRoomStreamProvider)
                 .GetStream<StreamMessage>(streamId, Constants.CharRoomStreamNameSpace);
 

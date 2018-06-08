@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen5ada9db8edFeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen9483f84b62FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -215,7 +215,7 @@ namespace SystemInterfaces
                     {
                         case -1116510309:
                             return @"TrackingBarrierMessages";
-                        case -758145411:
+                        case -1135451920:
                             return @"CompleteTracking";
                         case 99336213:
                             return @"IsReadForCommit";
@@ -244,9 +244,9 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Object>(-1116510309, new global::System.Object[]{msg});
         }
 
-        public global::System.Threading.Tasks.Task CompleteTracking(global::SystemInterfaces.Model.StreamMessage msg)
+        public global::System.Threading.Tasks.Task CompleteTracking(global::SystemInterfaces.Model.BarrierMsgTrackingInfo msgInfo)
         {
-            return base.InvokeMethodAsync<global::System.Object>(-758145411, new global::System.Object[]{msg});
+            return base.InvokeMethodAsync<global::System.Object>(-1135451920, new global::System.Object[]{msgInfo});
         }
 
         public global::System.Threading.Tasks.Task<global::System.Boolean> IsReadForCommit(global::System.Int32 batchID)
@@ -283,8 +283,8 @@ namespace SystemInterfaces
                         case -1116510309:
                             await ((global::SystemInterfaces.IBatchTracker)grain).TrackingBarrierMessages((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
                             return null;
-                        case -758145411:
-                            await ((global::SystemInterfaces.IBatchTracker)grain).CompleteTracking((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
+                        case -1135451920:
+                            await ((global::SystemInterfaces.IBatchTracker)grain).CompleteTracking((global::SystemInterfaces.Model.BarrierMsgTrackingInfo)arguments[0]);
                             return null;
                         case 99336213:
                             return await ((global::SystemInterfaces.IBatchTracker)grain).IsReadForCommit((global::System.Int32)arguments[0]);
@@ -368,7 +368,7 @@ namespace SystemInterfaces
 
         public override global::System.Boolean IsCompatible(global::System.Int32 interfaceId)
         {
-            return interfaceId == 498177181 || interfaceId == -1277021679;
+            return interfaceId == 498177181;
         }
 
         public override global::System.String GetMethodName(global::System.Int32 interfaceId, global::System.Int32 methodId)
@@ -378,7 +378,7 @@ namespace SystemInterfaces
                 case 498177181:
                     switch (methodId)
                     {
-                        case 215269177:
+                        case -1221400782:
                             return @"ExecuteMessage";
                         case -1226735009:
                             return @"GetState";
@@ -386,25 +386,14 @@ namespace SystemInterfaces
                             return @"GetStateInReverseLog";
                         case 408823471:
                             return @"GetStateInIncrementalLog";
-                        case -1449456680:
-                            return @"ClearReverseLog";
-                        case 1771832207:
-                            return @"UpdateIncrementalLog";
-                        case -1900104612:
-                            return @"ReloadStateFromIncrementalLog";
                         case 380909025:
                             return @"GetSettings";
                         case -1645967079:
                             return @"LoadSettings";
+                        case 1667722533:
+                            return @"SetTracker";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 498177181 + @",methodId=" + methodId);
-                    }
-
-                case -1277021679:
-                    switch (methodId)
-                    {
-                        default:
-                            throw new global::System.NotImplementedException(@"interfaceId=" + -1277021679 + @",methodId=" + methodId);
                     }
 
                 default:
@@ -412,9 +401,9 @@ namespace SystemInterfaces
             }
         }
 
-        public global::System.Threading.Tasks.Task ExecuteMessage(global::SystemInterfaces.Model.StreamMessage msg)
+        public global::System.Threading.Tasks.Task ExecuteMessage(global::SystemInterfaces.Model.StreamMessage msg, global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage> stream)
         {
-            return base.InvokeMethodAsync<global::System.Object>(215269177, new global::System.Object[]{msg});
+            return base.InvokeMethodAsync<global::System.Object>(-1221400782, new global::System.Object[]{msg, stream});
         }
 
         public global::System.Threading.Tasks.Task<global::System.Int32> GetState(global::System.String key)
@@ -432,21 +421,6 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Int32>(408823471, new global::System.Object[]{key});
         }
 
-        public global::System.Threading.Tasks.Task ClearReverseLog()
-        {
-            return base.InvokeMethodAsync<global::System.Object>(-1449456680, null);
-        }
-
-        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> UpdateIncrementalLog()
-        {
-            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(1771832207, null);
-        }
-
-        public global::System.Threading.Tasks.Task ReloadStateFromIncrementalLog()
-        {
-            return base.InvokeMethodAsync<global::System.Object>(-1900104612, null);
-        }
-
         public global::System.Threading.Tasks.Task<global::SystemInterfaces.Model.OperatorSettings> GetSettings()
         {
             return base.InvokeMethodAsync<global::SystemInterfaces.Model.OperatorSettings>(380909025, null);
@@ -455,6 +429,11 @@ namespace SystemInterfaces
         public global::System.Threading.Tasks.Task LoadSettings(global::SystemInterfaces.Model.OperatorSettings operatorSettings)
         {
             return base.InvokeMethodAsync<global::System.Object>(-1645967079, new global::System.Object[]{operatorSettings});
+        }
+
+        public global::System.Threading.Tasks.Task SetTracker(global::SystemInterfaces.IBatchTracker tracker)
+        {
+            return base.InvokeMethodAsync<global::System.Object>(1667722533, new global::System.Object[]{tracker is global::Orleans.Grain ? tracker.AsReference<global::SystemInterfaces.IBatchTracker>() : tracker});
         }
     }
 
@@ -473,8 +452,8 @@ namespace SystemInterfaces
                 case 498177181:
                     switch (methodId)
                     {
-                        case 215269177:
-                            await ((global::SystemInterfaces.IStatefulOperator)grain).ExecuteMessage((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
+                        case -1221400782:
+                            await ((global::SystemInterfaces.IStatefulOperator)grain).ExecuteMessage((global::SystemInterfaces.Model.StreamMessage)arguments[0], (global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage>)arguments[1]);
                             return null;
                         case -1226735009:
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).GetState((global::System.String)arguments[0]);
@@ -482,28 +461,16 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).GetStateInReverseLog((global::System.String)arguments[0]);
                         case 408823471:
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).GetStateInIncrementalLog((global::System.String)arguments[0]);
-                        case -1449456680:
-                            await ((global::SystemInterfaces.IStatefulOperator)grain).ClearReverseLog();
-                            return null;
-                        case 1771832207:
-                            return await ((global::SystemInterfaces.IStatefulOperator)grain).UpdateIncrementalLog();
-                        case -1900104612:
-                            await ((global::SystemInterfaces.IStatefulOperator)grain).ReloadStateFromIncrementalLog();
-                            return null;
                         case 380909025:
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).GetSettings();
                         case -1645967079:
                             await ((global::SystemInterfaces.IStatefulOperator)grain).LoadSettings((global::SystemInterfaces.Model.OperatorSettings)arguments[0]);
                             return null;
+                        case 1667722533:
+                            await ((global::SystemInterfaces.IStatefulOperator)grain).SetTracker((global::SystemInterfaces.IBatchTracker)arguments[0]);
+                            return null;
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 498177181 + @",methodId=" + methodId);
-                    }
-
-                case -1277021679:
-                    switch (methodId)
-                    {
-                        default:
-                            throw new global::System.NotImplementedException(@"interfaceId=" + -1277021679 + @",methodId=" + methodId);
                     }
 
                 default:
@@ -569,7 +536,7 @@ namespace SystemInterfaces
 
         public override global::System.Boolean IsCompatible(global::System.Int32 interfaceId)
         {
-            return interfaceId == -1903779801 || interfaceId == -1277021679;
+            return interfaceId == -1903779801;
         }
 
         public override global::System.String GetMethodName(global::System.Int32 interfaceId, global::System.Int32 methodId)
@@ -579,17 +546,12 @@ namespace SystemInterfaces
                 case -1903779801:
                     switch (methodId)
                     {
-                        case 215269177:
+                        case -1221400782:
                             return @"ExecuteMessage";
+                        case 1749303927:
+                            return @"SetBatchTracker";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1903779801 + @",methodId=" + methodId);
-                    }
-
-                case -1277021679:
-                    switch (methodId)
-                    {
-                        default:
-                            throw new global::System.NotImplementedException(@"interfaceId=" + -1277021679 + @",methodId=" + methodId);
                     }
 
                 default:
@@ -597,9 +559,14 @@ namespace SystemInterfaces
             }
         }
 
-        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> ExecuteMessage(global::SystemInterfaces.Model.StreamMessage msg)
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> ExecuteMessage(global::SystemInterfaces.Model.StreamMessage msg, global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage> stream)
         {
-            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(215269177, new global::System.Object[]{msg});
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-1221400782, new global::System.Object[]{msg, stream});
+        }
+
+        public global::System.Threading.Tasks.Task SetBatchTracker(global::SystemInterfaces.IBatchTracker batchTracker)
+        {
+            return base.InvokeMethodAsync<global::System.Object>(1749303927, new global::System.Object[]{batchTracker is global::Orleans.Grain ? batchTracker.AsReference<global::SystemInterfaces.IBatchTracker>() : batchTracker});
         }
     }
 
@@ -618,17 +585,13 @@ namespace SystemInterfaces
                 case -1903779801:
                     switch (methodId)
                     {
-                        case 215269177:
-                            return await ((global::SystemInterfaces.IStatelessOperator)grain).ExecuteMessage((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
+                        case -1221400782:
+                            return await ((global::SystemInterfaces.IStatelessOperator)grain).ExecuteMessage((global::SystemInterfaces.Model.StreamMessage)arguments[0], (global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage>)arguments[1]);
+                        case 1749303927:
+                            await ((global::SystemInterfaces.IStatelessOperator)grain).SetBatchTracker((global::SystemInterfaces.IBatchTracker)arguments[0]);
+                            return null;
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1903779801 + @",methodId=" + methodId);
-                    }
-
-                case -1277021679:
-                    switch (methodId)
-                    {
-                        default:
-                            throw new global::System.NotImplementedException(@"interfaceId=" + -1277021679 + @",methodId=" + methodId);
                     }
 
                 default:
@@ -901,21 +864,16 @@ namespace OrleansGeneratedCode38151279
     {
         private readonly global::System.Func<global::SystemInterfaces.Model.BarrierMsgTrackingInfo, global::System.Guid> getField0;
         private readonly global::System.Action<global::SystemInterfaces.Model.BarrierMsgTrackingInfo, global::System.Guid> setField0;
-        private readonly global::System.Func<global::SystemInterfaces.Model.BarrierMsgTrackingInfo, global::System.Int32> getField1;
-        private readonly global::System.Action<global::SystemInterfaces.Model.BarrierMsgTrackingInfo, global::System.Int32> setField1;
-        private readonly global::System.Func<global::SystemInterfaces.Model.BarrierMsgTrackingInfo, global::System.Int32> getField2;
-        private readonly global::System.Action<global::SystemInterfaces.Model.BarrierMsgTrackingInfo, global::System.Int32> setField2;
+        private readonly global::System.Func<global::SystemInterfaces.Model.BarrierMsgTrackingInfo, global::System.Int32> getField3;
+        private readonly global::System.Action<global::SystemInterfaces.Model.BarrierMsgTrackingInfo, global::System.Int32> setField3;
         public OrleansCodeGenSystemInterfaces_Model_BarrierMsgTrackingInfoSerializer(global::Orleans.Serialization.IFieldUtils fieldUtils)
         {
             global::System.Reflection.FieldInfo field0 = typeof (global::SystemInterfaces.Model.BarrierMsgTrackingInfo).GetField(@"barrierID", (System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public));
             getField0 = (global::System.Func<global::SystemInterfaces.Model.BarrierMsgTrackingInfo, global::System.Guid>)fieldUtils.GetGetter(field0);
             setField0 = (global::System.Action<global::SystemInterfaces.Model.BarrierMsgTrackingInfo, global::System.Guid>)fieldUtils.GetReferenceSetter(field0);
-            global::System.Reflection.FieldInfo field1 = typeof (global::SystemInterfaces.Model.BarrierMsgTrackingInfo).GetField(@"numberOfClientSent", (System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public));
-            getField1 = (global::System.Func<global::SystemInterfaces.Model.BarrierMsgTrackingInfo, global::System.Int32>)fieldUtils.GetGetter(field1);
-            setField1 = (global::System.Action<global::SystemInterfaces.Model.BarrierMsgTrackingInfo, global::System.Int32>)fieldUtils.GetReferenceSetter(field1);
-            global::System.Reflection.FieldInfo field2 = typeof (global::SystemInterfaces.Model.BarrierMsgTrackingInfo).GetField(@"numberOfMessagesCompleted", (System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public));
-            getField2 = (global::System.Func<global::SystemInterfaces.Model.BarrierMsgTrackingInfo, global::System.Int32>)fieldUtils.GetGetter(field2);
-            setField2 = (global::System.Action<global::SystemInterfaces.Model.BarrierMsgTrackingInfo, global::System.Int32>)fieldUtils.GetReferenceSetter(field2);
+            global::System.Reflection.FieldInfo field3 = typeof (global::SystemInterfaces.Model.BarrierMsgTrackingInfo).GetField(@"numberOfMessagesCompleted", (System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public));
+            getField3 = (global::System.Func<global::SystemInterfaces.Model.BarrierMsgTrackingInfo, global::System.Int32>)fieldUtils.GetGetter(field3);
+            setField3 = (global::System.Action<global::SystemInterfaces.Model.BarrierMsgTrackingInfo, global::System.Int32>)fieldUtils.GetReferenceSetter(field3);
         }
 
         [global::Orleans.CodeGeneration.CopierMethodAttribute]
@@ -924,9 +882,10 @@ namespace OrleansGeneratedCode38151279
             global::SystemInterfaces.Model.BarrierMsgTrackingInfo input = ((global::SystemInterfaces.Model.BarrierMsgTrackingInfo)original);
             global::SystemInterfaces.Model.BarrierMsgTrackingInfo result = (global::SystemInterfaces.Model.BarrierMsgTrackingInfo)global::System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof (global::SystemInterfaces.Model.BarrierMsgTrackingInfo));
             context.RecordCopy(original, result);
+            result.BatchID = input.BatchID;
+            result.numberOfClientSent = input.numberOfClientSent;
             setField0(result, (global::System.Guid)context.DeepCopyInner(getField0(input)));
-            setField1(result, getField1(input));
-            setField2(result, getField2(input));
+            setField3(result, getField3(input));
             return result;
         }
 
@@ -934,9 +893,10 @@ namespace OrleansGeneratedCode38151279
         public void Serializer(global::System.Object untypedInput, global::Orleans.Serialization.ISerializationContext context, global::System.Type expected)
         {
             global::SystemInterfaces.Model.BarrierMsgTrackingInfo input = (global::SystemInterfaces.Model.BarrierMsgTrackingInfo)untypedInput;
+            context.SerializeInner(input.BatchID, typeof (global::System.Int32));
+            context.SerializeInner(input.numberOfClientSent, typeof (global::System.Int32));
             context.SerializeInner(getField0(input), typeof (global::System.Guid));
-            context.SerializeInner(getField1(input), typeof (global::System.Int32));
-            context.SerializeInner(getField2(input), typeof (global::System.Int32));
+            context.SerializeInner(getField3(input), typeof (global::System.Int32));
         }
 
         [global::Orleans.CodeGeneration.DeserializerMethodAttribute]
@@ -944,9 +904,10 @@ namespace OrleansGeneratedCode38151279
         {
             global::SystemInterfaces.Model.BarrierMsgTrackingInfo result = (global::SystemInterfaces.Model.BarrierMsgTrackingInfo)global::System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof (global::SystemInterfaces.Model.BarrierMsgTrackingInfo));
             context.RecordObject(result);
+            result.BatchID = (global::System.Int32)context.DeserializeInner(typeof (global::System.Int32));
+            result.numberOfClientSent = (global::System.Int32)context.DeserializeInner(typeof (global::System.Int32));
             setField0(result, (global::System.Guid)context.DeserializeInner(typeof (global::System.Guid)));
-            setField1(result, (global::System.Int32)context.DeserializeInner(typeof (global::System.Int32)));
-            setField2(result, (global::System.Int32)context.DeserializeInner(typeof (global::System.Int32)));
+            setField3(result, (global::System.Int32)context.DeserializeInner(typeof (global::System.Int32)));
             return (global::SystemInterfaces.Model.BarrierMsgTrackingInfo)result;
         }
     }
@@ -989,7 +950,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen5ada9db8edFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGen9483f84b62FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {

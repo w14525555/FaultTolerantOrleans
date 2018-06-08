@@ -29,8 +29,8 @@ namespace GrainImplementation
             }
             else if (msg.BatchID >= 0)
             {
+                PrettyConsole.Line("Tracking new batch ID " + msg.BatchID);
                 StreamBatch newBatch = new StreamBatch(msg.BatchID);
-                PrettyConsole.Line("Tracking batch ID " + msg.BatchID);
                 newBatch.AddBarrierMsgTrackingHelper(msg.barrierInfo);
                 batchTrackingMap.Add(msg.BatchID, newBatch);
             }
@@ -43,22 +43,23 @@ namespace GrainImplementation
         }
 
         //Should find the target task in the currentBatch
-        public Task CompleteTracking(StreamMessage msg)
+        public Task CompleteTracking(BarrierMsgTrackingInfo msgInfo)
         {
-            if (!batchTrackingMap.ContainsKey(msg.BatchID))
+            if (!batchTrackingMap.ContainsKey(msgInfo.BatchID))
             {
                 throw new InvalidOperationException("The key is not exist");
             }
             else
             {
-                PrettyConsole.Line("Finish Tracking batchID: " + msg.BatchID);
-                StreamBatch targetBatch = batchTrackingMap[msg.BatchID];
-                targetBatch.CompleteOneMessageTracking(msg);
+                PrettyConsole.Line("Finish Tracking one message in batchID: " + msgInfo.BatchID);
+                StreamBatch targetBatch = batchTrackingMap[msgInfo.BatchID];
+                targetBatch.CompleteOneMessageTracking(msgInfo);
                 if (targetBatch.readForCommitting)
                 {
                     if (batchManager != null)
                     {
-                        batchManager.StartCommit(msg.BatchID);
+                        PrettyConsole.Line("Commit!");
+                        //batchManager.StartCommit(msg.BatchID);
                         //batchTrackingMap.Remove(msg.BatchID);
                     }
                 }

@@ -43,9 +43,8 @@ namespace SystemInterfaces.Model
             barrierList.Add(barrierInfo);
         }
 
-        public void CompleteOneMessageTracking(StreamMessage msg)
+        public void CompleteOneMessageTracking(BarrierMsgTrackingInfo msgInfo)
         {
-            BarrierMsgTrackingInfo msgInfo = msg.barrierInfo;
             foreach (BarrierMsgTrackingInfo item in barrierList)
             {
                 if (Guid.Equals(item.GetID(), msgInfo.GetID()))

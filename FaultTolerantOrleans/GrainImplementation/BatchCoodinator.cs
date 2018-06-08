@@ -11,9 +11,9 @@ namespace GrainImplementation
     public class BatchCoodinator : Grain, IBatchCoordinator
     {
         //A Batch Manager should send batch barrier 
-        private StreamMessage barrierMsg = new StreamMessage(Constants.Barrier_Key, Constants.System_Value);
-        private StreamMessage commitMsg = new StreamMessage(Constants.Commit_Key, Constants.System_Value);
-        private StreamMessage recoveryMsg = new StreamMessage(Constants.Recovery_Key, 0.ToString());
+        private StreamMessage barrierMsg = new StreamMessage(Constants.System_Key, Constants.Barrier_Value);
+        private StreamMessage commitMsg = new StreamMessage(Constants.System_Key, Constants.Commit_Value);
+        private StreamMessage recoveryMsg = new StreamMessage(Constants.System_Key, Constants.Recovery_Value);
 
         private const int Barrier_Interval = 10;
         private IDisposable disposable;

@@ -1,12 +1,13 @@
 ﻿using Orleans;
+using Orleans.Streams;
 using System.Threading.Tasks;
 using SystemInterfaces.Model;
 
 namespace SystemInterfaces
 {
-    public interface IStatefulOperator: IGrainWithStringKey
+    public interface IStatefulOperator: IGrainWithGuidKey
     {
-        Task ExecuteMessage(StreamMessage msg);
+        Task ExecuteMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream);
 
         //Method that used for testing. 
         Task<int> GetState(string key);
@@ -15,17 +16,19 @@ namespace SystemInterfaces
 
         Task<int> GetStateInIncrementalLog(string key);
 
-        Task ClearReverseLog();
+        //Task ClearReverseLog();
 
-        Task<Task> UpdateIncrementalLog();
+        //Task<Task> UpdateIncrementalLog();
 
         //Task RevertStateFromReverseLog();
 
-        Task ReloadStateFromIncrementalLog();
+        //Task ReloadStateFromIncrementalLog();
 
         Task<OperatorSettings> GetSettings();
 
         Task LoadSettings(OperatorSettings operatorSettings);
+
+        Task SetTracker(IBatchTracker tracker);
 
 
     }

@@ -5,7 +5,8 @@ namespace SystemInterfaces.Model
     public class BarrierMsgTrackingInfo
     {
         private Guid barrierID;
-        private int numberOfClientSent;
+        public int BatchID { get; set; }
+        public int numberOfClientSent { get; set; }
         private int numberOfMessagesCompleted;
 
         public BarrierMsgTrackingInfo(Guid id, int num)

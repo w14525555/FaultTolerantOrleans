@@ -12,7 +12,7 @@ namespace SystemInterfaces
     {
         Task TrackingBarrierMessages(StreamMessage msg);
 
-        Task CompleteTracking(StreamMessage msg);
+        Task CompleteTracking(BarrierMsgTrackingInfo msgInfo);
 
         Task<bool> IsReadForCommit(int batchID);
 

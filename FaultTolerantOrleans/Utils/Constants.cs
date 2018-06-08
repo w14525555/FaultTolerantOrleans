@@ -8,10 +8,10 @@ namespace Utils
         public const string CharRoomStreamNameSpace = "YOLO";
         public const string ClusterId = "chatroom-deployment1";
         public const string ServiceId = "ChatRoomApp";
-        public const string Barrier_Key = "Barrier";
-        public const string System_Value = "System";
-        public const string Commit_Key = "Commit";
-        public const string Recovery_Key = "Recovery";
+        public const string Barrier_Value = "Barrier";
+        public const string System_Key = "System";
+        public const string Commit_Value = "Commit";
+        public const string Recovery_Value = "Recovery";
 
 	}
 }
