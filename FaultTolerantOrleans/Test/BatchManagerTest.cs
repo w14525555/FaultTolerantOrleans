@@ -12,7 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using Moq;
 using SystemInterfaces;
-using System;
 
 namespace Test
 {
@@ -31,7 +30,8 @@ namespace Test
         private static string[] members;
         private static StreamMessage barrierMsg = new StreamMessage(Constants.System_Key, Constants.Barrier_Value);
         private static StreamMessage commitMsg = new StreamMessage(Constants.System_Key, Constants.Barrier_Value);
-
+        private static StreamMessage wordCountMessage1 = new StreamMessage("Word Count Example 1", "go go go follow me");
+        private static StreamMessage wordCountMessage2 = new StreamMessage("Word Count Example 2", "restart the game");
 
         [TestInitialize]
         public async Task SetUpAsync()
@@ -62,13 +62,15 @@ namespace Test
             Assert.AreEqual(1, 1);
         }
 
+
+        //Batch Processing Testsing 
         [TestMethod]
         public async Task TestEmtyBatchSentThenTheBatchIsReadForCommit()
         {
             await SetUpSource();
-            var batchTracker = client.GetGrain<IBatchTracker>(Constants.Tracker);
             barrierMsg.BatchID = 0;
             await source.ProduceMessageAsync(barrierMsg);
+            var batchTracker = client.GetGrain<IBatchTracker>(Constants.Tracker);
             bool isCurrentBatchCompleted = await batchTracker.IsReadForCommit(barrierMsg.BatchID);
             Assert.AreEqual(true, isCurrentBatchCompleted);
         }
