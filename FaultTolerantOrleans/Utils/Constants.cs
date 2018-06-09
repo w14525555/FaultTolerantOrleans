@@ -12,6 +12,8 @@ namespace Utils
         public const string System_Key = "System";
         public const string Commit_Value = "Commit";
         public const string Recovery_Value = "Recovery";
+        public const string Tracker = "Tracker";
+        public const string Coordinator = "Coordinator";
 
 	}
 }

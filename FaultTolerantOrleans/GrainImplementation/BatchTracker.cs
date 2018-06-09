@@ -10,15 +10,9 @@ namespace GrainImplementation
 {
     public class BatchTracker : Grain, IBatchTracker
     {
-        private Dictionary<int, StreamBatch> batchTrackingMap;
+        private Dictionary<int, StreamBatch> batchTrackingMap = new Dictionary<int, StreamBatch>();
+        private List<int> completedBatch = new List<int>();
         private IBatchCoordinator batchManager;
-
-        public override Task OnActivateAsync()
-        {
-            //A batch map <BatchID, batch>
-            batchTrackingMap = new Dictionary<int, StreamBatch>();
-            return base.OnActivateAsync();
-        }
 
         public Task TrackingBarrierMessages(StreamMessage msg)
         {
@@ -59,10 +53,24 @@ namespace GrainImplementation
                     if (batchManager != null)
                     {
                         PrettyConsole.Line("Commit!");
+                        SetBatchAsCompleted(msgInfo.BatchID);
                         //batchManager.StartCommit(msg.BatchID);
                         batchTrackingMap.Remove(msgInfo.BatchID);
                     }
                 }
+            }
+            return Task.CompletedTask;
+        }
+
+        private Task SetBatchAsCompleted(int BatchID)
+        {
+            if (completedBatch.Contains(BatchID))
+            {
+                throw new InvalidOperationException();
+            }
+            else
+            {
+                completedBatch.Add(BatchID);
             }
             return Task.CompletedTask;
         }
@@ -73,15 +81,16 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
+        //Used For test purpose
         public Task<bool> IsReadForCommit(int batchID)
         {
-            if (batchTrackingMap.ContainsKey(batchID))
+            if (completedBatch.Contains(batchID))
             {
-                return Task.FromResult(batchTrackingMap[batchID].readForCommitting);
+                return Task.FromResult(true);
             }
             else
             {
-                throw new InvalidOperationException();
+                return Task.FromResult(false);
             }
         }
 

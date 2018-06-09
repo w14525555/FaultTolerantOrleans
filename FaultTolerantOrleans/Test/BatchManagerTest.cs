@@ -20,9 +20,8 @@ namespace Test
     public class BatchManagerTest
     {
         private ISiloHost silo;
-        private IClusterClient statefulClient;
-        private IStreamSource room;
-        private IStatefulOperator statefulOperator;
+        private IClusterClient client;
+        private IStreamSource source;
         private StatefulStreamObserver statefulStreamObserver;
         private static string joinedChannel = "general";
         private static string userName = "You Wu";
@@ -30,8 +29,8 @@ namespace Test
         private const string INITIAL_KEY = "initialKey";
         private const string INITIAL_VALUE = "initialValue";
         private static string[] members;
-        private static StreamMessage barrierMsg = new StreamMessage(Constants.Barrier_Value, Constants.System_Key);
-        private static StreamMessage commitMsg = new StreamMessage(Constants.Commit_Value, Constants.System_Key);
+        private static StreamMessage barrierMsg = new StreamMessage(Constants.System_Key, Constants.Barrier_Value);
+        private static StreamMessage commitMsg = new StreamMessage(Constants.System_Key, Constants.Barrier_Value);
 
 
         [TestInitialize]
@@ -48,10 +47,12 @@ namespace Test
             await StopSilo();
         }
 
+
+        //Set Up Testing 
         [TestMethod]
         public void TestSiloAndClinetInitAsync()
         {
-            Assert.AreEqual(statefulClient.IsInitialized, true);
+            Assert.AreEqual(client.IsInitialized, true);
         }
 
         [TestMethod]
@@ -59,6 +60,17 @@ namespace Test
         {
             await SetUpSource();
             Assert.AreEqual(1, 1);
+        }
+
+        [TestMethod]
+        public async Task TestEmtyBatchSentThenTheBatchIsReadForCommit()
+        {
+            await SetUpSource();
+            var batchTracker = client.GetGrain<IBatchTracker>(Constants.Tracker);
+            barrierMsg.BatchID = 0;
+            await source.ProduceMessageAsync(barrierMsg);
+            bool isCurrentBatchCompleted = await batchTracker.IsReadForCommit(barrierMsg.BatchID);
+            Assert.AreEqual(true, isCurrentBatchCompleted);
         }
 
         //SetUp Functions 
@@ -93,8 +105,8 @@ namespace Test
 
         private async Task<Task> StartClient()
         {
-            statefulClient = await GetClient();
-            await statefulClient.Connect();
+            client = await GetClient();
+            await client.Connect();
             
             return Task.CompletedTask;
         }
@@ -117,22 +129,21 @@ namespace Test
 
         private Task StopClient()
         {
-            statefulClient.Close().Wait();
+            client.Close().Wait();
             return Task.CompletedTask;
         }
 
         private async Task<Task> SetUpSource()
         {
-            room = statefulClient.GetGrain<IStreamSource>(joinedChannel);
-            var streamId = await room.Join(userName);
-            var stream = statefulClient.GetStreamProvider(Constants.ChatRoomStreamProvider)
+            source = client.GetGrain<IStreamSource>(joinedChannel);
+            var streamId = await source.Join(userName);
+            var stream = client.GetStreamProvider(Constants.ChatRoomStreamProvider)
                 .GetStream<StreamMessage>(streamId, Constants.CharRoomStreamNameSpace);
             //subscribe to the stream to receiver furthur messages sent to the chatroom
-            statefulOperator = statefulClient.GetGrain<IStatefulOperator>(Guid.NewGuid());
             Mock<ILogger> mockLogger = new Mock<ILogger>();
             statefulStreamObserver = new StatefulStreamObserver(mockLogger.Object);
             await stream.SubscribeAsync(statefulStreamObserver);
-            members = await room.GetMembers();
+            members = await source.GetMembers();
             return Task.CompletedTask;
         }
 

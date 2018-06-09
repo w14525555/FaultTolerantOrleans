@@ -16,7 +16,7 @@ namespace GrainImplementation
 		private readonly List<string> onlineMembers = new List<string>(10);
         private HashSet<IStatelessOperator> statelessOperators;
 
-        private IBatchCoordinator batchManager;
+        private IBatchCoordinator batchCoordinator;
         private IBatchTracker batchTracker;
 		private IAsyncStream<StreamMessage> stream;
         private int currentBatchID;
@@ -50,16 +50,16 @@ namespace GrainImplementation
 
         private Task SetUpBatchManager()
         {
-            batchManager = GrainFactory.GetGrain<IBatchCoordinator>("Manager");
-            batchManager.SetChannelAndRegisterTimer(stream, this);
+            batchCoordinator = GrainFactory.GetGrain<IBatchCoordinator>(Constants.Coordinator);
+            batchCoordinator.SetChannelAndRegisterTimer(stream, this);
 
             return Task.CompletedTask;
         }
 
         private Task SetUpBatchTracker()
         {
-            batchTracker = GrainFactory.GetGrain<IBatchTracker>("Tracker");
-            batchTracker.SetBatchManager(batchManager);
+            batchTracker = GrainFactory.GetGrain<IBatchTracker>(Constants.Tracker);
+            batchTracker.SetBatchManager(batchCoordinator);
             return Task.CompletedTask;
         }
 
@@ -162,7 +162,7 @@ namespace GrainImplementation
 
         public Task<IBatchCoordinator> GetBatchManager()
         {
-            return Task.FromResult(batchManager);
+            return Task.FromResult(batchCoordinator);
         }
 
         public Task<IBatchTracker> GetBatchTracker()
