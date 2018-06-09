@@ -17,5 +17,6 @@ namespace SystemInterfaces
         //Use for testing purpose
         Task<IBatchCoordinator> GetBatchManager();
         Task<IBatchTracker> GetBatchTracker();
+        Task<int> GetState(StreamMessage msg);
     }
 }

@@ -65,7 +65,7 @@ namespace Test
         }
 
 
-        //Batch Processing Testsing 
+        //Batch Processing Tests
         [TestMethod]
         public async Task TestEmtyBatchSentThenTheBatchIsReadForCommit()
         {
@@ -90,6 +90,15 @@ namespace Test
             Assert.AreEqual(true, isCurrentBatchCompleted);
         }
 
+        //StateManagement Tests
+        [TestMethod]
+        public async Task TestWordCountStateInDownStreamGrains()
+        {
+            await SetUpSource();
+            await source.ProduceMessageAsync(wordCountMessage1);
+            int count = await source.GetState(new StreamMessage(wordCountMessage1.Key, "go"));
+            Assert.AreEqual(3, count);
+        }
         //SetUp Functions 
 
         private Task StartSilo()

@@ -170,5 +170,17 @@ namespace GrainImplementation
             return Task.FromResult(batchTracker);
         }
 
+        public async Task<int> GetState(StreamMessage msg)
+        {
+            foreach(var op in statelessOperators)
+            {
+                var count = await op.GetState(msg.Value);
+                if (count != -1)
+                {
+                    return await Task.FromResult(count);
+                }
+            }
+            return await Task.FromResult(-2);
+        }
     }
 }

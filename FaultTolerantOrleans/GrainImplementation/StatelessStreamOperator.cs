@@ -111,5 +111,17 @@ namespace SystemImplementation
             return Task.CompletedTask;
         }
 
+        public async Task<int> GetState(string word)
+        {
+            foreach(var op in statefulOperators)
+            {
+                var count = await op.GetState(word);
+                if (count != -1)
+                {
+                    return await Task.FromResult(count);
+                }
+            }
+            return await Task.FromResult(-1);
+        }
     }
 }
