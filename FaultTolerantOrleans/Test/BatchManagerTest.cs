@@ -21,8 +21,10 @@ namespace Test
         private ISiloHost silo;
         private IClusterClient client;
         private IStreamSource source;
+        private IStreamSource source2;
         private StatefulStreamObserver statefulStreamObserver;
         private static string joinedChannel = "general";
+        private static string joinedChannel2 = "second";
         private static string userName = "You Wu";
         private const string NOT_EXIST = "Not Exist";
         private const string INITIAL_KEY = "initialKey";
@@ -70,6 +72,19 @@ namespace Test
             await SetUpSource();
             barrierMsg.BatchID = 0;
             await source.ProduceMessageAsync(barrierMsg);
+            var batchTracker = client.GetGrain<IBatchTracker>(Constants.Tracker);
+            bool isCurrentBatchCompleted = await batchTracker.IsReadForCommit(barrierMsg.BatchID);
+            Assert.AreEqual(true, isCurrentBatchCompleted);
+        }
+
+        [TestMethod]
+        public async Task TestMultipleSourcesReadForCommit()
+        {
+            await SetUpSource();
+            await SetUpSource2();
+            barrierMsg.BatchID = 0;
+            await source.ProduceMessageAsync(barrierMsg);
+            await source2.ProduceMessageAsync(barrierMsg);
             var batchTracker = client.GetGrain<IBatchTracker>(Constants.Tracker);
             bool isCurrentBatchCompleted = await batchTracker.IsReadForCommit(barrierMsg.BatchID);
             Assert.AreEqual(true, isCurrentBatchCompleted);
@@ -146,6 +161,20 @@ namespace Test
             statefulStreamObserver = new StatefulStreamObserver(mockLogger.Object);
             await stream.SubscribeAsync(statefulStreamObserver);
             members = await source.GetMembers();
+            return Task.CompletedTask;
+        }
+
+        private async Task<Task> SetUpSource2()
+        {
+            source2 = client.GetGrain<IStreamSource>(joinedChannel2);
+            var streamId = await source2.Join(userName);
+            var stream = client.GetStreamProvider(Constants.ChatRoomStreamProvider)
+                .GetStream<StreamMessage>(streamId, Constants.CharRoomStreamNameSpace);
+            //subscribe to the stream to receiver furthur messages sent to the chatroom
+            Mock<ILogger> mockLogger = new Mock<ILogger>();
+            statefulStreamObserver = new StatefulStreamObserver(mockLogger.Object);
+            await stream.SubscribeAsync(statefulStreamObserver);
+            members = await source2.GetMembers();
             return Task.CompletedTask;
         }
 
