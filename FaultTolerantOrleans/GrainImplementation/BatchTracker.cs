@@ -51,7 +51,7 @@ namespace GrainImplementation
             }
             else
             {
-                //PrettyConsole.Line("Finish Tracking one message in batchID: " + msgInfo.BatchID);
+                PrettyConsole.Line("Finish Tracking one message in batchID: " + msgInfo.BatchID);
                 StreamBatch targetBatch = batchTrackingMap[msgInfo.BatchID];
                 targetBatch.CompleteOneMessageTracking(msgInfo);
                 if (targetBatch.readForCommitting)

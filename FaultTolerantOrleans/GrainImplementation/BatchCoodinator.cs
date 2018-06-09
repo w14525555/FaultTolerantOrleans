@@ -1,6 +1,7 @@
 ﻿using Orleans;
 using Orleans.Streams;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using SystemInterfaces;
 using SystemInterfaces.Model;
@@ -19,7 +20,7 @@ namespace GrainImplementation
         private IDisposable disposable;
         private TimeSpan barrierTimeInterval = TimeSpan.FromSeconds(Barrier_Interval);
 
-        private IStreamSource source;
+        private List<IStreamSource> sources = new List<IStreamSource>();
         private IBatchTracker tracker;
        
 
@@ -38,14 +39,17 @@ namespace GrainImplementation
         public Task SetChannelAndRegisterTimer(IAsyncStream<StreamMessage> stream, IStreamSource source)
         {
             disposable = RegisterTimer(SendBarrierOnPeriodOfTime, null, barrierTimeInterval, barrierTimeInterval);
-            this.source = source;
+            sources.Add(source);
             return Task.CompletedTask;
         }
 
         private async Task<Task> SendBarrierOnPeriodOfTime(object arg)
         {
             await SetBatchID(barrierMsg);
-            await source.ProduceMessageAsync(barrierMsg);
+            foreach (IStreamSource source in sources)
+            {
+                await source.ProduceMessageAsync(barrierMsg);
+            }
             currentBatchID++;
             return Task.CompletedTask;
         }
@@ -66,7 +70,10 @@ namespace GrainImplementation
         {
             commitMsg.BatchID = ID;
             committedID = ID;
-            source.ProduceMessageAsync(commitMsg);
+            foreach (IStreamSource source in sources)
+            {
+                source.ProduceMessageAsync(commitMsg);
+            }
             return Task.CompletedTask;
         }
 
@@ -83,7 +90,7 @@ namespace GrainImplementation
             disposable.Dispose();
             //2. Broadcast the rollback and reset batchID
             recoveryMsg.Value = committedID.ToString();
-            source.ProduceMessageAsync(recoveryMsg);
+            //source.ProduceMessageAsync(recoveryMsg);
             //3. Clean information in the tracker()
             tracker.CleanUpOnRecovery();
             //5. Make sure everything is right

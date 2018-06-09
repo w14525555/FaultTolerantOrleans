@@ -173,7 +173,9 @@ namespace OrleansClient
             PrettyConsole.Line($"Joining to channel {channelName}");
             joinedChannel = channelName;
             var room = client.GetGrain<IStreamSource>(joinedChannel);
+            //var room2 = client.GetGrain<IStreamSource>("new");
             var streamId = await room.Join(userName);
+            //var streamId2 = await room2.Join(userName);
             var stream = client.GetStreamProvider(Constants.ChatRoomStreamProvider)
                 .GetStream<StreamMessage>(streamId, Constants.CharRoomStreamNameSpace);
             //subscribe to the stream to receiver furthur messages sent to the chatroom
