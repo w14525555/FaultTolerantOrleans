@@ -25,7 +25,9 @@ namespace GrainImplementation
         {
             //Add a initial state for testing usage
             operatorSettings = new OperatorSettings();
-            operatorSettings.incrementalLogAddress = @"D:\batch.dat";
+            Random random = new Random();
+            var name = @"D:\grain"+ Guid.NewGuid().ToString() + ".dat";
+            operatorSettings.incrementalLogAddress = name;
             return Task.CompletedTask;
         }
 
@@ -80,7 +82,7 @@ namespace GrainImplementation
                 //Commit Here 
                 PrettyConsole.Line(IdentityString + " Send comit message for BatchID: " + msg.BatchID);
                 ClearReverseLog();
-                //UpdateIncrementalLog();
+                UpdateIncrementalLog();
             }
             return Task.CompletedTask;
         }
