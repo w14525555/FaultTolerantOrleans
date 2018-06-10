@@ -26,7 +26,7 @@ namespace GrainImplementation
             //Add a initial state for testing usage
             operatorSettings = new OperatorSettings();
             Random random = new Random();
-            var name = @"D:\grain"+ Guid.NewGuid().ToString() + ".dat";
+            var name = @"D:\grainStates\grain" + Guid.NewGuid().ToString() + ".dat";
             operatorSettings.incrementalLogAddress = name;
             return Task.CompletedTask;
         }
