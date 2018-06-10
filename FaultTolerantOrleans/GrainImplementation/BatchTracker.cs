@@ -21,7 +21,7 @@ namespace GrainImplementation
                 var targetBatch = batchTrackingMap[msg.BatchID];
                 targetBatch.AddBarrierMsgTrackingHelper(msg.barrierInfo);
             }
-            else if (msg.BatchID >= 0)
+            else if (msg.BatchID >= 0 && !completedBatch.Contains(msg.BatchID))
             {
                 PrettyConsole.Line("Tracking new batch ID " + msg.BatchID);
                 StreamBatch newBatch = new StreamBatch(msg.BatchID);
@@ -52,9 +52,9 @@ namespace GrainImplementation
                 {
                     if (batchManager != null)
                     {
-                        PrettyConsole.Line("Commit!");
+                        PrettyConsole.Line("Commit Batch: " + msgInfo.BatchID);
                         SetBatchAsCompleted(msgInfo.BatchID);
-                        //batchManager.StartCommit(msg.BatchID);
+                        batchManager.StartCommit(msgInfo.BatchID);
                         batchTrackingMap.Remove(msgInfo.BatchID);
                     }
                 }
