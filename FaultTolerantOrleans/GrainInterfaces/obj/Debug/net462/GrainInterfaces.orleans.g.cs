@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGenebd220a61eFeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGene91856919cFeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -864,7 +864,7 @@ namespace OrleansGeneratedCode38151279
             result.Key = input.Key;
             result.Value = input.Value;
             result.barrierInfo = (global::SystemInterfaces.Model.BarrierMsgTrackingInfo)context.DeepCopyInner(input.barrierInfo);
-            result.operation = input.operation;
+            result.messageType = input.messageType;
             return result;
         }
 
@@ -877,7 +877,7 @@ namespace OrleansGeneratedCode38151279
             context.SerializeInner(input.Key, typeof (global::System.String));
             context.SerializeInner(input.Value, typeof (global::System.String));
             context.SerializeInner(input.barrierInfo, typeof (global::SystemInterfaces.Model.BarrierMsgTrackingInfo));
-            context.SerializeInner(input.operation, typeof (global::SystemInterfaces.Model.Operation));
+            context.SerializeInner(input.messageType, typeof (global::SystemInterfaces.Model.MessageType));
         }
 
         [global::Orleans.CodeGeneration.DeserializerMethodAttribute]
@@ -890,7 +890,7 @@ namespace OrleansGeneratedCode38151279
             result.Key = (global::System.String)context.DeserializeInner(typeof (global::System.String));
             result.Value = (global::System.String)context.DeserializeInner(typeof (global::System.String));
             result.barrierInfo = (global::SystemInterfaces.Model.BarrierMsgTrackingInfo)context.DeserializeInner(typeof (global::SystemInterfaces.Model.BarrierMsgTrackingInfo));
-            result.operation = (global::SystemInterfaces.Model.Operation)context.DeserializeInner(typeof (global::SystemInterfaces.Model.Operation));
+            result.messageType = (global::SystemInterfaces.Model.MessageType)context.DeserializeInner(typeof (global::SystemInterfaces.Model.MessageType));
             return (global::SystemInterfaces.Model.StreamMessage)result;
         }
     }
@@ -986,7 +986,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGenebd220a61eFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGene91856919cFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {
@@ -3899,7 +3899,7 @@ namespace OrleansGeneratedCode
             feature.AddKnownType(@"SystemInterfaces.Model.OperatorSettings,GrainInterfaces", @"SystemInterfaces.Model.OperatorSettings");
             feature.AddKnownType(@"SystemInterfaces.Model.StreamBatch,GrainInterfaces", @"SystemInterfaces.Model.StreamBatch");
             feature.AddKnownType(@"SystemInterfaces.Model.StreamMessage,GrainInterfaces", @"SystemInterfaces.Model.StreamMessage");
-            feature.AddKnownType(@"SystemInterfaces.Model.Operation,GrainInterfaces", @"SystemInterfaces.Model.Operation");
+            feature.AddKnownType(@"SystemInterfaces.Model.MessageType,GrainInterfaces", @"SystemInterfaces.Model.MessageType");
         }
     }
 }

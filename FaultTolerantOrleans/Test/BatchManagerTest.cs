@@ -30,10 +30,10 @@ namespace Test
         private const string INITIAL_KEY = "initialKey";
         private const string INITIAL_VALUE = "initialValue";
         private static string[] members;
-        private static StreamMessage barrierMsg = new StreamMessage(Constants.System_Key, Constants.Barrier_Value);
-        private static StreamMessage commitMsg = new StreamMessage(Constants.System_Key, Constants.Commit_Value);
-        private static StreamMessage wordCountMessage1 = new StreamMessage("Word Count Example 1", "go go go follow me");
-        private static StreamMessage wordCountMessage2 = new StreamMessage("Word Count Example 2", "restart the game");
+        private StreamMessage barrierMsg = new StreamMessage(Constants.System_Key, Constants.Barrier_Value);
+        private StreamMessage commitMsg = new StreamMessage(Constants.System_Key, Constants.Commit_Value);
+        private StreamMessage wordCountMessage1 = new StreamMessage("Word Count Example 1", "go go go follow me");
+        private StreamMessage wordCountMessage2 = new StreamMessage("Word Count Example 2", "restart the game");
 
         [TestInitialize]
         public async Task SetUpAsync()
@@ -107,6 +107,18 @@ namespace Test
             await source.ProduceMessageAsync(wordCountMessage1);
             int count = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
             Assert.AreEqual(1, count);
+        }
+
+        //Message buffer Tests
+        [TestMethod]
+        public async Task TestMessageBufferTheMessage()
+        {
+            await SetUpSource();
+            wordCountMessage1.BatchID = 2;
+            wordCountMessage1.messageType = MessageType.Test;
+            await source.ProduceMessageAsync(wordCountMessage1);
+            int count = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
+            Assert.AreEqual(-2, count);
         }
 
         //Reverse Log Tests

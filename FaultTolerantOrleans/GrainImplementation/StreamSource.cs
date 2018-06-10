@@ -94,7 +94,10 @@ namespace GrainImplementation
             if (msg.Key != Constants.System_Key)
             {
                 //At first find a operator by hashing
-                msg.BatchID = currentBatchID;
+                if (msg.messageType != MessageType.Test)
+                {
+                    msg.BatchID = currentBatchID;
+                }
                 IStatelessOperator statelessOp = await SystemImplementation.PartitionFunction.PartitionStatelessByKey(msg.Key, statelessOperators);
                 await statelessOp.ExecuteMessage(msg, stream);
             }

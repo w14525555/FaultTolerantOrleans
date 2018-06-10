@@ -52,7 +52,9 @@ namespace SystemImplementation
             foreach (string word in words)
             {
                 IStatefulOperator statefulOperator = await SystemImplementation.PartitionFunction.PartitionStatefulByKey(msg.Key, statefulOperators);
-                await statefulOperator.ExecuteMessage(new StreamMessage(word, null), stream);
+                StreamMessage newMessage = new StreamMessage(word, null);
+                newMessage.BatchID = msg.BatchID;
+                await statefulOperator.ExecuteMessage(newMessage, stream);
             }
             return Task.CompletedTask;
         }

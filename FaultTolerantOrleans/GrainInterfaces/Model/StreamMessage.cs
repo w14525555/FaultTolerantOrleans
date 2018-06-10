@@ -9,7 +9,7 @@ namespace SystemInterfaces.Model
 		public string Key { get; set; } = "Alexey";
 		public string Value { get; set; }
         public int BatchID { get; set; }
-        public Operation operation { get; set; }
+        public MessageType messageType { get; set; }
         public BarrierMsgTrackingInfo barrierInfo { get; set; }
 
 		public StreamMessage(string key, string value)
@@ -19,11 +19,9 @@ namespace SystemInterfaces.Model
         }
     }
 
-    public enum Operation
+    public enum MessageType
     {
         Null,
-        Update,
-        Delete,
-        Insert
+        Test,
     }
 }

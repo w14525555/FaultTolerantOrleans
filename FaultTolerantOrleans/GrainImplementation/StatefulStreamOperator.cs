@@ -18,14 +18,15 @@ namespace GrainImplementation
         private Dictionary<string, int> statesMap = new Dictionary<string, int>();
         private Dictionary<string, int> reverseLog = new Dictionary<string, int>();
         private Dictionary<string, int> incrementalLog = new Dictionary<string, int>();
+        private List<StreamMessage> messageBuffer = new List<StreamMessage>();
         private IBatchTracker batchTracker;
-        public OperatorSettings operatorSettings;
+        private int currentBatchID;
+        public OperatorSettings operatorSettings = new OperatorSettings();
 
         public override Task OnActivateAsync()
         {
             //Add a initial state for testing usage
-            operatorSettings = new OperatorSettings();
-            Random random = new Random();
+            currentBatchID = 0;
             var name = @"D:\grainStates\grain" + Guid.NewGuid().ToString() + ".dat";
             operatorSettings.incrementalLogAddress = name;
             return Task.CompletedTask;
@@ -34,15 +35,25 @@ namespace GrainImplementation
         //This function get the words and count
         public Task ExecuteMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
-            if (msg.Key != Constants.System_Key)
+            if (msg.BatchID > currentBatchID)
             {
-               CountWord(msg, stream);
+                messageBuffer.Add(msg);
+            }
+            else if (msg.BatchID == currentBatchID)
+            {
+                if (msg.Key != Constants.System_Key)
+                {
+                    CountWord(msg, stream);
+                }
+                else
+                {
+                    ProcessSpecialMessage(msg);
+                }
             }
             else
             {
-                ProcessSpecialMessage(msg);
+                throw new InvalidOperationException();
             }
-
             return Task.CompletedTask;
         }
 
@@ -80,9 +91,11 @@ namespace GrainImplementation
             else if (msg.Value == Constants.Commit_Value)
             {
                 //Commit Here 
-                PrettyConsole.Line(IdentityString + " Send comit message for BatchID: " + msg.BatchID);
+                PrettyConsole.Line(IdentityString + "Clear Reverse log and save Incremental log: " + msg.BatchID);
                 ClearReverseLog();
                 UpdateIncrementalLog();
+                currentBatchID++;
+                //TODO Need Handle the message in the buffer
             }
             return Task.CompletedTask;
         }
