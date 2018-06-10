@@ -69,7 +69,16 @@ namespace GrainImplementation
                 {
                     reverseLog.Add(msg.Key, statesMap[msg.Key]);
                 }
+
                 statesMap[msg.Key]++;
+                if (incrementalLog.ContainsKey(msg.Key))
+                {
+                    incrementalLog[msg.Key] = statesMap[msg.Key];
+                }
+                else
+                {
+                    incrementalLog.Add(msg.Key, statesMap[msg.Key]);
+                }
 
                 stream.OnNextAsync(new StreamMessage(msg.Key, statesMap[msg.Key].ToString()));
             }
@@ -78,6 +87,7 @@ namespace GrainImplementation
                 statesMap.Add(msg.Key, 1);
                 //If insert, only save the key into reverse log
                 reverseLog.Add(msg.Key, 0);
+                incrementalLog.Add(msg.Key, 1);
                 stream.OnNextAsync(new StreamMessage(msg.Key, "1"));
             }
             return Task.CompletedTask;

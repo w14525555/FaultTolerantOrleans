@@ -14,5 +14,7 @@ namespace SystemInterfaces
         Task<int> GetState(string word);
 
         Task<int> GetStateInReverseLog(string word);
+
+        Task<int> GetStateInIncrementalLog(string word);
     }
 }

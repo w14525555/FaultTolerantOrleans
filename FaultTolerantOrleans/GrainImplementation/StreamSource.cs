@@ -202,5 +202,18 @@ namespace GrainImplementation
             }
             return await Task.FromResult(-2);
         }
+
+        public async Task<int> GetStateInIncrementalLog(StreamMessage msg)
+        {
+            foreach (var op in statelessOperators)
+            {
+                var count = await op.GetStateInIncrementalLog(msg.Value);
+                if (count != -1)
+                {
+                    return await Task.FromResult(count);
+                }
+            }
+            return await Task.FromResult(-2);
+        }
     }
 }

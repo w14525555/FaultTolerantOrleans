@@ -140,5 +140,18 @@ namespace SystemImplementation
             }
             return await Task.FromResult(-1);
         }
+
+        public async Task<int> GetStateInIncrementalLog(string word)
+        {
+            foreach (var op in statefulOperators)
+            {
+                var count = await op.GetStateInIncrementalLog(word);
+                if (count != -1)
+                {
+                    return await Task.FromResult(count);
+                }
+            }
+            return await Task.FromResult(-1);
+        }
     }
 }

@@ -78,7 +78,7 @@ namespace Test
         }
 
         [TestMethod]
-        public async Task TestMultipleSourcesReadForCommit()
+        public async Task TestMultipleSourcesReadyForCommit()
         {
             await SetUpSource();
             await SetUpSource2();
@@ -156,6 +156,25 @@ namespace Test
         }
 
         //Incremental Log Tests
+        [TestMethod]
+        public async Task TestIncrementalLogSaveTheLatestState()
+        {
+            await SetUpSource();
+            await source.ProduceMessageAsync(wordCountMessage1);
+            int count = await source.GetStateInIncrementalLog(new StreamMessage(wordCountMessage1.Key, "go"));
+            Assert.AreEqual(3, count);
+        }
+
+        [TestMethod]
+        public async Task TestIncrementalLogClearAfterCommit()
+        {
+            await SetUpSource();
+            await source.ProduceMessageAsync(wordCountMessage1);
+            commitMsg.BatchID = 0;
+            await source.ProduceMessageAsync(commitMsg);
+            int count = await source.GetStateInIncrementalLog(new StreamMessage(wordCountMessage1.Key, "go"));
+            Assert.AreEqual(-2, count);
+        }
 
         //SetUp Functions 
 
