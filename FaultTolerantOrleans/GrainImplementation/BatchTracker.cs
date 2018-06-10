@@ -41,6 +41,7 @@ namespace GrainImplementation
         {
             if (!batchTrackingMap.ContainsKey(msgInfo.BatchID))
             {
+                //Multiple batch has that problem
                 PrettyConsole.Line("The key " + msgInfo.BatchID + " is not exist");
             }
             else

@@ -121,6 +121,20 @@ namespace Test
             Assert.AreEqual(-2, count);
         }
 
+        [TestMethod]
+        public async Task TestMessagesBufferWillExecuteAfterCommit()
+        {
+            await SetUpSource();
+            wordCountMessage1.BatchID = 1;
+            wordCountMessage1.messageType = MessageType.Test;
+            await source.ProduceMessageAsync(wordCountMessage1);
+            //Commit the batch 0
+            commitMsg.BatchID = 0;
+            await source.ProduceMessageAsync(commitMsg);
+            int count = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
+            Assert.AreEqual(1, count);
+        }
+
         //Reverse Log Tests
         [TestMethod]
         public async Task TestReverseLogSaveTheStateOfLastBatch()

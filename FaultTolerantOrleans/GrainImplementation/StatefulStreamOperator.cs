@@ -20,6 +20,8 @@ namespace GrainImplementation
         private Dictionary<string, int> incrementalLog = new Dictionary<string, int>();
         private List<StreamMessage> messageBuffer = new List<StreamMessage>();
         private IBatchTracker batchTracker;
+        private IAsyncStream<StreamMessage> asyncStream;
+
         private int currentBatchID;
         public OperatorSettings operatorSettings = new OperatorSettings();
 
@@ -38,6 +40,7 @@ namespace GrainImplementation
             if (msg.BatchID > currentBatchID)
             {
                 messageBuffer.Add(msg);
+                asyncStream = stream;
             }
             else if (msg.BatchID == currentBatchID)
             {
@@ -91,11 +94,12 @@ namespace GrainImplementation
             else if (msg.Value == Constants.Commit_Value)
             {
                 //Commit Here 
-                PrettyConsole.Line(IdentityString + "Clear Reverse log and save Incremental log: " + msg.BatchID);
+                PrettyConsole.Line("A stateful grain" + "Clear Reverse log and save Incremental log: " + msg.BatchID);
                 ClearReverseLog();
                 UpdateIncrementalLog();
                 currentBatchID++;
-                //TODO Need Handle the message in the buffer
+                //Need Handle the message in the buffer
+                ProcessMessagesInTheBuffer();
             }
             return Task.CompletedTask;
         }
@@ -112,6 +116,28 @@ namespace GrainImplementation
             //The incremental log
             SaveStateToFile(incrementalLog);
             incrementalLog.Clear();
+            return Task.CompletedTask;
+        }
+
+        private Task ProcessMessagesInTheBuffer()
+        {
+            if (messageBuffer.Count > 0)
+            {
+                if (asyncStream != null)
+                {
+                    foreach (var msg in messageBuffer)
+                    {
+                        if (msg.BatchID == currentBatchID)
+                        {
+                            ExecuteMessage(msg, asyncStream);
+                        }
+                    }
+                }
+                else
+                {
+                    throw new InvalidOperationException();
+                }
+            }
             return Task.CompletedTask;
         }
 

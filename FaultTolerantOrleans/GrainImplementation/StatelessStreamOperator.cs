@@ -74,7 +74,7 @@ namespace SystemImplementation
             //so it just broadcast messages. 
             else if (msg.Value == Constants.Commit_Value)
             {
-                PrettyConsole.Line(IdentityString + " Send comit message for BatchID: " + msg.BatchID);
+                PrettyConsole.Line("A stateless grain just " + " send comit message for BatchID: " + msg.BatchID);
                 await BroadcastSpecialMessage(msg, stream);
             }
             
