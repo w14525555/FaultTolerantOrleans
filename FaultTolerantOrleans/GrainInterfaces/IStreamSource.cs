@@ -18,5 +18,6 @@ namespace SystemInterfaces
         Task<IBatchCoordinator> GetBatchManager();
         Task<IBatchTracker> GetBatchTracker();
         Task<int> GetState(StreamMessage msg);
+        Task<int> GetStateInReverseLog(StreamMessage msg);
     }
 }

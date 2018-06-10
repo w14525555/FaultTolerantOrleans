@@ -117,6 +117,7 @@ namespace GrainImplementation
                 await HandleBarrierMessages(msg);
                 await BroadcastSpecialMessage(msg, stream);
             }
+            //The source just broadcast the commit message
             else if (msg.Value == Constants.Commit_Value)
             {
                 PrettyConsole.Line("Send comit message for BatchID: " + msg.BatchID);
@@ -175,6 +176,19 @@ namespace GrainImplementation
             foreach(var op in statelessOperators)
             {
                 var count = await op.GetState(msg.Value);
+                if (count != -1)
+                {
+                    return await Task.FromResult(count);
+                }
+            }
+            return await Task.FromResult(-2);
+        }
+
+        public async Task<int> GetStateInReverseLog(StreamMessage msg)
+        {
+            foreach (var op in statelessOperators)
+            {
+                var count = await op.GetStateInReverseLog(msg.Value);
                 if (count != -1)
                 {
                     return await Task.FromResult(count);

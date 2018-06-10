@@ -12,5 +12,7 @@ namespace SystemInterfaces
         Task SetBatchTracker(IBatchTracker batchTracker);
 
         Task<int> GetState(string word);
+
+        Task<int> GetStateInReverseLog(string word);
     }
 }

@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen1054b7ed55FeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen29af2dc4f8FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -552,6 +552,8 @@ namespace SystemInterfaces
                             return @"SetBatchTracker";
                         case -1226735009:
                             return @"GetState";
+                        case 2075549514:
+                            return @"GetStateInReverseLog";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1903779801 + @",methodId=" + methodId);
                     }
@@ -574,6 +576,11 @@ namespace SystemInterfaces
         public global::System.Threading.Tasks.Task<global::System.Int32> GetState(global::System.String word)
         {
             return base.InvokeMethodAsync<global::System.Int32>(-1226735009, new global::System.Object[]{word});
+        }
+
+        public global::System.Threading.Tasks.Task<global::System.Int32> GetStateInReverseLog(global::System.String word)
+        {
+            return base.InvokeMethodAsync<global::System.Int32>(2075549514, new global::System.Object[]{word});
         }
     }
 
@@ -599,6 +606,8 @@ namespace SystemInterfaces
                             return null;
                         case -1226735009:
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).GetState((global::System.String)arguments[0]);
+                        case 2075549514:
+                            return await ((global::SystemInterfaces.IStatelessOperator)grain).GetStateInReverseLog((global::System.String)arguments[0]);
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1903779801 + @",methodId=" + methodId);
                     }
@@ -694,6 +703,8 @@ namespace SystemInterfaces
                             return @"GetBatchTracker";
                         case 1785611867:
                             return @"GetState";
+                        case 92092706:
+                            return @"GetStateInReverseLog";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 710632260 + @",methodId=" + methodId);
                     }
@@ -754,6 +765,11 @@ namespace SystemInterfaces
         {
             return base.InvokeMethodAsync<global::System.Int32>(1785611867, new global::System.Object[]{msg});
         }
+
+        public global::System.Threading.Tasks.Task<global::System.Int32> GetStateInReverseLog(global::SystemInterfaces.Model.StreamMessage msg)
+        {
+            return base.InvokeMethodAsync<global::System.Int32>(92092706, new global::System.Object[]{msg});
+        }
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute(typeof (global::SystemInterfaces.IStreamSource), 710632260), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
@@ -789,6 +805,8 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.IStreamSource)grain).GetBatchTracker();
                         case 1785611867:
                             return await ((global::SystemInterfaces.IStreamSource)grain).GetState((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
+                        case 92092706:
+                            return await ((global::SystemInterfaces.IStreamSource)grain).GetStateInReverseLog((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 710632260 + @",methodId=" + methodId);
                     }
@@ -968,7 +986,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen1054b7ed55FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGen29af2dc4f8FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {

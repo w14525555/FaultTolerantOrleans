@@ -5,6 +5,8 @@ using Utils;
 using SystemInterfaces;
 using SystemInterfaces.Model;
 using Orleans.Streams;
+using System.IO;
+using System;
 
 namespace GrainImplementation
 {
@@ -32,7 +34,7 @@ namespace GrainImplementation
         {
             if (msg.Key != Constants.System_Key)
             {
-                CountWord(msg, stream);
+               CountWord(msg, stream);
             }
             else
             {
@@ -46,12 +48,20 @@ namespace GrainImplementation
         {
             if (statesMap.ContainsKey(msg.Key))
             {
+                //It must be the frist operation in the batch
+                if (!reverseLog.ContainsKey(msg.Key))
+                {
+                    reverseLog.Add(msg.Key, statesMap[msg.Key]);
+                }
                 statesMap[msg.Key]++;
+
                 stream.OnNextAsync(new StreamMessage(msg.Key, statesMap[msg.Key].ToString()));
             }
             else
             {
                 statesMap.Add(msg.Key, 1);
+                //If insert, only save the key into reverse log
+                reverseLog.Add(msg.Key, 0);
                 stream.OnNextAsync(new StreamMessage(msg.Key, "1"));
             }
             return Task.CompletedTask;
@@ -67,90 +77,56 @@ namespace GrainImplementation
             }
             else if (msg.Value == Constants.Commit_Value)
             {
-                //TODO recovery
+                //Commit Here 
                 PrettyConsole.Line(IdentityString + " Send comit message for BatchID: " + msg.BatchID);
+                ClearReverseLog();
+                //UpdateIncrementalLog();
             }
             return Task.CompletedTask;
         }
 
-        public Task<int> GetState(string key)
-        { 
-            if (statesMap.ContainsKey(key))
-            {
-                return Task.FromResult(statesMap[key]);
-            }
-            else
-            {
-                return Task.FromResult(-1);
-            }
-        }
-
-        public Task<int> GetStateInReverseLog(string key)
+        public Task ClearReverseLog()
         {
-            if (reverseLog.ContainsKey(key))
-            {
-                return Task.FromResult(reverseLog[key]);
-            }
-            else
-            {
-                return Task.FromResult(-1);
-            }
+            reverseLog.Clear();
+            return Task.CompletedTask;
         }
 
-        public Task<int> GetStateInIncrementalLog(string key)
+        public Task UpdateIncrementalLog()
         {
-            if (incrementalLog.ContainsKey(key))
-            {
-                return Task.FromResult(incrementalLog[key]);
-            }
-            else
-            {
-                return Task.FromResult(-1);
-            }
+            //Once save the state to files, then clear
+            //The incremental log
+            SaveStateToFile(incrementalLog);
+            incrementalLog.Clear();
+            return Task.CompletedTask;
         }
 
-        //public Task ClearReverseLog()
-        //{
-        //    reverseLog.Clear();
-        //    return Task.CompletedTask;
-        //}
+        private Task SaveStateToFile(Dictionary<string, int> state)
+        {
+            PrettyConsole.Line("Save the incremental log to " + operatorSettings.incrementalLogAddress);
+            try
+            {
+                WriteToBinaryFile(operatorSettings.incrementalLogAddress, state);
+            }
+            catch (Exception e)
+            {
+                PrettyConsole.Line("Error " + e);
+            }
 
-        //public async Task<Task> UpdateIncrementalLog()
-        //{
-        //    //Once save the state to files, then clear
-        //    //The incremental log
-        //    await SaveStateToFile(incrementalLog);
-        //    incrementalLog.Clear();
-        //    return Task.CompletedTask;
-        //}
+            return Task.CompletedTask;
+        }
 
-        //private Task SaveStateToFile(Dictionary<string, int> state)
-        //{
-        //    PrettyConsole.Line("Save the incremental log to " + operatorSettings.incrementalLogAddress);
-        //    try
-        //    {
-        //        WriteToBinaryFile(operatorSettings.incrementalLogAddress, state);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        PrettyConsole.Line("Error " + e);
-        //    }
+        /// <summary>
+        /// Writes the given object instance to a binary file.
+        public static Task WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = false)
+        {
+            using (Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create))
+            {
+                var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                binaryFormatter.Serialize(stream, objectToWrite);
+            }
 
-        //    return Task.CompletedTask;
-        //}
-
-        ///// <summary>
-        ///// Writes the given object instance to a binary file.
-        //public static Task WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = false)
-        //{
-        //    using (Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create))
-        //    {
-        //        var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-        //        binaryFormatter.Serialize(stream, objectToWrite);
-        //    }
-
-        //    return Task.CompletedTask;
-        //}
+            return Task.CompletedTask;
+        }
 
         //public Task RevertStateFromReverseLog()
         //{
@@ -214,6 +190,42 @@ namespace GrainImplementation
         //        return Task.FromResult((T)binaryFormatter.Deserialize(stream));
         //    }
         //}
+
+        public Task<int> GetState(string key)
+        {
+            if (statesMap.ContainsKey(key))
+            {
+                return Task.FromResult(statesMap[key]);
+            }
+            else
+            {
+                return Task.FromResult(-1);
+            }
+        }
+
+        public Task<int> GetStateInReverseLog(string key)
+        {
+            if (reverseLog.ContainsKey(key))
+            {
+                return Task.FromResult(reverseLog[key]);
+            }
+            else
+            {
+                return Task.FromResult(-1);
+            }
+        }
+
+        public Task<int> GetStateInIncrementalLog(string key)
+        {
+            if (incrementalLog.ContainsKey(key))
+            {
+                return Task.FromResult(incrementalLog[key]);
+            }
+            else
+            {
+                return Task.FromResult(-1);
+            }
+        }
 
     }
 }

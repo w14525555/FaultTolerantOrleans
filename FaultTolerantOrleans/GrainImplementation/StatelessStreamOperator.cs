@@ -68,6 +68,8 @@ namespace SystemImplementation
                 await batchTracker.CompleteTracking(info);
                 await BroadcastSpecialMessage(msg, stream);
             }
+            //The stateless operator does not have state
+            //so it just broadcast messages. 
             else if (msg.Value == Constants.Commit_Value)
             {
                 PrettyConsole.Line(IdentityString + " Send comit message for BatchID: " + msg.BatchID);
@@ -116,6 +118,19 @@ namespace SystemImplementation
             foreach(var op in statefulOperators)
             {
                 var count = await op.GetState(word);
+                if (count != -1)
+                {
+                    return await Task.FromResult(count);
+                }
+            }
+            return await Task.FromResult(-1);
+        }
+
+        public async Task<int> GetStateInReverseLog(string word)
+        {
+            foreach (var op in statefulOperators)
+            {
+                var count = await op.GetStateInReverseLog(word);
                 if (count != -1)
                 {
                     return await Task.FromResult(count);

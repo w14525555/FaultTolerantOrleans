@@ -31,7 +31,7 @@ namespace Test
         private const string INITIAL_VALUE = "initialValue";
         private static string[] members;
         private static StreamMessage barrierMsg = new StreamMessage(Constants.System_Key, Constants.Barrier_Value);
-        private static StreamMessage commitMsg = new StreamMessage(Constants.System_Key, Constants.Barrier_Value);
+        private static StreamMessage commitMsg = new StreamMessage(Constants.System_Key, Constants.Commit_Value);
         private static StreamMessage wordCountMessage1 = new StreamMessage("Word Count Example 1", "go go go follow me");
         private static StreamMessage wordCountMessage2 = new StreamMessage("Word Count Example 2", "restart the game");
 
@@ -108,6 +108,29 @@ namespace Test
             int count = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
             Assert.AreEqual(1, count);
         }
+
+        //Reverse Log Tests
+        [TestMethod]
+        public async Task TestReverseLogSaveTheStateOfLastBatch()
+        {
+            await SetUpSource();
+            await source.ProduceMessageAsync(wordCountMessage1);
+            int count = await source.GetStateInReverseLog(new StreamMessage(wordCountMessage1.Key, "go"));
+            Assert.AreEqual(0, count);
+        }
+
+        [TestMethod]
+        public async Task TestReverseLogClearsOnCommit()
+        {
+            await SetUpSource();
+            await source.ProduceMessageAsync(wordCountMessage1);
+            commitMsg.BatchID = 0;
+            await source.ProduceMessageAsync(commitMsg);
+            int count = await source.GetStateInReverseLog(new StreamMessage(wordCountMessage1.Key, "go"));
+            Assert.AreEqual(-2, count);
+        }
+
+        //Incremental Log Tests
 
         //SetUp Functions 
 
