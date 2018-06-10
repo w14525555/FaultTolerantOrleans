@@ -65,20 +65,9 @@ namespace GrainImplementation
             if (statesMap.ContainsKey(msg.Key))
             {
                 //It must be the frist operation in the batch
-                if (!reverseLog.ContainsKey(msg.Key))
-                {
-                    reverseLog.Add(msg.Key, statesMap[msg.Key]);
-                }
-
+                UpdateReverseLog(msg);
                 statesMap[msg.Key]++;
-                if (incrementalLog.ContainsKey(msg.Key))
-                {
-                    incrementalLog[msg.Key] = statesMap[msg.Key];
-                }
-                else
-                {
-                    incrementalLog.Add(msg.Key, statesMap[msg.Key]);
-                }
+                UpdateIncrementalLog(msg);
 
                 stream.OnNextAsync(new StreamMessage(msg.Key, statesMap[msg.Key].ToString()));
             }
@@ -106,7 +95,7 @@ namespace GrainImplementation
                 //Commit Here 
                 PrettyConsole.Line("A stateful grain" + "Clear Reverse log and save Incremental log: " + msg.BatchID);
                 ClearReverseLog();
-                UpdateIncrementalLog();
+                SaveIncrementalLogIntoStorage();
                 currentBatchID++;
                 //Need Handle the message in the buffer
                 ProcessMessagesInTheBuffer();
@@ -120,12 +109,34 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        public Task UpdateIncrementalLog()
+        public Task SaveIncrementalLogIntoStorage()
         {
             //Once save the state to files, then clear
             //The incremental log
             SaveStateToFile(incrementalLog);
             incrementalLog.Clear();
+            return Task.CompletedTask;
+        }
+
+        private Task UpdateIncrementalLog(StreamMessage msg)
+        {
+            if (incrementalLog.ContainsKey(msg.Key))
+            {
+                incrementalLog[msg.Key] = statesMap[msg.Key];
+            }
+            else
+            {
+                incrementalLog.Add(msg.Key, statesMap[msg.Key]);
+            }
+            return Task.CompletedTask;
+        }
+
+        private Task UpdateReverseLog(StreamMessage msg)
+        {
+            if (!reverseLog.ContainsKey(msg.Key))
+            {
+                reverseLog.Add(msg.Key, statesMap[msg.Key]);
+            }
             return Task.CompletedTask;
         }
 
