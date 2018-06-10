@@ -31,6 +31,7 @@ namespace GrainImplementation
         {
             currentBatchID = 0;
             committedID = 0;
+            tracker = GrainFactory.GetGrain<IBatchTracker>(Utils.Constants.Tracker);
             PrettyConsole.Line("Register Timer");
             var streamProvider = GetStreamProvider(Constants.ChatRoomStreamProvider);
             return base.OnActivateAsync();
@@ -45,7 +46,16 @@ namespace GrainImplementation
 
         private async Task<Task> SendBarrierOnPeriodOfTime(object arg)
         {
+            await SendBarrier();
+            return Task.CompletedTask;
+        }
+
+        public async Task<Task> SendBarrier()
+        {
             await SetBatchID(barrierMsg);
+            barrierMsg.barrierInfo = new BarrierMsgTrackingInfo(Guid.NewGuid(), sources.Count);
+            PrettyConsole.Line("Tracking " + sources.Count + " Sources");
+            await tracker.TrackingBarrierMessages(barrierMsg);
             foreach (IStreamSource source in sources)
             {
                 await source.ProduceMessageAsync(barrierMsg);
@@ -75,12 +85,6 @@ namespace GrainImplementation
             {
                 source.ProduceMessageAsync(commitMsg);
             }
-            return Task.CompletedTask;
-        }
-
-        public Task SetTracker(IBatchTracker tracker)
-        {
-            this.tracker = tracker;
             return Task.CompletedTask;
         }
 

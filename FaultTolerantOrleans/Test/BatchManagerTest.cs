@@ -70,8 +70,8 @@ namespace Test
         public async Task TestEmtyBatchSentThenTheBatchIsReadForCommit()
         {
             await SetUpSource();
-            barrierMsg.BatchID = 0;
-            await source.ProduceMessageAsync(barrierMsg);
+            var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
+            await batchCoordinator.SendBarrier();
             var batchTracker = client.GetGrain<IBatchTracker>(Constants.Tracker);
             bool isCurrentBatchCompleted = await batchTracker.IsReadForCommit(barrierMsg.BatchID);
             Assert.AreEqual(true, isCurrentBatchCompleted);
@@ -82,9 +82,8 @@ namespace Test
         {
             await SetUpSource();
             await SetUpSource2();
-            barrierMsg.BatchID = 0;
-            await source.ProduceMessageAsync(barrierMsg);
-            await source2.ProduceMessageAsync(barrierMsg);
+            var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
+            await batchCoordinator.SendBarrier();
             var batchTracker = client.GetGrain<IBatchTracker>(Constants.Tracker);
             bool isCurrentBatchCompleted = await batchTracker.IsReadForCommit(barrierMsg.BatchID);
             Assert.AreEqual(true, isCurrentBatchCompleted);
@@ -242,7 +241,7 @@ namespace Test
             Mock<ILogger> mockLogger = new Mock<ILogger>();
             statefulStreamObserver = new StatefulStreamObserver(mockLogger.Object);
             await stream.SubscribeAsync(statefulStreamObserver);
-            members = await source2.GetMembers();
+            //members = await source2.GetMembers();
             return Task.CompletedTask;
         }
 

@@ -117,7 +117,10 @@ namespace GrainImplementation
         {
             if (msg.Value == Constants.Barrier_Value)
             {
+                BarrierMsgTrackingInfo info = new BarrierMsgTrackingInfo(msg.barrierInfo.GetID(), msg.barrierInfo.numberOfClientSent);
+                info.BatchID = msg.BatchID;
                 await HandleBarrierMessages(msg);
+                await batchTracker.CompleteTracking(info);
                 await BroadcastSpecialMessage(msg, stream);
             }
             //The source just broadcast the commit message

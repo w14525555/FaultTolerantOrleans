@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGene91856919cFeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen818d58d0ddFeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -73,6 +73,8 @@ namespace SystemInterfaces
                             return @"StartCommit";
                         case -546505175:
                             return @"StartRecovery";
+                        case 2046534918:
+                            return @"SendBarrier";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 2046360863 + @",methodId=" + methodId);
                     }
@@ -103,6 +105,11 @@ namespace SystemInterfaces
         {
             return base.InvokeMethodAsync<global::System.Object>(-546505175, null);
         }
+
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> SendBarrier()
+        {
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(2046534918, null);
+        }
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute(typeof (global::SystemInterfaces.IBatchCoordinator), 2046360863), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
@@ -129,6 +136,8 @@ namespace SystemInterfaces
                         case -546505175:
                             await ((global::SystemInterfaces.IBatchCoordinator)grain).StartRecovery();
                             return null;
+                        case 2046534918:
+                            return await ((global::SystemInterfaces.IBatchCoordinator)grain).SendBarrier();
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 2046360863 + @",methodId=" + methodId);
                     }
@@ -986,7 +995,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGene91856919cFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGen818d58d0ddFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {

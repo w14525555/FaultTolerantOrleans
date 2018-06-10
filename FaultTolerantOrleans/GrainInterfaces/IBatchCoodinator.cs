@@ -12,5 +12,7 @@ namespace SystemInterfaces
         Task StartCommit(int ID);
 
         Task StartRecovery();
+
+        Task<Task> SendBarrier();
     }
 }
