@@ -117,28 +117,38 @@ namespace GrainImplementation
         {
             if (msg.Value == Constants.Barrier_Value)
             {
-                BarrierMsgTrackingInfo info = new BarrierMsgTrackingInfo(msg.barrierInfo.GetID(), msg.barrierInfo.numberOfClientSent);
+                BarrierOrCommitMsgTrackingInfo info = new BarrierOrCommitMsgTrackingInfo(msg.barrierOrCommitInfo.GetID(), msg.barrierOrCommitInfo.numberOfClientSent);
                 info.BatchID = msg.BatchID;
                 await HandleBarrierMessages(msg);
-                await batchTracker.CompleteTracking(info);
-                await BroadcastSpecialMessage(msg, stream);
+                await batchTracker.CompleteOneOperatorBarrierTracking(info);
             }
             //The source just broadcast the commit message
             else if (msg.Value == Constants.Commit_Value)
             {
-                PrettyConsole.Line("Send comit message for BatchID: " + msg.BatchID);
-                await BroadcastSpecialMessage(msg, stream);
+                BarrierOrCommitMsgTrackingInfo info = new BarrierOrCommitMsgTrackingInfo(msg.barrierOrCommitInfo.GetID(), msg.barrierOrCommitInfo.numberOfClientSent);
+                info.BatchID = msg.BatchID;
+                await HandleCommitMessages(msg);
+                await batchTracker.CompleteOneOperatorCommit(info);
             }
+            await BroadcastSpecialMessage(msg, stream);
             return Task.CompletedTask;
         }
 
         private Task HandleBarrierMessages(StreamMessage msg)
         {
             currentBatchID = msg.BatchID + 1;
-            msg.barrierInfo = new BarrierMsgTrackingInfo(Guid.NewGuid(), statelessOperators.Count);
-            msg.barrierInfo.BatchID = msg.BatchID;
+            msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), statelessOperators.Count);
+            msg.barrierOrCommitInfo.BatchID = msg.BatchID;
             PrettyConsole.Line("Tracking Batch " + msg.BatchID + " with " + statelessOperators.Count);
             batchTracker.TrackingBarrierMessages(msg);
+            return Task.CompletedTask;
+        }
+
+        private Task HandleCommitMessages(StreamMessage msg)
+        {
+            msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), statelessOperators.Count);
+            msg.barrierOrCommitInfo.BatchID = msg.BatchID;
+            batchTracker.TrackingCommitMessages(msg);
             return Task.CompletedTask;
         }
 

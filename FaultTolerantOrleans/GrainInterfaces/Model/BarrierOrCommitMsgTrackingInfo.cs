@@ -2,23 +2,23 @@
 
 namespace SystemInterfaces.Model
 {
-    public class BarrierMsgTrackingInfo
+    public class BarrierOrCommitMsgTrackingInfo
     {
-        private Guid barrierID;
+        private Guid guid;
         public int BatchID { get; set; }
         public int numberOfClientSent { get; set; }
         private int numberOfMessagesCompleted;
 
-        public BarrierMsgTrackingInfo(Guid id, int num)
+        public BarrierOrCommitMsgTrackingInfo(Guid id, int num)
         {
-            this.barrierID = id;
+            this.guid = id;
             this.numberOfClientSent = num;
             numberOfMessagesCompleted = 0;
         }
 
         public Guid GetID()
         {
-            return barrierID;
+            return guid;
         }
 
         public void CompleteOneMessage()

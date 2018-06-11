@@ -64,17 +64,20 @@ namespace SystemImplementation
            
             if (msg.Value == Constants.Barrier_Value)
             {
-                BarrierMsgTrackingInfo info = new BarrierMsgTrackingInfo(msg.barrierInfo.GetID(), msg.barrierInfo.numberOfClientSent);
+                BarrierOrCommitMsgTrackingInfo info = new BarrierOrCommitMsgTrackingInfo(msg.barrierOrCommitInfo.GetID(), msg.barrierOrCommitInfo.numberOfClientSent);
                 info.BatchID = msg.BatchID;
                 await HandleBarrierMessages(msg);
-                await batchTracker.CompleteTracking(info);
+                await batchTracker.CompleteOneOperatorBarrierTracking(info);
                 await BroadcastSpecialMessage(msg, stream);
             }
             //The stateless operator does not have state
             //so it just broadcast messages. 
             else if (msg.Value == Constants.Commit_Value)
             {
-                PrettyConsole.Line("A stateless grain just " + " send comit message for BatchID: " + msg.BatchID);
+                BarrierOrCommitMsgTrackingInfo info = new BarrierOrCommitMsgTrackingInfo(msg.barrierOrCommitInfo.GetID(), msg.barrierOrCommitInfo.numberOfClientSent);
+                info.BatchID = msg.BatchID;
+                await HandleCommitMessages(msg);
+                await batchTracker.CompleteOneOperatorCommit(info);
                 await BroadcastSpecialMessage(msg, stream);
             }
             
@@ -83,11 +86,24 @@ namespace SystemImplementation
 
         private Task HandleBarrierMessages(StreamMessage msg)
         {
-            msg.barrierInfo = new BarrierMsgTrackingInfo(Guid.NewGuid(), statefulOperators.Count);
-            PrettyConsole.Line("Tracking Batch " + msg.BatchID + " with " + statefulOperators.Count);
+            msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), statefulOperators.Count);
             if (batchTracker != null)
             {
                 batchTracker.TrackingBarrierMessages(msg);
+            }
+            else
+            {
+                throw new NullReferenceException();
+            }
+            return Task.CompletedTask;
+        }
+
+        private Task HandleCommitMessages(StreamMessage msg)
+        {
+            msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), statefulOperators.Count);
+            if (batchTracker != null)
+            {
+                batchTracker.TrackingCommitMessages(msg);
             }
             else
             {

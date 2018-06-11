@@ -30,7 +30,7 @@ namespace GrainImplementation
         public override Task OnActivateAsync()
         {
             currentBatchID = 0;
-            committedID = 0;
+            committedID = -1;
             tracker = GrainFactory.GetGrain<IBatchTracker>(Utils.Constants.Tracker);
             PrettyConsole.Line("Register Timer");
             var streamProvider = GetStreamProvider(Constants.ChatRoomStreamProvider);
@@ -53,14 +53,26 @@ namespace GrainImplementation
         public async Task<Task> SendBarrier()
         {
             await SetBatchID(barrierMsg);
-            barrierMsg.barrierInfo = new BarrierMsgTrackingInfo(Guid.NewGuid(), sources.Count);
-            PrettyConsole.Line("Tracking " + sources.Count + " Sources");
+            barrierMsg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), sources.Count);
             await tracker.TrackingBarrierMessages(barrierMsg);
             foreach (IStreamSource source in sources)
             {
                 await source.ProduceMessageAsync(barrierMsg);
             }
             currentBatchID++;
+            return Task.CompletedTask;
+        }
+
+        //Commit 
+        public async Task<Task> StartCommit(int ID)
+        {
+            commitMsg.BatchID = ID;
+            commitMsg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), sources.Count);
+            await tracker.TrackingCommitMessages(commitMsg);
+            foreach (IStreamSource source in sources)
+            {
+                await source.ProduceMessageAsync(commitMsg);
+            }
             return Task.CompletedTask;
         }
 
@@ -73,18 +85,6 @@ namespace GrainImplementation
         public Task SetCurrentBatchID(int id)
         {
             currentBatchID = id;
-            return Task.CompletedTask;
-        }
-
-        //Commit 
-        public Task StartCommit(int ID)
-        {
-            commitMsg.BatchID = ID;
-            committedID = ID;
-            foreach (IStreamSource source in sources)
-            {
-                source.ProduceMessageAsync(commitMsg);
-            }
             return Task.CompletedTask;
         }
 
@@ -102,6 +102,25 @@ namespace GrainImplementation
             //6. Register new timer
             disposable = RegisterTimer(SendBarrierOnPeriodOfTime, null, barrierTimeInterval, barrierTimeInterval);
             return Task.CompletedTask;
+        }
+
+        public Task CompleteCommit(int batchID)
+        {
+            if (batchID - committedID == 1)
+            {
+                committedID++;
+                PrettyConsole.Line("Committed Batch ID now is: " + committedID);
+                return Task.CompletedTask;
+            }
+            else
+            {
+                throw new InvalidOperationException();
+            }
+        }
+
+        public Task<int> GetCommittedBatchID()
+        {
+            return Task.FromResult(committedID);
         }
     }
 }

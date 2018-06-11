@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using Moq;
 using SystemInterfaces;
+using System.Threading;
 
 namespace Test
 {
@@ -29,7 +30,7 @@ namespace Test
         private const string NOT_EXIST = "Not Exist";
         private const string INITIAL_KEY = "initialKey";
         private const string INITIAL_VALUE = "initialValue";
-        private static string[] members;
+        private string[] members;
         private StreamMessage barrierMsg = new StreamMessage(Constants.System_Key, Constants.Barrier_Value);
         private StreamMessage commitMsg = new StreamMessage(Constants.System_Key, Constants.Commit_Value);
         private StreamMessage wordCountMessage1 = new StreamMessage("Word Count Example 1", "go go go follow me");
@@ -73,7 +74,7 @@ namespace Test
             var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
             await batchCoordinator.SendBarrier();
             var batchTracker = client.GetGrain<IBatchTracker>(Constants.Tracker);
-            bool isCurrentBatchCompleted = await batchTracker.IsReadForCommit(barrierMsg.BatchID);
+            bool isCurrentBatchCompleted = await batchTracker.IsReadyForCommit(barrierMsg.BatchID);
             Assert.AreEqual(true, isCurrentBatchCompleted);
         }
 
@@ -85,8 +86,33 @@ namespace Test
             var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
             await batchCoordinator.SendBarrier();
             var batchTracker = client.GetGrain<IBatchTracker>(Constants.Tracker);
-            bool isCurrentBatchCompleted = await batchTracker.IsReadForCommit(barrierMsg.BatchID);
+            Thread.Sleep(100);
+            bool isCurrentBatchCompleted = await batchTracker.IsReadyForCommit(barrierMsg.BatchID);
             Assert.AreEqual(true, isCurrentBatchCompleted);
+        }
+
+        //Commit Tests
+        [TestMethod]
+        public async Task TestInitialCommitedBatchID()
+        {
+            await SetUpSource();
+            //Commit the batch 0
+            var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
+            int commitedBatchID = await batchCoordinator.GetCommittedBatchID();
+            Assert.AreEqual(-1, commitedBatchID);
+        }
+
+        [TestMethod]
+        public async Task TestSendCommitMessageThenCommmitIsSuccessful()
+        {
+            await SetUpSource();
+            //Commit the batch 0
+            var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
+            await batchCoordinator.StartCommit(0);
+            var batchTracker = client.GetGrain<IBatchTracker>(Constants.Tracker);
+            Thread.Sleep(100);
+            bool isCommitCompleted = await batchTracker.IsCommitSuccess(0);
+            Assert.AreEqual(true, isCommitCompleted);
         }
 
         //StateManagement Tests
@@ -128,8 +154,8 @@ namespace Test
             wordCountMessage1.messageType = MessageType.Test;
             await source.ProduceMessageAsync(wordCountMessage1);
             //Commit the batch 0
-            commitMsg.BatchID = 0;
-            await source.ProduceMessageAsync(commitMsg);
+            var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
+            await batchCoordinator.StartCommit(0);
             int count = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
             Assert.AreEqual(1, count);
         }
@@ -149,8 +175,8 @@ namespace Test
         {
             await SetUpSource();
             await source.ProduceMessageAsync(wordCountMessage1);
-            commitMsg.BatchID = 0;
-            await source.ProduceMessageAsync(commitMsg);
+            var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
+            await batchCoordinator.StartCommit(0);
             int count = await source.GetStateInReverseLog(new StreamMessage(wordCountMessage1.Key, "go"));
             Assert.AreEqual(-2, count);
         }
@@ -170,8 +196,8 @@ namespace Test
         {
             await SetUpSource();
             await source.ProduceMessageAsync(wordCountMessage1);
-            commitMsg.BatchID = 0;
-            await source.ProduceMessageAsync(commitMsg);
+            var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
+            await batchCoordinator.StartCommit(0);
             int count = await source.GetStateInIncrementalLog(new StreamMessage(wordCountMessage1.Key, "go"));
             Assert.AreEqual(-2, count);
         }

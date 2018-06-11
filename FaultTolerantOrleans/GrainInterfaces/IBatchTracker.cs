@@ -12,12 +12,18 @@ namespace SystemInterfaces
     {
         Task TrackingBarrierMessages(StreamMessage msg);
 
-        Task CompleteTracking(BarrierMsgTrackingInfo msgInfo);
+        Task CompleteOneOperatorBarrierTracking(BarrierOrCommitMsgTrackingInfo msgInfo);
 
-        Task<bool> IsReadForCommit(int batchID);
+        Task<bool> IsReadyForCommit(int batchID);
+
+        Task<bool> IsCommitSuccess(int batchID);
 
         Task CleanUpOnRecovery();
 
         Task SetBatchManager(IBatchCoordinator batchManager);
+
+        Task TrackingCommitMessages(StreamMessage msg);
+
+        Task<Task> CompleteOneOperatorCommit(BarrierOrCommitMsgTrackingInfo msgInfo);
     }
 }

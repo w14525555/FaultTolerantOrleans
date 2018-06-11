@@ -13,14 +13,14 @@ namespace SystemInterfaces.Model
         public bool readForCommitting { get; set; }
         public bool isAGroupOfMessageProcessed { get; set; }
         private IBatchTracker batchTracker;
-        private List<BarrierMsgTrackingInfo> barrierList;
+        private List<BarrierOrCommitMsgTrackingInfo> barrierList;
 
         public StreamBatch(int id)
         {
             readForCommitting = false;
             isAGroupOfMessageProcessed = false;
             batchID = id;
-            barrierList = new List<BarrierMsgTrackingInfo>();
+            barrierList = new List<BarrierOrCommitMsgTrackingInfo>();
         }
 
         public int GetBatchID()
@@ -38,14 +38,14 @@ namespace SystemInterfaces.Model
             this.batchTracker = batchTracker;
         }
 
-        public void AddBarrierMsgTrackingHelper(BarrierMsgTrackingInfo barrierInfo)
+        public void AddBarrierOrCommitMsgTrackingHelper(BarrierOrCommitMsgTrackingInfo barrierInfo)
         {
             barrierList.Add(barrierInfo);
         }
 
-        public void CompleteOneMessageTracking(BarrierMsgTrackingInfo msgInfo)
+        public void CompleteOneMessageTracking(BarrierOrCommitMsgTrackingInfo msgInfo)
         {
-            foreach (BarrierMsgTrackingInfo item in barrierList)
+            foreach (BarrierOrCommitMsgTrackingInfo item in barrierList)
             {
                 if (Guid.Equals(item.GetID(), msgInfo.GetID()))
                 {
@@ -63,7 +63,7 @@ namespace SystemInterfaces.Model
         public void CheckIfBatchCompleted()
         {
                 bool isCompleted = true;
-                foreach (BarrierMsgTrackingInfo item in barrierList)
+                foreach (BarrierOrCommitMsgTrackingInfo item in barrierList)
                 {
                     if (!item.CheckIfAllMessagesCompleted())
                     {

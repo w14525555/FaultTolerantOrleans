@@ -10,7 +10,7 @@ namespace SystemInterfaces.Model
 		public string Value { get; set; }
         public int BatchID { get; set; }
         public MessageType messageType { get; set; }
-        public BarrierMsgTrackingInfo barrierInfo { get; set; }
+        public BarrierOrCommitMsgTrackingInfo barrierOrCommitInfo { get; set; }
 
 		public StreamMessage(string key, string value)
 		{

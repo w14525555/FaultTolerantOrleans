@@ -22,5 +22,12 @@ namespace Utils
             return words.ToList();
         }
 
+        public static void CheckNotNull(Object obj)
+        {
+            if (obj == null)
+            {
+                throw new NullReferenceException();
+            }
+        }
     }
 }

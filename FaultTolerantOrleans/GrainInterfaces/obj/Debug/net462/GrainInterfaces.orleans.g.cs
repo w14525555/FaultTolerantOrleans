@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGenb8cbac2da8FeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen74fcb8ad92FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -75,6 +75,10 @@ namespace SystemInterfaces
                             return @"StartRecovery";
                         case 2046534918:
                             return @"SendBarrier";
+                        case -698663036:
+                            return @"CompleteCommit";
+                        case 1408175506:
+                            return @"GetCommittedBatchID";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 2046360863 + @",methodId=" + methodId);
                     }
@@ -96,9 +100,9 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Object>(1422291436, new global::System.Object[]{stream, channel is global::Orleans.Grain ? channel.AsReference<global::SystemInterfaces.IStreamSource>() : channel});
         }
 
-        public global::System.Threading.Tasks.Task StartCommit(global::System.Int32 ID)
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> StartCommit(global::System.Int32 ID)
         {
-            return base.InvokeMethodAsync<global::System.Object>(-76047527, new global::System.Object[]{ID});
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-76047527, new global::System.Object[]{ID});
         }
 
         public global::System.Threading.Tasks.Task StartRecovery()
@@ -109,6 +113,16 @@ namespace SystemInterfaces
         public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> SendBarrier()
         {
             return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(2046534918, null);
+        }
+
+        public global::System.Threading.Tasks.Task CompleteCommit(global::System.Int32 batchID)
+        {
+            return base.InvokeMethodAsync<global::System.Object>(-698663036, new global::System.Object[]{batchID});
+        }
+
+        public global::System.Threading.Tasks.Task<global::System.Int32> GetCommittedBatchID()
+        {
+            return base.InvokeMethodAsync<global::System.Int32>(1408175506, null);
         }
     }
 
@@ -131,13 +145,17 @@ namespace SystemInterfaces
                             await ((global::SystemInterfaces.IBatchCoordinator)grain).SetChannelAndRegisterTimer((global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage>)arguments[0], (global::SystemInterfaces.IStreamSource)arguments[1]);
                             return null;
                         case -76047527:
-                            await ((global::SystemInterfaces.IBatchCoordinator)grain).StartCommit((global::System.Int32)arguments[0]);
-                            return null;
+                            return await ((global::SystemInterfaces.IBatchCoordinator)grain).StartCommit((global::System.Int32)arguments[0]);
                         case -546505175:
                             await ((global::SystemInterfaces.IBatchCoordinator)grain).StartRecovery();
                             return null;
                         case 2046534918:
                             return await ((global::SystemInterfaces.IBatchCoordinator)grain).SendBarrier();
+                        case -698663036:
+                            await ((global::SystemInterfaces.IBatchCoordinator)grain).CompleteCommit((global::System.Int32)arguments[0]);
+                            return null;
+                        case 1408175506:
+                            return await ((global::SystemInterfaces.IBatchCoordinator)grain).GetCommittedBatchID();
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 2046360863 + @",methodId=" + methodId);
                     }
@@ -224,14 +242,20 @@ namespace SystemInterfaces
                     {
                         case -1116510309:
                             return @"TrackingBarrierMessages";
-                        case -1135451920:
-                            return @"CompleteTracking";
-                        case 99336213:
-                            return @"IsReadForCommit";
+                        case 1479196298:
+                            return @"CompleteOneOperatorBarrierTracking";
+                        case 1479718266:
+                            return @"IsReadyForCommit";
+                        case -1437527581:
+                            return @"IsCommitSuccess";
                         case -1361007671:
                             return @"CleanUpOnRecovery";
                         case -1651031132:
                             return @"SetBatchManager";
+                        case -1092259612:
+                            return @"TrackingCommitMessages";
+                        case -1325206250:
+                            return @"CompleteOneOperatorCommit";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 998595849 + @",methodId=" + methodId);
                     }
@@ -253,14 +277,19 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Object>(-1116510309, new global::System.Object[]{msg});
         }
 
-        public global::System.Threading.Tasks.Task CompleteTracking(global::SystemInterfaces.Model.BarrierMsgTrackingInfo msgInfo)
+        public global::System.Threading.Tasks.Task CompleteOneOperatorBarrierTracking(global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo msgInfo)
         {
-            return base.InvokeMethodAsync<global::System.Object>(-1135451920, new global::System.Object[]{msgInfo});
+            return base.InvokeMethodAsync<global::System.Object>(1479196298, new global::System.Object[]{msgInfo});
         }
 
-        public global::System.Threading.Tasks.Task<global::System.Boolean> IsReadForCommit(global::System.Int32 batchID)
+        public global::System.Threading.Tasks.Task<global::System.Boolean> IsReadyForCommit(global::System.Int32 batchID)
         {
-            return base.InvokeMethodAsync<global::System.Boolean>(99336213, new global::System.Object[]{batchID});
+            return base.InvokeMethodAsync<global::System.Boolean>(1479718266, new global::System.Object[]{batchID});
+        }
+
+        public global::System.Threading.Tasks.Task<global::System.Boolean> IsCommitSuccess(global::System.Int32 batchID)
+        {
+            return base.InvokeMethodAsync<global::System.Boolean>(-1437527581, new global::System.Object[]{batchID});
         }
 
         public global::System.Threading.Tasks.Task CleanUpOnRecovery()
@@ -271,6 +300,16 @@ namespace SystemInterfaces
         public global::System.Threading.Tasks.Task SetBatchManager(global::SystemInterfaces.IBatchCoordinator batchManager)
         {
             return base.InvokeMethodAsync<global::System.Object>(-1651031132, new global::System.Object[]{batchManager is global::Orleans.Grain ? batchManager.AsReference<global::SystemInterfaces.IBatchCoordinator>() : batchManager});
+        }
+
+        public global::System.Threading.Tasks.Task TrackingCommitMessages(global::SystemInterfaces.Model.StreamMessage msg)
+        {
+            return base.InvokeMethodAsync<global::System.Object>(-1092259612, new global::System.Object[]{msg});
+        }
+
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> CompleteOneOperatorCommit(global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo msgInfo)
+        {
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-1325206250, new global::System.Object[]{msgInfo});
         }
     }
 
@@ -292,17 +331,24 @@ namespace SystemInterfaces
                         case -1116510309:
                             await ((global::SystemInterfaces.IBatchTracker)grain).TrackingBarrierMessages((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
                             return null;
-                        case -1135451920:
-                            await ((global::SystemInterfaces.IBatchTracker)grain).CompleteTracking((global::SystemInterfaces.Model.BarrierMsgTrackingInfo)arguments[0]);
+                        case 1479196298:
+                            await ((global::SystemInterfaces.IBatchTracker)grain).CompleteOneOperatorBarrierTracking((global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo)arguments[0]);
                             return null;
-                        case 99336213:
-                            return await ((global::SystemInterfaces.IBatchTracker)grain).IsReadForCommit((global::System.Int32)arguments[0]);
+                        case 1479718266:
+                            return await ((global::SystemInterfaces.IBatchTracker)grain).IsReadyForCommit((global::System.Int32)arguments[0]);
+                        case -1437527581:
+                            return await ((global::SystemInterfaces.IBatchTracker)grain).IsCommitSuccess((global::System.Int32)arguments[0]);
                         case -1361007671:
                             await ((global::SystemInterfaces.IBatchTracker)grain).CleanUpOnRecovery();
                             return null;
                         case -1651031132:
                             await ((global::SystemInterfaces.IBatchTracker)grain).SetBatchManager((global::SystemInterfaces.IBatchCoordinator)arguments[0]);
                             return null;
+                        case -1092259612:
+                            await ((global::SystemInterfaces.IBatchTracker)grain).TrackingCommitMessages((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
+                            return null;
+                        case -1325206250:
+                            return await ((global::SystemInterfaces.IBatchTracker)grain).CompleteOneOperatorCommit((global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo)arguments[0]);
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 998595849 + @",methodId=" + methodId);
                     }
@@ -890,7 +936,7 @@ namespace OrleansGeneratedCode38151279
             result.Created = (global::System.DateTimeOffset)context.DeepCopyInner(input.Created);
             result.Key = input.Key;
             result.Value = input.Value;
-            result.barrierInfo = (global::SystemInterfaces.Model.BarrierMsgTrackingInfo)context.DeepCopyInner(input.barrierInfo);
+            result.barrierOrCommitInfo = (global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo)context.DeepCopyInner(input.barrierOrCommitInfo);
             result.messageType = input.messageType;
             return result;
         }
@@ -903,7 +949,7 @@ namespace OrleansGeneratedCode38151279
             context.SerializeInner(input.Created, typeof (global::System.DateTimeOffset));
             context.SerializeInner(input.Key, typeof (global::System.String));
             context.SerializeInner(input.Value, typeof (global::System.String));
-            context.SerializeInner(input.barrierInfo, typeof (global::SystemInterfaces.Model.BarrierMsgTrackingInfo));
+            context.SerializeInner(input.barrierOrCommitInfo, typeof (global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo));
             context.SerializeInner(input.messageType, typeof (global::SystemInterfaces.Model.MessageType));
         }
 
@@ -916,34 +962,34 @@ namespace OrleansGeneratedCode38151279
             result.Created = (global::System.DateTimeOffset)context.DeserializeInner(typeof (global::System.DateTimeOffset));
             result.Key = (global::System.String)context.DeserializeInner(typeof (global::System.String));
             result.Value = (global::System.String)context.DeserializeInner(typeof (global::System.String));
-            result.barrierInfo = (global::SystemInterfaces.Model.BarrierMsgTrackingInfo)context.DeserializeInner(typeof (global::SystemInterfaces.Model.BarrierMsgTrackingInfo));
+            result.barrierOrCommitInfo = (global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo)context.DeserializeInner(typeof (global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo));
             result.messageType = (global::SystemInterfaces.Model.MessageType)context.DeserializeInner(typeof (global::SystemInterfaces.Model.MessageType));
             return (global::SystemInterfaces.Model.StreamMessage)result;
         }
     }
 
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.SerializerAttribute(typeof (global::SystemInterfaces.Model.BarrierMsgTrackingInfo))]
-    internal sealed class OrleansCodeGenSystemInterfaces_Model_BarrierMsgTrackingInfoSerializer
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.SerializerAttribute(typeof (global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo))]
+    internal sealed class OrleansCodeGenSystemInterfaces_Model_BarrierOrCommitMsgTrackingInfoSerializer
     {
-        private readonly global::System.Func<global::SystemInterfaces.Model.BarrierMsgTrackingInfo, global::System.Guid> getField0;
-        private readonly global::System.Action<global::SystemInterfaces.Model.BarrierMsgTrackingInfo, global::System.Guid> setField0;
-        private readonly global::System.Func<global::SystemInterfaces.Model.BarrierMsgTrackingInfo, global::System.Int32> getField3;
-        private readonly global::System.Action<global::SystemInterfaces.Model.BarrierMsgTrackingInfo, global::System.Int32> setField3;
-        public OrleansCodeGenSystemInterfaces_Model_BarrierMsgTrackingInfoSerializer(global::Orleans.Serialization.IFieldUtils fieldUtils)
+        private readonly global::System.Func<global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo, global::System.Guid> getField0;
+        private readonly global::System.Action<global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo, global::System.Guid> setField0;
+        private readonly global::System.Func<global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo, global::System.Int32> getField3;
+        private readonly global::System.Action<global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo, global::System.Int32> setField3;
+        public OrleansCodeGenSystemInterfaces_Model_BarrierOrCommitMsgTrackingInfoSerializer(global::Orleans.Serialization.IFieldUtils fieldUtils)
         {
-            global::System.Reflection.FieldInfo field0 = typeof (global::SystemInterfaces.Model.BarrierMsgTrackingInfo).GetField(@"barrierID", (System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public));
-            getField0 = (global::System.Func<global::SystemInterfaces.Model.BarrierMsgTrackingInfo, global::System.Guid>)fieldUtils.GetGetter(field0);
-            setField0 = (global::System.Action<global::SystemInterfaces.Model.BarrierMsgTrackingInfo, global::System.Guid>)fieldUtils.GetReferenceSetter(field0);
-            global::System.Reflection.FieldInfo field3 = typeof (global::SystemInterfaces.Model.BarrierMsgTrackingInfo).GetField(@"numberOfMessagesCompleted", (System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public));
-            getField3 = (global::System.Func<global::SystemInterfaces.Model.BarrierMsgTrackingInfo, global::System.Int32>)fieldUtils.GetGetter(field3);
-            setField3 = (global::System.Action<global::SystemInterfaces.Model.BarrierMsgTrackingInfo, global::System.Int32>)fieldUtils.GetReferenceSetter(field3);
+            global::System.Reflection.FieldInfo field0 = typeof (global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo).GetField(@"guid", (System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public));
+            getField0 = (global::System.Func<global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo, global::System.Guid>)fieldUtils.GetGetter(field0);
+            setField0 = (global::System.Action<global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo, global::System.Guid>)fieldUtils.GetReferenceSetter(field0);
+            global::System.Reflection.FieldInfo field3 = typeof (global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo).GetField(@"numberOfMessagesCompleted", (System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public));
+            getField3 = (global::System.Func<global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo, global::System.Int32>)fieldUtils.GetGetter(field3);
+            setField3 = (global::System.Action<global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo, global::System.Int32>)fieldUtils.GetReferenceSetter(field3);
         }
 
         [global::Orleans.CodeGeneration.CopierMethodAttribute]
         public global::System.Object DeepCopier(global::System.Object original, global::Orleans.Serialization.ICopyContext context)
         {
-            global::SystemInterfaces.Model.BarrierMsgTrackingInfo input = ((global::SystemInterfaces.Model.BarrierMsgTrackingInfo)original);
-            global::SystemInterfaces.Model.BarrierMsgTrackingInfo result = (global::SystemInterfaces.Model.BarrierMsgTrackingInfo)global::System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof (global::SystemInterfaces.Model.BarrierMsgTrackingInfo));
+            global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo input = ((global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo)original);
+            global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo result = (global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo)global::System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof (global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo));
             context.RecordCopy(original, result);
             result.BatchID = input.BatchID;
             result.numberOfClientSent = input.numberOfClientSent;
@@ -955,7 +1001,7 @@ namespace OrleansGeneratedCode38151279
         [global::Orleans.CodeGeneration.SerializerMethodAttribute]
         public void Serializer(global::System.Object untypedInput, global::Orleans.Serialization.ISerializationContext context, global::System.Type expected)
         {
-            global::SystemInterfaces.Model.BarrierMsgTrackingInfo input = (global::SystemInterfaces.Model.BarrierMsgTrackingInfo)untypedInput;
+            global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo input = (global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo)untypedInput;
             context.SerializeInner(input.BatchID, typeof (global::System.Int32));
             context.SerializeInner(input.numberOfClientSent, typeof (global::System.Int32));
             context.SerializeInner(getField0(input), typeof (global::System.Guid));
@@ -965,13 +1011,13 @@ namespace OrleansGeneratedCode38151279
         [global::Orleans.CodeGeneration.DeserializerMethodAttribute]
         public global::System.Object Deserializer(global::System.Type expected, global::Orleans.Serialization.IDeserializationContext context)
         {
-            global::SystemInterfaces.Model.BarrierMsgTrackingInfo result = (global::SystemInterfaces.Model.BarrierMsgTrackingInfo)global::System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof (global::SystemInterfaces.Model.BarrierMsgTrackingInfo));
+            global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo result = (global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo)global::System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof (global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo));
             context.RecordObject(result);
             result.BatchID = (global::System.Int32)context.DeserializeInner(typeof (global::System.Int32));
             result.numberOfClientSent = (global::System.Int32)context.DeserializeInner(typeof (global::System.Int32));
             setField0(result, (global::System.Guid)context.DeserializeInner(typeof (global::System.Guid)));
             setField3(result, (global::System.Int32)context.DeserializeInner(typeof (global::System.Int32)));
-            return (global::SystemInterfaces.Model.BarrierMsgTrackingInfo)result;
+            return (global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo)result;
         }
     }
 
@@ -1013,7 +1059,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGenb8cbac2da8FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGen74fcb8ad92FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {
@@ -1031,7 +1077,7 @@ namespace OrleansGeneratedCode
         public void Populate(global::Orleans.Serialization.SerializerFeature feature)
         {
             feature.AddSerializerType(typeof (global::SystemInterfaces.Model.StreamMessage), typeof (OrleansGeneratedCode38151279.OrleansCodeGenSystemInterfaces_Model_StreamMessageSerializer));
-            feature.AddSerializerType(typeof (global::SystemInterfaces.Model.BarrierMsgTrackingInfo), typeof (OrleansGeneratedCode38151279.OrleansCodeGenSystemInterfaces_Model_BarrierMsgTrackingInfoSerializer));
+            feature.AddSerializerType(typeof (global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo), typeof (OrleansGeneratedCode38151279.OrleansCodeGenSystemInterfaces_Model_BarrierOrCommitMsgTrackingInfoSerializer));
             feature.AddSerializerType(typeof (global::SystemInterfaces.Model.OperatorSettings), typeof (OrleansGeneratedCode38151279.OrleansCodeGenSystemInterfaces_Model_OperatorSettingsSerializer));
             feature.AddKnownType(@"EmptyArray`1", @"EmptyArray`1'1");
             feature.AddKnownType(@"FXAssembly", @"FXAssembly");
@@ -3922,7 +3968,7 @@ namespace OrleansGeneratedCode
             feature.AddKnownType(@"SystemInterfaces.IStatefulOperator,GrainInterfaces", @"SystemInterfaces.IStatefulOperator");
             feature.AddKnownType(@"SystemInterfaces.IStatelessOperator,GrainInterfaces", @"SystemInterfaces.IStatelessOperator");
             feature.AddKnownType(@"SystemInterfaces.IStreamSource,GrainInterfaces", @"SystemInterfaces.IStreamSource");
-            feature.AddKnownType(@"SystemInterfaces.Model.BarrierMsgTrackingInfo,GrainInterfaces", @"SystemInterfaces.Model.BarrierMsgTrackingInfo");
+            feature.AddKnownType(@"SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo,GrainInterfaces", @"SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo");
             feature.AddKnownType(@"SystemInterfaces.Model.OperatorSettings,GrainInterfaces", @"SystemInterfaces.Model.OperatorSettings");
             feature.AddKnownType(@"SystemInterfaces.Model.StreamBatch,GrainInterfaces", @"SystemInterfaces.Model.StreamBatch");
             feature.AddKnownType(@"SystemInterfaces.Model.StreamMessage,GrainInterfaces", @"SystemInterfaces.Model.StreamMessage");

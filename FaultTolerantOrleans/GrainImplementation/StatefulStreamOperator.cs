@@ -88,18 +88,19 @@ namespace GrainImplementation
             if (msg.Value == Constants.Barrier_Value)
             {
                 //Just complete the tracking
-                msg.barrierInfo.BatchID = msg.BatchID;
-                batchTracker.CompleteTracking(msg.barrierInfo);
+                msg.barrierOrCommitInfo.BatchID = msg.BatchID;
+                batchTracker.CompleteOneOperatorBarrierTracking(msg.barrierOrCommitInfo);
             }
             else if (msg.Value == Constants.Commit_Value)
             {
-                //Commit Here 
                 PrettyConsole.Line("A stateful grain" + "Clear Reverse log and save Incremental log: " + msg.BatchID);
                 ClearReverseLog();
                 SaveIncrementalLogIntoStorage();
                 currentBatchID++;
-                //Need Handle the message in the buffer
                 ProcessMessagesInTheBuffer();
+                //TODO This should be an async method
+                msg.barrierOrCommitInfo.BatchID = msg.BatchID;
+                batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
             }
             return Task.CompletedTask;
         }
