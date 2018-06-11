@@ -260,7 +260,6 @@ namespace Test
             Mock<ILogger> mockLogger = new Mock<ILogger>();
             statefulStreamObserver = new StatefulStreamObserver(mockLogger.Object);
             await stream.SubscribeAsync(statefulStreamObserver);
-            //members = await source2.GetMembers();
             return Task.CompletedTask;
         }
 

@@ -29,6 +29,7 @@ namespace GrainImplementation
         {
             //Add a initial state for testing usage
             currentBatchID = 0;
+            //Generate random file name
             var name = @"D:\grainStates\grain" + Guid.NewGuid().ToString() + ".dat";
             operatorSettings.incrementalLogAddress = name;
             return Task.CompletedTask;
