@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen74fcb8ad92FeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen50cb9ca4b6FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -100,9 +100,9 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Object>(1422291436, new global::System.Object[]{stream, channel is global::Orleans.Grain ? channel.AsReference<global::SystemInterfaces.IStreamSource>() : channel});
         }
 
-        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> StartCommit(global::System.Int32 ID)
+        public global::System.Threading.Tasks.Task StartCommit(global::System.Int32 ID)
         {
-            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-76047527, new global::System.Object[]{ID});
+            return base.InvokeMethodAsync<global::System.Object>(-76047527, new global::System.Object[]{ID});
         }
 
         public global::System.Threading.Tasks.Task StartRecovery()
@@ -110,9 +110,9 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Object>(-546505175, null);
         }
 
-        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> SendBarrier()
+        public global::System.Threading.Tasks.Task SendBarrier()
         {
-            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(2046534918, null);
+            return base.InvokeMethodAsync<global::System.Object>(2046534918, null);
         }
 
         public global::System.Threading.Tasks.Task CompleteCommit(global::System.Int32 batchID)
@@ -145,12 +145,14 @@ namespace SystemInterfaces
                             await ((global::SystemInterfaces.IBatchCoordinator)grain).SetChannelAndRegisterTimer((global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage>)arguments[0], (global::SystemInterfaces.IStreamSource)arguments[1]);
                             return null;
                         case -76047527:
-                            return await ((global::SystemInterfaces.IBatchCoordinator)grain).StartCommit((global::System.Int32)arguments[0]);
+                            await ((global::SystemInterfaces.IBatchCoordinator)grain).StartCommit((global::System.Int32)arguments[0]);
+                            return null;
                         case -546505175:
                             await ((global::SystemInterfaces.IBatchCoordinator)grain).StartRecovery();
                             return null;
                         case 2046534918:
-                            return await ((global::SystemInterfaces.IBatchCoordinator)grain).SendBarrier();
+                            await ((global::SystemInterfaces.IBatchCoordinator)grain).SendBarrier();
+                            return null;
                         case -698663036:
                             await ((global::SystemInterfaces.IBatchCoordinator)grain).CompleteCommit((global::System.Int32)arguments[0]);
                             return null;
@@ -1059,7 +1061,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen74fcb8ad92FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGen50cb9ca4b6FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {

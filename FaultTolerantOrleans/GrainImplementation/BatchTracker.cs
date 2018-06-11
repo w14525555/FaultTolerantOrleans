@@ -141,7 +141,6 @@ namespace GrainImplementation
             }
             else
             {
-                PrettyConsole.Line("Add " + BatchID);
                 committedBatch.Add(BatchID);
             }
             return Task.CompletedTask;

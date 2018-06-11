@@ -74,6 +74,7 @@ namespace Test
             var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
             await batchCoordinator.SendBarrier();
             var batchTracker = client.GetGrain<IBatchTracker>(Constants.Tracker);
+            Thread.Sleep(100);
             bool isCurrentBatchCompleted = await batchTracker.IsReadyForCommit(barrierMsg.BatchID);
             Assert.AreEqual(true, isCurrentBatchCompleted);
         }

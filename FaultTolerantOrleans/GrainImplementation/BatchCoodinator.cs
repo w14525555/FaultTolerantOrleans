@@ -50,28 +50,28 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        public async Task<Task> SendBarrier()
+        public Task SendBarrier()
         {
-            await SetBatchID(barrierMsg);
+            SetBatchID(barrierMsg);
             barrierMsg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), sources.Count);
-            await tracker.TrackingBarrierMessages(barrierMsg);
+            tracker.TrackingBarrierMessages(barrierMsg);
             foreach (IStreamSource source in sources)
             {
-                await source.ProduceMessageAsync(barrierMsg);
+                source.ProduceMessageAsync(barrierMsg);
             }
             currentBatchID++;
             return Task.CompletedTask;
         }
 
         //Commit 
-        public async Task<Task> StartCommit(int ID)
+        public Task StartCommit(int ID)
         {
             commitMsg.BatchID = ID;
             commitMsg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), sources.Count);
-            await tracker.TrackingCommitMessages(commitMsg);
+            tracker.TrackingCommitMessages(commitMsg);
             foreach (IStreamSource source in sources)
             {
-                await source.ProduceMessageAsync(commitMsg);
+                source.ProduceMessageAsync(commitMsg);
             }
             return Task.CompletedTask;
         }
