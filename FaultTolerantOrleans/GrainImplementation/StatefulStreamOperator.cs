@@ -19,6 +19,7 @@ namespace GrainImplementation
         private Dictionary<string, int> reverseLog = new Dictionary<string, int>();
         private Dictionary<string, int> incrementalLog = new Dictionary<string, int>();
         private List<StreamMessage> messageBuffer = new List<StreamMessage>();
+        private const int Default_ZERO = 0;
         private IBatchTracker batchTracker;
         private IAsyncStream<StreamMessage> asyncStream;
 
@@ -76,7 +77,7 @@ namespace GrainImplementation
             {
                 statesMap.Add(msg.Key, 1);
                 //If insert, only save the key into reverse log
-                reverseLog.Add(msg.Key, 0);
+                reverseLog.Add(msg.Key, Default_ZERO);
                 incrementalLog.Add(msg.Key, 1);
                 stream.OnNextAsync(new StreamMessage(msg.Key, "1"));
             }
@@ -98,7 +99,7 @@ namespace GrainImplementation
                 SaveIncrementalLogIntoStorage();
                 currentBatchID++;
                 ProcessMessagesInTheBuffer();
-                //TODO This should be an async method
+                //TODO This might be an async method
                 msg.barrierOrCommitInfo.BatchID = msg.BatchID;
                 batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
             }
@@ -192,36 +193,36 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        //public Task RevertStateFromReverseLog()
-        //{
-        //    //Here three cases rollback the states
-        //    //in reverse log. 
-        //    //Insert: Should remove the value from map
-        //    //Update: revert the value
-        //    //delete: add the key and value back
-        //    foreach (var item in reverseLog)
-        //    {
-        //        //If delete, the statemap does not contain the key
-        //        if (!statesMap.ContainsKey(item.Key))
-        //        {
-        //            statesMap.Add(item.Key, item.Value);
-        //        }
-        //        else
-        //        {
-        //            //If null, means it was inserted value
-        //            if (item.Value == null)
-        //            {
-        //                statesMap.Remove(item.Key);
-        //            }
-        //            else
-        //            {
-        //                //The last case is reverting updated value 
-        //                statesMap[item.Key] = item.Value;
-        //            }
-        //        }
-        //    }
-        //    return Task.CompletedTask;
-        //}
+        public Task RevertStateFromReverseLog()
+        {
+            //Here three cases rollback the states
+            //in reverse log. 
+            //Insert: Should remove the value from map
+            //Update: revert the value
+            //delete: add the key and value back
+            foreach (var item in reverseLog)
+            {
+                //If delete, the statemap does not contain the key
+                if (!statesMap.ContainsKey(item.Key))
+                {
+                    statesMap.Add(item.Key, item.Value);
+                }
+                else
+                {
+                    //If null, means it was inserted value
+                    if (item.Value == Default_ZERO)
+                    {
+                        statesMap.Remove(item.Key);
+                    }
+                    else
+                    {
+                        //The last case is reverting updated value 
+                        statesMap[item.Key] = item.Value;
+                    }
+                }
+            }
+            return Task.CompletedTask;
+        }
 
         public Task ReloadStateFromIncrementalLog()
         {

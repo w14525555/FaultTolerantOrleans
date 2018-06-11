@@ -138,7 +138,7 @@ namespace GrainImplementation
         {
             currentBatchID = msg.BatchID + 1;
             msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), statelessOperators.Count);
-            msg.barrierOrCommitInfo.BatchID = msg.BatchID;
+            //msg.barrierOrCommitInfo.BatchID = msg.BatchID;
             PrettyConsole.Line("Tracking Batch " + msg.BatchID + " with " + statelessOperators.Count);
             batchTracker.TrackingBarrierMessages(msg);
             return Task.CompletedTask;
@@ -147,7 +147,7 @@ namespace GrainImplementation
         private Task HandleCommitMessages(StreamMessage msg)
         {
             msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), statelessOperators.Count);
-            msg.barrierOrCommitInfo.BatchID = msg.BatchID;
+            //msg.barrierOrCommitInfo.BatchID = msg.BatchID;
             batchTracker.TrackingCommitMessages(msg);
             return Task.CompletedTask;
         }
