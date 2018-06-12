@@ -203,6 +203,30 @@ namespace Test
             Assert.AreEqual(-2, count);
         }
 
+        //Recovery Tests
+        [TestMethod]
+        public async Task TestRecoveyFromReverseLog()
+        {
+            await SetUpSource();
+            await source.ProduceMessageAsync(wordCountMessage1);
+            var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
+            await batchCoordinator.StartRecovery();
+            int count = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
+            Assert.AreEqual(-2, count);
+        }
+
+        [TestMethod]
+        public async Task TestReverseLogClearAfterRevert()
+        {
+            await SetUpSource();
+            await source.ProduceMessageAsync(wordCountMessage1);
+            var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
+            await batchCoordinator.StartRecovery();
+            int count = await source.GetStateInReverseLog(new StreamMessage(wordCountMessage1.Key, "me"));
+            Assert.AreEqual(-2, count);
+        }
+
+
         //SetUp Functions 
 
         private Task StartSilo()

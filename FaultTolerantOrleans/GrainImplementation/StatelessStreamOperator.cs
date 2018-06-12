@@ -68,7 +68,6 @@ namespace SystemImplementation
                 info.BatchID = msg.BatchID;
                 await HandleBarrierMessages(msg);
                 await batchTracker.CompleteOneOperatorBarrierTracking(info);
-                await BroadcastSpecialMessage(msg, stream);
             }
             //The stateless operator does not have state
             //so it just broadcast messages. 
@@ -78,9 +77,14 @@ namespace SystemImplementation
                 info.BatchID = msg.BatchID;
                 await HandleCommitMessages(msg);
                 await batchTracker.CompleteOneOperatorCommit(info);
-                await BroadcastSpecialMessage(msg, stream);
             }
-            
+            else if (msg.Value == Constants.Recovery_Value)
+            {
+                //Start Recovery Log here
+                //Now just do notheing
+                PrettyConsole.Line("Stateless");
+            }
+            await BroadcastSpecialMessage(msg, stream);
             return Task.CompletedTask;
         }
 

@@ -130,6 +130,12 @@ namespace GrainImplementation
                 await HandleCommitMessages(msg);
                 await batchTracker.CompleteOneOperatorCommit(info);
             }
+            else if (msg.Value == Constants.Recovery_Value)
+            {
+                //Start Recovery Log here
+                //Now just do notheing
+                PrettyConsole.Line("Source");
+            }
             await BroadcastSpecialMessage(msg, stream);
             return Task.CompletedTask;
         }

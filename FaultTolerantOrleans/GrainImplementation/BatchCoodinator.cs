@@ -76,6 +76,26 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
+        //Recovery
+        public Task StartRecovery()
+        {
+            //TODO
+            //1. Stop the timer
+            disposable.Dispose();
+            //2. Broadcast the rollback and reset batchID
+            PrettyConsole.Line("Coordinator");
+            foreach (IStreamSource source in sources)
+            {
+                source.ProduceMessageAsync(recoveryMsg);
+            }
+            //3. Clean information in the tracker()
+            tracker.CleanUpOnRecovery();
+            //5. Make sure everything is right
+            //6. Register new timer
+            //disposable = RegisterTimer(SendBarrierOnPeriodOfTime, null, barrierTimeInterval, barrierTimeInterval);
+            return Task.CompletedTask;
+        }
+
         private Task SetBatchID(StreamMessage msg)
         {
             msg.BatchID = currentBatchID;
@@ -85,22 +105,6 @@ namespace GrainImplementation
         public Task SetCurrentBatchID(int id)
         {
             currentBatchID = id;
-            return Task.CompletedTask;
-        }
-
-        public Task StartRecovery()
-        {
-            //TODO
-            //1. Stop the timer
-            disposable.Dispose();
-            //2. Broadcast the rollback and reset batchID
-            recoveryMsg.Value = committedID.ToString();
-            //source.ProduceMessageAsync(recoveryMsg);
-            //3. Clean information in the tracker()
-            tracker.CleanUpOnRecovery();
-            //5. Make sure everything is right
-            //6. Register new timer
-            disposable = RegisterTimer(SendBarrierOnPeriodOfTime, null, barrierTimeInterval, barrierTimeInterval);
             return Task.CompletedTask;
         }
 

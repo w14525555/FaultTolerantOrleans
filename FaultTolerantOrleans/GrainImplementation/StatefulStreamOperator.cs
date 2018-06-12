@@ -103,6 +103,17 @@ namespace GrainImplementation
                 msg.barrierOrCommitInfo.BatchID = msg.BatchID;
                 batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
             }
+            else if (msg.Value == Constants.Recovery_Value)
+            {
+                PrettyConsole.Line("Stateful");
+                //1. Recovery From the reverse log
+                RevertStateFromReverseLog();
+                //2. Clear the buffer
+                messageBuffer.Clear();
+                //3. Clear the reverse log and incremental log
+                reverseLog.Clear();
+                incrementalLog.Clear();
+            }
             return Task.CompletedTask;
         }
 
@@ -200,6 +211,7 @@ namespace GrainImplementation
             //Insert: Should remove the value from map
             //Update: revert the value
             //delete: add the key and value back
+            PrettyConsole.Line("Revert from Reverse Log!");
             foreach (var item in reverseLog)
             {
                 //If delete, the statemap does not contain the key
