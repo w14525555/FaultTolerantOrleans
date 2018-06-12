@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGenb04f02fa9aFeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGenbb63e498f7FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -458,9 +458,9 @@ namespace SystemInterfaces
             }
         }
 
-        public global::System.Threading.Tasks.Task ExecuteMessage(global::SystemInterfaces.Model.StreamMessage msg, global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage> stream)
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> ExecuteMessage(global::SystemInterfaces.Model.StreamMessage msg, global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage> stream)
         {
-            return base.InvokeMethodAsync<global::System.Object>(-1221400782, new global::System.Object[]{msg, stream});
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-1221400782, new global::System.Object[]{msg, stream});
         }
 
         public global::System.Threading.Tasks.Task<global::System.Int32> GetState(global::System.String key)
@@ -510,8 +510,7 @@ namespace SystemInterfaces
                     switch (methodId)
                     {
                         case -1221400782:
-                            await ((global::SystemInterfaces.IStatefulOperator)grain).ExecuteMessage((global::SystemInterfaces.Model.StreamMessage)arguments[0], (global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage>)arguments[1]);
-                            return null;
+                            return await ((global::SystemInterfaces.IStatefulOperator)grain).ExecuteMessage((global::SystemInterfaces.Model.StreamMessage)arguments[0], (global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage>)arguments[1]);
                         case -1226735009:
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).GetState((global::System.String)arguments[0]);
                         case 2075549514:
@@ -1061,7 +1060,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGenb04f02fa9aFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGenbb63e498f7FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {

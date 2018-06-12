@@ -37,27 +37,27 @@ namespace GrainImplementation
         }
 
         //This function get the words and count
-        public Task ExecuteMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
+        public async Task<Task> ExecuteMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
             if (msg.BatchID > currentBatchID)
             {
                 messageBuffer.Add(msg);
                 asyncStream = stream;
             }
-            else if (msg.BatchID == currentBatchID)
+            else if (msg.BatchID == currentBatchID || msg.Value == Constants.Recovery_Value)
             {
                 if (msg.Key != Constants.System_Key)
                 {
-                    CountWord(msg, stream);
+                    await CountWord(msg, stream);
                 }
                 else
                 {
-                    ProcessSpecialMessage(msg);
+                    await ProcessSpecialMessage(msg);
                 }
             }
             else
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException(msg.Key + " " + msg.Value + " The id " + msg.BatchID + " is less than the currentID");
             }
             return Task.CompletedTask;
         }
@@ -84,30 +84,38 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        private Task ProcessSpecialMessage(StreamMessage msg)
+        private async Task<Task> ProcessSpecialMessage(StreamMessage msg)
         {
             if (msg.Value == Constants.Barrier_Value)
             {
                 //Just complete the tracking
                 msg.barrierOrCommitInfo.BatchID = msg.BatchID;
-                batchTracker.CompleteOneOperatorBarrierTracking(msg.barrierOrCommitInfo);
+                await batchTracker.CompleteOneOperatorBarrierTracking(msg.barrierOrCommitInfo);
             }
             else if (msg.Value == Constants.Commit_Value)
             {
                 PrettyConsole.Line("A stateful grain" + "Clear Reverse log and save Incremental log: " + msg.BatchID);
-                ClearReverseLog();
-                SaveIncrementalLogIntoStorage();
+                await ClearReverseLog();
+                await SaveIncrementalLogIntoStorage();
                 currentBatchID++;
-                ProcessMessagesInTheBuffer();
+                await ProcessMessagesInTheBuffer();
                 //TODO This might be an async method
                 msg.barrierOrCommitInfo.BatchID = msg.BatchID;
-                batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
+                await batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
             }
             else if (msg.Value == Constants.Recovery_Value)
             {
                 PrettyConsole.Line("Stateful");
                 //1. Recovery From the reverse log
-                RevertStateFromReverseLog();
+                await RevertStateFromReverseLog();
+                //try
+                //{
+                //    await RevertStateFromIncrementalLog();
+                //}
+                //catch (Exception e)
+                //{
+                //    PrettyConsole.Line("Exception of read documents : " + e);
+                //}
                 //2. Clear the buffer
                 messageBuffer.Clear();
                 //3. Clear the reverse log and incremental log
@@ -154,7 +162,7 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        private Task ProcessMessagesInTheBuffer()
+        private async Task<Task> ProcessMessagesInTheBuffer()
         {
             if (messageBuffer.Count > 0)
             {
@@ -164,13 +172,13 @@ namespace GrainImplementation
                     {
                         if (msg.BatchID == currentBatchID)
                         {
-                            ExecuteMessage(msg, asyncStream);
+                            await ExecuteMessage(msg, asyncStream);
                         }
                     }
                 }
                 else
                 {
-                    throw new InvalidOperationException();
+                    throw new InvalidOperationException("Process Buffer Message: now Stream!");
                 }
             }
             return Task.CompletedTask;
@@ -193,7 +201,7 @@ namespace GrainImplementation
 
         /// <summary>
         /// Writes the given object instance to a binary file.
-        public static Task WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = false)
+        public static Task WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = true)
         {
             using (Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create))
             {
@@ -202,6 +210,21 @@ namespace GrainImplementation
             }
 
             return Task.CompletedTask;
+        }
+
+        public static Task<List<T>> ReadFromBinaryFile<T>(string filePath)
+        {
+            using (Stream stream = File.Open(filePath, FileMode.OpenOrCreate))
+            {
+                List<T> statesList = new List<T>();
+                while (stream.Position < stream.Length)
+                {
+                    var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                    T obj = (T)binaryFormatter.Deserialize(stream);
+                    statesList.Add(obj);
+                }
+                return Task.FromResult(statesList);
+            }
         }
 
         public Task RevertStateFromReverseLog()
@@ -236,9 +259,40 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        public Task ReloadStateFromIncrementalLog()
+        public async Task<Task> RevertStateFromIncrementalLog()
         {
-            //TODO
+            List<Dictionary<string, int>> logs = await ReadFromBinaryFile<Dictionary<string, int>>(operatorSettings.incrementalLogAddress);
+            if (logs.Count == 0)
+            {
+                statesMap.Clear();
+            }
+            else if (logs.Count == 1)
+            {
+                statesMap = logs[0];
+            }
+            else
+            {
+                await CalculateStatesFromIncrementalLog(logs);
+            }
+            return Task.CompletedTask;
+        }
+
+        private Task CalculateStatesFromIncrementalLog(List<Dictionary<string, int>> logs)
+        {
+            foreach (var log in logs)
+            {
+                foreach (var item in log)
+                {
+                    if (statesMap.ContainsKey(item.Key))
+                    {
+                        statesMap[item.Key] = item.Value;
+                    }
+                    else
+                    {
+                        statesMap.Add(item.Key, item.Value);
+                    }
+                }
+            }
             return Task.CompletedTask;
         }
 
@@ -259,14 +313,6 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        //public static Task<T> ReadFromBinaryFile<T>(string filePath)
-        //{
-        //    using (Stream stream = File.Open(filePath, FileMode.Open))
-        //    {
-        //        var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-        //        return Task.FromResult((T)binaryFormatter.Deserialize(stream));
-        //    }
-        //}
 
         public Task<int> GetState(string key)
         {

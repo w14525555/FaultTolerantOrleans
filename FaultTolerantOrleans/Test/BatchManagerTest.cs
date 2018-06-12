@@ -205,6 +205,21 @@ namespace Test
 
         //Recovery Tests
         [TestMethod]
+        public async Task TestRecoveyFromReverseLogAfterOneBatch()
+        {
+            await SetUpSource();
+            await source.ProduceMessageAsync(wordCountMessage1);
+            var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
+            await batchCoordinator.SendBarrier();
+            await source.ProduceMessageAsync(wordCountMessage1);
+            int count = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
+            Assert.AreEqual(2, count);
+            await batchCoordinator.StartRecovery();
+            int countAfterRecovery = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
+            Assert.AreEqual(1, countAfterRecovery);
+        }
+
+        [TestMethod]
         public async Task TestRecoveyFromReverseLog()
         {
             await SetUpSource();
@@ -225,7 +240,6 @@ namespace Test
             int count = await source.GetStateInReverseLog(new StreamMessage(wordCountMessage1.Key, "me"));
             Assert.AreEqual(-2, count);
         }
-
 
         //SetUp Functions 
 

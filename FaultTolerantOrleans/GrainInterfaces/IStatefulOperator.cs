@@ -7,7 +7,7 @@ namespace SystemInterfaces
 {
     public interface IStatefulOperator: IGrainWithGuidKey
     {
-        Task ExecuteMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream);
+        Task<Task> ExecuteMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream);
 
         //Method that used for testing. 
         Task<int> GetState(string key);

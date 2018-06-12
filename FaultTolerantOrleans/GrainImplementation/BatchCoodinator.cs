@@ -84,6 +84,7 @@ namespace GrainImplementation
             disposable.Dispose();
             //2. Broadcast the rollback and reset batchID
             PrettyConsole.Line("Coordinator");
+            recoveryMsg.BatchID = committedID;
             foreach (IStreamSource source in sources)
             {
                 source.ProduceMessageAsync(recoveryMsg);
