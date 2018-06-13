@@ -12,9 +12,11 @@ namespace GrainImplementation
     {
         private Dictionary<int, StreamBatch> batchTrackingMap = new Dictionary<int, StreamBatch>();
         private Dictionary<int, StreamBatch> commitTrackingMap = new Dictionary<int, StreamBatch>();
+        private Dictionary<int, StreamBatch> recoveryTrackingMap = new Dictionary<int, StreamBatch>();
 
         private List<int> completedBatch = new List<int>();
         private List<int> committedBatch = new List<int>();
+        private List<int> recoveryedBatch = new List<int>();
         private IBatchCoordinator batchCoordinator;
 
         public Task TrackingBarrierMessages(StreamMessage msg)
@@ -67,8 +69,35 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
+        //Tracking the Recovery messages.
+        //TODO
+        public Task TrackingRecoveryMessages(StreamMessage msg)
+        {
+            if (recoveryTrackingMap.ContainsKey(msg.BatchID))
+            {
+                var targetBatch = recoveryTrackingMap[msg.BatchID];
+                Functions.CheckNotNull(msg.barrierOrCommitInfo);
+                targetBatch.AddBarrierOrCommitMsgTrackingHelper(msg.barrierOrCommitInfo);
+                throw new InvalidOperationException("Should not recovery different batch at same time");
+            }
+            else if (recoveryTrackingMap.Count == 1)
+            {
+                PrettyConsole.Line("Recovery batch" + msg.BatchID);
+                StreamBatch newBatch = new StreamBatch(msg.BatchID);
+                //The name should be changed 
+                Functions.CheckNotNull(msg.barrierOrCommitInfo);
+                newBatch.AddBarrierOrCommitMsgTrackingHelper(msg.barrierOrCommitInfo);
+                recoveryTrackingMap.Add(msg.BatchID, newBatch);
+                return Task.CompletedTask;
+            }
+            else
+            {
+                throw new InvalidOperationException("Should not recovery different batch at same time");
+            }
+        }
+
         //Should find the target task in the currentBatch
-        public Task CompleteOneOperatorBarrierTracking(BarrierOrCommitMsgTrackingInfo msgInfo)
+        public Task CompleteOneOperatorBarrier(BarrierOrCommitMsgTrackingInfo msgInfo)
         {
             if (!batchTrackingMap.ContainsKey(msgInfo.BatchID))
             {
@@ -119,6 +148,34 @@ namespace GrainImplementation
             }
             return Task.CompletedTask;
         }
+
+        //Recovery
+        public async Task<Task> CompleteOneOperatorRecovery(BarrierOrCommitMsgTrackingInfo msgInfo)
+        {
+            if (!recoveryTrackingMap.ContainsKey(msgInfo.BatchID))
+            {
+                //Multiple batch has that problem
+                PrettyConsole.Line("The recovery key " + msgInfo.BatchID + " is not exist");
+            }
+            else
+            {
+                //PrettyConsole.Line("Finish Tracking one message in batchID: " + msgInfo.BatchID);
+                StreamBatch targetBatch = recoveryTrackingMap[msgInfo.BatchID];
+                targetBatch.CompleteOneMessageTracking(msgInfo);
+                if (targetBatch.readForCommitting)
+                {
+                    if (batchCoordinator != null)
+                    {
+                        PrettyConsole.Line("Batch: " + msgInfo.BatchID + " commit has been successfully recoveryed");
+                        recoveryedBatch.Add(msgInfo.BatchID);
+                        await batchCoordinator.CompleteRecovery(msgInfo.BatchID);
+                        recoveryTrackingMap.Remove(msgInfo.BatchID);
+                    }
+                }
+            }
+            return Task.CompletedTask;
+        }
+
 
         private Task SetBatchAsCompleted(int BatchID)
         {

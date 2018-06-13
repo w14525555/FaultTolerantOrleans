@@ -19,6 +19,7 @@ namespace GrainImplementation
         private Dictionary<string, int> reverseLog = new Dictionary<string, int>();
         private Dictionary<string, int> incrementalLog = new Dictionary<string, int>();
         private List<StreamMessage> messageBuffer = new List<StreamMessage>();
+        private bool isOperatorFailed = false;
         private const int Default_ZERO = 0;
         private IBatchTracker batchTracker;
         private IAsyncStream<StreamMessage> asyncStream;
@@ -89,8 +90,7 @@ namespace GrainImplementation
             if (msg.Value == Constants.Barrier_Value)
             {
                 //Just complete the tracking
-                msg.barrierOrCommitInfo.BatchID = msg.BatchID;
-                await batchTracker.CompleteOneOperatorBarrierTracking(msg.barrierOrCommitInfo);
+                await batchTracker.CompleteOneOperatorBarrier(msg.barrierOrCommitInfo);
             }
             else if (msg.Value == Constants.Commit_Value)
             {
@@ -99,28 +99,41 @@ namespace GrainImplementation
                 await SaveIncrementalLogIntoStorage();
                 currentBatchID++;
                 await ProcessMessagesInTheBuffer();
-                //TODO This might be an async method
-                msg.barrierOrCommitInfo.BatchID = msg.BatchID;
                 await batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
             }
             else if (msg.Value == Constants.Recovery_Value)
             {
                 PrettyConsole.Line("Stateful");
                 //1. Recovery From the reverse log
-                await RevertStateFromReverseLog();
-                //try
-                //{
-                //    await RevertStateFromIncrementalLog();
-                //}
-                //catch (Exception e)
-                //{
-                //    PrettyConsole.Line("Exception of read documents : " + e);
-                //}
+                await RecoveryFromReverseLogOrIncrementalLog();
                 //2. Clear the buffer
                 messageBuffer.Clear();
                 //3. Clear the reverse log and incremental log
                 reverseLog.Clear();
                 incrementalLog.Clear();
+                //4. Reset batch ID
+                currentBatchID = msg.BatchID;
+                await batchTracker.CompleteOneOperatorRecovery(msg.barrierOrCommitInfo);
+            }
+            return Task.CompletedTask;
+        }
+
+        private async Task<Task> RecoveryFromReverseLogOrIncrementalLog()
+        {
+            if (isOperatorFailed)
+            {
+                try
+                {
+                    await RevertStateFromIncrementalLog();
+                }
+                catch (Exception e)
+                {
+                    PrettyConsole.Line("Exception of read documents : " + e);
+                }
+            }
+            else
+            {
+                await RevertStateFromReverseLog();
             }
             return Task.CompletedTask;
         }

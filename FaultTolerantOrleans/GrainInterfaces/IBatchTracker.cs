@@ -10,10 +10,6 @@ namespace SystemInterfaces
     //emitted batch seeder.
     public interface IBatchTracker: IGrainWithStringKey
     {
-        Task TrackingBarrierMessages(StreamMessage msg);
-
-        Task CompleteOneOperatorBarrierTracking(BarrierOrCommitMsgTrackingInfo msgInfo);
-
         Task<bool> IsReadyForCommit(int batchID);
 
         Task<bool> IsCommitSuccess(int batchID);
@@ -22,8 +18,16 @@ namespace SystemInterfaces
 
         Task SetBatchManager(IBatchCoordinator batchManager);
 
+        Task TrackingBarrierMessages(StreamMessage msg);
+
         Task TrackingCommitMessages(StreamMessage msg);
 
+        Task TrackingRecoveryMessages(StreamMessage msg);
+
         Task<Task> CompleteOneOperatorCommit(BarrierOrCommitMsgTrackingInfo msgInfo);
+
+        Task CompleteOneOperatorBarrier(BarrierOrCommitMsgTrackingInfo msgInfo);
+
+        Task<Task> CompleteOneOperatorRecovery(BarrierOrCommitMsgTrackingInfo msgInfo);
     }
 }

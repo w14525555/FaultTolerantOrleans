@@ -16,14 +16,6 @@ namespace SystemInterfaces
 
         Task<int> GetStateInIncrementalLog(string key);
 
-        //Task ClearReverseLog();
-
-        //Task<Task> UpdateIncrementalLog();
-
-        //Task RevertStateFromReverseLog();
-
-        //Task ReloadStateFromIncrementalLog();
-
         Task<OperatorSettings> GetSettings();
 
         Task LoadSettings(OperatorSettings operatorSettings);

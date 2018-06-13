@@ -61,28 +61,24 @@ namespace SystemImplementation
 
         private async Task<Task> ProcessSpecialMessageAsync(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
-           
+            BarrierOrCommitMsgTrackingInfo info = new BarrierOrCommitMsgTrackingInfo(msg.barrierOrCommitInfo.GetID(), msg.barrierOrCommitInfo.numberOfClientSent);
+            info.BatchID = msg.BatchID;
             if (msg.Value == Constants.Barrier_Value)
             {
-                BarrierOrCommitMsgTrackingInfo info = new BarrierOrCommitMsgTrackingInfo(msg.barrierOrCommitInfo.GetID(), msg.barrierOrCommitInfo.numberOfClientSent);
-                info.BatchID = msg.BatchID;
                 await HandleBarrierMessages(msg);
-                await batchTracker.CompleteOneOperatorBarrierTracking(info);
+                await batchTracker.CompleteOneOperatorBarrier(info);
             }
             //The stateless operator does not have state
             //so it just broadcast messages. 
             else if (msg.Value == Constants.Commit_Value)
             {
-                BarrierOrCommitMsgTrackingInfo info = new BarrierOrCommitMsgTrackingInfo(msg.barrierOrCommitInfo.GetID(), msg.barrierOrCommitInfo.numberOfClientSent);
-                info.BatchID = msg.BatchID;
                 await HandleCommitMessages(msg);
                 await batchTracker.CompleteOneOperatorCommit(info);
             }
             else if (msg.Value == Constants.Recovery_Value)
             {
-                //Start Recovery Log here
-                //Now just do notheing
-                PrettyConsole.Line("Stateless");
+                await HandleRecoveryMessages(msg);
+                await batchTracker.CompleteOneOperatorRecovery(info);
             }
             await BroadcastSpecialMessage(msg, stream);
             return Task.CompletedTask;
@@ -91,6 +87,7 @@ namespace SystemImplementation
         private Task HandleBarrierMessages(StreamMessage msg)
         {
             msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), statefulOperators.Count);
+            msg.barrierOrCommitInfo.BatchID = msg.BatchID;
             if (batchTracker != null)
             {
                 batchTracker.TrackingBarrierMessages(msg);
@@ -105,9 +102,25 @@ namespace SystemImplementation
         private Task HandleCommitMessages(StreamMessage msg)
         {
             msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), statefulOperators.Count);
+            msg.barrierOrCommitInfo.BatchID = msg.BatchID;
             if (batchTracker != null)
             {
                 batchTracker.TrackingCommitMessages(msg);
+            }
+            else
+            {
+                throw new NullReferenceException();
+            }
+            return Task.CompletedTask;
+        }
+
+        private Task HandleRecoveryMessages(StreamMessage msg)
+        {
+            msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), statefulOperators.Count);
+            msg.barrierOrCommitInfo.BatchID = msg.BatchID;
+            if (batchTracker != null)
+            {
+                batchTracker.TrackingRecoveryMessages(msg);
             }
             else
             {

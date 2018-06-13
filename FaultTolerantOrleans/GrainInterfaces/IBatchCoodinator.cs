@@ -17,6 +17,8 @@ namespace SystemInterfaces
 
         Task CompleteCommit(int batchID);
 
+        Task CompleteRecovery(int batchID);
+
         Task<int> GetCommittedBatchID();
     }
 }

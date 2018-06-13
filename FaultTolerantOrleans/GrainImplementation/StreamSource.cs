@@ -63,22 +63,18 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-		public async Task<Guid> Join(string nickname)
+		public Task<Guid> Join(string nickname)
 		{
 			onlineMembers.Add(nickname);
-            await ProduceMessageAsync(new StreamMessage("System", $"{nickname} joins the chat '{this.GetPrimaryKeyString()}' ..."));
-
-			return stream.Guid;
+			return Task.FromResult(stream.Guid);
 		}
 
-		public async Task<Guid> Leave(string nickname)
+		public Task<Guid> Leave(string nickname)
 		{
 			onlineMembers.Remove(nickname);
 
-            await ProduceMessageAsync(new StreamMessage("System", $"{nickname} leaves the chat..."));
-
-			return stream.Guid;
-		}
+			return Task.FromResult(stream.Guid);
+        }
 
 		public async Task<bool> Message(StreamMessage msg)
 		{
@@ -115,46 +111,47 @@ namespace GrainImplementation
         //client it sent to. 
         private async Task<Task> ProcessSpecialMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
+            BarrierOrCommitMsgTrackingInfo info = new BarrierOrCommitMsgTrackingInfo(msg.barrierOrCommitInfo.GetID(), msg.barrierOrCommitInfo.numberOfClientSent);
+            info.BatchID = msg.BatchID;
             if (msg.Value == Constants.Barrier_Value)
             {
-                BarrierOrCommitMsgTrackingInfo info = new BarrierOrCommitMsgTrackingInfo(msg.barrierOrCommitInfo.GetID(), msg.barrierOrCommitInfo.numberOfClientSent);
-                info.BatchID = msg.BatchID;
-                await HandleBarrierMessages(msg);
-                await batchTracker.CompleteOneOperatorBarrierTracking(info);
+                currentBatchID = msg.BatchID + 1;
+                await TrackingBarrierMessages(msg);
+                await batchTracker.CompleteOneOperatorBarrier(info);
             }
-            //The source just broadcast the commit message
             else if (msg.Value == Constants.Commit_Value)
             {
-                BarrierOrCommitMsgTrackingInfo info = new BarrierOrCommitMsgTrackingInfo(msg.barrierOrCommitInfo.GetID(), msg.barrierOrCommitInfo.numberOfClientSent);
-                info.BatchID = msg.BatchID;
-                await HandleCommitMessages(msg);
+                await TrackingCommitMessages(msg);
                 await batchTracker.CompleteOneOperatorCommit(info);
             }
             else if (msg.Value == Constants.Recovery_Value)
             {
-                //Start Recovery Log here
-                //Now just do notheing
-                PrettyConsole.Line("Source");
+                currentBatchID = msg.BatchID;
+                await TrackingRecoveryMessages(msg);
+                await batchTracker.CompleteOneOperatorRecovery(info);
             }
             await BroadcastSpecialMessage(msg, stream);
             return Task.CompletedTask;
         }
 
-        private Task HandleBarrierMessages(StreamMessage msg)
+        private Task TrackingBarrierMessages(StreamMessage msg)
         {
-            currentBatchID = msg.BatchID + 1;
             msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), statelessOperators.Count);
-            //msg.barrierOrCommitInfo.BatchID = msg.BatchID;
-            PrettyConsole.Line("Tracking Batch " + msg.BatchID + " with " + statelessOperators.Count);
             batchTracker.TrackingBarrierMessages(msg);
             return Task.CompletedTask;
         }
 
-        private Task HandleCommitMessages(StreamMessage msg)
+        private Task TrackingCommitMessages(StreamMessage msg)
         {
             msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), statelessOperators.Count);
-            //msg.barrierOrCommitInfo.BatchID = msg.BatchID;
             batchTracker.TrackingCommitMessages(msg);
+            return Task.CompletedTask;
+        }
+
+        private Task TrackingRecoveryMessages(StreamMessage msg)
+        {
+            msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), statelessOperators.Count);
+            batchTracker.TrackingRecoveryMessages(msg);
             return Task.CompletedTask;
         }
 

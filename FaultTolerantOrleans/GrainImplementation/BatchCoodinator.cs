@@ -83,18 +83,33 @@ namespace GrainImplementation
             //1. Stop the timer
             disposable.Dispose();
             //2. Broadcast the rollback and reset batchID
-            PrettyConsole.Line("Coordinator");
             recoveryMsg.BatchID = committedID;
+            recoveryMsg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), sources.Count);
+            tracker.TrackingRecoveryMessages(recoveryMsg);
             foreach (IStreamSource source in sources)
             {
                 source.ProduceMessageAsync(recoveryMsg);
             }
             //3. Clean information in the tracker()
             tracker.CleanUpOnRecovery();
-            //5. Make sure everything is right
             //6. Register new timer
-            //disposable = RegisterTimer(SendBarrierOnPeriodOfTime, null, barrierTimeInterval, barrierTimeInterval);
             return Task.CompletedTask;
+        }
+
+        //Once the recovery completed, just restart the timer
+        //Restart the timer
+        public Task CompleteRecovery(int batchID)
+        {
+            if (committedID == batchID)
+            {
+                disposable = RegisterTimer(SendBarrierOnPeriodOfTime, null, barrierTimeInterval, barrierTimeInterval);
+                return Task.CompletedTask;
+            }
+            else
+            {
+                throw new InvalidOperationException("The recvoery batch is not equal to the latest committed ID");
+            }
+
         }
 
         private Task SetBatchID(StreamMessage msg)
@@ -119,7 +134,7 @@ namespace GrainImplementation
             }
             else
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException("Cannot commit batch greater than committed id 2");
             }
         }
 
