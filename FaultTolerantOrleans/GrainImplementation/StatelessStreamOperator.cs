@@ -71,6 +71,7 @@ namespace SystemImplementation
             try
             {
                 await statefulOperator.ExecuteMessage(msg, stream);
+                return Task.CompletedTask;
             }
             catch (Exception e)
             {
@@ -94,8 +95,8 @@ namespace SystemImplementation
                 //5. Start Recovery
                 var batchCoordinator = GrainFactory.GetGrain<IBatchCoordinator>(Constants.Coordinator);
                 await batchCoordinator.StartRecovery();
+                return Task.CompletedTask;
             }
-            return Task.CompletedTask;
         }
 
         private async Task<Task> ProcessSpecialMessageAsync(StreamMessage msg, IAsyncStream<StreamMessage> stream)

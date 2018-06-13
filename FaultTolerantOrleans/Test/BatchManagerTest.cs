@@ -261,6 +261,23 @@ namespace Test
             Assert.AreEqual(1, countAfterRecovery);
         }
 
+        [TestMethod]
+        public async Task TestThrowExceptionAfterTwoBatchesStartRecoveryFromIncrementalLog()
+        {
+            await SetUpSource();
+            await source.ProduceMessageAsync(wordCountMessage1);
+            var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
+            await batchCoordinator.SendBarrier();
+            Thread.Sleep(100);
+            await source.ProduceMessageAsync(wordCountMessage1);
+            int count = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
+            Assert.AreEqual(2, count);
+            await batchCoordinator.StartCommit(1);
+            await source.ProduceMessageAsync(wordCountMessage1);
+            int countAfterRecovery = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
+            Assert.AreEqual(2, countAfterRecovery);
+        }
+
         //SetUp Functions 
 
         private Task StartSilo()

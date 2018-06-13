@@ -236,6 +236,11 @@ namespace GrainImplementation
         public Task CleanUpOnRecovery()
         {
             batchTrackingMap.Clear();
+            //commitTrackingMap.Clear();
+            //recoveryTrackingMap.Clear();
+            //completedBatch.Clear();
+            //committedBatch.Clear();
+            //recoveryedBatch.Clear();
             return Task.CompletedTask;
         }
 
