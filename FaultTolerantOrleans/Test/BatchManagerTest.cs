@@ -87,7 +87,7 @@ namespace Test
             var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
             await batchCoordinator.SendBarrier();
             var batchTracker = client.GetGrain<IBatchTracker>(Constants.Tracker);
-            Thread.Sleep(100);
+            Thread.Sleep(300);
             bool isCurrentBatchCompleted = await batchTracker.IsReadyForCommit(barrierMsg.BatchID);
             Assert.AreEqual(true, isCurrentBatchCompleted);
         }
@@ -204,21 +204,6 @@ namespace Test
         }
 
         //Recovery Tests
-        [TestMethod]
-        public async Task TestRecoveyFromReverseLogAfterOneBatch()
-        {
-            await SetUpSource();
-            await source.ProduceMessageAsync(wordCountMessage1);
-            var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
-            await batchCoordinator.SendBarrier();
-            Thread.Sleep(500);
-            await source.ProduceMessageAsync(wordCountMessage1);
-            int count = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
-            Assert.AreEqual(2, count);
-            await batchCoordinator.StartRecovery();
-            int countAfterRecovery = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
-            Assert.AreEqual(1, countAfterRecovery);
-        }
 
         [TestMethod]
         public async Task TestRecoveyFromReverseLog()
@@ -240,6 +225,40 @@ namespace Test
             await batchCoordinator.StartRecovery();
             int count = await source.GetStateInReverseLog(new StreamMessage(wordCountMessage1.Key, "me"));
             Assert.AreEqual(-2, count);
+        }
+
+        [TestMethod]
+        public async Task TestRecoveyFromReverseLogAfterOneBatch()
+        {
+            await SetUpSource();
+            await source.ProduceMessageAsync(wordCountMessage1);
+            var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
+            await batchCoordinator.SendBarrier();
+            Thread.Sleep(100);
+            await source.ProduceMessageAsync(wordCountMessage1);
+            int count = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
+            Thread.Sleep(100);
+            Assert.AreEqual(2, count);
+            await batchCoordinator.StartRecovery();
+            Thread.Sleep(100);
+            int countAfterRecovery = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
+            Assert.AreEqual(1, countAfterRecovery);
+        }
+
+        [TestMethod]
+        public async Task TestThrowExceptionStartRecoveryFromIncrementalLog()
+        {
+            await SetUpSource();
+            await source.ProduceMessageAsync(wordCountMessage1);
+            var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
+            await batchCoordinator.SendBarrier();
+            Thread.Sleep(100);
+            await source.ProduceMessageAsync(wordCountMessage1);
+            int count = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
+            Assert.AreEqual(2, count);
+            await source.ProduceMessageAsync(wordCountMessage1);
+            int countAfterRecovery = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
+            Assert.AreEqual(1, countAfterRecovery);
         }
 
         //SetUp Functions 

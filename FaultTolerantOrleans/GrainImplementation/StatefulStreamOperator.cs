@@ -69,7 +69,11 @@ namespace GrainImplementation
         {
             if (statesMap.ContainsKey(msg.Key))
             {
-                //It must be the frist operation in the batch
+                //Thrid time throw a exception
+                if (msg.Key == "me" && statesMap[msg.Key] == 2)
+                {
+                    throw new EndOfStreamException();
+                }
                 UpdateReverseLog(msg);
                 statesMap[msg.Key]++;
                 UpdateIncrementalLog(msg);
@@ -105,7 +109,6 @@ namespace GrainImplementation
             }
             else if (msg.Value == Constants.Recovery_Value)
             {
-                PrettyConsole.Line("Stateful");
                 //1. Recovery From the reverse log or incremental log
                 await RecoveryFromReverseLogOrIncrementalLog();
                 //2. Clear the buffer
@@ -276,6 +279,7 @@ namespace GrainImplementation
 
         public async Task<Task> RevertStateFromIncrementalLog()
         {
+            PrettyConsole.Line("This grain is restarted! Recovery from Incremental log");
             List<Dictionary<string, int>> logs = await ReadFromBinaryFile<Dictionary<string, int>>(operatorSettings.incrementalLogAddress);
             if (logs.Count == 0)
             {

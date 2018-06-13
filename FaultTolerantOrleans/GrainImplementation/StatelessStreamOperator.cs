@@ -74,7 +74,7 @@ namespace SystemImplementation
             }
             catch (Exception e)
             {
-                PrettyConsole.Line("Get Exception : " + e + "; Start Receovry");
+                PrettyConsole.Line("Get Exception : " + e.GetType() + "; Start Receovry");
                 //1. Restart a new grain
                 IStatefulOperator newOperator = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
                 //2. Rollback the state
@@ -168,12 +168,12 @@ namespace SystemImplementation
             return Task.CompletedTask;
         }
 
-        private Task BroadcastSpecialMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
+        private async Task<Task> BroadcastSpecialMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
             int index = 0;
             foreach (IStatefulOperator item in statefulOperators)
             {
-                ExecuteMessagesByDownStreamOperators(msg, stream, item, index);
+                await ExecuteMessagesByDownStreamOperators(msg, stream, item, index);
                 index++;
             }
             return Task.CompletedTask;

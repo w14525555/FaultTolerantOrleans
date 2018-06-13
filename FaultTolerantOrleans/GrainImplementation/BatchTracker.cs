@@ -76,7 +76,6 @@ namespace GrainImplementation
         }
 
         //Tracking the Recovery messages.
-        //TODO
         public Task TrackingRecoveryMessages(StreamMessage msg)
         {
             if (recoveryTrackingMap.ContainsKey(msg.BatchID))
@@ -86,7 +85,7 @@ namespace GrainImplementation
                 targetBatch.AddBarrierOrCommitMsgTrackingHelper(msg.barrierOrCommitInfo);
                 throw new InvalidOperationException("Should not recovery different batch at same time");
             }
-            else if (recoveryTrackingMap.Count == 1)
+            else if (recoveryTrackingMap.Count == 0)
             {
                 PrettyConsole.Line("Recovery batch" + msg.BatchID);
                 StreamBatch newBatch = new StreamBatch(msg.BatchID);
@@ -107,7 +106,7 @@ namespace GrainImplementation
         {
             if (!batchTrackingMap.ContainsKey(msgInfo.BatchID))
             {
-                PrettyConsole.Line("The key " + msgInfo.BatchID + " is not exist");
+                PrettyConsole.Line("Complete Barrier, but The key " + msgInfo.BatchID + " is not exist");
             }
             else
             {
@@ -134,7 +133,7 @@ namespace GrainImplementation
             if (!commitTrackingMap.ContainsKey(msgInfo.BatchID))
             {
                 //Multiple batch has that problem
-                PrettyConsole.Line("The commit key " + msgInfo.BatchID + " is not exist");
+                PrettyConsole.Line("Complele one commit, but the commit key " + msgInfo.BatchID + " is not exist");
             }
             else
             {
