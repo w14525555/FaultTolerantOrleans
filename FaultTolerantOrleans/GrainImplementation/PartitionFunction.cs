@@ -7,10 +7,10 @@ namespace SystemImplementation
 {
     public static class PartitionFunction
     {
-        public static Task<IStatefulOperator> PartitionStatefulByKey(string key, HashSet<IStatefulOperator> statefulOperators)
+        public static int PartitionStatefulByKey(string key, int count)
         {
-            int index = Utils.Functions.CalculateHash(key) % statefulOperators.Count;
-            return Task.FromResult(statefulOperators.ElementAt(index));
+            int index = Utils.Functions.CalculateHash(key) % count;
+            return index;
         }
 
         public static Task<IStatelessOperator> PartitionStatelessByKey(string key, HashSet<IStatelessOperator> statelessOperators)

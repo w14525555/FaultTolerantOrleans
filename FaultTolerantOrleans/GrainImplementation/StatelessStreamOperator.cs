@@ -6,6 +6,7 @@ using SystemInterfaces;
 using SystemInterfaces.Model;
 using System;
 using Orleans.Streams;
+using System.Linq;
 
 namespace SystemImplementation
 {
@@ -55,7 +56,8 @@ namespace SystemImplementation
             //Then find a operator
             foreach (string word in words)
             {
-                IStatefulOperator statefulOperator = await SystemImplementation.PartitionFunction.PartitionStatefulByKey(msg.Key, statefulOperators);
+                int index = SystemImplementation.PartitionFunction.PartitionStatefulByKey(msg.Key, statefulOperators.Count);
+                IStatefulOperator statefulOperator = statefulOperators.ElementAt(index);
                 StreamMessage newMessage = new StreamMessage(word, null);
                 newMessage.BatchID = msg.BatchID;
                 await statefulOperator.ExecuteMessage(newMessage, stream);
