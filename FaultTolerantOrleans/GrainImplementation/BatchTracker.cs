@@ -19,6 +19,12 @@ namespace GrainImplementation
         private List<int> recoveryedBatch = new List<int>();
         private IBatchCoordinator batchCoordinator;
 
+        public override Task OnActivateAsync()
+        {
+            batchCoordinator = GrainFactory.GetGrain<IBatchCoordinator>(Constants.Coordinator);
+            return base.OnActivateAsync();
+        }
+
         public Task TrackingBarrierMessages(StreamMessage msg)
         {
             if (batchTrackingMap.ContainsKey(msg.BatchID))
@@ -200,12 +206,6 @@ namespace GrainImplementation
             {
                 committedBatch.Add(BatchID);
             }
-            return Task.CompletedTask;
-        }
-
-        public Task SetBatchManager(IBatchCoordinator batchManager)
-        {
-            this.batchCoordinator = batchManager;
             return Task.CompletedTask;
         }
 

@@ -16,8 +16,6 @@ namespace SystemInterfaces
 
         Task CleanUpOnRecovery();
 
-        Task SetBatchManager(IBatchCoordinator batchManager);
-
         Task TrackingBarrierMessages(StreamMessage msg);
 
         Task TrackingCommitMessages(StreamMessage msg);

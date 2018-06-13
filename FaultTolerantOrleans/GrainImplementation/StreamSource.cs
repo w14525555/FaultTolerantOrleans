@@ -59,7 +59,6 @@ namespace GrainImplementation
         private Task SetUpBatchTracker()
         {
             batchTracker = GrainFactory.GetGrain<IBatchTracker>(Constants.Tracker);
-            batchTracker.SetBatchManager(batchCoordinator);
             return Task.CompletedTask;
         }
 

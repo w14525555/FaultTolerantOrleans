@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen140b1b3d65FeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen086d93c619FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -258,8 +258,6 @@ namespace SystemInterfaces
                             return @"IsCommitSuccess";
                         case -1361007671:
                             return @"CleanUpOnRecovery";
-                        case -1651031132:
-                            return @"SetBatchManager";
                         case -1116510309:
                             return @"TrackingBarrierMessages";
                         case -1092259612:
@@ -301,11 +299,6 @@ namespace SystemInterfaces
         public global::System.Threading.Tasks.Task CleanUpOnRecovery()
         {
             return base.InvokeMethodAsync<global::System.Object>(-1361007671, null);
-        }
-
-        public global::System.Threading.Tasks.Task SetBatchManager(global::SystemInterfaces.IBatchCoordinator batchManager)
-        {
-            return base.InvokeMethodAsync<global::System.Object>(-1651031132, new global::System.Object[]{batchManager is global::Orleans.Grain ? batchManager.AsReference<global::SystemInterfaces.IBatchCoordinator>() : batchManager});
         }
 
         public global::System.Threading.Tasks.Task TrackingBarrierMessages(global::SystemInterfaces.Model.StreamMessage msg)
@@ -360,9 +353,6 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.IBatchTracker)grain).IsCommitSuccess((global::System.Int32)arguments[0]);
                         case -1361007671:
                             await ((global::SystemInterfaces.IBatchTracker)grain).CleanUpOnRecovery();
-                            return null;
-                        case -1651031132:
-                            await ((global::SystemInterfaces.IBatchTracker)grain).SetBatchManager((global::SystemInterfaces.IBatchCoordinator)arguments[0]);
                             return null;
                         case -1116510309:
                             await ((global::SystemInterfaces.IBatchTracker)grain).TrackingBarrierMessages((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
@@ -1089,7 +1079,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen140b1b3d65FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGen086d93c619FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {
