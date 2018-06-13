@@ -72,6 +72,9 @@ will broadcast message to them so that they can load data from their reverse log
 8. Clear the reverse log and incremental log(memory) of every grains.
 9. Restart the timer of barriers. 
 
+**Reactive Grain Mechanism**
+
+
 **Orleans Recovery Mechanism**: 
 
 If a grain is not active anymore, Orleans will reactivate it in the next method call. The

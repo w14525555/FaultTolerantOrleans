@@ -19,6 +19,7 @@ namespace SystemImplementation
         public override Task OnActivateAsync()
         {
             batchTracker = GrainFactory.GetGrain<IBatchTracker>(Constants.Tracker);
+            operatorSettings.operatorType = OperatorType.Stateless;
             return base.OnActivateAsync();
         }
 

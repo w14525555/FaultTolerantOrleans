@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen24941225f2FeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGendb7f594f32FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -1033,13 +1033,13 @@ namespace OrleansGeneratedCode38151279
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.SerializerAttribute(typeof (global::SystemInterfaces.Model.OperatorSettings))]
     internal sealed class OrleansCodeGenSystemInterfaces_Model_OperatorSettingsSerializer
     {
-        private readonly global::System.Func<global::SystemInterfaces.Model.OperatorSettings, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>> getField1;
-        private readonly global::System.Action<global::SystemInterfaces.Model.OperatorSettings, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>> setField1;
+        private readonly global::System.Func<global::SystemInterfaces.Model.OperatorSettings, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>> getField2;
+        private readonly global::System.Action<global::SystemInterfaces.Model.OperatorSettings, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>> setField2;
         public OrleansCodeGenSystemInterfaces_Model_OperatorSettingsSerializer(global::Orleans.Serialization.IFieldUtils fieldUtils)
         {
-            global::System.Reflection.FieldInfo field1 = typeof (global::SystemInterfaces.Model.OperatorSettings).GetField(@"operatorDict", (System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public));
-            getField1 = (global::System.Func<global::SystemInterfaces.Model.OperatorSettings, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>>)fieldUtils.GetGetter(field1);
-            setField1 = (global::System.Action<global::SystemInterfaces.Model.OperatorSettings, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>>)fieldUtils.GetReferenceSetter(field1);
+            global::System.Reflection.FieldInfo field2 = typeof (global::SystemInterfaces.Model.OperatorSettings).GetField(@"operatorDict", (System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public));
+            getField2 = (global::System.Func<global::SystemInterfaces.Model.OperatorSettings, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>>)fieldUtils.GetGetter(field2);
+            setField2 = (global::System.Action<global::SystemInterfaces.Model.OperatorSettings, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>>)fieldUtils.GetReferenceSetter(field2);
         }
 
         [global::Orleans.CodeGeneration.CopierMethodAttribute]
@@ -1049,7 +1049,8 @@ namespace OrleansGeneratedCode38151279
             global::SystemInterfaces.Model.OperatorSettings result = new global::SystemInterfaces.Model.OperatorSettings();
             context.RecordCopy(original, result);
             result.incrementalLogAddress = input.incrementalLogAddress;
-            setField1(result, (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>)context.DeepCopyInner(getField1(input)));
+            result.operatorType = input.operatorType;
+            setField2(result, (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>)context.DeepCopyInner(getField2(input)));
             return result;
         }
 
@@ -1058,7 +1059,8 @@ namespace OrleansGeneratedCode38151279
         {
             global::SystemInterfaces.Model.OperatorSettings input = (global::SystemInterfaces.Model.OperatorSettings)untypedInput;
             context.SerializeInner(input.incrementalLogAddress, typeof (global::System.String));
-            context.SerializeInner(getField1(input), typeof (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>));
+            context.SerializeInner(input.operatorType, typeof (global::SystemInterfaces.Model.OperatorType));
+            context.SerializeInner(getField2(input), typeof (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>));
         }
 
         [global::Orleans.CodeGeneration.DeserializerMethodAttribute]
@@ -1067,7 +1069,8 @@ namespace OrleansGeneratedCode38151279
             global::SystemInterfaces.Model.OperatorSettings result = new global::SystemInterfaces.Model.OperatorSettings();
             context.RecordObject(result);
             result.incrementalLogAddress = (global::System.String)context.DeserializeInner(typeof (global::System.String));
-            setField1(result, (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>)context.DeserializeInner(typeof (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>)));
+            result.operatorType = (global::SystemInterfaces.Model.OperatorType)context.DeserializeInner(typeof (global::SystemInterfaces.Model.OperatorType));
+            setField2(result, (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>)context.DeserializeInner(typeof (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>)));
             return (global::SystemInterfaces.Model.OperatorSettings)result;
         }
     }
@@ -1076,7 +1079,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen24941225f2FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGendb7f594f32FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {
@@ -3987,6 +3990,7 @@ namespace OrleansGeneratedCode
             feature.AddKnownType(@"SystemInterfaces.IStreamSource,GrainInterfaces", @"SystemInterfaces.IStreamSource");
             feature.AddKnownType(@"SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo,GrainInterfaces", @"SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo");
             feature.AddKnownType(@"SystemInterfaces.Model.OperatorSettings,GrainInterfaces", @"SystemInterfaces.Model.OperatorSettings");
+            feature.AddKnownType(@"SystemInterfaces.Model.OperatorType,GrainInterfaces", @"SystemInterfaces.Model.OperatorType");
             feature.AddKnownType(@"SystemInterfaces.Model.StreamBatch,GrainInterfaces", @"SystemInterfaces.Model.StreamBatch");
             feature.AddKnownType(@"SystemInterfaces.Model.StreamMessage,GrainInterfaces", @"SystemInterfaces.Model.StreamMessage");
             feature.AddKnownType(@"SystemInterfaces.Model.MessageType,GrainInterfaces", @"SystemInterfaces.Model.MessageType");

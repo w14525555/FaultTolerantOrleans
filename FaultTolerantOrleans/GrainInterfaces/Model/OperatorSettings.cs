@@ -7,6 +7,7 @@ namespace SystemInterfaces.Model
     public class OperatorSettings
     {
         public string incrementalLogAddress { get; set; }
+        public OperatorType operatorType { get; set; }
         private Dictionary<Guid, OperatorSettings> operatorDict;
 
         public OperatorSettings()
@@ -42,5 +43,13 @@ namespace SystemInterfaces.Model
         {
             return operatorDict;
         }
+    }
+
+    public enum OperatorType
+    {
+        Null,
+        Stateful,
+        Stateless,
+        Source
     }
 }

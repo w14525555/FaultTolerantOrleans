@@ -33,8 +33,9 @@ namespace GrainImplementation
             currentBatchID = 0;
             //Generate random file name
             var name = @"D:\grainStates\grain" + Guid.NewGuid().ToString() + ".dat";
-            operatorSettings.incrementalLogAddress = name;
             batchTracker = GrainFactory.GetGrain<IBatchTracker>(Constants.Tracker);
+            operatorSettings.incrementalLogAddress = name;
+            operatorSettings.operatorType = OperatorType.Stateful;
             return Task.CompletedTask;
         }
 
