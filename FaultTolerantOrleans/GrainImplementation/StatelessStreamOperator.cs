@@ -17,6 +17,7 @@ namespace SystemImplementation
 
         public override Task OnActivateAsync()
         {
+            batchTracker = GrainFactory.GetGrain<IBatchTracker>(Constants.Tracker);
             InitOperators();
             return base.OnActivateAsync();
         }
@@ -134,16 +135,6 @@ namespace SystemImplementation
             foreach (IStatefulOperator item in statefulOperators)
             {
                 item.ExecuteMessage(msg, stream);
-            }
-            return Task.CompletedTask;
-        }
-
-        public Task SetBatchTracker(IBatchTracker batchTracker)
-        {
-            this.batchTracker = batchTracker;
-            foreach (IStatefulOperator statefulOp in statefulOperators)
-            {
-                statefulOp.SetTracker(batchTracker);
             }
             return Task.CompletedTask;
         }

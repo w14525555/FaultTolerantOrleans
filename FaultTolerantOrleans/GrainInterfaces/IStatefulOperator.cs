@@ -20,8 +20,5 @@ namespace SystemInterfaces
 
         Task LoadSettings(OperatorSettings operatorSettings);
 
-        Task SetTracker(IBatchTracker tracker);
-
-
     }
 }

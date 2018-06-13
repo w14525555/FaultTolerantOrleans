@@ -39,9 +39,6 @@ namespace GrainImplementation
             var operatorTwo = GrainFactory.GetGrain<IStatelessOperator>(Guid.NewGuid());
             var operatorThree = GrainFactory.GetGrain<IStatelessOperator>(Guid.NewGuid());
             //If too many use for loop
-            operatorOne.SetBatchTracker(batchTracker);
-            operatorTwo.SetBatchTracker(batchTracker);
-            operatorThree.SetBatchTracker(batchTracker);
             statelessOperators.Add(operatorOne);
             statelessOperators.Add(operatorTwo);
             statelessOperators.Add(operatorThree);

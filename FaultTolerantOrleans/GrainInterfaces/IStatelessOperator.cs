@@ -9,8 +9,6 @@ namespace SystemInterfaces
     {
         Task<Task> ExecuteMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream);
 
-        Task SetBatchTracker(IBatchTracker batchTracker);
-
         Task<int> GetState(string word);
 
         Task<int> GetStateInReverseLog(string word);

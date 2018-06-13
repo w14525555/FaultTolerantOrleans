@@ -34,6 +34,7 @@ namespace GrainImplementation
             //Generate random file name
             var name = @"D:\grainStates\grain" + Guid.NewGuid().ToString() + ".dat";
             operatorSettings.incrementalLogAddress = name;
+            batchTracker = GrainFactory.GetGrain<IBatchTracker>(Constants.Tracker);
             return Task.CompletedTask;
         }
 
@@ -319,13 +320,6 @@ namespace GrainImplementation
             this.operatorSettings = operatorSettings;
             return Task.CompletedTask;
         }
-
-        public Task SetTracker(IBatchTracker tracker)
-        {
-            batchTracker = tracker;
-            return Task.CompletedTask;
-        }
-
 
         public Task<int> GetState(string key)
         {
