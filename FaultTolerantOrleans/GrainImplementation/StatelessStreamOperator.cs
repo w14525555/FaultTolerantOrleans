@@ -68,7 +68,19 @@ namespace SystemImplementation
 
         private Task ExecuteMessagesByDownStreamOperators(StreamMessage msg, IAsyncStream<StreamMessage> stream, IStatefulOperator statefulOperator)
         {
-            statefulOperator.ExecuteMessage(msg, stream);
+            try
+            {
+                statefulOperator.ExecuteMessage(msg, stream);
+            }
+            catch (Exception e)
+            {
+                PrettyConsole.Line("Get Exception : " + e + "; Start Receovry");
+                //1. Restart a new grain
+                //2. Rollback the state
+                //3. Remove the failed from the topology
+                //4. Mark the new grain as restart grain
+                //5. Start Recovery 
+            }
             return Task.CompletedTask;
         }
 

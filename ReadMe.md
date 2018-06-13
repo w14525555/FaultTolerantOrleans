@@ -73,7 +73,22 @@ will broadcast message to them so that they can load data from their reverse log
 9. Restart the timer of barriers. 
 
 **Reactive Grain Mechanism**
+To Recovery a stateful operator:
+1. Restart a new grain
+2. Rollback the state(statesmap and batchID)
+3. Remove the failed from the topology
+4. Mark the new grain as restart grain
+5. Tell coordinator start recovery 
 
+To recovery a stateless operator:
+1. Restart a new grain
+2. Rollback the rooting inforamtion
+3. Remove the failed from topology
+4. Make the new grain as restart 
+5. Tell coordinator start recovery
+
+To recovery a source:
+Same as the operator, but the source need know the stream
 
 **Orleans Recovery Mechanism**: 
 
