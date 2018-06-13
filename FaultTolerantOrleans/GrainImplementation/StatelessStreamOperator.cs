@@ -14,21 +14,23 @@ namespace SystemImplementation
         //The StatelessConsumer does not have state.
         private HashSet<IStatefulOperator> statefulOperators;
         private IBatchTracker batchTracker;
+        private OperatorSettings operatorSettings = new OperatorSettings();
 
         public override Task OnActivateAsync()
         {
             batchTracker = GrainFactory.GetGrain<IBatchTracker>(Constants.Tracker);
-            InitOperators();
             return base.OnActivateAsync();
         }
 
-        private Task InitOperators()
+        public async Task<Task> InitOperators()
         {
             statefulOperators = new HashSet<IStatefulOperator>();
             IStatefulOperator operatorOne = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
             IStatefulOperator operatorTwo = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
             statefulOperators.Add(operatorOne);
             statefulOperators.Add(operatorTwo);
+            operatorSettings.AddOpratorToDict(operatorOne.GetPrimaryKey(), await operatorOne.GetOperatorSettings());
+            operatorSettings.AddOpratorToDict(operatorTwo.GetPrimaryKey(), await operatorTwo.GetOperatorSettings());
             return Task.CompletedTask;
         }
 

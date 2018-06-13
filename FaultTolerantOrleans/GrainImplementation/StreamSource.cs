@@ -42,6 +42,9 @@ namespace GrainImplementation
             statelessOperators.Add(operatorOne);
             statelessOperators.Add(operatorTwo);
             statelessOperators.Add(operatorThree);
+            operatorOne.InitOperators();
+            operatorTwo.InitOperators();
+            operatorThree.InitOperators();
             return Task.CompletedTask;
         }
 

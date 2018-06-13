@@ -310,7 +310,7 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        public Task<OperatorSettings> GetSettings()
+        public Task<OperatorSettings> GetOperatorSettings()
         {
             return Task.FromResult(operatorSettings);
         }

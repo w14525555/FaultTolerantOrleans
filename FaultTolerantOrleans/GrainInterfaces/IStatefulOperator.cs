@@ -16,7 +16,7 @@ namespace SystemInterfaces
 
         Task<int> GetStateInIncrementalLog(string key);
 
-        Task<OperatorSettings> GetSettings();
+        Task<OperatorSettings> GetOperatorSettings();
 
         Task LoadSettings(OperatorSettings operatorSettings);
 

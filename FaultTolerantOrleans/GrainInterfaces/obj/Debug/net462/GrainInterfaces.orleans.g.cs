@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen982404fdecFeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen24941225f2FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -462,8 +462,8 @@ namespace SystemInterfaces
                             return @"GetStateInReverseLog";
                         case 408823471:
                             return @"GetStateInIncrementalLog";
-                        case 380909025:
-                            return @"GetSettings";
+                        case -1183855865:
+                            return @"GetOperatorSettings";
                         case -1645967079:
                             return @"LoadSettings";
                         default:
@@ -495,9 +495,9 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Int32>(408823471, new global::System.Object[]{key});
         }
 
-        public global::System.Threading.Tasks.Task<global::SystemInterfaces.Model.OperatorSettings> GetSettings()
+        public global::System.Threading.Tasks.Task<global::SystemInterfaces.Model.OperatorSettings> GetOperatorSettings()
         {
-            return base.InvokeMethodAsync<global::SystemInterfaces.Model.OperatorSettings>(380909025, null);
+            return base.InvokeMethodAsync<global::SystemInterfaces.Model.OperatorSettings>(-1183855865, null);
         }
 
         public global::System.Threading.Tasks.Task LoadSettings(global::SystemInterfaces.Model.OperatorSettings operatorSettings)
@@ -529,8 +529,8 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).GetStateInReverseLog((global::System.String)arguments[0]);
                         case 408823471:
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).GetStateInIncrementalLog((global::System.String)arguments[0]);
-                        case 380909025:
-                            return await ((global::SystemInterfaces.IStatefulOperator)grain).GetSettings();
+                        case -1183855865:
+                            return await ((global::SystemInterfaces.IStatefulOperator)grain).GetOperatorSettings();
                         case -1645967079:
                             await ((global::SystemInterfaces.IStatefulOperator)grain).LoadSettings((global::SystemInterfaces.Model.OperatorSettings)arguments[0]);
                             return null;
@@ -619,6 +619,8 @@ namespace SystemInterfaces
                             return @"GetStateInReverseLog";
                         case 408823471:
                             return @"GetStateInIncrementalLog";
+                        case 703641509:
+                            return @"InitOperators";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1903779801 + @",methodId=" + methodId);
                     }
@@ -647,6 +649,11 @@ namespace SystemInterfaces
         {
             return base.InvokeMethodAsync<global::System.Int32>(408823471, new global::System.Object[]{word});
         }
+
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> InitOperators()
+        {
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(703641509, null);
+        }
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute(typeof (global::SystemInterfaces.IStatelessOperator), -1903779801), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
@@ -672,6 +679,8 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).GetStateInReverseLog((global::System.String)arguments[0]);
                         case 408823471:
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).GetStateInIncrementalLog((global::System.String)arguments[0]);
+                        case 703641509:
+                            return await ((global::SystemInterfaces.IStatelessOperator)grain).InitOperators();
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1903779801 + @",methodId=" + methodId);
                     }
@@ -1024,8 +1033,13 @@ namespace OrleansGeneratedCode38151279
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.SerializerAttribute(typeof (global::SystemInterfaces.Model.OperatorSettings))]
     internal sealed class OrleansCodeGenSystemInterfaces_Model_OperatorSettingsSerializer
     {
+        private readonly global::System.Func<global::SystemInterfaces.Model.OperatorSettings, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>> getField1;
+        private readonly global::System.Action<global::SystemInterfaces.Model.OperatorSettings, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>> setField1;
         public OrleansCodeGenSystemInterfaces_Model_OperatorSettingsSerializer(global::Orleans.Serialization.IFieldUtils fieldUtils)
         {
+            global::System.Reflection.FieldInfo field1 = typeof (global::SystemInterfaces.Model.OperatorSettings).GetField(@"operatorDict", (System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public));
+            getField1 = (global::System.Func<global::SystemInterfaces.Model.OperatorSettings, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>>)fieldUtils.GetGetter(field1);
+            setField1 = (global::System.Action<global::SystemInterfaces.Model.OperatorSettings, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>>)fieldUtils.GetReferenceSetter(field1);
         }
 
         [global::Orleans.CodeGeneration.CopierMethodAttribute]
@@ -1035,6 +1049,7 @@ namespace OrleansGeneratedCode38151279
             global::SystemInterfaces.Model.OperatorSettings result = new global::SystemInterfaces.Model.OperatorSettings();
             context.RecordCopy(original, result);
             result.incrementalLogAddress = input.incrementalLogAddress;
+            setField1(result, (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>)context.DeepCopyInner(getField1(input)));
             return result;
         }
 
@@ -1043,6 +1058,7 @@ namespace OrleansGeneratedCode38151279
         {
             global::SystemInterfaces.Model.OperatorSettings input = (global::SystemInterfaces.Model.OperatorSettings)untypedInput;
             context.SerializeInner(input.incrementalLogAddress, typeof (global::System.String));
+            context.SerializeInner(getField1(input), typeof (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>));
         }
 
         [global::Orleans.CodeGeneration.DeserializerMethodAttribute]
@@ -1051,6 +1067,7 @@ namespace OrleansGeneratedCode38151279
             global::SystemInterfaces.Model.OperatorSettings result = new global::SystemInterfaces.Model.OperatorSettings();
             context.RecordObject(result);
             result.incrementalLogAddress = (global::System.String)context.DeserializeInner(typeof (global::System.String));
+            setField1(result, (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>)context.DeserializeInner(typeof (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>)));
             return (global::SystemInterfaces.Model.OperatorSettings)result;
         }
     }
@@ -1059,7 +1076,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen982404fdecFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGen24941225f2FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {
