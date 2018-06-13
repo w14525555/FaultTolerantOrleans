@@ -13,7 +13,7 @@ namespace SystemImplementation
     class StatelessStreamOperator : Grain, IStatelessOperator
     {
         //The StatelessConsumer does not have state.
-        private HashSet<IStatefulOperator> statefulOperators;
+        private List<IStatefulOperator> statefulOperators;
         private IBatchTracker batchTracker;
         private OperatorSettings operatorSettings = new OperatorSettings();
 
@@ -26,7 +26,7 @@ namespace SystemImplementation
 
         public async Task<Task> InitOperators()
         {
-            statefulOperators = new HashSet<IStatefulOperator>();
+            statefulOperators = new List<IStatefulOperator>();
             IStatefulOperator operatorOne = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
             IStatefulOperator operatorTwo = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
             statefulOperators.Add(operatorOne);
@@ -60,8 +60,15 @@ namespace SystemImplementation
                 IStatefulOperator statefulOperator = statefulOperators.ElementAt(index);
                 StreamMessage newMessage = new StreamMessage(word, null);
                 newMessage.BatchID = msg.BatchID;
-                await statefulOperator.ExecuteMessage(newMessage, stream);
+                //await statefulOperator.ExecuteMessage(newMessage, stream);
+                await ExecuteMessagesByDownStreamOperators(newMessage, stream, statefulOperator);
             }
+            return Task.CompletedTask;
+        }
+
+        private Task ExecuteMessagesByDownStreamOperators(StreamMessage msg, IAsyncStream<StreamMessage> stream, IStatefulOperator statefulOperator)
+        {
+            statefulOperator.ExecuteMessage(msg, stream);
             return Task.CompletedTask;
         }
 
