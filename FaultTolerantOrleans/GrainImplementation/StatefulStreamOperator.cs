@@ -42,7 +42,7 @@ namespace GrainImplementation
         //This function get the words and count
         public async Task<Task> ExecuteMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
-            if (msg.BatchID > currentBatchID)
+            if (msg.BatchID > currentBatchID && msg.Value != Constants.Recovery_Value)
             {
                 messageBuffer.Add(msg);
                 asyncStream = stream;
@@ -106,7 +106,7 @@ namespace GrainImplementation
             else if (msg.Value == Constants.Recovery_Value)
             {
                 PrettyConsole.Line("Stateful");
-                //1. Recovery From the reverse log
+                //1. Recovery From the reverse log or incremental log
                 await RecoveryFromReverseLogOrIncrementalLog();
                 //2. Clear the buffer
                 messageBuffer.Clear();
@@ -356,6 +356,12 @@ namespace GrainImplementation
             {
                 return Task.FromResult(-1);
             }
+        }
+
+        public Task MarkOperatorAsFailed()
+        {
+            isOperatorFailed = true;
+            return Task.CompletedTask;
         }
 
     }

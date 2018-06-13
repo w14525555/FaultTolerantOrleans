@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGendb7f594f32FeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen7b9036e921FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -466,6 +466,10 @@ namespace SystemInterfaces
                             return @"GetOperatorSettings";
                         case -1645967079:
                             return @"LoadSettings";
+                        case -529808064:
+                            return @"RevertStateFromIncrementalLog";
+                        case 1032606503:
+                            return @"MarkOperatorAsFailed";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 498177181 + @",methodId=" + methodId);
                     }
@@ -504,6 +508,16 @@ namespace SystemInterfaces
         {
             return base.InvokeMethodAsync<global::System.Object>(-1645967079, new global::System.Object[]{operatorSettings});
         }
+
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> RevertStateFromIncrementalLog()
+        {
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-529808064, null);
+        }
+
+        public global::System.Threading.Tasks.Task MarkOperatorAsFailed()
+        {
+            return base.InvokeMethodAsync<global::System.Object>(1032606503, null);
+        }
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute(typeof (global::SystemInterfaces.IStatefulOperator), 498177181), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
@@ -533,6 +547,11 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).GetOperatorSettings();
                         case -1645967079:
                             await ((global::SystemInterfaces.IStatefulOperator)grain).LoadSettings((global::SystemInterfaces.Model.OperatorSettings)arguments[0]);
+                            return null;
+                        case -529808064:
+                            return await ((global::SystemInterfaces.IStatefulOperator)grain).RevertStateFromIncrementalLog();
+                        case 1032606503:
+                            await ((global::SystemInterfaces.IStatefulOperator)grain).MarkOperatorAsFailed();
                             return null;
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 498177181 + @",methodId=" + methodId);
@@ -1079,7 +1098,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGendb7f594f32FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGen7b9036e921FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {

@@ -20,5 +20,8 @@ namespace SystemInterfaces
 
         Task LoadSettings(OperatorSettings operatorSettings);
 
+        Task<Task> RevertStateFromIncrementalLog();
+
+        Task MarkOperatorAsFailed();
     }
 }

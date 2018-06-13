@@ -110,8 +110,8 @@ namespace Test
             //Commit the batch 0
             var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
             await batchCoordinator.StartCommit(0);
+            Thread.Sleep(300);
             var batchTracker = client.GetGrain<IBatchTracker>(Constants.Tracker);
-            Thread.Sleep(100);
             bool isCommitCompleted = await batchTracker.IsCommitSuccess(0);
             Assert.AreEqual(true, isCommitCompleted);
         }

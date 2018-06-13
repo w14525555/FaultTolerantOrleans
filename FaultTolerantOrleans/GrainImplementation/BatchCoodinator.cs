@@ -79,7 +79,6 @@ namespace GrainImplementation
         //Recovery
         public Task StartRecovery()
         {
-            //TODO
             //1. Stop the timer
             disposable.Dispose();
             //2. Broadcast the rollback and reset batchID

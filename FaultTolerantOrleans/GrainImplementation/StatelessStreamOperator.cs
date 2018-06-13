@@ -61,25 +61,39 @@ namespace SystemImplementation
                 StreamMessage newMessage = new StreamMessage(word, null);
                 newMessage.BatchID = msg.BatchID;
                 //await statefulOperator.ExecuteMessage(newMessage, stream);
-                await ExecuteMessagesByDownStreamOperators(newMessage, stream, statefulOperator);
+                await ExecuteMessagesByDownStreamOperators(newMessage, stream, statefulOperator, index);
             }
             return Task.CompletedTask;
         }
 
-        private Task ExecuteMessagesByDownStreamOperators(StreamMessage msg, IAsyncStream<StreamMessage> stream, IStatefulOperator statefulOperator)
+        private async Task<Task> ExecuteMessagesByDownStreamOperators(StreamMessage msg, IAsyncStream<StreamMessage> stream, IStatefulOperator statefulOperator, int index)
         {
             try
             {
-                statefulOperator.ExecuteMessage(msg, stream);
+                await statefulOperator.ExecuteMessage(msg, stream);
             }
             catch (Exception e)
             {
                 PrettyConsole.Line("Get Exception : " + e + "; Start Receovry");
                 //1. Restart a new grain
+                IStatefulOperator newOperator = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
                 //2. Rollback the state
+                //a. Find the operator settings
+                var item = operatorSettings.GetOperatorDict().ElementAt(index);
+                //b. Load the setting 
+                await newOperator.LoadSettings(item.Value);
+                //c. mark as failed, so when it receive recovery message it will 
+                //revert states by incremental log
+                await newOperator.MarkOperatorAsFailed();
                 //3. Remove the failed from the topology
-                //4. Mark the new grain as restart grain
-                //5. Start Recovery 
+                statefulOperators.RemoveAt(index);
+                operatorSettings.RemoveOperatorFromDict(item.Key);
+                //4. Add the new grain to topology
+                statefulOperators.Add(newOperator);
+                operatorSettings.AddOpratorToDict(newOperator.GetPrimaryKey(), await newOperator.GetOperatorSettings());
+                //5. Start Recovery
+                var batchCoordinator = GrainFactory.GetGrain<IBatchCoordinator>(Constants.Coordinator);
+                await batchCoordinator.StartRecovery();
             }
             return Task.CompletedTask;
         }
@@ -156,9 +170,11 @@ namespace SystemImplementation
 
         private Task BroadcastSpecialMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
+            int index = 0;
             foreach (IStatefulOperator item in statefulOperators)
             {
-                item.ExecuteMessage(msg, stream);
+                ExecuteMessagesByDownStreamOperators(msg, stream, item, index);
+                index++;
             }
             return Task.CompletedTask;
         }
