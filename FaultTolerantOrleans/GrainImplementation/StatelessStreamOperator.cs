@@ -130,6 +130,7 @@ namespace SystemImplementation
             msg.barrierOrCommitInfo.BatchID = msg.BatchID;
             if (batchTracker != null)
             {
+                PrettyConsole.Line("Tracking with stateless with " + statefulOperators.Count);
                 batchTracker.TrackingBarrierMessages(msg);
             }
             else

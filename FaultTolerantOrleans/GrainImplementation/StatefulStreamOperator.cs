@@ -116,8 +116,8 @@ namespace GrainImplementation
                 //3. Clear the reverse log and incremental log
                 reverseLog.Clear();
                 incrementalLog.Clear();
-                //4. Reset batch ID
-                currentBatchID = msg.BatchID;
+                //4. Reset batch ID, the current ID should greatea than the committed id 
+                currentBatchID = msg.BatchID + 1;
                 await batchTracker.CompleteOneOperatorRecovery(msg.barrierOrCommitInfo);
             }
             return Task.CompletedTask;

@@ -52,7 +52,7 @@ namespace GrainImplementation
 
         public async Task<Task> SendBarrier()
         {
-            await SetBatchID(barrierMsg);
+            barrierMsg.BatchID = currentBatchID;
             barrierMsg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), sources.Count);
             await tracker.TrackingBarrierMessages(barrierMsg);
             foreach (IStreamSource source in sources)
@@ -101,6 +101,7 @@ namespace GrainImplementation
         {
             if (committedID == batchID)
             {
+                currentBatchID = batchID + 1;
                 disposable = RegisterTimer(SendBarrierOnPeriodOfTime, null, barrierTimeInterval, barrierTimeInterval);
                 return Task.CompletedTask;
             }
@@ -109,12 +110,6 @@ namespace GrainImplementation
                 throw new InvalidOperationException("The recvoery batch is not equal to the latest committed ID");
             }
 
-        }
-
-        private Task SetBatchID(StreamMessage msg)
-        {
-            msg.BatchID = currentBatchID;
-            return Task.CompletedTask;
         }
 
         public Task SetCurrentBatchID(int id)
