@@ -16,7 +16,6 @@ namespace GrainImplementation
 
         private List<int> completedBatch = new List<int>();
         private List<int> committedBatch = new List<int>();
-        private List<int> recoveryedBatch = new List<int>();
         private IBatchCoordinator batchCoordinator;
 
         public override Task OnActivateAsync()
@@ -69,7 +68,7 @@ namespace GrainImplementation
             }
             else
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException("Batch ID less 0 or the message of that batch ahs been committed");
             }
 
             return Task.CompletedTask;
@@ -172,7 +171,6 @@ namespace GrainImplementation
                     if (batchCoordinator != null)
                     {
                         PrettyConsole.Line("Batch: " + msgInfo.BatchID + " commit has been successfully recoveryed");
-                        recoveryedBatch.Add(msgInfo.BatchID);
                         await batchCoordinator.CompleteRecovery(msgInfo.BatchID);
                         recoveryTrackingMap.Remove(msgInfo.BatchID);
                     }
@@ -186,7 +184,7 @@ namespace GrainImplementation
         {
             if (completedBatch.Contains(BatchID))
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException("Try to set a completed batch as completed");
             }
             else
             {
@@ -199,7 +197,7 @@ namespace GrainImplementation
         {
             if (committedBatch.Contains(BatchID))
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException("Try to set a committed batch as completed");
             }
             else
             {
@@ -235,12 +233,12 @@ namespace GrainImplementation
 
         public Task CleanUpOnRecovery()
         {
+            //No barrier tracking anymore, clear
             batchTrackingMap.Clear();
-            //commitTrackingMap.Clear();
-            //recoveryTrackingMap.Clear();
-            //completedBatch.Clear();
-            //committedBatch.Clear();
-            //recoveryedBatch.Clear();
+            //No commit tracking anymore, clear
+            commitTrackingMap.Clear();
+            //Recovery has been finished, clear
+            recoveryTrackingMap.Clear();
             return Task.CompletedTask;
         }
 

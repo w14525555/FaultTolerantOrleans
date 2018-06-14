@@ -272,7 +272,8 @@ namespace Test
             await source.ProduceMessageAsync(wordCountMessage1);
             int count = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
             Assert.AreEqual(2, count);
-            await batchCoordinator.StartCommit(1);
+            await batchCoordinator.SendBarrier();
+            Thread.Sleep(100);
             await source.ProduceMessageAsync(wordCountMessage1);
             int countAfterRecovery = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
             Assert.AreEqual(2, countAfterRecovery);
