@@ -188,6 +188,7 @@ namespace Test
         {
             await SetUpSource();
             await source.ProduceMessageAsync(wordCountMessage1);
+            //Here wait becasue
             int count = await source.GetStateInIncrementalLog(new StreamMessage(wordCountMessage1.Key, "go"));
             Assert.AreEqual(3, count);
         }

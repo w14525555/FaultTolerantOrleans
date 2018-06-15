@@ -17,7 +17,8 @@ namespace GrainImplementation
     {
         private Dictionary<string, int> statesMap = new Dictionary<string, int>();
         private Dictionary<string, int> reverseLog = new Dictionary<string, int>();
-        private Dictionary<string, int> incrementalLog = new Dictionary<string, int>();
+        private Dictionary<int, Dictionary<string, int>> incrementalLogMap = new Dictionary<int, Dictionary<string, int>>();
+        //private Dictionary<string, int> incrementalLog = new Dictionary<string, int>();
         private List<StreamMessage> messageBuffer = new List<StreamMessage>();
         private bool isOperatorFailed = false;
         private const int Default_ZERO = 0;
@@ -42,6 +43,14 @@ namespace GrainImplementation
         //This function get the words and count
         public async Task<Task> ExecuteMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
+            //At frist, if it is a new batch, just creat the incremental log 
+            //for it
+            if (!incrementalLogMap.ContainsKey(msg.BatchID) && msg.Value != Constants.Recovery_Value)
+            {
+                var newIncrementalLog = new Dictionary<string, int>();
+                incrementalLogMap.Add(msg.BatchID, newIncrementalLog);
+            }
+
             if (msg.BatchID > currentBatchID && msg.Value != Constants.Recovery_Value)
             {
                 messageBuffer.Add(msg);
@@ -77,7 +86,6 @@ namespace GrainImplementation
                 UpdateReverseLog(msg);
                 statesMap[msg.Key]++;
                 UpdateIncrementalLog(msg);
-
                 stream.OnNextAsync(new StreamMessage(msg.Key, statesMap[msg.Key].ToString()));
             }
             else
@@ -85,7 +93,8 @@ namespace GrainImplementation
                 statesMap.Add(msg.Key, 1);
                 //If insert, only save the key into reverse log
                 reverseLog.Add(msg.Key, Default_ZERO);
-                incrementalLog.Add(msg.Key, 1);
+                incrementalLogMap[msg.BatchID].Add(msg.Key, 1);
+
                 stream.OnNextAsync(new StreamMessage(msg.Key, "1"));
             }
             return Task.CompletedTask;
@@ -104,22 +113,41 @@ namespace GrainImplementation
                 await ClearReverseLog();
                 await SaveIncrementalLogIntoStorage();
                 currentBatchID++;
+                //This method should change
                 await ProcessMessagesInTheBuffer();
                 await batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
             }
             else if (msg.Value == Constants.Recovery_Value)
             {
-                //1. Recovery From the reverse log or incremental log
-                await RecoveryFromReverseLogOrIncrementalLog();
-                //2. Clear the buffer
-                messageBuffer.Clear();
-                //3. Clear the reverse log and incremental log
-                reverseLog.Clear();
-                incrementalLog.Clear();
-                //4. Reset batch ID, the current ID should greatea than the committed id 
-                currentBatchID = msg.BatchID + 1;
+                //If negative 1, means there is no committed bathc
+                if (msg.BatchID == -1)
+                {
+                    statesMap.Clear();
+                    reverseLog.Clear();
+                    incrementalLogMap.Clear();
+                    currentBatchID = 0;
+                }
+                else
+                {
+                    //1. Recovery From the reverse log or incremental log
+                    await RecoveryFromReverseLogOrIncrementalLog();
+                    //2. Clear the buffer
+                    messageBuffer.Clear();
+                    //3. Clear the reverse log and incremental log
+                    reverseLog.Clear();
+                    //The clearing of incremental might need more work
+                    await ClearIncrementalLog(msg.BatchID);
+                    //4. Reset batch ID, the current ID should greatea than the committed id 
+                    currentBatchID = msg.BatchID + 1;
+                }
                 await batchTracker.CompleteOneOperatorRecovery(msg.barrierOrCommitInfo);
             }
+            return Task.CompletedTask;
+        }
+
+        private Task ClearIncrementalLog(int batchID)
+        {
+            incrementalLogMap.Clear();
             return Task.CompletedTask;
         }
 
@@ -149,17 +177,32 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        public Task SaveIncrementalLogIntoStorage()
+        public async Task<Task> SaveIncrementalLogIntoStorage()
         {
             //Once save the state to files, then clear
             //The incremental log
-            SaveStateToFile(incrementalLog);
-            incrementalLog.Clear();
+            var incrementalLog = await GetIncrementalLog(currentBatchID);
+            await SaveStateToFile(incrementalLog);
+            incrementalLogMap.Remove(currentBatchID);
+            PrettyConsole.Line("Clear incremental log of batch " + currentBatchID +"  after save in disk");
             return Task.CompletedTask;
         }
 
-        private Task UpdateIncrementalLog(StreamMessage msg)
+        private Task<Dictionary<string, int>>GetIncrementalLog(int batchID)
         {
+            if (incrementalLogMap.ContainsKey(batchID))
+            {
+                return Task.FromResult(incrementalLogMap[batchID]);
+            }
+            else
+            {
+                throw new InvalidOperationException("The incremental log of batch " + batchID + " is not exist");
+            }
+        }
+
+        private async Task<Task> UpdateIncrementalLog(StreamMessage msg)
+        {
+            var incrementalLog = await GetIncrementalLog(msg.BatchID);
             if (incrementalLog.ContainsKey(msg.Key))
             {
                 incrementalLog[msg.Key] = statesMap[msg.Key];
@@ -350,16 +393,18 @@ namespace GrainImplementation
             }
         }
 
-        public Task<int> GetStateInIncrementalLog(string key)
+        public async Task<int> GetStateInIncrementalLog(string key)
         {
-            if (incrementalLog.ContainsKey(key))
+            if (incrementalLogMap.ContainsKey(currentBatchID))
             {
-                return Task.FromResult(incrementalLog[key]);
+                var incrementalLog = await GetIncrementalLog(currentBatchID);
+                if (incrementalLog.ContainsKey(key))
+                {
+                    return await Task.FromResult(incrementalLog[key]);
+                }
             }
-            else
-            {
-                return Task.FromResult(-1);
-            }
+            return await Task.FromResult(-1);
+
         }
 
         public Task MarkOperatorAsFailed()
