@@ -22,6 +22,8 @@ namespace GrainImplementation
         private List<StreamMessage> messageBuffer = new List<StreamMessage>();
         private bool isOperatorFailed = false;
         private const int Default_ZERO = 0;
+        private int numberOfUpStream = 1;
+        private int numberCurrentBatchBarrierReceived = 0;
         private IBatchTracker batchTracker;
         private IAsyncStream<StreamMessage> asyncStream;
 
@@ -106,6 +108,12 @@ namespace GrainImplementation
             {
                 //Just complete the tracking
                 await batchTracker.CompleteOneOperatorBarrier(msg.barrierOrCommitInfo);
+                numberCurrentBatchBarrierReceived++;
+                if (numberOfUpStream == numberCurrentBatchBarrierReceived)
+                {
+                    await ProcessSpecialMessagesInTheBuffer();
+                    numberCurrentBatchBarrierReceived = 0;
+                }
             }
             else if (msg.Value == Constants.Commit_Value)
             {
@@ -113,8 +121,13 @@ namespace GrainImplementation
                 await ClearReverseLog();
                 await SaveIncrementalLogIntoStorage();
                 currentBatchID++;
+                //Now this method should just handle the special message
+                //Because the normal message has been excute after reciving
+                //all the barriers. 
+                await ProcessSpecialMessagesInTheBuffer();
+
                 //This method should change
-                await ProcessMessagesInTheBuffer();
+
                 await batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
             }
             else if (msg.Value == Constants.Recovery_Value)
@@ -223,7 +236,8 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        private async Task<Task> ProcessMessagesInTheBuffer()
+        //This method is used to process the special message after commit
+        private async Task<Task> ProcessSpecialMessagesInTheBuffer()
         {
             if (messageBuffer.Count > 0)
             {
@@ -239,7 +253,7 @@ namespace GrainImplementation
                 }
                 else
                 {
-                    throw new InvalidOperationException("Process Buffer Message: now Stream!");
+                    throw new InvalidOperationException("Process Buffer Message: no Stream!");
                 }
             }
             return Task.CompletedTask;

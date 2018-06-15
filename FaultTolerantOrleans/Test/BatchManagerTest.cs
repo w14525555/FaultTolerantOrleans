@@ -156,7 +156,8 @@ namespace Test
             await source.ProduceMessageAsync(wordCountMessage1);
             //Commit the batch 0
             var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
-            await batchCoordinator.StartCommit(0);
+            await batchCoordinator.SendBarrier();
+            Thread.Sleep(100);
             int count = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
             Assert.AreEqual(1, count);
         }
