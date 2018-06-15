@@ -111,7 +111,8 @@ namespace GrainImplementation
                 numberCurrentBatchBarrierReceived++;
                 if (numberOfUpStream == numberCurrentBatchBarrierReceived)
                 {
-                    await ProcessSpecialMessagesInTheBuffer();
+                    PrettyConsole.Line("Start process normal message");
+                    await ProcessNormalMessagesInTheBuffer(currentBatchID + 1);
                     numberCurrentBatchBarrierReceived = 0;
                 }
             }
@@ -243,11 +244,36 @@ namespace GrainImplementation
             {
                 if (asyncStream != null)
                 {
-                    foreach (var msg in messageBuffer)
+                    for (int i = 0; i< messageBuffer.Count; i++)
                     {
-                        if (msg.BatchID == currentBatchID)
+                        var msg = messageBuffer[i];
+                        if (msg.BatchID == currentBatchID && msg.Key == Constants.System_Key)
                         {
-                            await ExecuteMessage(msg, asyncStream);
+                            await ExecuteMessage(messageBuffer[i], asyncStream);
+                        }
+                    }
+                }
+                else
+                {
+                    throw new InvalidOperationException("Process Buffer Message: no Stream!");
+                }
+            }
+            return Task.CompletedTask;
+        }
+
+        //This method is used to process the normal message after barrier
+        private async Task<Task> ProcessNormalMessagesInTheBuffer(int batchID)
+        {
+            if (messageBuffer.Count > 0)
+            {
+                if (asyncStream != null)
+                {
+                    for (int i = 0; i < messageBuffer.Count; i++)
+                    {
+                        var msg = messageBuffer[i];
+                        if (msg.BatchID == batchID && msg.Key != Constants.System_Key)
+                        {
+                            await CountWord(msg, asyncStream);
                         }
                     }
                 }
