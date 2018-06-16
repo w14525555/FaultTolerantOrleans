@@ -16,7 +16,7 @@ namespace GrainImplementation
     public class StatefulStreamOperator : Grain, IStatefulOperator
     {
         private Dictionary<string, int> statesMap = new Dictionary<string, int>();
-        private Dictionary<string, int> reverseLog = new Dictionary<string, int>();
+        private Dictionary<int, Dictionary<string, int>> reverseLogMap = new Dictionary<int, Dictionary<string, int>>();
         private Dictionary<int, Dictionary<string, int>> incrementalLogMap = new Dictionary<int, Dictionary<string, int>>();
         //private Dictionary<string, int> incrementalLog = new Dictionary<string, int>();
         private List<StreamMessage> messageBuffer = new List<StreamMessage>();
@@ -50,7 +50,10 @@ namespace GrainImplementation
             if (!incrementalLogMap.ContainsKey(msg.BatchID) && msg.Value != Constants.Recovery_Value)
             {
                 var newIncrementalLog = new Dictionary<string, int>();
+                var newReverseLog = new Dictionary<string, int>();
                 incrementalLogMap.Add(msg.BatchID, newIncrementalLog);
+                reverseLogMap.Add(msg.BatchID, newReverseLog);
+                PrettyConsole.Line("Add reverse log for batch: " + msg.BatchID);
             }
 
             if (msg.BatchID > currentBatchID && msg.Value != Constants.Recovery_Value)
@@ -94,7 +97,7 @@ namespace GrainImplementation
             {
                 statesMap.Add(msg.Key, 1);
                 //If insert, only save the key into reverse log
-                reverseLog.Add(msg.Key, Default_ZERO);
+                reverseLogMap[msg.BatchID].Add(msg.Key, Default_ZERO);
                 incrementalLogMap[msg.BatchID].Add(msg.Key, 1);
 
                 stream.OnNextAsync(new StreamMessage(msg.Key, "1"));
@@ -119,7 +122,7 @@ namespace GrainImplementation
             else if (msg.Value == Constants.Commit_Value)
             {
                 PrettyConsole.Line("A stateful grain" + "Clear Reverse log and save Incremental log: " + msg.BatchID);
-                await ClearReverseLog();
+                //await ClearReverseLog(currentBatchID);
                 await SaveIncrementalLogIntoStorage();
                 currentBatchID++;
                 //Now this method should just handle the special message
@@ -137,18 +140,18 @@ namespace GrainImplementation
                 if (msg.BatchID == -1)
                 {
                     statesMap.Clear();
-                    reverseLog.Clear();
+                    reverseLogMap.Clear();
                     incrementalLogMap.Clear();
                     currentBatchID = 0;
                 }
                 else
                 {
                     //1. Recovery From the reverse log or incremental log
-                    await RecoveryFromReverseLogOrIncrementalLog();
+                    await RecoveryFromReverseLogOrIncrementalLog(msg.BatchID);
                     //2. Clear the buffer
                     messageBuffer.Clear();
                     //3. Clear the reverse log and incremental log
-                    reverseLog.Clear();
+                    reverseLogMap.Clear();
                     //The clearing of incremental might need more work
                     await ClearIncrementalLog(msg.BatchID);
                     //4. Reset batch ID, the current ID should greatea than the committed id 
@@ -165,7 +168,7 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        private async Task<Task> RecoveryFromReverseLogOrIncrementalLog()
+        private async Task<Task> RecoveryFromReverseLogOrIncrementalLog(int batchID)
         {
             if (isOperatorFailed)
             {
@@ -180,14 +183,21 @@ namespace GrainImplementation
             }
             else
             {
-                await RevertStateFromReverseLog();
+                await RevertStateFromReverseLog(batchID + 1);
             }
             return Task.CompletedTask;
         }
 
-        public Task ClearReverseLog()
+        public Task ClearReverseLog(int batchID)
         {
-            reverseLog.Clear();
+            if (reverseLogMap.ContainsKey(batchID))
+            {
+                reverseLogMap.Remove(batchID);
+            }
+            else
+            {
+                throw new ArgumentException("Doesn't contain reverse log of batch: " + batchID);
+            }
             return Task.CompletedTask;
         }
 
@@ -214,6 +224,18 @@ namespace GrainImplementation
             }
         }
 
+        private Task<Dictionary<string, int>> GetReverseLog(int batchID)
+        {
+            if (reverseLogMap.ContainsKey(batchID))
+            {
+                return Task.FromResult(reverseLogMap[batchID]);
+            }
+            else
+            {
+                throw new InvalidOperationException("The reverse log of batch " + batchID + " is not exist");
+            }
+        }
+
         private async Task<Task> UpdateIncrementalLog(StreamMessage msg)
         {
             var incrementalLog = await GetIncrementalLog(msg.BatchID);
@@ -228,8 +250,11 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        private Task UpdateReverseLog(StreamMessage msg)
+        private async Task<Task> UpdateReverseLog(StreamMessage msg)
         {
+            var reverseLog = await GetReverseLog(msg.BatchID);
+            //If reverse log contains the key, means 
+            //it has the value of last batch
             if (!reverseLog.ContainsKey(msg.Key))
             {
                 reverseLog.Add(msg.Key, statesMap[msg.Key]);
@@ -328,7 +353,7 @@ namespace GrainImplementation
             }
         }
 
-        public Task RevertStateFromReverseLog()
+        public async Task<Task> RevertStateFromReverseLog(int batchID)
         {
             //Here three cases rollback the states
             //in reverse log. 
@@ -336,27 +361,34 @@ namespace GrainImplementation
             //Update: revert the value
             //delete: add the key and value back
             PrettyConsole.Line("Revert from Reverse Log!");
-            foreach (var item in reverseLog)
+            //If the reverse log does not contain the batch id
+            //means there is no change in the states map
+            if (reverseLogMap.ContainsKey(batchID))
             {
-                //If delete, the statemap does not contain the key
-                if (!statesMap.ContainsKey(item.Key))
+                var reverseLog = await GetReverseLog(batchID);
+                foreach (var item in reverseLog)
                 {
-                    statesMap.Add(item.Key, item.Value);
-                }
-                else
-                {
-                    //If null, means it was inserted value
-                    if (item.Value == Default_ZERO)
+                    //If delete, the statemap does not contain the key
+                    if (!statesMap.ContainsKey(item.Key))
                     {
-                        statesMap.Remove(item.Key);
+                        statesMap.Add(item.Key, item.Value);
                     }
                     else
                     {
-                        //The last case is reverting updated value 
-                        statesMap[item.Key] = item.Value;
+                        //If null, means it was inserted value
+                        if (item.Value == Default_ZERO)
+                        {
+                            statesMap.Remove(item.Key);
+                        }
+                        else
+                        {
+                            //The last case is reverting updated value 
+                            statesMap[item.Key] = item.Value;
+                        }
                     }
                 }
             }
+            
             return Task.CompletedTask;
         }
 
@@ -421,16 +453,18 @@ namespace GrainImplementation
             }
         }
 
-        public Task<int> GetStateInReverseLog(string key)
+        public async Task<int> GetStateInReverseLog(string key)
         {
-            if (reverseLog.ContainsKey(key))
+            if (reverseLogMap.ContainsKey(currentBatchID))
             {
-                return Task.FromResult(reverseLog[key]);
+                var reverseLog = await GetReverseLog(currentBatchID);
+                if (reverseLog.ContainsKey(key))
+                {
+                    return await Task.FromResult(reverseLog[key]);
+                }
             }
-            else
-            {
-                return Task.FromResult(-1);
-            }
+
+            return await Task.FromResult(-1);
         }
 
         public async Task<int> GetStateInIncrementalLog(string key)
