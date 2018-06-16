@@ -111,6 +111,7 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         private async Task<Task> ProcessSpecialMessage(StreamMessage msg)
         {
             if (msg.Value == Constants.Barrier_Value)
@@ -151,6 +152,8 @@ namespace GrainImplementation
                     if (numberCurrentBatchCommitReceived == numberOfUpStream)
                     {
                         numberCurrentBatchCommitReceived = 0;
+                        ClearIncrementalLog(msg.BatchID);
+                        ClearReverseLog(msg.BatchID);
                         currentBatchID++;
                     }
                 }
