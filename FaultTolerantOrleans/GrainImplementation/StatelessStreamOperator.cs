@@ -7,6 +7,7 @@ using SystemInterfaces.Model;
 using System;
 using Orleans.Streams;
 using System.Linq;
+using System.Diagnostics;
 
 namespace SystemImplementation
 {
@@ -24,15 +25,33 @@ namespace SystemImplementation
             return base.OnActivateAsync();
         }
 
-        public async Task<Task> InitOperators()
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
+        public async Task<Task> InitRandomOperators()
         {
             statefulOperators = new List<IStatefulOperator>();
             IStatefulOperator operatorOne = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
             IStatefulOperator operatorTwo = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
             statefulOperators.Add(operatorOne);
+            operatorOne.IncrementNumberOfUpStreamOperator();
             statefulOperators.Add(operatorTwo);
+            operatorTwo.IncrementNumberOfUpStreamOperator();
             operatorSettings.AddOpratorToDict(operatorOne.GetPrimaryKey(), await operatorOne.GetOperatorSettings());
             operatorSettings.AddOpratorToDict(operatorTwo.GetPrimaryKey(), await operatorTwo.GetOperatorSettings());
+            return Task.CompletedTask;
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
+        public async Task<Task> InitCustomerOperators(List<Guid> guidList)
+        {
+            statefulOperators = new List<IStatefulOperator>();
+            foreach (var item in guidList)
+            {
+                IStatefulOperator op = GrainFactory.GetGrain<IStatefulOperator>(item);
+                statefulOperators.Add(op);
+                op.IncrementNumberOfUpStreamOperator();
+                operatorSettings.AddOpratorToDict(op.GetPrimaryKey(), await op.GetOperatorSettings());
+
+            }
             return Task.CompletedTask;
         }
 

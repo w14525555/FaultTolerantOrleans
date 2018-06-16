@@ -23,5 +23,7 @@ namespace SystemInterfaces
         Task<Task> RevertStateFromIncrementalLog();
 
         Task MarkOperatorAsFailed();
+
+        Task IncrementNumberOfUpStreamOperator();
     }
 }

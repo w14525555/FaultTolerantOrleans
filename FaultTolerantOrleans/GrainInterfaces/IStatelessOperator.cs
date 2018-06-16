@@ -1,5 +1,7 @@
 ﻿using Orleans;
 using Orleans.Streams;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using SystemInterfaces.Model;
 
@@ -15,6 +17,8 @@ namespace SystemInterfaces
 
         Task<int> GetStateInIncrementalLog(string word);
 
-        Task<Task> InitOperators();
+        Task<Task> InitRandomOperators();
+
+        Task<Task> InitCustomerOperators(List<Guid> guidList);
     }
 }

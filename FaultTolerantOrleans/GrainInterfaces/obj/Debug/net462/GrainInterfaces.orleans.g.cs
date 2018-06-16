@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen20455b2537FeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGenc6ceb7ccdaFeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -468,6 +468,8 @@ namespace SystemInterfaces
                             return @"RevertStateFromIncrementalLog";
                         case 1032606503:
                             return @"MarkOperatorAsFailed";
+                        case 2061992567:
+                            return @"IncrementNumberOfUpStreamOperator";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 498177181 + @",methodId=" + methodId);
                     }
@@ -516,6 +518,11 @@ namespace SystemInterfaces
         {
             return base.InvokeMethodAsync<global::System.Object>(1032606503, null);
         }
+
+        public global::System.Threading.Tasks.Task IncrementNumberOfUpStreamOperator()
+        {
+            return base.InvokeMethodAsync<global::System.Object>(2061992567, null);
+        }
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute(typeof (global::SystemInterfaces.IStatefulOperator), 498177181), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
@@ -550,6 +557,9 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).RevertStateFromIncrementalLog();
                         case 1032606503:
                             await ((global::SystemInterfaces.IStatefulOperator)grain).MarkOperatorAsFailed();
+                            return null;
+                        case 2061992567:
+                            await ((global::SystemInterfaces.IStatefulOperator)grain).IncrementNumberOfUpStreamOperator();
                             return null;
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 498177181 + @",methodId=" + methodId);
@@ -636,8 +646,10 @@ namespace SystemInterfaces
                             return @"GetStateInReverseLog";
                         case 408823471:
                             return @"GetStateInIncrementalLog";
-                        case 703641509:
-                            return @"InitOperators";
+                        case 1333285083:
+                            return @"InitRandomOperators";
+                        case 741275518:
+                            return @"InitCustomerOperators";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1903779801 + @",methodId=" + methodId);
                     }
@@ -667,9 +679,14 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Int32>(408823471, new global::System.Object[]{word});
         }
 
-        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> InitOperators()
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> InitRandomOperators()
         {
-            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(703641509, null);
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(1333285083, null);
+        }
+
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> InitCustomerOperators(global::System.Collections.Generic.List<global::System.Guid> guidList)
+        {
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(741275518, new global::System.Object[]{guidList});
         }
     }
 
@@ -696,8 +713,10 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).GetStateInReverseLog((global::System.String)arguments[0]);
                         case 408823471:
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).GetStateInIncrementalLog((global::System.String)arguments[0]);
-                        case 703641509:
-                            return await ((global::SystemInterfaces.IStatelessOperator)grain).InitOperators();
+                        case 1333285083:
+                            return await ((global::SystemInterfaces.IStatelessOperator)grain).InitRandomOperators();
+                        case 741275518:
+                            return await ((global::SystemInterfaces.IStatelessOperator)grain).InitCustomerOperators((global::System.Collections.Generic.List<global::System.Guid>)arguments[0]);
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1903779801 + @",methodId=" + methodId);
                     }
@@ -1096,7 +1115,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen20455b2537FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGenc6ceb7ccdaFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {

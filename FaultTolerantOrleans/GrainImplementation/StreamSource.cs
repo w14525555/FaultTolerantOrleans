@@ -42,9 +42,13 @@ namespace GrainImplementation
             statelessOperators.Add(operatorOne);
             statelessOperators.Add(operatorTwo);
             statelessOperators.Add(operatorThree);
-            operatorOne.InitOperators();
-            operatorTwo.InitOperators();
-            operatorThree.InitOperators();
+            //Add customer guid list
+            List<Guid> guidList = new List<Guid>();
+            guidList.Add(Guid.NewGuid());
+            guidList.Add(Guid.NewGuid());
+            operatorOne.InitRandomOperators();
+            operatorTwo.InitCustomerOperators(guidList);
+            operatorThree.InitCustomerOperators(guidList);
             return Task.CompletedTask;
         }
 

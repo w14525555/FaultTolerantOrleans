@@ -18,12 +18,13 @@ namespace GrainImplementation
         private Dictionary<string, int> statesMap = new Dictionary<string, int>();
         private Dictionary<int, Dictionary<string, int>> reverseLogMap = new Dictionary<int, Dictionary<string, int>>();
         private Dictionary<int, Dictionary<string, int>> incrementalLogMap = new Dictionary<int, Dictionary<string, int>>();
-        //private Dictionary<string, int> incrementalLog = new Dictionary<string, int>();
         private List<StreamMessage> messageBuffer = new List<StreamMessage>();
         private bool isOperatorFailed = false;
         private const int Default_ZERO = 0;
-        private int numberOfUpStream = 1;
+        private int numberOfUpStream = 0;
         private int numberCurrentBatchBarrierReceived = 0;
+        private int numberCurrentBatchCommitReceived = 0;
+        private int numberCurrentRecoveryCommitReceived = 0;
         private IBatchTracker batchTracker;
         private IAsyncStream<StreamMessage> asyncStream;
 
@@ -52,6 +53,10 @@ namespace GrainImplementation
                 var newIncrementalLog = new Dictionary<string, int>();
                 var newReverseLog = new Dictionary<string, int>();
                 incrementalLogMap.Add(msg.BatchID, newIncrementalLog);
+                if (reverseLogMap.ContainsKey(msg.BatchID))
+                {
+                    PrettyConsole.Line("Error!");
+                }
                 reverseLogMap.Add(msg.BatchID, newReverseLog);
                 PrettyConsole.Line("Add reverse log for batch: " + msg.BatchID);
             }
@@ -79,6 +84,7 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         private Task CountWord(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
             if (statesMap.ContainsKey(msg.Key))
@@ -122,40 +128,60 @@ namespace GrainImplementation
             else if (msg.Value == Constants.Commit_Value)
             {
                 PrettyConsole.Line("A stateful grain" + "Clear Reverse log and save Incremental log: " + msg.BatchID);
-                //await ClearReverseLog(currentBatchID);
-                await SaveIncrementalLogIntoStorage();
-                currentBatchID++;
-                //Now this method should just handle the special message
-                //Because the normal message has been excute after reciving
-                //all the barriers. 
-                await ProcessSpecialMessagesInTheBuffer();
-
-                //This method should change
-
-                await batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
-            }
-            else if (msg.Value == Constants.Recovery_Value)
-            {
-                //If negative 1, means there is no committed bathc
-                if (msg.BatchID == -1)
+                if (numberCurrentBatchCommitReceived == 0)
                 {
-                    statesMap.Clear();
-                    reverseLogMap.Clear();
-                    incrementalLogMap.Clear();
-                    currentBatchID = 0;
+                    //await ClearReverseLog(currentBatchID);
+                    await SaveIncrementalLogIntoStorage();
+                    numberCurrentBatchCommitReceived++;
+                    await batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
+                    if (numberCurrentBatchCommitReceived == numberOfUpStream)
+                    {
+                        numberCurrentBatchCommitReceived = 0;
+                    }
+                    //Now this method should just handle the special message
+                    //Because the normal message has been excute after reciving
+                    //all the barriers. 
+                    await ProcessSpecialMessagesInTheBuffer();
                 }
                 else
                 {
-                    //1. Recovery From the reverse log or incremental log
-                    await RecoveryFromReverseLogOrIncrementalLog(msg.BatchID);
-                    //2. Clear the buffer
-                    messageBuffer.Clear();
-                    //3. Clear the reverse log and incremental log
-                    reverseLogMap.Clear();
-                    //The clearing of incremental might need more work
-                    await ClearIncrementalLog(msg.BatchID);
-                    //4. Reset batch ID, the current ID should greatea than the committed id 
-                    currentBatchID = msg.BatchID + 1;
+                    numberCurrentBatchCommitReceived++;
+                    await batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
+                    //When all the commit message received, increment the batch id 
+                    if (numberCurrentBatchCommitReceived == numberOfUpStream)
+                    {
+                        numberCurrentBatchCommitReceived = 0;
+                        currentBatchID++;
+                    }
+                }
+            }
+            else if (msg.Value == Constants.Recovery_Value)
+            {
+                if (numberCurrentRecoveryCommitReceived == 0)
+                {
+                    //If negative 1, means there is no committed bathc
+                    if (msg.BatchID == -1)
+                    {
+                        statesMap.Clear();
+                        reverseLogMap.Clear();
+                        incrementalLogMap.Clear();
+                        currentBatchID = 0;
+                    }
+                    else
+                    {
+                        //1. Recovery From the reverse log or incremental log
+                        await RecoveryFromReverseLogOrIncrementalLog(msg.BatchID);
+                        //2. Clear the buffer
+                        messageBuffer.Clear();
+                        //3. Clear the reverse log and incremental log
+                        //4. Reset batch ID, the current ID should greatea than the committed id 
+                        currentBatchID = msg.BatchID + 1;
+                    }
+                }
+                numberCurrentRecoveryCommitReceived++;
+                if (numberCurrentRecoveryCommitReceived == numberOfUpStream)
+                {
+                    numberCurrentRecoveryCommitReceived = 0;
                 }
                 await batchTracker.CompleteOneOperatorRecovery(msg.barrierOrCommitInfo);
             }
@@ -164,7 +190,7 @@ namespace GrainImplementation
 
         private Task ClearIncrementalLog(int batchID)
         {
-            incrementalLogMap.Clear();
+            incrementalLogMap.Remove(batchID);
             return Task.CompletedTask;
         }
 
@@ -196,6 +222,7 @@ namespace GrainImplementation
             }
             else
             {
+                PrettyConsole.Line("Doesn't contain reverse log of batch: " + batchID);
                 throw new ArgumentException("Doesn't contain reverse log of batch: " + batchID);
             }
             return Task.CompletedTask;
@@ -207,7 +234,7 @@ namespace GrainImplementation
             //The incremental log
             var incrementalLog = await GetIncrementalLog(currentBatchID);
             await SaveStateToFile(incrementalLog);
-            incrementalLogMap.Remove(currentBatchID);
+            //incrementalLogMap.Remove(currentBatchID);
             PrettyConsole.Line("Clear incremental log of batch " + currentBatchID +"  after save in disk");
             return Task.CompletedTask;
         }
@@ -484,6 +511,13 @@ namespace GrainImplementation
         public Task MarkOperatorAsFailed()
         {
             isOperatorFailed = true;
+            return Task.CompletedTask;
+        }
+
+        public Task IncrementNumberOfUpStreamOperator()
+        {
+            numberOfUpStream++;
+            PrettyConsole.Line("The number of upstream is " + numberOfUpStream);
             return Task.CompletedTask;
         }
 
