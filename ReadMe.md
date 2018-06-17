@@ -83,6 +83,10 @@ To Recovery a stateful operator:
 To recovery a stateless operator:
 1. Restart a new grain
 2. Rollback the rooting inforamtion
+   a. Find the operator settings
+   b. Load the setting 
+   c. mark as failed, so when it receive recovery message it will revert states by incremental log,
+      otherwise it will reverst from reverse log. 
 3. Remove the failed from topology
 4. Make the new grain as restart 
 5. Tell coordinator start recovery
