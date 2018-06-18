@@ -135,32 +135,21 @@ namespace GrainImplementation
             else if (msg.Value == Constants.Commit_Value)
             {
                 PrettyConsole.Line("A stateful grain" + "Clear Reverse log and save Incremental log: " + msg.BatchID);
-                if (numberCurrentBatchCommitReceived == 0)
+                   
+                numberCurrentBatchCommitReceived++;
+                await batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
+                //When all the commit message received, increment the batch id 
+                if (numberCurrentBatchCommitReceived == numberOfUpStream)
                 {
-                    //await ClearReverseLog(currentBatchID);
                     await SaveIncrementalLogIntoStorage();
-                    numberCurrentBatchCommitReceived++;
-                    await batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
-                    if (numberCurrentBatchCommitReceived == numberOfUpStream)
+                    numberCurrentBatchCommitReceived = 0;
+                    ClearIncrementalLog(msg.BatchID);
+                    ClearReverseLog(msg.BatchID);
+                    currentBatchID++;
+                    PrettyConsole.Line("LILILILILI");
+                    if (messageBuffer.Count > 0)
                     {
-                        numberCurrentBatchCommitReceived = 0;
-                    }
-                    //Now this method should just handle the special message
-                    //Because the normal message has been excute after reciving
-                    //all the barriers. 
-                    await ProcessSpecialMessagesInTheBuffer();
-                }
-                else
-                {
-                    numberCurrentBatchCommitReceived++;
-                    await batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
-                    //When all the commit message received, increment the batch id 
-                    if (numberCurrentBatchCommitReceived == numberOfUpStream)
-                    {
-                        numberCurrentBatchCommitReceived = 0;
-                        ClearIncrementalLog(msg.BatchID);
-                        ClearReverseLog(msg.BatchID);
-                        currentBatchID++;
+                        await ProcessSpecialMessagesInTheBuffer();
                     }
                 }
             }
