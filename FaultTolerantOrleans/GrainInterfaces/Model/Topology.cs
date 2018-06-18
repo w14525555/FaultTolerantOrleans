@@ -32,15 +32,15 @@ namespace SystemInterfaces.Model
             }
         }
 
-        public void RemoveUnit(TopologyUnit unit)
+        public void RemoveUnit(Guid key)
         {
-            if (!topologyUnits.ContainsKey(unit.primaryKey))
+            if (!topologyUnits.ContainsKey(key))
             {
                 throw new ArgumentException("Remove Error: The target is not exist in upperStreamUnits!");
             }
             else
             {
-                topologyUnits.Remove(unit.primaryKey);
+                topologyUnits.Remove(key);
             }
         }
 
@@ -55,5 +55,18 @@ namespace SystemInterfaces.Model
                 throw new ArgumentException("Remove Error: The target is not exist in upperStreamUnits!");
             }
         }
+
+        public TopologyUnit GetUnit(Guid key)
+        {
+            if (topologyUnits.ContainsKey(key))
+            {
+                return topologyUnits[key];
+            }
+            else
+            {
+                throw new ArgumentException("Get Error: the target is not exist");
+            }
+        }
+
     }
 }

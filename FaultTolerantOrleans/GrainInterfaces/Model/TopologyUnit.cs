@@ -8,12 +8,11 @@ namespace SystemInterfaces.Model
         private Dictionary<Guid, TopologyUnit> upperStreamUnits = new Dictionary<Guid, TopologyUnit>();
         private Dictionary<Guid, TopologyUnit> downStreamUnits = new Dictionary<Guid, TopologyUnit>();
         private OperatorSettings operatorSettings = new OperatorSettings();
-        private OperatorType operatorType;
+        public OperatorType operatorType { get; set; }
         public Guid primaryKey { get; set; }
 
         public TopologyUnit(OperatorType operatorType, Guid key)
         {
-            operatorType = new OperatorType();
             this.operatorType = operatorType;
             primaryKey = new Guid();
             primaryKey = key;
@@ -72,5 +71,14 @@ namespace SystemInterfaces.Model
             this.operatorSettings = operatorSettings;
         }
 
+        public Dictionary<Guid, TopologyUnit> GetUpperStreamUnits()
+        {
+            return upperStreamUnits;
+        }
+
+        public Dictionary<Guid, TopologyUnit> GetdownStreamUnits()
+        {
+            return downStreamUnits;
+        }
     }
 }

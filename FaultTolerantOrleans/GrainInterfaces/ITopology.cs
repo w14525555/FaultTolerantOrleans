@@ -9,10 +9,12 @@ namespace SystemInterfaces
     {
         Task AddUnit(TopologyUnit unit);
 
-        Task RemoveUnit(TopologyUnit unit);
+        Task RemoveUnit(Guid key);
 
         Task ConnectUnits(TopologyUnit upperStreamUnit, TopologyUnit downStreamUnit);
 
         Task UpdateOperatorSettings(Guid guid, OperatorSettings operatorSettings);
+
+        Task ReplaceTheOldOperatorWithNew(Guid oldGuid, Guid newGuid);
     }
 }

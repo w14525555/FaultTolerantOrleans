@@ -19,8 +19,10 @@ namespace SystemInterfaces
 
         Task<Task> InitRandomOperators();
 
-        Task<Task> InitCustomerOperators(List<Guid> guidList);
+        Task<Task> AddCustomeOperators(List<Guid> guidList);
 
         Task<TopologyUnit> GetTopologyUnit();
+
+        Task RemoveCustomeOperators(Guid guid);
     }
 }

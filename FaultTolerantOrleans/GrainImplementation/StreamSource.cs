@@ -54,8 +54,8 @@ namespace GrainImplementation
             guidList.Add(Guid.NewGuid());
             guidList.Add(Guid.NewGuid());
             operatorOne.InitRandomOperators();
-            operatorTwo.InitCustomerOperators(guidList);
-            operatorThree.InitCustomerOperators(guidList);
+            operatorTwo.AddCustomeOperators(guidList);
+            operatorThree.AddCustomeOperators(guidList);
 
             await topologyManager.ConnectUnits(topologyUnit, await operatorOne.GetTopologyUnit());
             await topologyManager.ConnectUnits(topologyUnit, await operatorTwo.GetTopologyUnit());

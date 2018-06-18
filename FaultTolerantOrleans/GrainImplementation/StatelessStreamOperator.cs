@@ -13,7 +13,8 @@ namespace SystemImplementation
     class StatelessStreamOperator : Grain, IStatelessOperator
     {
         //The StatelessConsumer does not have state.
-        private List<IStatefulOperator> statefulOperators;
+            
+        private List<IStatefulOperator> statefulOperators = new List<IStatefulOperator>();
         private IBatchTracker batchTracker;
         private ITopology topologyManager;
         private TopologyUnit topologyUnit;
@@ -26,6 +27,7 @@ namespace SystemImplementation
             topologyManager = GrainFactory.GetGrain<ITopology>(Constants.Topology_Manager);
             topologyUnit = new TopologyUnit(OperatorType.Stateless, this.GetPrimaryKey());
             topologyManager.AddUnit(topologyUnit);
+
             return base.OnActivateAsync();
         }
 
@@ -50,9 +52,8 @@ namespace SystemImplementation
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
-        public async Task<Task> InitCustomerOperators(List<Guid> guidList)
+        public async Task<Task> AddCustomeOperators(List<Guid> guidList)
         {
-            statefulOperators = new List<IStatefulOperator>();
             foreach (var item in guidList)
             {
                 IStatefulOperator op = GrainFactory.GetGrain<IStatefulOperator>(item);
@@ -62,6 +63,31 @@ namespace SystemImplementation
                 topologyManager.ConnectUnits(topologyUnit, await op.GetTopologyUnit());
             }
             topologyManager.UpdateOperatorSettings(topologyUnit.primaryKey, operatorSettings);
+            return Task.CompletedTask;
+        }
+
+        public Task RemoveCustomeOperators(Guid guid)
+        {
+            int index = -1;
+            for (int i = 0; i < statefulOperators.Count; i++)
+            {
+                if (statefulOperators[i].GetPrimaryKey() == guid)
+                {
+                    index = i;
+                    break;
+                }
+            }
+            if (index != -1)
+            {
+                statefulOperators.RemoveAt(index);
+                operatorSettings.RemoveOperatorFromDict(guid);
+                topologyManager.UpdateOperatorSettings(this.GetPrimaryKey(), operatorSettings);
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
+
             return Task.CompletedTask;
         }
 
@@ -116,16 +142,29 @@ namespace SystemImplementation
                 //revert states by incremental log
                 await newOperator.MarkOperatorAsFailed();
                 //3. Remove the failed from the topology
-                statefulOperators.RemoveAt(index);
-                operatorSettings.RemoveOperatorFromDict(item.Key);
+                //statefulOperators.RemoveAt(index);
+                //operatorSettings.RemoveOperatorFromDict(item.Key);
                 //4. Add the new grain to topology
-                statefulOperators.Add(newOperator);
-                operatorSettings.AddOpratorToDict(newOperator.GetPrimaryKey(), await newOperator.GetOperatorSettings());
-                //5. Start Recovery
+                //statefulOperators.Add(newOperator);
+                // operatorSettings.AddOpratorToDict(newOperator.GetPrimaryKey(), await newOperator.GetOperatorSettings());
+                //await topologyManager.UpdateOperatorSettings(this.GetPrimaryKey(), operatorSettings);
+                //Since the new operator will add itself to the topology it self, so it is ok
+                await topologyManager.ReplaceTheOldOperatorWithNew(item.Key, newOperator.GetPrimaryKey());
+                //5. Remove the old from the topology
+                await topologyManager.RemoveUnit(item.Key);
+                //6. Replace the new operator
+
+                //8. Start Recovery
                 var batchCoordinator = GrainFactory.GetGrain<IBatchCoordinator>(Constants.Coordinator);
                 await batchCoordinator.StartRecovery();
                 return Task.CompletedTask;
             }
+        }
+
+        private Task ReplaceTheGrainFromTopology()
+        {
+            //The old grain's parents should 
+            return Task.CompletedTask;
         }
 
         private async Task<Task> ProcessSpecialMessageAsync(StreamMessage msg, IAsyncStream<StreamMessage> stream)
