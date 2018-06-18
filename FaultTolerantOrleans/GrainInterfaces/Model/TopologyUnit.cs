@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utils;
 
 namespace SystemInterfaces.Model
 {
@@ -50,6 +51,7 @@ namespace SystemInterfaces.Model
             }
             else
             {
+                PrettyConsole.Line("Add");
                 downStreamUnits.Add(unit.primaryKey, unit);
             }
         }

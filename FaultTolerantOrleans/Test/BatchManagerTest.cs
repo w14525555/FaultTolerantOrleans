@@ -281,6 +281,30 @@ namespace Test
             Assert.AreEqual(2, countAfterRecovery);
         }
 
+        //Topology Manager Tests
+        [TestMethod]
+        public async Task TestTopologyHasRightSize()
+        {
+            await SetUpSource();
+            await source.GetBatchManager();
+            Thread.Sleep(100);
+            var topologyManager = client.GetGrain<ITopology>(Constants.Topology_Manager);
+            int size = await topologyManager.GetTopologySize();
+            Assert.AreEqual(8, size);
+        }
+
+        [TestMethod]
+        public async Task TestSourceHasRightDownStreamNumber()
+        {
+            await SetUpSource();
+            await source.GetBatchManager();
+            Thread.Sleep(100);
+            var topologyManager = client.GetGrain<ITopology>(Constants.Topology_Manager);
+            var topologyUnit = await source.GetTopologyUnit();
+            var unit = await topologyManager.GetUnit(topologyUnit.primaryKey);
+            Assert.AreEqual(3, unit.GetdownStreamUnits().Count);
+        }
+
         //SetUp Functions 
 
         private Task StartSilo()

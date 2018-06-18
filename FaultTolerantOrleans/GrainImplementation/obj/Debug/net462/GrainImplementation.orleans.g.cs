@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGena5eb30947cFeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGend3ad2ae497FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainImplementation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace OrleansGeneratedCode55A989F1
@@ -20,7 +20,7 @@ namespace OrleansGeneratedCode55A989F1
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGena5eb30947cFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGend3ad2ae497FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {
@@ -924,9 +924,6 @@ namespace OrleansGeneratedCode
             feature.AddKnownType(@"GrainImplementation.BatchTracker,GrainImplementation", @"GrainImplementation.BatchTracker");
             feature.AddKnownType(@"GrainImplementation.StatefulStreamOperator,GrainImplementation", @"GrainImplementation.StatefulStreamOperator");
             feature.AddKnownType(@"GrainImplementation.StreamSource,GrainImplementation", @"GrainImplementation.StreamSource");
-            feature.AddKnownType(@"Utils.Constants,Utils", @"Utils.Constants");
-            feature.AddKnownType(@"Utils.Functions,Utils", @"Utils.Functions");
-            feature.AddKnownType(@"Utils.PrettyConsole,Utils", @"Utils.PrettyConsole");
         }
     }
 }

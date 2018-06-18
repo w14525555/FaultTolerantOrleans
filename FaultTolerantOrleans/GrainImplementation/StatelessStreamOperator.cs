@@ -44,9 +44,9 @@ namespace SystemImplementation
             operatorSettings.AddOpratorToDict(operatorOne.GetPrimaryKey(), await operatorOne.GetOperatorSettings());
             operatorSettings.AddOpratorToDict(operatorTwo.GetPrimaryKey(), await operatorTwo.GetOperatorSettings());
 
-            topologyManager.UpdateOperatorSettings(topologyUnit.primaryKey, operatorSettings);
-            topologyManager.ConnectUnits(topologyUnit, await operatorOne.GetTopologyUnit());
-            topologyManager.ConnectUnits(topologyUnit, await operatorTwo.GetTopologyUnit());
+            topologyManager.UpdateOperatorSettings(this.GetPrimaryKey(), operatorSettings);
+            topologyManager.ConnectUnits(this.GetPrimaryKey(), operatorOne.GetPrimaryKey());
+            topologyManager.ConnectUnits(this.GetPrimaryKey(), operatorTwo.GetPrimaryKey());
 
             return Task.CompletedTask;
         }
@@ -60,7 +60,7 @@ namespace SystemImplementation
                 statefulOperators.Add(op);
                 op.IncrementNumberOfUpStreamOperator();
                 operatorSettings.AddOpratorToDict(op.GetPrimaryKey(), await op.GetOperatorSettings());
-                topologyManager.ConnectUnits(topologyUnit, await op.GetTopologyUnit());
+                topologyManager.ConnectUnits(topologyUnit.primaryKey, op.GetPrimaryKey());
             }
             topologyManager.UpdateOperatorSettings(topologyUnit.primaryKey, operatorSettings);
             return Task.CompletedTask;
@@ -80,6 +80,7 @@ namespace SystemImplementation
             if (index != -1)
             {
                 statefulOperators.RemoveAt(index);
+                PrettyConsole.Line("Remove old stateful from upper stream");
                 operatorSettings.RemoveOperatorFromDict(guid);
                 topologyManager.UpdateOperatorSettings(this.GetPrimaryKey(), operatorSettings);
             }
@@ -130,7 +131,7 @@ namespace SystemImplementation
             }
             catch (Exception e)
             {
-                PrettyConsole.Line("Get Exception : " + e + "; Start Receovry");
+                PrettyConsole.Line("Get Exception : " + e.GetType() + "; Start Receovry");
                 //1. Restart a new grain
                 IStatefulOperator newOperator = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
                 //2. Rollback the state

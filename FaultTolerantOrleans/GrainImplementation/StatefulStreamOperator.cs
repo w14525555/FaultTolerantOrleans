@@ -509,13 +509,21 @@ namespace GrainImplementation
         public Task MarkOperatorAsFailed()
         {
             isOperatorFailed = true;
+            PrettyConsole.Line("Mark this as failed!");
             return Task.CompletedTask;
         }
 
         public Task IncrementNumberOfUpStreamOperator()
         {
             numberOfUpStream++;
-            PrettyConsole.Line("The number of upstream is " + numberOfUpStream);
+            PrettyConsole.Line("Increase: The number of upstream is " + numberOfUpStream);
+            return Task.CompletedTask;
+        }
+
+        public Task DecreseNumberOfUpStreamOperator()
+        {
+            numberOfUpStream--;
+            PrettyConsole.Line("Decrease: The number of upstream is " + numberOfUpStream);
             return Task.CompletedTask;
         }
 

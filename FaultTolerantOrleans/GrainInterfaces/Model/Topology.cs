@@ -8,14 +8,18 @@ namespace SystemInterfaces.Model
         private Dictionary<Guid, TopologyUnit> topologyUnits = new Dictionary<Guid, TopologyUnit>();
 
         //This method is used to connect unit
-        public void ConnectUnits(TopologyUnit upperStreamUnit, TopologyUnit downStreamUnit)
+        public void ConnectUnits(Guid upperUnitID, Guid downStreamID)
         {
-            upperStreamUnit.AddDownStreamUnit(downStreamUnit);
+            var upperStreamUnit = GetUnit(upperUnitID);
+            var downStreamUnit = GetUnit(downStreamID);
             downStreamUnit.AddUpperStreamUnit(upperStreamUnit);
+            upperStreamUnit.AddDownStreamUnit(downStreamUnit);
         }
 
-        public void DisconnectUnits(TopologyUnit upperStreamUnit, TopologyUnit downStreamUnit)
+        public void DisconnectUnits(Guid upperUnitID, Guid downStreamID)
         {
+            var upperStreamUnit = GetUnit(upperUnitID);
+            var downStreamUnit = GetUnit(downStreamID);
             upperStreamUnit.RemoveFromDownStreamUnits(downStreamUnit);
             downStreamUnit.RemoveFromUpperStreamUnits(upperStreamUnit);
         }
@@ -68,5 +72,9 @@ namespace SystemInterfaces.Model
             }
         }
 
+        public int GetSize()
+        {
+            return topologyUnits.Count;
+        }
     }
 }

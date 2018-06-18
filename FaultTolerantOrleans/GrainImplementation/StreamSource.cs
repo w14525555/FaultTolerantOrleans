@@ -57,9 +57,9 @@ namespace GrainImplementation
             operatorTwo.AddCustomeOperators(guidList);
             operatorThree.AddCustomeOperators(guidList);
 
-            await topologyManager.ConnectUnits(topologyUnit, await operatorOne.GetTopologyUnit());
-            await topologyManager.ConnectUnits(topologyUnit, await operatorTwo.GetTopologyUnit());
-            await topologyManager.ConnectUnits(topologyUnit, await operatorThree.GetTopologyUnit());
+            await topologyManager.ConnectUnits(topologyUnit.primaryKey, operatorOne.GetPrimaryKey());
+            await topologyManager.ConnectUnits(topologyUnit.primaryKey, operatorTwo.GetPrimaryKey());
+            await topologyManager.ConnectUnits(topologyUnit.primaryKey, operatorThree.GetPrimaryKey());
 
             return Task.CompletedTask;
         }
@@ -242,6 +242,11 @@ namespace GrainImplementation
                 }
             }
             return await Task.FromResult(-2);
+        }
+
+        public Task<TopologyUnit> GetTopologyUnit()
+        {
+            return Task.FromResult(topologyUnit);
         }
     }
 }

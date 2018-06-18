@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Orleans;
 using SystemInterfaces;
 using SystemInterfaces.Model;
+using Utils;
 
 namespace SystemImplementation
 {
@@ -17,15 +19,15 @@ namespace SystemImplementation
             return Task.CompletedTask;
         }
 
-        public Task ConnectUnits(TopologyUnit upperStreamUnit, TopologyUnit downStreamUnit)
+        public Task ConnectUnits(Guid upperUnitID, Guid downStreamID)
         {
-            topology.ConnectUnits(upperStreamUnit, downStreamUnit);
+            topology.ConnectUnits(upperUnitID, downStreamID);
             return Task.CompletedTask;
         }
 
-        public Task DisConnectUnits(TopologyUnit upperStreamUnit, TopologyUnit downStreamUnit)
+        public Task DisConnectUnits(Guid upperUnitID, Guid downStreamID)
         {
-            topology.DisconnectUnits(upperStreamUnit, downStreamUnit);
+            topology.DisconnectUnits(upperUnitID, downStreamID);
             return Task.CompletedTask;
         }
 
@@ -49,25 +51,38 @@ namespace SystemImplementation
             //Disconnect the old and connect new
             var upperStreamUnits = oldUnit.GetUpperStreamUnits();
             var downsStreamUnits = oldUnit.GetdownStreamUnits();
+            PrettyConsole.Line("Number of upperStream : " + upperStreamUnits.Count);
+            PrettyConsole.Line("Number of downStream : " + downsStreamUnits.Count);
 
             if (upperStreamUnits.Count > 0)
             {
-                foreach (var item in upperStreamUnits)
+                var keyList = upperStreamUnits.Keys.ToList();
+                int index = 0;
+                foreach (var item in upperStreamUnits.Values.ToList())
                 {
-                    DisConnectUnits(item.Value, oldUnit);
-                    if (item.Value.operatorType == OperatorType.Stateless)
+                    DisConnectUnits(item.primaryKey, oldGuid);
+                    if (item.operatorType == OperatorType.Stateless)
                     {
-                        IStatelessOperator statelessOperator = GrainFactory.GetGrain<IStatelessOperator>(item.Key);
+                        IStatelessOperator statelessOperator = GrainFactory.GetGrain<IStatelessOperator>(keyList[index]);
                         var guidList = new List<Guid>();
                         guidList.Add(newGuid);
                         statelessOperator.AddCustomeOperators(guidList);
-                        statelessOperator.RemoveCustomeOperators(item.Key);
+                        statelessOperator.RemoveCustomeOperators(oldGuid);
                     }
+                    index++;
                 }
             }
-
-
             return Task.CompletedTask;
         }
-    }
+
+        public Task<int> GetTopologySize()
+        {
+            return Task.FromResult(topology.GetSize());
+        }
+
+        public Task<TopologyUnit> GetUnit(Guid key)
+        {
+            return Task.FromResult(topology.GetUnit(key));
+        }
+    } 
 }

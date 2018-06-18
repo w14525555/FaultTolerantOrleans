@@ -27,5 +27,7 @@ namespace SystemInterfaces
         Task IncrementNumberOfUpStreamOperator();
 
         Task<TopologyUnit> GetTopologyUnit();
+
+        Task DecreseNumberOfUpStreamOperator();
     }
 }

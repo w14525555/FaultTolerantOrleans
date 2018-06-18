@@ -20,5 +20,6 @@ namespace SystemInterfaces
         Task<int> GetState(StreamMessage msg);
         Task<int> GetStateInReverseLog(StreamMessage msg);
         Task<int> GetStateInIncrementalLog(StreamMessage msg);
+        Task<TopologyUnit> GetTopologyUnit();
     }
 }

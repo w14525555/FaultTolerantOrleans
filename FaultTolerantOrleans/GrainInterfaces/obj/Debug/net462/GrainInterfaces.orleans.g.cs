@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen3063ae9658FeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGenbf9485ab0dFeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -472,6 +472,8 @@ namespace SystemInterfaces
                             return @"IncrementNumberOfUpStreamOperator";
                         case 211822306:
                             return @"GetTopologyUnit";
+                        case -1126113540:
+                            return @"DecreseNumberOfUpStreamOperator";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 498177181 + @",methodId=" + methodId);
                     }
@@ -530,6 +532,11 @@ namespace SystemInterfaces
         {
             return base.InvokeMethodAsync<global::SystemInterfaces.Model.TopologyUnit>(211822306, null);
         }
+
+        public global::System.Threading.Tasks.Task DecreseNumberOfUpStreamOperator()
+        {
+            return base.InvokeMethodAsync<global::System.Object>(-1126113540, null);
+        }
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute(typeof (global::SystemInterfaces.IStatefulOperator), 498177181), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
@@ -570,6 +577,9 @@ namespace SystemInterfaces
                             return null;
                         case 211822306:
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).GetTopologyUnit();
+                        case -1126113540:
+                            await ((global::SystemInterfaces.IStatefulOperator)grain).DecreseNumberOfUpStreamOperator();
+                            return null;
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 498177181 + @",methodId=" + methodId);
                     }
@@ -844,6 +854,8 @@ namespace SystemInterfaces
                             return @"GetStateInReverseLog";
                         case -827453145:
                             return @"GetStateInIncrementalLog";
+                        case 211822306:
+                            return @"GetTopologyUnit";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 710632260 + @",methodId=" + methodId);
                     }
@@ -914,6 +926,11 @@ namespace SystemInterfaces
         {
             return base.InvokeMethodAsync<global::System.Int32>(-827453145, new global::System.Object[]{msg});
         }
+
+        public global::System.Threading.Tasks.Task<global::SystemInterfaces.Model.TopologyUnit> GetTopologyUnit()
+        {
+            return base.InvokeMethodAsync<global::SystemInterfaces.Model.TopologyUnit>(211822306, null);
+        }
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute(typeof (global::SystemInterfaces.IStreamSource), 710632260), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
@@ -953,6 +970,8 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.IStreamSource)grain).GetStateInReverseLog((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
                         case -827453145:
                             return await ((global::SystemInterfaces.IStreamSource)grain).GetStateInIncrementalLog((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
+                        case 211822306:
+                            return await ((global::SystemInterfaces.IStreamSource)grain).GetTopologyUnit();
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 710632260 + @",methodId=" + methodId);
                     }
@@ -1041,12 +1060,16 @@ namespace SystemInterfaces
                             return @"AddUnit";
                         case -921546169:
                             return @"RemoveUnit";
-                        case -1230304796:
+                        case -1141473739:
                             return @"ConnectUnits";
                         case 837591487:
                             return @"UpdateOperatorSettings";
                         case 535966154:
                             return @"ReplaceTheOldOperatorWithNew";
+                        case 924243555:
+                            return @"GetTopologySize";
+                        case -639283078:
+                            return @"GetUnit";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1231133098 + @",methodId=" + methodId);
                     }
@@ -1073,9 +1096,9 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Object>(-921546169, new global::System.Object[]{key});
         }
 
-        public global::System.Threading.Tasks.Task ConnectUnits(global::SystemInterfaces.Model.TopologyUnit upperStreamUnit, global::SystemInterfaces.Model.TopologyUnit downStreamUnit)
+        public global::System.Threading.Tasks.Task ConnectUnits(global::System.Guid upperUnitID, global::System.Guid downStreamID)
         {
-            return base.InvokeMethodAsync<global::System.Object>(-1230304796, new global::System.Object[]{upperStreamUnit, downStreamUnit});
+            return base.InvokeMethodAsync<global::System.Object>(-1141473739, new global::System.Object[]{upperUnitID, downStreamID});
         }
 
         public global::System.Threading.Tasks.Task UpdateOperatorSettings(global::System.Guid guid, global::SystemInterfaces.Model.OperatorSettings operatorSettings)
@@ -1086,6 +1109,16 @@ namespace SystemInterfaces
         public global::System.Threading.Tasks.Task ReplaceTheOldOperatorWithNew(global::System.Guid oldGuid, global::System.Guid newGuid)
         {
             return base.InvokeMethodAsync<global::System.Object>(535966154, new global::System.Object[]{oldGuid, newGuid});
+        }
+
+        public global::System.Threading.Tasks.Task<global::System.Int32> GetTopologySize()
+        {
+            return base.InvokeMethodAsync<global::System.Int32>(924243555, null);
+        }
+
+        public global::System.Threading.Tasks.Task<global::SystemInterfaces.Model.TopologyUnit> GetUnit(global::System.Guid key)
+        {
+            return base.InvokeMethodAsync<global::SystemInterfaces.Model.TopologyUnit>(-639283078, new global::System.Object[]{key});
         }
     }
 
@@ -1110,8 +1143,8 @@ namespace SystemInterfaces
                         case -921546169:
                             await ((global::SystemInterfaces.ITopology)grain).RemoveUnit((global::System.Guid)arguments[0]);
                             return null;
-                        case -1230304796:
-                            await ((global::SystemInterfaces.ITopology)grain).ConnectUnits((global::SystemInterfaces.Model.TopologyUnit)arguments[0], (global::SystemInterfaces.Model.TopologyUnit)arguments[1]);
+                        case -1141473739:
+                            await ((global::SystemInterfaces.ITopology)grain).ConnectUnits((global::System.Guid)arguments[0], (global::System.Guid)arguments[1]);
                             return null;
                         case 837591487:
                             await ((global::SystemInterfaces.ITopology)grain).UpdateOperatorSettings((global::System.Guid)arguments[0], (global::SystemInterfaces.Model.OperatorSettings)arguments[1]);
@@ -1119,6 +1152,10 @@ namespace SystemInterfaces
                         case 535966154:
                             await ((global::SystemInterfaces.ITopology)grain).ReplaceTheOldOperatorWithNew((global::System.Guid)arguments[0], (global::System.Guid)arguments[1]);
                             return null;
+                        case 924243555:
+                            return await ((global::SystemInterfaces.ITopology)grain).GetTopologySize();
+                        case -639283078:
+                            return await ((global::SystemInterfaces.ITopology)grain).GetUnit((global::System.Guid)arguments[0]);
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1231133098 + @",methodId=" + methodId);
                     }
@@ -1370,7 +1407,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen3063ae9658FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGenbf9485ab0dFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {
@@ -4292,6 +4329,9 @@ namespace OrleansGeneratedCode
             feature.AddKnownType(@"SystemInterfaces.Model.Topology,GrainInterfaces", @"SystemInterfaces.Model.Topology");
             feature.AddKnownType(@"SystemInterfaces.Model.TopologyUnit,GrainInterfaces", @"SystemInterfaces.Model.TopologyUnit");
             feature.AddKnownType(@"SystemInterfaces.Model.UpperStreamOperators,GrainInterfaces", @"SystemInterfaces.Model.UpperStreamOperators");
+            feature.AddKnownType(@"Utils.Constants,Utils", @"Utils.Constants");
+            feature.AddKnownType(@"Utils.Functions,Utils", @"Utils.Functions");
+            feature.AddKnownType(@"Utils.PrettyConsole,Utils", @"Utils.PrettyConsole");
         }
     }
 }

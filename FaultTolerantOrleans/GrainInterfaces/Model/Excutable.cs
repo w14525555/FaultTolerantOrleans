@@ -4,7 +4,7 @@ namespace SystemInterfaces.Model
 {
     public interface Excutable
     {
-        Task ExecuteMessage();
+        //Task ExecuteMessage();
 
         Task<TopologyUnit> GetTopologyUnit();
     }
