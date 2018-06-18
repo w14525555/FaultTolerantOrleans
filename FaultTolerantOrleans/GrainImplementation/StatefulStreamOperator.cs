@@ -27,6 +27,8 @@ namespace GrainImplementation
         private int numberCurrentRecoveryCommitReceived = 0;
         private IBatchTracker batchTracker;
         private IAsyncStream<StreamMessage> asyncStream;
+        private ITopology topologyManager;
+        private TopologyUnit topologyUnit;
 
         private int currentBatchID;
         public OperatorSettings operatorSettings = new OperatorSettings();
@@ -40,6 +42,9 @@ namespace GrainImplementation
             batchTracker = GrainFactory.GetGrain<IBatchTracker>(Constants.Tracker);
             operatorSettings.incrementalLogAddress = name;
             operatorSettings.operatorType = OperatorType.Stateful;
+            topologyManager = GrainFactory.GetGrain<ITopology>(Constants.Topology_Manager);
+            topologyUnit = new TopologyUnit(OperatorType.Stateful, this.GetPrimaryKey());
+            topologyManager.AddUnit(topologyUnit);
             return Task.CompletedTask;
         }
 
