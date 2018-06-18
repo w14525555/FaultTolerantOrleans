@@ -7,7 +7,6 @@ using SystemInterfaces.Model;
 using System;
 using Orleans.Streams;
 using System.Linq;
-using System.Diagnostics;
 
 namespace SystemImplementation
 {
@@ -16,12 +15,17 @@ namespace SystemImplementation
         //The StatelessConsumer does not have state.
         private List<IStatefulOperator> statefulOperators;
         private IBatchTracker batchTracker;
+        private ITopology topologyManager;
+        private TopologyUnit topologyUnit;
         private OperatorSettings operatorSettings = new OperatorSettings();
 
         public override Task OnActivateAsync()
         {
             batchTracker = GrainFactory.GetGrain<IBatchTracker>(Constants.Tracker);
             operatorSettings.operatorType = OperatorType.Stateless;
+            topologyManager = GrainFactory.GetGrain<ITopology>(Constants.Topology_Manager);
+            topologyUnit = new TopologyUnit(OperatorType.Stateless, this.GetPrimaryKey());
+            topologyManager.AddUnit(topologyUnit);
             return base.OnActivateAsync();
         }
 
