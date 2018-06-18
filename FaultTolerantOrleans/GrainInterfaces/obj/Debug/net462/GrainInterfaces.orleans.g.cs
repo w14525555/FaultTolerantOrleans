@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen35e89f131aFeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGenf8c8779d5aFeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -957,6 +957,162 @@ namespace SystemInterfaces
             }
         }
     }
+
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::System.SerializableAttribute, global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.GrainReferenceAttribute(typeof (global::SystemInterfaces.ITopology))]
+    internal class OrleansCodeGenTopologyReference : global::Orleans.Runtime.GrainReference, global::SystemInterfaces.ITopology
+    {
+        protected OrleansCodeGenTopologyReference(global::Orleans.Runtime.GrainReference other): base (other)
+        {
+        }
+
+        OrleansCodeGenTopologyReference(global::Orleans.Runtime.GrainReference other, global::Orleans.CodeGeneration.InvokeMethodOptions invokeMethodOptions): base (other, invokeMethodOptions)
+        {
+        }
+
+        protected OrleansCodeGenTopologyReference(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context): base (info, context)
+        {
+        }
+
+        public override global::System.Int32 InterfaceId
+        {
+            get
+            {
+                return -1231133098;
+            }
+        }
+
+        public override global::System.UInt16 InterfaceVersion
+        {
+            get
+            {
+                return 1;
+            }
+        }
+
+        public override global::System.String InterfaceName
+        {
+            get
+            {
+                return @"global::SystemInterfaces.ITopology";
+            }
+        }
+
+        public override global::System.Boolean IsCompatible(global::System.Int32 interfaceId)
+        {
+            return interfaceId == -1231133098 || interfaceId == -1277021679;
+        }
+
+        public override global::System.String GetMethodName(global::System.Int32 interfaceId, global::System.Int32 methodId)
+        {
+            switch (interfaceId)
+            {
+                case -1231133098:
+                    switch (methodId)
+                    {
+                        case -1714810393:
+                            return @"AddUnit";
+                        case -670882801:
+                            return @"RemoveUnit";
+                        case -1230304796:
+                            return @"ConnectUnits";
+                        case 837591487:
+                            return @"UpdateOperatorSettings";
+                        default:
+                            throw new global::System.NotImplementedException(@"interfaceId=" + -1231133098 + @",methodId=" + methodId);
+                    }
+
+                case -1277021679:
+                    switch (methodId)
+                    {
+                        default:
+                            throw new global::System.NotImplementedException(@"interfaceId=" + -1277021679 + @",methodId=" + methodId);
+                    }
+
+                default:
+                    throw new global::System.NotImplementedException(@"interfaceId=" + interfaceId);
+            }
+        }
+
+        public global::System.Threading.Tasks.Task AddUnit(global::SystemInterfaces.Model.TopologyUnit unit)
+        {
+            return base.InvokeMethodAsync<global::System.Object>(-1714810393, new global::System.Object[]{unit});
+        }
+
+        public global::System.Threading.Tasks.Task RemoveUnit(global::SystemInterfaces.Model.TopologyUnit unit)
+        {
+            return base.InvokeMethodAsync<global::System.Object>(-670882801, new global::System.Object[]{unit});
+        }
+
+        public global::System.Threading.Tasks.Task ConnectUnits(global::SystemInterfaces.Model.TopologyUnit upperStreamUnit, global::SystemInterfaces.Model.TopologyUnit downStreamUnit)
+        {
+            return base.InvokeMethodAsync<global::System.Object>(-1230304796, new global::System.Object[]{upperStreamUnit, downStreamUnit});
+        }
+
+        public global::System.Threading.Tasks.Task UpdateOperatorSettings(global::System.Guid guid, global::SystemInterfaces.Model.OperatorSettings operatorSettings)
+        {
+            return base.InvokeMethodAsync<global::System.Object>(837591487, new global::System.Object[]{guid, operatorSettings});
+        }
+    }
+
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute(typeof (global::SystemInterfaces.ITopology), -1231133098), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
+    internal class OrleansCodeGenTopologyMethodInvoker : global::Orleans.CodeGeneration.IGrainMethodInvoker
+    {
+        public async global::System.Threading.Tasks.Task<global::System.Object> Invoke(global::Orleans.Runtime.IAddressable grain, global::Orleans.CodeGeneration.InvokeMethodRequest request)
+        {
+            global::System.Int32 interfaceId = request.InterfaceId;
+            global::System.Int32 methodId = request.MethodId;
+            global::System.Object[] arguments = request.Arguments;
+            if (grain == null)
+                throw new global::System.ArgumentNullException(@"grain");
+            switch (interfaceId)
+            {
+                case -1231133098:
+                    switch (methodId)
+                    {
+                        case -1714810393:
+                            await ((global::SystemInterfaces.ITopology)grain).AddUnit((global::SystemInterfaces.Model.TopologyUnit)arguments[0]);
+                            return null;
+                        case -670882801:
+                            await ((global::SystemInterfaces.ITopology)grain).RemoveUnit((global::SystemInterfaces.Model.TopologyUnit)arguments[0]);
+                            return null;
+                        case -1230304796:
+                            await ((global::SystemInterfaces.ITopology)grain).ConnectUnits((global::SystemInterfaces.Model.TopologyUnit)arguments[0], (global::SystemInterfaces.Model.TopologyUnit)arguments[1]);
+                            return null;
+                        case 837591487:
+                            await ((global::SystemInterfaces.ITopology)grain).UpdateOperatorSettings((global::System.Guid)arguments[0], (global::SystemInterfaces.Model.OperatorSettings)arguments[1]);
+                            return null;
+                        default:
+                            throw new global::System.NotImplementedException(@"interfaceId=" + -1231133098 + @",methodId=" + methodId);
+                    }
+
+                case -1277021679:
+                    switch (methodId)
+                    {
+                        default:
+                            throw new global::System.NotImplementedException(@"interfaceId=" + -1277021679 + @",methodId=" + methodId);
+                    }
+
+                default:
+                    throw new global::System.NotImplementedException(@"interfaceId=" + interfaceId);
+            }
+        }
+
+        public global::System.Int32 InterfaceId
+        {
+            get
+            {
+                return -1231133098;
+            }
+        }
+
+        public global::System.UInt16 InterfaceVersion
+        {
+            get
+            {
+                return 1;
+            }
+        }
+    }
 }
 
 namespace OrleansGeneratedCode38151279
@@ -1110,12 +1266,78 @@ namespace OrleansGeneratedCode38151279
             return (global::SystemInterfaces.Model.OperatorSettings)result;
         }
     }
+
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.SerializerAttribute(typeof (global::SystemInterfaces.Model.TopologyUnit))]
+    internal sealed class OrleansCodeGenSystemInterfaces_Model_TopologyUnitSerializer
+    {
+        private readonly global::System.Func<global::SystemInterfaces.Model.TopologyUnit, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>> getField1;
+        private readonly global::System.Action<global::SystemInterfaces.Model.TopologyUnit, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>> setField1;
+        private readonly global::System.Func<global::SystemInterfaces.Model.TopologyUnit, global::SystemInterfaces.Model.OperatorSettings> getField2;
+        private readonly global::System.Action<global::SystemInterfaces.Model.TopologyUnit, global::SystemInterfaces.Model.OperatorSettings> setField2;
+        private readonly global::System.Func<global::SystemInterfaces.Model.TopologyUnit, global::SystemInterfaces.Model.OperatorType> getField3;
+        private readonly global::System.Action<global::SystemInterfaces.Model.TopologyUnit, global::SystemInterfaces.Model.OperatorType> setField3;
+        private readonly global::System.Func<global::SystemInterfaces.Model.TopologyUnit, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>> getField0;
+        private readonly global::System.Action<global::SystemInterfaces.Model.TopologyUnit, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>> setField0;
+        public OrleansCodeGenSystemInterfaces_Model_TopologyUnitSerializer(global::Orleans.Serialization.IFieldUtils fieldUtils)
+        {
+            global::System.Reflection.FieldInfo field1 = typeof (global::SystemInterfaces.Model.TopologyUnit).GetField(@"downStreamUnits", (System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public));
+            getField1 = (global::System.Func<global::SystemInterfaces.Model.TopologyUnit, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>>)fieldUtils.GetGetter(field1);
+            setField1 = (global::System.Action<global::SystemInterfaces.Model.TopologyUnit, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>>)fieldUtils.GetReferenceSetter(field1);
+            global::System.Reflection.FieldInfo field2 = typeof (global::SystemInterfaces.Model.TopologyUnit).GetField(@"operatorSettings", (System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public));
+            getField2 = (global::System.Func<global::SystemInterfaces.Model.TopologyUnit, global::SystemInterfaces.Model.OperatorSettings>)fieldUtils.GetGetter(field2);
+            setField2 = (global::System.Action<global::SystemInterfaces.Model.TopologyUnit, global::SystemInterfaces.Model.OperatorSettings>)fieldUtils.GetReferenceSetter(field2);
+            global::System.Reflection.FieldInfo field3 = typeof (global::SystemInterfaces.Model.TopologyUnit).GetField(@"operatorType", (System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public));
+            getField3 = (global::System.Func<global::SystemInterfaces.Model.TopologyUnit, global::SystemInterfaces.Model.OperatorType>)fieldUtils.GetGetter(field3);
+            setField3 = (global::System.Action<global::SystemInterfaces.Model.TopologyUnit, global::SystemInterfaces.Model.OperatorType>)fieldUtils.GetReferenceSetter(field3);
+            global::System.Reflection.FieldInfo field0 = typeof (global::SystemInterfaces.Model.TopologyUnit).GetField(@"upperStreamUnits", (System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public));
+            getField0 = (global::System.Func<global::SystemInterfaces.Model.TopologyUnit, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>>)fieldUtils.GetGetter(field0);
+            setField0 = (global::System.Action<global::SystemInterfaces.Model.TopologyUnit, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>>)fieldUtils.GetReferenceSetter(field0);
+        }
+
+        [global::Orleans.CodeGeneration.CopierMethodAttribute]
+        public global::System.Object DeepCopier(global::System.Object original, global::Orleans.Serialization.ICopyContext context)
+        {
+            global::SystemInterfaces.Model.TopologyUnit input = ((global::SystemInterfaces.Model.TopologyUnit)original);
+            global::SystemInterfaces.Model.TopologyUnit result = (global::SystemInterfaces.Model.TopologyUnit)global::System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof (global::SystemInterfaces.Model.TopologyUnit));
+            context.RecordCopy(original, result);
+            result.primaryKey = (global::System.Guid)context.DeepCopyInner(input.primaryKey);
+            setField1(result, (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>)context.DeepCopyInner(getField1(input)));
+            setField2(result, (global::SystemInterfaces.Model.OperatorSettings)context.DeepCopyInner(getField2(input)));
+            setField3(result, getField3(input));
+            setField0(result, (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>)context.DeepCopyInner(getField0(input)));
+            return result;
+        }
+
+        [global::Orleans.CodeGeneration.SerializerMethodAttribute]
+        public void Serializer(global::System.Object untypedInput, global::Orleans.Serialization.ISerializationContext context, global::System.Type expected)
+        {
+            global::SystemInterfaces.Model.TopologyUnit input = (global::SystemInterfaces.Model.TopologyUnit)untypedInput;
+            context.SerializeInner(input.primaryKey, typeof (global::System.Guid));
+            context.SerializeInner(getField1(input), typeof (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>));
+            context.SerializeInner(getField2(input), typeof (global::SystemInterfaces.Model.OperatorSettings));
+            context.SerializeInner(getField3(input), typeof (global::SystemInterfaces.Model.OperatorType));
+            context.SerializeInner(getField0(input), typeof (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>));
+        }
+
+        [global::Orleans.CodeGeneration.DeserializerMethodAttribute]
+        public global::System.Object Deserializer(global::System.Type expected, global::Orleans.Serialization.IDeserializationContext context)
+        {
+            global::SystemInterfaces.Model.TopologyUnit result = (global::SystemInterfaces.Model.TopologyUnit)global::System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof (global::SystemInterfaces.Model.TopologyUnit));
+            context.RecordObject(result);
+            result.primaryKey = (global::System.Guid)context.DeserializeInner(typeof (global::System.Guid));
+            setField1(result, (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>)context.DeserializeInner(typeof (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>)));
+            setField2(result, (global::SystemInterfaces.Model.OperatorSettings)context.DeserializeInner(typeof (global::SystemInterfaces.Model.OperatorSettings)));
+            setField3(result, (global::SystemInterfaces.Model.OperatorType)context.DeserializeInner(typeof (global::SystemInterfaces.Model.OperatorType)));
+            setField0(result, (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>)context.DeserializeInner(typeof (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>)));
+            return (global::SystemInterfaces.Model.TopologyUnit)result;
+        }
+    }
 }
 
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen35e89f131aFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGenf8c8779d5aFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {
@@ -1124,6 +1346,7 @@ namespace OrleansGeneratedCode
             feature.Interfaces.Add(new global::Orleans.Metadata.GrainInterfaceMetadata(typeof (global::SystemInterfaces.IStatefulOperator), typeof (SystemInterfaces.OrleansCodeGenStatefulOperatorReference), typeof (SystemInterfaces.OrleansCodeGenStatefulOperatorMethodInvoker), 498177181));
             feature.Interfaces.Add(new global::Orleans.Metadata.GrainInterfaceMetadata(typeof (global::SystemInterfaces.IStatelessOperator), typeof (SystemInterfaces.OrleansCodeGenStatelessOperatorReference), typeof (SystemInterfaces.OrleansCodeGenStatelessOperatorMethodInvoker), -1903779801));
             feature.Interfaces.Add(new global::Orleans.Metadata.GrainInterfaceMetadata(typeof (global::SystemInterfaces.IStreamSource), typeof (SystemInterfaces.OrleansCodeGenStreamSourceReference), typeof (SystemInterfaces.OrleansCodeGenStreamSourceMethodInvoker), 710632260));
+            feature.Interfaces.Add(new global::Orleans.Metadata.GrainInterfaceMetadata(typeof (global::SystemInterfaces.ITopology), typeof (SystemInterfaces.OrleansCodeGenTopologyReference), typeof (SystemInterfaces.OrleansCodeGenTopologyMethodInvoker), -1231133098));
         }
 
         public void Populate(global::Orleans.Metadata.GrainClassFeature feature)
@@ -1135,6 +1358,7 @@ namespace OrleansGeneratedCode
             feature.AddSerializerType(typeof (global::SystemInterfaces.Model.StreamMessage), typeof (OrleansGeneratedCode38151279.OrleansCodeGenSystemInterfaces_Model_StreamMessageSerializer));
             feature.AddSerializerType(typeof (global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo), typeof (OrleansGeneratedCode38151279.OrleansCodeGenSystemInterfaces_Model_BarrierOrCommitMsgTrackingInfoSerializer));
             feature.AddSerializerType(typeof (global::SystemInterfaces.Model.OperatorSettings), typeof (OrleansGeneratedCode38151279.OrleansCodeGenSystemInterfaces_Model_OperatorSettingsSerializer));
+            feature.AddSerializerType(typeof (global::SystemInterfaces.Model.TopologyUnit), typeof (OrleansGeneratedCode38151279.OrleansCodeGenSystemInterfaces_Model_TopologyUnitSerializer));
             feature.AddKnownType(@"EmptyArray`1", @"EmptyArray`1'1");
             feature.AddKnownType(@"FXAssembly", @"FXAssembly");
             feature.AddKnownType(@"ThisAssembly", @"ThisAssembly");
@@ -4024,7 +4248,9 @@ namespace OrleansGeneratedCode
             feature.AddKnownType(@"SystemInterfaces.IStatefulOperator,GrainInterfaces", @"SystemInterfaces.IStatefulOperator");
             feature.AddKnownType(@"SystemInterfaces.IStatelessOperator,GrainInterfaces", @"SystemInterfaces.IStatelessOperator");
             feature.AddKnownType(@"SystemInterfaces.IStreamSource,GrainInterfaces", @"SystemInterfaces.IStreamSource");
+            feature.AddKnownType(@"SystemInterfaces.ITopology,GrainInterfaces", @"SystemInterfaces.ITopology");
             feature.AddKnownType(@"SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo,GrainInterfaces", @"SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo");
+            feature.AddKnownType(@"SystemInterfaces.Model.Excutable,GrainInterfaces", @"SystemInterfaces.Model.Excutable");
             feature.AddKnownType(@"SystemInterfaces.Model.OperatorSettings,GrainInterfaces", @"SystemInterfaces.Model.OperatorSettings");
             feature.AddKnownType(@"SystemInterfaces.Model.OperatorType,GrainInterfaces", @"SystemInterfaces.Model.OperatorType");
             feature.AddKnownType(@"SystemInterfaces.Model.StreamBatch,GrainInterfaces", @"SystemInterfaces.Model.StreamBatch");
@@ -4032,6 +4258,7 @@ namespace OrleansGeneratedCode
             feature.AddKnownType(@"SystemInterfaces.Model.MessageType,GrainInterfaces", @"SystemInterfaces.Model.MessageType");
             feature.AddKnownType(@"SystemInterfaces.Model.Topology,GrainInterfaces", @"SystemInterfaces.Model.Topology");
             feature.AddKnownType(@"SystemInterfaces.Model.TopologyUnit,GrainInterfaces", @"SystemInterfaces.Model.TopologyUnit");
+            feature.AddKnownType(@"SystemInterfaces.Model.UpperStreamOperators,GrainInterfaces", @"SystemInterfaces.Model.UpperStreamOperators");
         }
     }
 }

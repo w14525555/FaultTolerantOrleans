@@ -14,6 +14,7 @@ namespace Utils
         public const string Recovery_Value = "Recovery";
         public const string Tracker = "Tracker";
         public const string Coordinator = "Coordinator";
+        public const string Topology_Manager = "Topology Manager";
 
 	}
 }

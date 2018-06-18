@@ -43,5 +43,17 @@ namespace SystemInterfaces.Model
                 topologyUnits.Remove(unit.primaryKey);
             }
         }
+
+        public void UpdateTopologySettings(Guid guid, OperatorSettings operatorSettings)
+        {
+            if (topologyUnits.ContainsKey(guid))
+            {
+                topologyUnits[guid].UpdateTopologySettings(operatorSettings);
+            }
+            else
+            {
+                throw new ArgumentException("Remove Error: The target is not exist in upperStreamUnits!");
+            }
+        }
     }
 }

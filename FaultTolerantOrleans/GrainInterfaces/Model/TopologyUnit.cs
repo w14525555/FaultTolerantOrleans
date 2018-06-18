@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SystemInterfaces.Model
 {
@@ -16,7 +13,9 @@ namespace SystemInterfaces.Model
 
         public TopologyUnit(OperatorType operatorType, Guid key)
         {
+            operatorType = new OperatorType();
             this.operatorType = operatorType;
+            primaryKey = new Guid();
             primaryKey = key;
         }
 
@@ -66,6 +65,11 @@ namespace SystemInterfaces.Model
             {
                 downStreamUnits.Remove(unit.primaryKey);
             }
+        }
+
+        public void UpdateTopologySettings(OperatorSettings operatorSettings)
+        {
+            this.operatorSettings = operatorSettings;
         }
 
     }
