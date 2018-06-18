@@ -19,6 +19,8 @@ namespace GrainImplementation
         private IBatchCoordinator batchCoordinator;
         private IBatchTracker batchTracker;
 		private IAsyncStream<StreamMessage> stream;
+        private ITopology topologyManager;
+        private TopologyUnit topologyUnit;
         private int currentBatchID;
 
         public override Task OnActivateAsync()
@@ -28,6 +30,9 @@ namespace GrainImplementation
             SetUpBatchManager();
             SetUpBatchTracker();
             currentBatchID = 0;
+            topologyManager = GrainFactory.GetGrain<ITopology>(Constants.Topology_Manager);
+            topologyUnit = new TopologyUnit(OperatorType.Source, Guid.NewGuid());
+            topologyManager.AddUnit(topologyUnit);
             InitOperators();
           return base.OnActivateAsync();
 		}
