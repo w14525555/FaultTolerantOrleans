@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen4838febac1FeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGenda1135d409FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -659,6 +659,8 @@ namespace SystemInterfaces
                             return @"InitRandomOperators";
                         case 741275518:
                             return @"InitCustomerOperators";
+                        case 211822306:
+                            return @"GetTopologyUnit";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1903779801 + @",methodId=" + methodId);
                     }
@@ -697,6 +699,11 @@ namespace SystemInterfaces
         {
             return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(741275518, new global::System.Object[]{guidList});
         }
+
+        public global::System.Threading.Tasks.Task<global::SystemInterfaces.Model.TopologyUnit> GetTopologyUnit()
+        {
+            return base.InvokeMethodAsync<global::SystemInterfaces.Model.TopologyUnit>(211822306, null);
+        }
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute(typeof (global::SystemInterfaces.IStatelessOperator), -1903779801), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
@@ -726,6 +733,8 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).InitRandomOperators();
                         case 741275518:
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).InitCustomerOperators((global::System.Collections.Generic.List<global::System.Guid>)arguments[0]);
+                        case 211822306:
+                            return await ((global::SystemInterfaces.IStatelessOperator)grain).GetTopologyUnit();
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1903779801 + @",methodId=" + methodId);
                     }
@@ -1346,7 +1355,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen4838febac1FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGenda1135d409FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {

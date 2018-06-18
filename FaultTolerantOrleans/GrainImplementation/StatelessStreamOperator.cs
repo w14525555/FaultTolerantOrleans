@@ -249,14 +249,9 @@ namespace SystemImplementation
             return await Task.FromResult(-1);
         }
 
-        public Task<Task> InitCustomOperators(List<Guid> guidList)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<TopologyUnit> GetTopologyUnit()
         {
-            throw new NotImplementedException();
+            return Task.FromResult(topologyUnit);
         }
     }
 }

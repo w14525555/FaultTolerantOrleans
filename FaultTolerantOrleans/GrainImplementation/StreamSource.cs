@@ -23,6 +23,7 @@ namespace GrainImplementation
         private TopologyUnit topologyUnit;
         private int currentBatchID;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         public override Task OnActivateAsync()
 		{
 			var streamProvider = GetStreamProvider(Constants.ChatRoomStreamProvider);
@@ -37,7 +38,8 @@ namespace GrainImplementation
           return base.OnActivateAsync();
 		}
 
-        private Task InitOperators()
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
+        private async Task<Task> InitOperators()
         {
             statelessOperators = new HashSet<IStatelessOperator>();
             var operatorOne = GrainFactory.GetGrain<IStatelessOperator>(Guid.NewGuid());
@@ -54,6 +56,11 @@ namespace GrainImplementation
             operatorOne.InitRandomOperators();
             operatorTwo.InitCustomerOperators(guidList);
             operatorThree.InitCustomerOperators(guidList);
+
+            await topologyManager.ConnectUnits(topologyUnit, await operatorOne.GetTopologyUnit());
+            await topologyManager.ConnectUnits(topologyUnit, await operatorTwo.GetTopologyUnit());
+            await topologyManager.ConnectUnits(topologyUnit, await operatorThree.GetTopologyUnit());
+
             return Task.CompletedTask;
         }
 
