@@ -41,6 +41,10 @@ namespace SystemImplementation
             operatorTwo.IncrementNumberOfUpStreamOperator();
             operatorSettings.AddOpratorToDict(operatorOne.GetPrimaryKey(), await operatorOne.GetOperatorSettings());
             operatorSettings.AddOpratorToDict(operatorTwo.GetPrimaryKey(), await operatorTwo.GetOperatorSettings());
+
+            topologyManager.ConnectUnits(topologyUnit, await operatorOne.GetTopologyUnit());
+            topologyManager.ConnectUnits(topologyUnit, await operatorTwo.GetTopologyUnit());
+
             return Task.CompletedTask;
         }
 
@@ -54,7 +58,7 @@ namespace SystemImplementation
                 statefulOperators.Add(op);
                 op.IncrementNumberOfUpStreamOperator();
                 operatorSettings.AddOpratorToDict(op.GetPrimaryKey(), await op.GetOperatorSettings());
-
+                topologyManager.ConnectUnits(topologyUnit, await op.GetTopologyUnit());
             }
             return Task.CompletedTask;
         }

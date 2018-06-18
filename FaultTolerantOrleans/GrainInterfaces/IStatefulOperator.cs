@@ -25,5 +25,7 @@ namespace SystemInterfaces
         Task MarkOperatorAsFailed();
 
         Task IncrementNumberOfUpStreamOperator();
+
+        Task<TopologyUnit> GetTopologyUnit();
     }
 }

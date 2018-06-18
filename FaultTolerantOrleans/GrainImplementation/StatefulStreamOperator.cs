@@ -531,7 +531,8 @@ namespace GrainImplementation
 
         public Task<TopologyUnit> GetTopologyUnit()
         {
-            throw new NotImplementedException();
+            return Task.FromResult(topologyUnit);
         }
+
     }
 }
