@@ -42,6 +42,7 @@ namespace SystemImplementation
             operatorSettings.AddOpratorToDict(operatorOne.GetPrimaryKey(), await operatorOne.GetOperatorSettings());
             operatorSettings.AddOpratorToDict(operatorTwo.GetPrimaryKey(), await operatorTwo.GetOperatorSettings());
 
+            topologyManager.UpdateOperatorSettings(topologyUnit.primaryKey, operatorSettings);
             topologyManager.ConnectUnits(topologyUnit, await operatorOne.GetTopologyUnit());
             topologyManager.ConnectUnits(topologyUnit, await operatorTwo.GetTopologyUnit());
 
@@ -60,6 +61,7 @@ namespace SystemImplementation
                 operatorSettings.AddOpratorToDict(op.GetPrimaryKey(), await op.GetOperatorSettings());
                 topologyManager.ConnectUnits(topologyUnit, await op.GetTopologyUnit());
             }
+            topologyManager.UpdateOperatorSettings(topologyUnit.primaryKey, operatorSettings);
             return Task.CompletedTask;
         }
 

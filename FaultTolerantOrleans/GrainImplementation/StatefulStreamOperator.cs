@@ -45,6 +45,7 @@ namespace GrainImplementation
             topologyManager = GrainFactory.GetGrain<ITopology>(Constants.Topology_Manager);
             topologyUnit = new TopologyUnit(OperatorType.Stateful, this.GetPrimaryKey());
             topologyManager.AddUnit(topologyUnit);
+            topologyManager.UpdateOperatorSettings(topologyUnit.primaryKey, operatorSettings);
             return Task.CompletedTask;
         }
 
