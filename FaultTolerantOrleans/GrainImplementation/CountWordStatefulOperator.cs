@@ -9,7 +9,7 @@ namespace SystemImplementation
     class CountWordStatefulOperator : StatefulStreamOperator
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
-        public override Task CountWord(StreamMessage msg, IAsyncStream<StreamMessage> stream)
+        public override Task CustomExecutionMethod(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
             if (statesMap.ContainsKey(msg.Key))
             {

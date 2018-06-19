@@ -49,6 +49,8 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
+        public abstract Task CustomExecutionMethod(StreamMessage msg, IAsyncStream<StreamMessage> stream);
+
         //This function get the words and count
         public async Task<Task> ExecuteMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
@@ -76,7 +78,7 @@ namespace GrainImplementation
             {
                 if (msg.Key != Constants.System_Key)
                 {
-                    await CountWord(msg, stream);
+                    await CustomExecutionMethod(msg, stream);
                 }
                 else
                 {
@@ -89,9 +91,6 @@ namespace GrainImplementation
             }
             return Task.CompletedTask;
         }
-
-        public abstract Task CountWord(StreamMessage msg, IAsyncStream<StreamMessage> stream);
-
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         private async Task<Task> ProcessSpecialMessage(StreamMessage msg)
@@ -299,7 +298,7 @@ namespace GrainImplementation
                         var msg = messageBuffer[i];
                         if (msg.BatchID == batchID && msg.Key != Constants.System_Key)
                         {
-                            await CountWord(msg, asyncStream);
+                            await CustomExecutionMethod(msg, asyncStream);
                         }
                     }
                 }
