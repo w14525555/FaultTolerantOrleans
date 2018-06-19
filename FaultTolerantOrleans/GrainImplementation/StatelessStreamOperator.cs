@@ -10,15 +10,15 @@ using System.Linq;
 
 namespace SystemImplementation
 {
-    class StatelessStreamOperator : Grain, IStatelessOperator
+    public abstract class StatelessStreamOperator : Grain, IStatelessOperator
     {
         //The StatelessConsumer does not have state.
             
-        private List<IStatefulOperator> statefulOperators = new List<IStatefulOperator>();
-        private IBatchTracker batchTracker;
-        private ITopology topologyManager;
-        private TopologyUnit topologyUnit;
-        private OperatorSettings operatorSettings = new OperatorSettings();
+        protected List<IStatefulOperator> statefulOperators = new List<IStatefulOperator>();
+        protected IBatchTracker batchTracker;
+        protected ITopology topologyManager;
+        protected TopologyUnit topologyUnit;
+        protected OperatorSettings operatorSettings = new OperatorSettings();
 
         public override Task OnActivateAsync()
         {
@@ -97,7 +97,7 @@ namespace SystemImplementation
             //At first split text into words
             if (msg.Key != Constants.System_Key)
             {
-                await SplitWordsAndExcuteMsg(msg, stream);
+                await CustomExcutionMethod(msg, stream);
             }
             else
             {
@@ -106,23 +106,9 @@ namespace SystemImplementation
             return Task.CompletedTask;
         }
 
-        private async Task<Task> SplitWordsAndExcuteMsg(StreamMessage msg, IAsyncStream<StreamMessage> stream)
-        {
-            List<string> words = Utils.Functions.SpiltIntoWords(msg.Value);
-            //Then find a operator
-            foreach (string word in words)
-            {
-                int index = SystemImplementation.PartitionFunction.PartitionStatefulByKey(msg.Key, statefulOperators.Count);
-                IStatefulOperator statefulOperator = statefulOperators.ElementAt(index);
-                StreamMessage newMessage = new StreamMessage(word, null);
-                newMessage.BatchID = msg.BatchID;
-                //await statefulOperator.ExecuteMessage(newMessage, stream);
-                await ExecuteMessagesByDownStreamOperators(newMessage, stream, statefulOperator, index);
-            }
-            return Task.CompletedTask;
-        }
+        public abstract Task<Task> CustomExcutionMethod(StreamMessage msg, IAsyncStream<StreamMessage> stream);
 
-        private async Task<Task> ExecuteMessagesByDownStreamOperators(StreamMessage msg, IAsyncStream<StreamMessage> stream, IStatefulOperator statefulOperator, int index)
+        protected async Task<Task> ExecuteMessagesByDownStreamOperators(StreamMessage msg, IAsyncStream<StreamMessage> stream, IStatefulOperator statefulOperator, int index)
         {
             try
             {
@@ -164,13 +150,13 @@ namespace SystemImplementation
             }
         }
 
-        private Task ReplaceTheGrainFromTopology()
+        protected Task ReplaceTheGrainFromTopology()
         {
             //The old grain's parents should 
             return Task.CompletedTask;
         }
 
-        private async Task<Task> ProcessSpecialMessageAsync(StreamMessage msg, IAsyncStream<StreamMessage> stream)
+        protected async Task<Task> ProcessSpecialMessageAsync(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
             BarrierOrCommitMsgTrackingInfo info = new BarrierOrCommitMsgTrackingInfo(msg.barrierOrCommitInfo.GetID(), msg.barrierOrCommitInfo.numberOfClientSent);
             info.BatchID = msg.BatchID;

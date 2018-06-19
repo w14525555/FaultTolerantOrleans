@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen6cf1147c03FeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen59ba0e0eb3FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainImplementation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace OrleansGeneratedCode55A989F1
@@ -20,7 +20,7 @@ namespace OrleansGeneratedCode55A989F1
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen6cf1147c03FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGen59ba0e0eb3FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {
@@ -29,7 +29,7 @@ namespace OrleansGeneratedCode
         public void Populate(global::Orleans.Metadata.GrainClassFeature feature)
         {
             feature.Classes.Add(new global::Orleans.Metadata.GrainClassMetadata(typeof (global::SystemImplementation.CountWordStatefulOperator)));
-            feature.Classes.Add(new global::Orleans.Metadata.GrainClassMetadata(typeof (global::SystemImplementation.StatelessStreamOperator)));
+            feature.Classes.Add(new global::Orleans.Metadata.GrainClassMetadata(typeof (global::SystemImplementation.CountWordStatelessOperator)));
             feature.Classes.Add(new global::Orleans.Metadata.GrainClassMetadata(typeof (global::SystemImplementation.TopologyManager)));
             feature.Classes.Add(new global::Orleans.Metadata.GrainClassMetadata(typeof (global::GrainImplementation.BatchCoodinator)));
             feature.Classes.Add(new global::Orleans.Metadata.GrainClassMetadata(typeof (global::GrainImplementation.BatchTracker)));
@@ -919,8 +919,9 @@ namespace OrleansGeneratedCode
             feature.AddKnownType(@"__DynamicallyInvokableAttribute,System.Core", @"__DynamicallyInvokableAttribute");
             feature.AddKnownType(@"SystemImplementation.CountWordStatefulOperator,GrainImplementation", @"SystemImplementation.CountWordStatefulOperator");
             feature.AddKnownType(@"GrainImplementation.StatefulStreamOperator,GrainImplementation", @"GrainImplementation.StatefulStreamOperator");
-            feature.AddKnownType(@"SystemImplementation.PartitionFunction,GrainImplementation", @"SystemImplementation.PartitionFunction");
+            feature.AddKnownType(@"SystemImplementation.CountWordStatelessOperator,GrainImplementation", @"SystemImplementation.CountWordStatelessOperator");
             feature.AddKnownType(@"SystemImplementation.StatelessStreamOperator,GrainImplementation", @"SystemImplementation.StatelessStreamOperator");
+            feature.AddKnownType(@"SystemImplementation.PartitionFunction,GrainImplementation", @"SystemImplementation.PartitionFunction");
             feature.AddKnownType(@"SystemImplementation.TopologyManager,GrainImplementation", @"SystemImplementation.TopologyManager");
             feature.AddKnownType(@"GrainImplementation.BatchCoodinator,GrainImplementation", @"GrainImplementation.BatchCoodinator");
             feature.AddKnownType(@"GrainImplementation.BatchTracker,GrainImplementation", @"GrainImplementation.BatchTracker");
