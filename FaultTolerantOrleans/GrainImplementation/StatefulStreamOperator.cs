@@ -13,25 +13,25 @@ namespace GrainImplementation
     //Once a consumer grain receive messages, it should increment itself
     //when it finishes, it should tell the tracker that the task is completed. 
 
-    public class StatefulStreamOperator : Grain, IStatefulOperator
+    public abstract class StatefulStreamOperator : Grain, IStatefulOperator
     {
-        private Dictionary<string, int> statesMap = new Dictionary<string, int>();
-        private Dictionary<int, Dictionary<string, int>> reverseLogMap = new Dictionary<int, Dictionary<string, int>>();
-        private Dictionary<int, Dictionary<string, int>> incrementalLogMap = new Dictionary<int, Dictionary<string, int>>();
-        private List<StreamMessage> messageBuffer = new List<StreamMessage>();
-        private bool isOperatorFailed = false;
-        private const int Default_ZERO = 0;
-        private int numberOfUpStream = 0;
-        private int numberCurrentBatchBarrierReceived = 0;
-        private int numberCurrentBatchCommitReceived = 0;
-        private int numberCurrentRecoveryCommitReceived = 0;
-        private IBatchTracker batchTracker;
-        private IAsyncStream<StreamMessage> asyncStream;
-        private ITopology topologyManager;
-        private TopologyUnit topologyUnit;
+        protected Dictionary<string, int> statesMap = new Dictionary<string, int>();
+        protected Dictionary<int, Dictionary<string, int>> reverseLogMap = new Dictionary<int, Dictionary<string, int>>();
+        protected Dictionary<int, Dictionary<string, int>> incrementalLogMap = new Dictionary<int, Dictionary<string, int>>();
+        protected List<StreamMessage> messageBuffer = new List<StreamMessage>();
+        protected bool isOperatorFailed = false;
+        protected const int Default_ZERO = 0;
+        protected int numberOfUpStream = 0;
+        protected int numberCurrentBatchBarrierReceived = 0;
+        protected int numberCurrentBatchCommitReceived = 0;
+        protected int numberCurrentRecoveryCommitReceived = 0;
+        protected IBatchTracker batchTracker;
+        protected IAsyncStream<StreamMessage> asyncStream;
+        protected ITopology topologyManager;
+        protected TopologyUnit topologyUnit;
 
-        private int currentBatchID;
-        public OperatorSettings operatorSettings = new OperatorSettings();
+        protected int currentBatchID;
+        protected OperatorSettings operatorSettings = new OperatorSettings();
 
         public override Task OnActivateAsync()
         {
@@ -90,32 +90,8 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
-        private Task CountWord(StreamMessage msg, IAsyncStream<StreamMessage> stream)
-        {
-            if (statesMap.ContainsKey(msg.Key))
-            {
-                //Thrid time throw a exception
-                if (msg.Key == "me" && statesMap[msg.Key] == 2)
-                {
-                    throw new EndOfStreamException();
-                }
-                UpdateReverseLog(msg);
-                statesMap[msg.Key]++;
-                UpdateIncrementalLog(msg);
-                stream.OnNextAsync(new StreamMessage(msg.Key, statesMap[msg.Key].ToString()));
-            }
-            else
-            {
-                statesMap.Add(msg.Key, 1);
-                //If insert, only save the key into reverse log
-                reverseLogMap[msg.BatchID].Add(msg.Key, Default_ZERO);
-                incrementalLogMap[msg.BatchID].Add(msg.Key, 1);
+        public abstract Task CountWord(StreamMessage msg, IAsyncStream<StreamMessage> stream);
 
-                stream.OnNextAsync(new StreamMessage(msg.Key, "1"));
-            }
-            return Task.CompletedTask;
-        }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         private async Task<Task> ProcessSpecialMessage(StreamMessage msg)
@@ -237,7 +213,7 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        private Task<Dictionary<string, int>>GetIncrementalLog(int batchID)
+        protected Task<Dictionary<string, int>>GetIncrementalLog(int batchID)
         {
             if (incrementalLogMap.ContainsKey(batchID))
             {
@@ -249,7 +225,7 @@ namespace GrainImplementation
             }
         }
 
-        private Task<Dictionary<string, int>> GetReverseLog(int batchID)
+        protected Task<Dictionary<string, int>> GetReverseLog(int batchID)
         {
             if (reverseLogMap.ContainsKey(batchID))
             {
@@ -261,7 +237,7 @@ namespace GrainImplementation
             }
         }
 
-        private async Task<Task> UpdateIncrementalLog(StreamMessage msg)
+        protected async Task<Task> UpdateIncrementalLog(StreamMessage msg)
         {
             var incrementalLog = await GetIncrementalLog(msg.BatchID);
             if (incrementalLog.ContainsKey(msg.Key))
@@ -275,7 +251,7 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        private async Task<Task> UpdateReverseLog(StreamMessage msg)
+        protected async Task<Task> UpdateReverseLog(StreamMessage msg)
         {
             var reverseLog = await GetReverseLog(msg.BatchID);
             //If reverse log contains the key, means 
@@ -288,7 +264,7 @@ namespace GrainImplementation
         }
 
         //This method is used to process the special message after commit
-        private async Task<Task> ProcessSpecialMessagesInTheBuffer()
+        protected async Task<Task> ProcessSpecialMessagesInTheBuffer()
         {
             if (messageBuffer.Count > 0)
             {
@@ -312,7 +288,7 @@ namespace GrainImplementation
         }
 
         //This method is used to process the normal message after barrier
-        private async Task<Task> ProcessNormalMessagesInTheBuffer(int batchID)
+        protected async Task<Task> ProcessNormalMessagesInTheBuffer(int batchID)
         {
             if (messageBuffer.Count > 0)
             {
@@ -335,7 +311,7 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        private Task SaveStateToFile(Dictionary<string, int> state)
+        protected Task SaveStateToFile(Dictionary<string, int> state)
         {
             PrettyConsole.Line("Save the incremental log to " + operatorSettings.incrementalLogAddress);
             try
