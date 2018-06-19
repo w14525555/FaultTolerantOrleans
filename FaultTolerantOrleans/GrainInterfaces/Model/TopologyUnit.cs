@@ -82,5 +82,10 @@ namespace SystemInterfaces.Model
         {
             return downStreamUnits;
         }
+
+        public OperatorSettings GetSettings()
+        {
+            return operatorSettings;
+        }
     }
 }

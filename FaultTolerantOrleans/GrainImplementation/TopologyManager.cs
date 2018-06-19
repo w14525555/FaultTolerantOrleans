@@ -48,6 +48,16 @@ namespace SystemImplementation
             var oldUnit = topology.GetUnit(oldGuid);
             var newUnit = topology.GetUnit(newGuid);
 
+            if (oldUnit.operatorType == newUnit.operatorType)
+            {
+                //If stateful, load the settings and mark the new as a restart grain
+                if (newUnit.operatorType == OperatorType.Stateful)
+                {
+                    IStatefulOperator statefulOp = GrainFactory.GetGrain<IStatefulOperator>(newUnit.primaryKey);
+                    statefulOp.LoadSettings(oldUnit.GetSettings());
+                }
+            }
+
             //Disconnect the old and connect new
             var upperStreamUnits = oldUnit.GetUpperStreamUnits();
             var downsStreamUnits = oldUnit.GetdownStreamUnits();

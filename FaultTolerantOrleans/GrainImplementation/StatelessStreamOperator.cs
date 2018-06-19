@@ -136,12 +136,14 @@ namespace SystemImplementation
                 IStatefulOperator newOperator = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
                 //2. Rollback the state
                 //a. Find the operator settings
+                //The method has to be called becasue grain initialize after the method call.
+                await newOperator.MarkOperatorAsFailed();
                 var item = operatorSettings.GetOperatorDict().ElementAt(index);
                 //b. Load the setting 
-                await newOperator.LoadSettings(item.Value);
+                //await newOperator.LoadSettings(item.Value);
                 //c. mark as failed, so when it receive recovery message it will 
                 //revert states by incremental log
-                await newOperator.MarkOperatorAsFailed();
+                //await newOperator.MarkOperatorAsFailed();
                 //3. Remove the failed from the topology
                 //statefulOperators.RemoveAt(index);
                 //operatorSettings.RemoveOperatorFromDict(item.Key);
