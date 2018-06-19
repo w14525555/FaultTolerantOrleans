@@ -27,7 +27,7 @@ namespace OrleansServer
                 .AddMemoryGrainStorage("PubSubStore")
                 //Depends on your application requirements, you can configure your silo with other stream providers, which can provide other features, 
                 //such as persistence or recoverability. For more information, please see http://dotnet.github.io/orleans/Documentation/Orleans-Streams/Stream-Providers.html
-                .AddSimpleMessageStreamProvider(Constants.ChatRoomStreamProvider); 
+                .AddSimpleMessageStreamProvider(Constants.FaultTolerantStreamProvider); 
 
 
 		    var silo = builder.Build();

@@ -51,7 +51,7 @@ namespace OrleansClient
                         .ConfigureLogging(logging => logging.AddConsole())
                         //Depends on your application requirements, you can configure your client with other stream providers, which can provide other features, 
                         //such as persistence or recoverability. For more information, please see http://dotnet.github.io/orleans/Documentation/Orleans-Streams/Stream-Providers.html
-                        .AddSimpleMessageStreamProvider(Constants.ChatRoomStreamProvider)
+                        .AddSimpleMessageStreamProvider(Constants.FaultTolerantStreamProvider)
                         .Build();
                     await client.Connect();
                     initSucceed = client.IsInitialized;
@@ -176,8 +176,8 @@ namespace OrleansClient
             //var room2 = client.GetGrain<IStreamSource>("new");
             var streamId = await room.Join(userName);
             //var streamId2 = await room2.Join(userName);
-            var stream = client.GetStreamProvider(Constants.ChatRoomStreamProvider)
-                .GetStream<StreamMessage>(streamId, Constants.CharRoomStreamNameSpace);
+            var stream = client.GetStreamProvider(Constants.FaultTolerantStreamProvider)
+                .GetStream<StreamMessage>(streamId, Constants.FaultTolerantStreamNameSpace);
             //subscribe to the stream to receiver furthur messages sent to the chatroom
             StatefulStreamObserver observer = new StatefulStreamObserver(client.ServiceProvider.GetService<ILoggerFactory>()
                 .CreateLogger($"{joinedChannel} channel"));
@@ -189,8 +189,8 @@ namespace OrleansClient
             PrettyConsole.Line($"Leaving channel {joinedChannel}");
             var source = client.GetGrain<IStreamSource>(joinedChannel);
             var streamId = await source.Leave(userName);
-            var stream = client.GetStreamProvider(Constants.ChatRoomStreamProvider)
-                .GetStream<StreamMessage>(streamId, Constants.CharRoomStreamNameSpace);
+            var stream = client.GetStreamProvider(Constants.FaultTolerantStreamProvider)
+                .GetStream<StreamMessage>(streamId, Constants.FaultTolerantStreamNameSpace);
 
             //unsubscribe from the channel/stream since client left, so that client won't
             //receive furture messages from this channel/stream

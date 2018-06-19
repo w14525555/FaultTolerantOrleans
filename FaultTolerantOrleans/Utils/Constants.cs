@@ -4,10 +4,10 @@ namespace Utils
 {
 	public static class Constants
 	{
-        public const string ChatRoomStreamProvider = "ChatRoom";
-        public const string CharRoomStreamNameSpace = "YOLO";
-        public const string ClusterId = "chatroom-deployment1";
-        public const string ServiceId = "ChatRoomApp";
+        public const string FaultTolerantStreamProvider = "UU";
+        public const string FaultTolerantStreamNameSpace = "YOLO";
+        public const string ClusterId = "FT-deployment1";
+        public const string ServiceId = "FTApp";
         public const string Barrier_Value = "Barrier";
         public const string System_Key = "System";
         public const string Commit_Value = "Commit";

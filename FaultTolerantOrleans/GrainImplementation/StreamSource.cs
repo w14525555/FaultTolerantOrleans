@@ -26,8 +26,8 @@ namespace GrainImplementation
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         public override Task OnActivateAsync()
 		{
-			var streamProvider = GetStreamProvider(Constants.ChatRoomStreamProvider);
-            stream = streamProvider.GetStream<StreamMessage>(Guid.NewGuid(), Constants.CharRoomStreamNameSpace);
+			var streamProvider = GetStreamProvider(Constants.FaultTolerantStreamProvider);
+            stream = streamProvider.GetStream<StreamMessage>(Guid.NewGuid(), Constants.FaultTolerantStreamNameSpace);
             SetUpBatchManager();
             SetUpBatchTracker();
             currentBatchID = 0;

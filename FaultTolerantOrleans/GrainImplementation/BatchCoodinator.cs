@@ -33,7 +33,7 @@ namespace GrainImplementation
             committedID = -1;
             tracker = GrainFactory.GetGrain<IBatchTracker>(Utils.Constants.Tracker);
             PrettyConsole.Line("Register Timer");
-            var streamProvider = GetStreamProvider(Constants.ChatRoomStreamProvider);
+            var streamProvider = GetStreamProvider(Constants.FaultTolerantStreamProvider);
             return base.OnActivateAsync();
         }
 

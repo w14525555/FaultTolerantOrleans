@@ -321,7 +321,7 @@ namespace Test
                 .AddMemoryGrainStorage("PubSubStore")
                 //Depends on your application requirements, you can configure your silo with other stream providers, which can provide other features, 
                 //such as persistence or recoverability. For more information, please see http://dotnet.github.io/orleans/Documentation/Orleans-Streams/Stream-Providers.html
-                .AddSimpleMessageStreamProvider(Constants.ChatRoomStreamProvider);
+                .AddSimpleMessageStreamProvider(Constants.FaultTolerantStreamProvider);
 
             silo = builder.Build();
             silo.StartAsync().Wait();
@@ -353,7 +353,7 @@ namespace Test
                         .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(IStreamSource).Assembly).WithReferences())
                         //Depends on your application requirements, you can configure your client with other stream providers, which can provide other features, 
                         //such as persistence or recoverability. For more information, please see http://dotnet.github.io/orleans/Documentation/Orleans-Streams/Stream-Providers.html
-                        .AddSimpleMessageStreamProvider(Constants.ChatRoomStreamProvider)
+                        .AddSimpleMessageStreamProvider(Constants.FaultTolerantStreamProvider)
                         .Build();
             return Task.FromResult(aClient);
         }
@@ -368,8 +368,8 @@ namespace Test
         {
             source = client.GetGrain<IStreamSource>(joinedChannel);
             var streamId = await source.Join(userName);
-            var stream = client.GetStreamProvider(Constants.ChatRoomStreamProvider)
-                .GetStream<StreamMessage>(streamId, Constants.CharRoomStreamNameSpace);
+            var stream = client.GetStreamProvider(Constants.FaultTolerantStreamProvider)
+                .GetStream<StreamMessage>(streamId, Constants.FaultTolerantStreamNameSpace);
             //subscribe to the stream to receiver furthur messages sent to the chatroom
             Mock<ILogger> mockLogger = new Mock<ILogger>();
             statefulStreamObserver = new StatefulStreamObserver(mockLogger.Object);
@@ -382,8 +382,8 @@ namespace Test
         {
             source2 = client.GetGrain<IStreamSource>(joinedChannel2);
             var streamId = await source2.Join(userName);
-            var stream = client.GetStreamProvider(Constants.ChatRoomStreamProvider)
-                .GetStream<StreamMessage>(streamId, Constants.CharRoomStreamNameSpace);
+            var stream = client.GetStreamProvider(Constants.FaultTolerantStreamProvider)
+                .GetStream<StreamMessage>(streamId, Constants.FaultTolerantStreamNameSpace);
             //subscribe to the stream to receiver furthur messages sent to the chatroom
             Mock<ILogger> mockLogger = new Mock<ILogger>();
             statefulStreamObserver = new StatefulStreamObserver(mockLogger.Object);
