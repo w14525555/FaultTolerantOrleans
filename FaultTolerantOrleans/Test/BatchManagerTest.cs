@@ -263,23 +263,23 @@ namespace Test
             Assert.AreEqual(1, countAfterRecovery);
         }
 
-        //[TestMethod]
-        //public async Task TestThrowExceptionAfterTwoBatchesStartRecoveryFromIncrementalLog()
-        //{
-        //    await SetUpSource();
-        //    await source.ProduceMessageAsync(wordCountMessage1);
-        //    var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
-        //    await batchCoordinator.SendBarrier();
-        //    Thread.Sleep(100);
-        //    await source.ProduceMessageAsync(wordCountMessage1);
-        //    int count = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
-        //    Assert.AreEqual(2, count);
-        //    await batchCoordinator.SendBarrier();
-        //    Thread.Sleep(100);
-        //    await source.ProduceMessageAsync(wordCountMessage1);
-        //    int countAfterRecovery = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
-        //    Assert.AreEqual(2, countAfterRecovery);
-        //}
+        [TestMethod]
+        public async Task TestThrowExceptionAfterTwoBatchesStartRecoveryFromIncrementalLog()
+        {
+            await SetUpSource();
+            await source.ProduceMessageAsync(wordCountMessage1);
+            var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
+            await batchCoordinator.SendBarrier();
+            Thread.Sleep(100);
+            await source.ProduceMessageAsync(wordCountMessage1);
+            int count = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
+            Assert.AreEqual(2, count);
+            await batchCoordinator.SendBarrier();
+            Thread.Sleep(100);
+            await source.ProduceMessageAsync(wordCountMessage1);
+            int countAfterRecovery = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
+            Assert.AreEqual(2, countAfterRecovery);
+        }
 
         //Topology Manager Tests
         [TestMethod]
@@ -293,16 +293,16 @@ namespace Test
             Assert.AreEqual(8, size);
         }
 
-        [TestMethod]
-        public async Task TestSourceHasRightDownStreamNumber()
-        {
-            await SetUpSource();
-            Thread.Sleep(100);
-            ITopology topologyManager = client.GetGrain<ITopology>(Constants.Topology_Manager);
-            TopologyUnit topologyUnit = await source.GetTopologyUnit();
-            TopologyUnit unit = await topologyManager.GetUnit(topologyUnit.primaryKey);
-            Assert.AreEqual(3, unit.GetdownStreamUnits().Count);
-        }
+        //[TestMethod]
+        //public async Task TestSourceHasRightDownStreamNumber()
+        //{
+        //    await SetUpSource();
+        //    Thread.Sleep(100);
+        //    ITopology topologyManager = client.GetGrain<ITopology>(Constants.Topology_Manager);
+        //    TopologyUnit topologyUnit = await source.GetTopologyUnit();
+        //    TopologyUnit unit = await topologyManager.GetUnit(topologyUnit.primaryKey);
+        //    Assert.AreEqual(3, unit.GetdownStreamUnits().Count);
+        //}
 
         //SetUp Functions 
 
