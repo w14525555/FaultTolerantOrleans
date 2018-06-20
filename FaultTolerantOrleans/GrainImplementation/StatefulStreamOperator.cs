@@ -121,7 +121,7 @@ namespace GrainImplementation
                     ClearIncrementalLog(msg.BatchID);
                     ClearReverseLog(msg.BatchID);
                     currentBatchID++;
-                    PrettyConsole.Line("LILILILILI");
+                    //PrettyConsole.Line("LILILILILI");
                     if (messageBuffer.Count > 0)
                     {
                         await ProcessSpecialMessagesInTheBuffer();

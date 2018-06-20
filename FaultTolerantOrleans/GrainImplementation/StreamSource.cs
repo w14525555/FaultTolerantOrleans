@@ -12,10 +12,14 @@ namespace GrainImplementation
 {
 	public class StreamSource : Grain, IStreamSource
 	{
+        //Information that used for Application testsing 
         private readonly List<StreamMessage> messages = new List<StreamMessage>(100);
 		private readonly List<string> onlineMembers = new List<string>(10);
-        private HashSet<IStatelessOperator> statelessOperators;
 
+        //Internal Implementation
+        private HashSet<IStatelessOperator> statelessOperators;
+        private HashSet<IStatefulOperator> statefulOperators;
+        private List<StreamMessage> messageBuffer = new List<StreamMessage>();
         private IBatchCoordinator batchCoordinator;
         private IBatchTracker batchTracker;
 		private IAsyncStream<StreamMessage> stream;
@@ -35,6 +39,7 @@ namespace GrainImplementation
             topologyUnit = new TopologyUnit(OperatorType.Source, Guid.NewGuid());
             topologyManager.AddUnit(topologyUnit);
             InitOperators();
+            statefulOperators = new HashSet<IStatefulOperator>();
           return base.OnActivateAsync();
 		}
 
@@ -104,18 +109,26 @@ namespace GrainImplementation
         {
             if (msg.Key != Constants.System_Key)
             {
-                //At first find a operator by hashing
-                if (msg.messageType != MessageType.Test)
-                {
-                    msg.BatchID = currentBatchID;
-                }
-                IStatelessOperator statelessOp = await SystemImplementation.PartitionFunction.PartitionStatelessByKey(msg.Key, statelessOperators);
-                await statelessOp.ExecuteMessage(msg, stream);
+                messageBuffer.Add(msg);
+                await ProcessNormalMessage(msg);
             }
             else
             {
                 await ProcessSpecialMessage(msg, stream);
             }
+            return Task.CompletedTask;
+        }
+
+        private async Task<Task> ProcessNormalMessage(StreamMessage msg)
+        {
+            //At first find a operator by hashing
+            if (msg.messageType != MessageType.Test)
+            {
+                msg.BatchID = currentBatchID;
+            }
+            IStatelessOperator statelessOp = await SystemImplementation.PartitionFunction.PartitionStatelessByKey(msg.Key, statelessOperators);
+            await statelessOp.ExecuteMessage(msg, stream);
+
             return Task.CompletedTask;
         }
 
@@ -172,9 +185,26 @@ namespace GrainImplementation
 
         private Task BroadcastSpecialMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
+            //If it is a commit message, it should clean the buffer
+            //This implementation is based on the the assumption that a source
+            //does not have upperstream operators
+            if (msg.Value == Constants.Commit_Value)
+            {
+                messageBuffer.Clear();
+            }
+
             foreach(IStatelessOperator item in statelessOperators)
             {
                 item.ExecuteMessage(msg, stream);
+            }
+            return Task.CompletedTask;
+        }
+
+        public async Task<Task> ReplayTheMessageOnRecoveryCompleted()
+        {
+            foreach (StreamMessage msg in messageBuffer)
+            {
+                await ProcessNormalMessage(msg);
             }
             return Task.CompletedTask;
         }
