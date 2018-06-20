@@ -42,9 +42,9 @@ namespace GrainImplementation
         private async Task<Task> InitOperators()
         {
             statelessOperators = new HashSet<IStatelessOperator>();
-            var operatorOne = GrainFactory.GetGrain<IStatelessOperator>(Guid.NewGuid());
-            var operatorTwo = GrainFactory.GetGrain<IStatelessOperator>(Guid.NewGuid());
-            var operatorThree = GrainFactory.GetGrain<IStatelessOperator>(Guid.NewGuid());
+            var operatorOne = GrainFactory.GetGrain<IStatelessOperator>(Guid.NewGuid(), "SystemImplementation.CountWordStatelessOperator");
+            var operatorTwo = GrainFactory.GetGrain<IStatelessOperator>(Guid.NewGuid(), "SystemImplementation.CountWordStatelessOperator");
+            var operatorThree = GrainFactory.GetGrain<IStatelessOperator>(Guid.NewGuid(), "SystemImplementation.CountWordStatelessOperator");
             //If too many use for loop
             statelessOperators.Add(operatorOne);
             statelessOperators.Add(operatorTwo);
