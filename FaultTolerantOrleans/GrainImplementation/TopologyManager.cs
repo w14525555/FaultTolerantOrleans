@@ -73,7 +73,7 @@ namespace SystemImplementation
                     DisConnectUnits(item.primaryKey, oldGuid);
                     if (item.operatorType == OperatorType.Stateless)
                     {
-                        IStatelessOperator statelessOperator = GrainFactory.GetGrain<IStatelessOperator>(keyList[index], "SystemImplementation.CountWordStatelessOperator");
+                        IStatelessOperator statelessOperator = GrainFactory.GetGrain<IStatelessOperator>(keyList[index], Constants.Stateless_Operator_Prefix);
                         var guidList = new List<Guid>();
                         guidList.Add(newGuid);
                         statelessOperator.AddCustomeOperators(guidList);
