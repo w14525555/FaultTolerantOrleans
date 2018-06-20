@@ -8,6 +8,7 @@ namespace SystemInterfaces.Model
 		public DateTimeOffset Created { get; set; } = DateTimeOffset.Now;
 		public string Key { get; set; } = "Alexey";
 		public string Value { get; set; }
+        public StreamValue streamValue { get; set; }
         public int BatchID { get; set; }
         public MessageType messageType { get; set; }
         public BarrierOrCommitMsgTrackingInfo barrierOrCommitInfo { get; set; }
@@ -16,6 +17,8 @@ namespace SystemInterfaces.Model
 		{
 			Key = key;
 			Value = value;
+            streamValue = new StreamValue();
+            streamValue.innerValue = value;
         }
     }
 
