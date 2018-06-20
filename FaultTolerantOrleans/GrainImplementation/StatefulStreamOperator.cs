@@ -20,6 +20,7 @@ namespace GrainImplementation
         protected Dictionary<int, Dictionary<string, int>> incrementalLogMap = new Dictionary<int, Dictionary<string, int>>();
         protected List<StreamMessage> messageBuffer = new List<StreamMessage>();
         protected bool isOperatorFailed = false;
+        protected bool isARestartOperator = false;
         protected const int Default_ZERO = 0;
         protected int numberOfUpStream = 0;
         protected int numberCurrentBatchBarrierReceived = 0;
@@ -484,6 +485,7 @@ namespace GrainImplementation
         public Task MarkOperatorAsFailed()
         {
             isOperatorFailed = true;
+            isARestartOperator = true;
             PrettyConsole.Line("Mark this as failed!");
             return Task.CompletedTask;
         }

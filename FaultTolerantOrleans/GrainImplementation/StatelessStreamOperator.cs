@@ -117,7 +117,7 @@ namespace SystemImplementation
             }
             catch (Exception e)
             {
-                PrettyConsole.Line("Get Exception : " + e.GetType() + "; Start Receovry");
+                PrettyConsole.Line("Get Exception : " + e + "; Start Receovry");
                 //1. Restart a new grain
                 IStatefulOperator newOperator = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
                 //2. Rollback the state

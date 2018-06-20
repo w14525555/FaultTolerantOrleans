@@ -14,7 +14,7 @@ namespace SystemInterfaces
 	    Task<string[]> GetMembers();
         Task<Task> ProduceMessageAsync(StreamMessage msg);
 
-        //Use for testing purpose
+        Task<Task> ReplayTheMessageOnRecoveryCompleted();
         Task<IBatchCoordinator> GetBatchManager();
         Task<IBatchTracker> GetBatchTracker();
         Task<int> GetState(StreamMessage msg);

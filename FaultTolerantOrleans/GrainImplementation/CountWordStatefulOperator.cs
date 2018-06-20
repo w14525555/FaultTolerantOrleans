@@ -14,7 +14,7 @@ namespace SystemImplementation
             if (statesMap.ContainsKey(msg.Key))
             {
                 //Thrid time throw a exception used for testing recovery
-                if (msg.Key == "me" && statesMap[msg.Key] == 2)
+                if (msg.Key == "me" && statesMap[msg.Key] == 2 && !isARestartOperator)
                 {
                     throw new EndOfStreamException();
                 }

@@ -109,6 +109,10 @@ namespace GrainImplementation
         {
             if (msg.Key != Constants.System_Key)
             {
+                if (msg.messageType != MessageType.Test)
+                {
+                    msg.BatchID = currentBatchID;
+                }
                 messageBuffer.Add(msg);
                 await ProcessNormalMessage(msg);
             }
@@ -122,10 +126,6 @@ namespace GrainImplementation
         private async Task<Task> ProcessNormalMessage(StreamMessage msg)
         {
             //At first find a operator by hashing
-            if (msg.messageType != MessageType.Test)
-            {
-                msg.BatchID = currentBatchID;
-            }
             IStatelessOperator statelessOp = await SystemImplementation.PartitionFunction.PartitionStatelessByKey(msg.Key, statelessOperators);
             await statelessOp.ExecuteMessage(msg, stream);
 
@@ -144,6 +144,7 @@ namespace GrainImplementation
             if (msg.Value == Constants.Barrier_Value)
             {
                 currentBatchID = msg.BatchID + 1;
+                PrettyConsole.Line("Current Id is " + currentBatchID);
                 await TrackingBarrierMessages(msg);
                 await batchTracker.CompleteOneOperatorBarrier(info);
             }
@@ -202,6 +203,7 @@ namespace GrainImplementation
 
         public async Task<Task> ReplayTheMessageOnRecoveryCompleted()
         {
+            PrettyConsole.Line("Start Replay!");
             foreach (StreamMessage msg in messageBuffer)
             {
                 await ProcessNormalMessage(msg);

@@ -103,13 +103,22 @@ namespace GrainImplementation
             {
                 currentBatchID = batchID + 1;
                 disposable = RegisterTimer(SendBarrierOnPeriodOfTime, null, barrierTimeInterval, barrierTimeInterval);
+                //ReplayTheMessagesOnRecoveryCompleted();
                 return Task.CompletedTask;
             }
             else
             {
                 throw new InvalidOperationException("The recvoery batch is not equal to the latest committed ID");
             }
+        }
 
+        public Task ReplayTheMessagesOnRecoveryCompleted()
+        {
+            foreach(var source in sources)
+            {
+                source.ReplayTheMessageOnRecoveryCompleted();
+            }
+            return Task.CompletedTask;
         }
 
         public Task SetCurrentBatchID(int id)

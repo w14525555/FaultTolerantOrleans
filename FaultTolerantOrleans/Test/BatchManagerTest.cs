@@ -264,6 +264,25 @@ namespace Test
         }
 
         [TestMethod]
+        public async Task TestReplayWillRestoreTheStates()
+        {
+            await SetUpSource();
+            await source.ProduceMessageAsync(wordCountMessage1);
+            var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
+            await batchCoordinator.SendBarrier();
+            Thread.Sleep(100);
+            await source.ProduceMessageAsync(wordCountMessage1);
+            await source.ProduceMessageAsync(wordCountMessage1);
+            Thread.Sleep(100);
+            int countAfterRecovery = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
+            Assert.AreEqual(1, countAfterRecovery);
+            await source.ReplayTheMessageOnRecoveryCompleted();
+            Thread.Sleep(100);
+            int countAfterReplay = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
+            Assert.AreEqual(3, countAfterReplay);
+        }
+
+        [TestMethod]
         public async Task TestThrowExceptionAfterTwoBatchesStartRecoveryFromIncrementalLog()
         {
             await SetUpSource();
