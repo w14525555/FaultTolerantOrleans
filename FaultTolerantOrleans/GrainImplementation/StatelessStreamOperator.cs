@@ -117,7 +117,7 @@ namespace SystemImplementation
             }
             catch (Exception e)
             {
-                PrettyConsole.Line("Get Exception : " + e + "; Start Receovry");
+                PrettyConsole.Line("Get Exception : " + e.GetType() + "; Start Receovry");
                 //1. Restart a new grain
                 IStatefulOperator newOperator = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
                 //2. Rollback the state
@@ -187,7 +187,7 @@ namespace SystemImplementation
             msg.barrierOrCommitInfo.BatchID = msg.BatchID;
             if (batchTracker != null)
             {
-                PrettyConsole.Line("Tracking with stateless with " + statefulOperators.Count);
+                //PrettyConsole.Line("Tracking with stateless with " + statefulOperators.Count);
                 batchTracker.TrackingBarrierMessages(msg);
             }
             else

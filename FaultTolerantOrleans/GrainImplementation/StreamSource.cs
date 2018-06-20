@@ -144,7 +144,6 @@ namespace GrainImplementation
             if (msg.Value == Constants.Barrier_Value)
             {
                 currentBatchID = msg.BatchID + 1;
-                PrettyConsole.Line("Current Id is " + currentBatchID);
                 await TrackingBarrierMessages(msg);
                 await batchTracker.CompleteOneOperatorBarrier(info);
             }

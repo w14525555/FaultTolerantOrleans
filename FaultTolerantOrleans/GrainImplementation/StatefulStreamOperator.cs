@@ -67,7 +67,6 @@ namespace GrainImplementation
                     PrettyConsole.Line("Error!");
                 }
                 reverseLogMap.Add(msg.BatchID, newReverseLog);
-                PrettyConsole.Line("Add reverse log for batch: " + msg.BatchID);
             }
 
             if (msg.BatchID > currentBatchID && msg.Value != Constants.Recovery_Value)
@@ -103,7 +102,7 @@ namespace GrainImplementation
                 numberCurrentBatchBarrierReceived++;
                 if (numberOfUpStream == numberCurrentBatchBarrierReceived)
                 {
-                    PrettyConsole.Line("Start process normal message");
+                    //PrettyConsole.Line("Start process normal message");
                     await ProcessNormalMessagesInTheBuffer(currentBatchID + 1);
                     numberCurrentBatchBarrierReceived = 0;
                 }
@@ -209,7 +208,6 @@ namespace GrainImplementation
             var incrementalLog = await GetIncrementalLog(currentBatchID);
             await SaveStateToFile(incrementalLog);
             //incrementalLogMap.Remove(currentBatchID);
-            PrettyConsole.Line("Clear incremental log of batch " + currentBatchID +"  after save in disk");
             return Task.CompletedTask;
         }
 
