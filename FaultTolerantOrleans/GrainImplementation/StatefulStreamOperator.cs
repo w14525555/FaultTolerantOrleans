@@ -15,10 +15,10 @@ namespace GrainImplementation
 
     public abstract class StatefulStreamOperator : Grain, IStatefulOperator
     {
-        protected Dictionary<string, int> statesMap = new Dictionary<string, int>();
-        protected Dictionary<int, Dictionary<string, int>> reverseLogMap = new Dictionary<int, Dictionary<string, int>>();
-        protected Dictionary<int, Dictionary<string, int>> incrementalLogMap = new Dictionary<int, Dictionary<string, int>>();
-        protected List<StreamMessage> messageBuffer = new List<StreamMessage>();
+        private Dictionary<string, int> statesMap = new Dictionary<string, int>();
+        private Dictionary<int, Dictionary<string, int>> reverseLogMap = new Dictionary<int, Dictionary<string, int>>();
+        private Dictionary<int, Dictionary<string, int>> incrementalLogMap = new Dictionary<int, Dictionary<string, int>>();
+        private List<StreamMessage> messageBuffer = new List<StreamMessage>();
         protected bool isOperatorFailed = false;
         protected bool isARestartOperator = false;
         protected const int Default_ZERO = 0;
@@ -505,6 +505,54 @@ namespace GrainImplementation
         public Task<TopologyUnit> GetTopologyUnit()
         {
             return Task.FromResult(topologyUnit);
+        }
+
+        protected bool CheckStatesMapConstainTheKey(string key)
+        {
+            return statesMap.ContainsKey(key);
+        }
+
+        protected int GetValueFromStatesMap(string key)
+        {
+            if (CheckStatesMapConstainTheKey(key))
+            {
+                return statesMap[key];
+            }
+            else
+            {
+                throw new ArgumentException("Try to get un-exist value from states map");
+            }
+        }
+
+        protected async Task<Task> UpdateStatesMap(StreamMessage msg, int newValue)
+        {
+            if (CheckStatesMapConstainTheKey(msg.Key))
+            {
+                await UpdateReverseLog(msg);
+                statesMap[msg.Key] = newValue;
+                await UpdateIncrementalLog(msg);
+                return Task.CompletedTask;
+            }
+            else
+            {
+                throw new ArgumentException("Try to Update un-exist value from states map");
+            }
+        }
+
+        protected Task InsertIntoStatesMap(StreamMessage msg, int initialValue)
+        {
+            if (!CheckStatesMapConstainTheKey(msg.Key))
+            {
+                statesMap.Add(msg.Key, initialValue);
+                //If insert, only save the key into reverse log
+                reverseLogMap[msg.BatchID].Add(msg.Key, Default_ZERO);
+                incrementalLogMap[msg.BatchID].Add(msg.Key, initialValue);
+                return Task.CompletedTask;
+            }
+            else
+            {
+                throw new ArgumentException("Try to Inset already exist value to states map");
+            }
         }
 
     }
