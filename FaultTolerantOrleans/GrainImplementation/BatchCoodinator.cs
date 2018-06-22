@@ -68,6 +68,7 @@ namespace GrainImplementation
         //Commit 
         public Task StartCommit(int ID)
         {
+            PrettyConsole.Line("Start Commit Batch " + ID); 
             commitMsg.BatchID = ID;
             topologyManager.Commit(commitMsg);
             return Task.CompletedTask;

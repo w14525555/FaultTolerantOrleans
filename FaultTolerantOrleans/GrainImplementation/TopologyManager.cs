@@ -107,6 +107,7 @@ namespace SystemImplementation
             List<TopologyUnit> units = topology.GetAllTopologyUnits();
             PrettyConsole.Line("Number of units: " + units.Count);
             msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), units.Count);
+            msg.barrierOrCommitInfo.BatchID = msg.BatchID;
             await batchTracker.TrackingCommitMessages(msg);
             foreach (TopologyUnit unit in units)
             {

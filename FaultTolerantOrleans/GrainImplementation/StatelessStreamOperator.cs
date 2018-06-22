@@ -159,17 +159,14 @@ namespace SystemImplementation
                 await HandleBarrierMessages(msg);
                 await batchTracker.CompleteOneOperatorBarrier(info);
             }
-            //The stateless operator does not have state
-            //so it just broadcast messages. 
-            else if (msg.Value == Constants.Commit_Value)
-            {
-                await HandleCommitMessages(msg);
-                await batchTracker.CompleteOneOperatorCommit(info);
-            }
             else if (msg.Value == Constants.Recovery_Value)
             {
                 await HandleRecoveryMessages(msg);
                 await batchTracker.CompleteOneOperatorRecovery(info);
+            }
+            else
+            {
+                throw new NotImplementedException("Unrecgonizable system message in stateless operator");
             }
             await BroadcastSpecialMessage(msg, stream);
             return Task.CompletedTask;
@@ -198,21 +195,6 @@ namespace SystemImplementation
             PrettyConsole.Line("Start commit in stateless");
             batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
             PrettyConsole.Line("Here");
-            return Task.CompletedTask;
-        }
-
-        private Task HandleCommitMessages(StreamMessage msg)
-        {
-            msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), statefulOperators.Count);
-            msg.barrierOrCommitInfo.BatchID = msg.BatchID;
-            if (batchTracker != null)
-            {
-                batchTracker.TrackingCommitMessages(msg);
-            }
-            else
-            {
-                throw new NullReferenceException();
-            }
             return Task.CompletedTask;
         }
 

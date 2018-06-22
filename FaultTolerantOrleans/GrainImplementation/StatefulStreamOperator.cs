@@ -121,7 +121,7 @@ namespace GrainImplementation
                     ClearIncrementalLog(msg.BatchID);
                     ClearReverseLog(msg.BatchID);
                     currentBatchID++;
-                    //PrettyConsole.Line("LILILILILI");
+                    //
                     if (messageBuffer.Count > 0)
                     {
                         await ProcessSpecialMessagesInTheBuffer();
@@ -170,7 +170,8 @@ namespace GrainImplementation
             ClearIncrementalLog(msg.BatchID);
             ClearReverseLog(msg.BatchID);
             currentBatchID++;
-            PrettyConsole.Line("A stateful grain" + "Clear Reverse log and save Incremental log: " + msg.BatchID);
+            //PrettyConsole.Line("LILILILILI");
+            //PrettyConsole.Line("A stateful grain" + "Clear Reverse log and save Incremental log: " + msg.BatchID);
             //tell the tracker commit is done in this operator
             await batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
             return Task.CompletedTask;
