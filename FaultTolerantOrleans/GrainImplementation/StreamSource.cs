@@ -133,7 +133,6 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-
         //If it is special message, it has to send to all the operators. 
         //If it is barrier message, batch manager will start to track it
         //by using BarrierMsgTrackingInfo which keep and ID and the number of 
@@ -147,11 +146,6 @@ namespace GrainImplementation
                 currentBatchID = msg.BatchID + 1;
                 await TrackingBarrierMessages(msg);
                 await batchTracker.CompleteOneOperatorBarrier(info);
-            }
-            else if (msg.Value == Constants.Commit_Value)
-            {
-                await TrackingCommitMessages(msg);
-                await batchTracker.CompleteOneOperatorCommit(info);
             }
             else if (msg.Value == Constants.Recovery_Value)
             {
@@ -167,13 +161,6 @@ namespace GrainImplementation
         {
             msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), statelessOperators.Count);
             batchTracker.TrackingBarrierMessages(msg);
-            return Task.CompletedTask;
-        }
-
-        private Task TrackingCommitMessages(StreamMessage msg)
-        {
-            msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), statelessOperators.Count);
-            batchTracker.TrackingCommitMessages(msg);
             return Task.CompletedTask;
         }
 
