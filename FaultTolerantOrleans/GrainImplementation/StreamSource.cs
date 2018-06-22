@@ -146,14 +146,8 @@ namespace GrainImplementation
                 currentBatchID = msg.BatchID + 1;
                 await TrackingBarrierMessages(msg);
                 await batchTracker.CompleteOneOperatorBarrier(info);
+                await BroadcastSpecialMessage(msg, stream);
             }
-            else if (msg.Value == Constants.Recovery_Value)
-            {
-                currentBatchID = msg.BatchID;
-                await TrackingRecoveryMessages(msg);
-                await batchTracker.CompleteOneOperatorRecovery(info);
-            }
-            await BroadcastSpecialMessage(msg, stream);
             return Task.CompletedTask;
         }
 
@@ -180,13 +174,6 @@ namespace GrainImplementation
         {
             msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), statelessOperators.Count);
             batchTracker.TrackingBarrierMessages(msg);
-            return Task.CompletedTask;
-        }
-
-        private Task TrackingRecoveryMessages(StreamMessage msg)
-        {
-            msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), statelessOperators.Count);
-            batchTracker.TrackingRecoveryMessages(msg);
             return Task.CompletedTask;
         }
 
