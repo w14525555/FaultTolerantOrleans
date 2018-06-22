@@ -79,14 +79,9 @@ namespace GrainImplementation
         {
             //1. Stop the timer
             disposable.Dispose();
-            //2. Broadcast the rollback and reset batchID
+            //2. Tell TopologyManager the rollback and reset batchID
             recoveryMsg.BatchID = committedID;
-            recoveryMsg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), sources.Count);
-            tracker.TrackingRecoveryMessages(recoveryMsg);
-            foreach (IStreamSource source in sources)
-            {
-                source.ProduceMessageAsync(recoveryMsg);
-            }
+            topologyManager.Recovery(recoveryMsg);
             //3. Clean information in the tracker()
             tracker.CleanUpOnRecovery();
             //6. Register new timer

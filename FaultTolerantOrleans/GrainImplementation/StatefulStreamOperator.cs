@@ -156,6 +156,30 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
+        public async Task<Task> Recovery(StreamMessage msg)
+        {
+            //If negative 1, means there is no committed bathc
+            if (msg.BatchID == -1)
+            {
+                statesMap.Clear();
+                reverseLogMap.Clear();
+                incrementalLogMap.Clear();
+                currentBatchID = 0;
+            }
+            else
+            {
+                //1. Recovery From the reverse log or incremental log
+                await RecoveryFromReverseLogOrIncrementalLog(msg.BatchID);
+                //2. Clear the buffer
+                messageBuffer.Clear();
+                //3. Clear the reverse log and incremental log
+                //4. Reset batch ID, the current ID should greatea than the committed id 
+                currentBatchID = msg.BatchID + 1;
+            }
+            await batchTracker.CompleteOneOperatorRecovery(msg.barrierOrCommitInfo);
+            return Task.CompletedTask;
+        }
+
         private Task ClearIncrementalLog(int batchID)
         {
             if (incrementalLogMap.ContainsKey(batchID))

@@ -31,5 +31,7 @@ namespace SystemInterfaces
         Task DecreseNumberOfUpStreamOperator();
 
         Task<Task> Commit(StreamMessage msg);
+
+        Task<Task> Recovery(StreamMessage msg);
     }
 }

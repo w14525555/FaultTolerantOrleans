@@ -198,6 +198,12 @@ namespace SystemImplementation
             return Task.CompletedTask;
         }
 
+        public Task Recovery(StreamMessage msg)
+        {
+            batchTracker.CompleteOneOperatorRecovery(msg.barrierOrCommitInfo);
+            return Task.CompletedTask;
+        }
+
         private Task HandleRecoveryMessages(StreamMessage msg)
         {
             msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), statefulOperators.Count);

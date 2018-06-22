@@ -157,6 +157,25 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
+        //Commit Logic
+        public Task Commit(StreamMessage msg)
+        {
+            //Clean the buffer
+            messageBuffer.Clear();
+            //tell the tracker commit is done in this operator
+            batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
+            return Task.CompletedTask;
+        }
+
+        //Commit Logic
+        public Task Recovery(StreamMessage msg)
+        {
+            currentBatchID = msg.BatchID;
+            //tell the tracker recovery is done in this operator
+            batchTracker.CompleteOneOperatorRecovery(msg.barrierOrCommitInfo);
+            return Task.CompletedTask;
+        }
+
         private Task TrackingBarrierMessages(StreamMessage msg)
         {
             msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), statelessOperators.Count);
@@ -177,16 +196,6 @@ namespace GrainImplementation
             {
                 item.ExecuteMessage(msg, stream);
             }
-            return Task.CompletedTask;
-        }
-
-        //Commit Logic
-        public Task Commit(StreamMessage msg)
-        {
-            //Clean the buffer
-            messageBuffer.Clear();
-            //tell the tracker commit is done in this operator
-            batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
             return Task.CompletedTask;
         }
 

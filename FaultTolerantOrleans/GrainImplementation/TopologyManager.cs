@@ -102,6 +102,7 @@ namespace SystemImplementation
             return Task.FromResult(topology.GetUnit(key));
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         public async Task<Task> Commit(StreamMessage msg)
         {
             List<TopologyUnit> units = topology.GetAllTopologyUnits();
@@ -132,6 +133,40 @@ namespace SystemImplementation
                 else
                 {
                     throw new ArgumentException("Commit: The operator type is in valid!");
+                }
+            }
+            return Task.CompletedTask;
+        }
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
+        public async Task<Task> Recovery(StreamMessage msg)
+        {
+            List<TopologyUnit> units = topology.GetAllTopologyUnits();
+            //PrettyConsole.Line("Number of units: " + units.Count);
+            msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), units.Count);
+            msg.barrierOrCommitInfo.BatchID = msg.BatchID;
+            await batchTracker.TrackingRecoveryMessages(msg);
+            foreach (TopologyUnit unit in units)
+            {
+                if (unit.operatorType == OperatorType.Source)
+                {
+                    IStreamSource source = GrainFactory.GetGrain<IStreamSource>(unit.GetSourceKey());
+                    source.Recovery(msg);
+                }
+                else if (unit.operatorType == OperatorType.Stateful)
+                {
+                    IStatefulOperator statefulOperator = GrainFactory.GetGrain<IStatefulOperator>(unit.primaryKey, Constants.Stateful_Operator_Prefix);
+                    statefulOperator.Recovery(msg);
+                }
+                else if (unit.operatorType == OperatorType.Stateless)
+                {
+                    IStatelessOperator statelessOperator = GrainFactory.GetGrain<IStatelessOperator>(unit.primaryKey, Constants.Stateless_Operator_Prefix);
+                    statelessOperator.Recovery(msg);
+                }
+                else
+                {
+                    throw new ArgumentException("Recovery: The operator type is in valid!");
                 }
             }
             return Task.CompletedTask;

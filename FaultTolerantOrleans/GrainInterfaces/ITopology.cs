@@ -22,5 +22,7 @@ namespace SystemInterfaces
         Task<TopologyUnit> GetUnit(Guid key);
 
         Task<Task> Commit(StreamMessage msg);
+
+        Task<Task> Recovery(StreamMessage msg);
     }
 }

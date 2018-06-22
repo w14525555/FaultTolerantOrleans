@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen3a1f00511cFeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGene60ab59cf4FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -477,6 +477,8 @@ namespace SystemInterfaces
                             return @"DecreseNumberOfUpStreamOperator";
                         case 1108646473:
                             return @"Commit";
+                        case 2118799424:
+                            return @"Recovery";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 498177181 + @",methodId=" + methodId);
                     }
@@ -545,6 +547,11 @@ namespace SystemInterfaces
         {
             return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(1108646473, new global::System.Object[]{msg});
         }
+
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> Recovery(global::SystemInterfaces.Model.StreamMessage msg)
+        {
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(2118799424, new global::System.Object[]{msg});
+        }
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute(typeof (global::SystemInterfaces.IStatefulOperator), 498177181), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
@@ -590,6 +597,8 @@ namespace SystemInterfaces
                             return null;
                         case 1108646473:
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).Commit((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
+                        case 2118799424:
+                            return await ((global::SystemInterfaces.IStatefulOperator)grain).Recovery((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 498177181 + @",methodId=" + methodId);
                     }
@@ -685,6 +694,8 @@ namespace SystemInterfaces
                             return @"RemoveCustomeOperators";
                         case 1108646473:
                             return @"Commit";
+                        case 2118799424:
+                            return @"Recovery";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1903779801 + @",methodId=" + methodId);
                     }
@@ -738,6 +749,11 @@ namespace SystemInterfaces
         {
             return base.InvokeMethodAsync<global::System.Object>(1108646473, new global::System.Object[]{msg});
         }
+
+        public global::System.Threading.Tasks.Task Recovery(global::SystemInterfaces.Model.StreamMessage msg)
+        {
+            return base.InvokeMethodAsync<global::System.Object>(2118799424, new global::System.Object[]{msg});
+        }
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute(typeof (global::SystemInterfaces.IStatelessOperator), -1903779801), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
@@ -774,6 +790,9 @@ namespace SystemInterfaces
                             return null;
                         case 1108646473:
                             await ((global::SystemInterfaces.IStatelessOperator)grain).Commit((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
+                            return null;
+                        case 2118799424:
+                            await ((global::SystemInterfaces.IStatelessOperator)grain).Recovery((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
                             return null;
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1903779801 + @",methodId=" + methodId);
@@ -880,6 +899,8 @@ namespace SystemInterfaces
                             return @"GetTopologyUnit";
                         case 1108646473:
                             return @"Commit";
+                        case 2118799424:
+                            return @"Recovery";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 710632260 + @",methodId=" + methodId);
                     }
@@ -965,6 +986,11 @@ namespace SystemInterfaces
         {
             return base.InvokeMethodAsync<global::System.Object>(1108646473, new global::System.Object[]{msg});
         }
+
+        public global::System.Threading.Tasks.Task Recovery(global::SystemInterfaces.Model.StreamMessage msg)
+        {
+            return base.InvokeMethodAsync<global::System.Object>(2118799424, new global::System.Object[]{msg});
+        }
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute(typeof (global::SystemInterfaces.IStreamSource), 710632260), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
@@ -1010,6 +1036,9 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.IStreamSource)grain).GetTopologyUnit();
                         case 1108646473:
                             await ((global::SystemInterfaces.IStreamSource)grain).Commit((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
+                            return null;
+                        case 2118799424:
+                            await ((global::SystemInterfaces.IStreamSource)grain).Recovery((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
                             return null;
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 710632260 + @",methodId=" + methodId);
@@ -1111,6 +1140,8 @@ namespace SystemInterfaces
                             return @"GetUnit";
                         case 1108646473:
                             return @"Commit";
+                        case 2118799424:
+                            return @"Recovery";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1231133098 + @",methodId=" + methodId);
                     }
@@ -1166,6 +1197,11 @@ namespace SystemInterfaces
         {
             return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(1108646473, new global::System.Object[]{msg});
         }
+
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> Recovery(global::SystemInterfaces.Model.StreamMessage msg)
+        {
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(2118799424, new global::System.Object[]{msg});
+        }
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute(typeof (global::SystemInterfaces.ITopology), -1231133098), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
@@ -1204,6 +1240,8 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.ITopology)grain).GetUnit((global::System.Guid)arguments[0]);
                         case 1108646473:
                             return await ((global::SystemInterfaces.ITopology)grain).Commit((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
+                        case 2118799424:
+                            return await ((global::SystemInterfaces.ITopology)grain).Recovery((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1231133098 + @",methodId=" + methodId);
                     }
@@ -1500,7 +1538,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen3a1f00511cFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGene60ab59cf4FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {

@@ -26,5 +26,7 @@ namespace SystemInterfaces
         Task RemoveCustomeOperators(Guid guid);
 
         Task Commit(StreamMessage msg);
+
+        Task Recovery(StreamMessage msg);
     }
 }
