@@ -107,36 +107,6 @@ namespace GrainImplementation
                     numberCurrentBatchBarrierReceived = 0;
                 }
             }
-            else if (msg.Value == Constants.Recovery_Value)
-            {
-                if (numberCurrentRecoveryCommitReceived == 0)
-                {
-                    //If negative 1, means there is no committed bathc
-                    if (msg.BatchID == -1)
-                    {
-                        statesMap.Clear();
-                        reverseLogMap.Clear();
-                        incrementalLogMap.Clear();
-                        currentBatchID = 0;
-                    }
-                    else
-                    {
-                        //1. Recovery From the reverse log or incremental log
-                        await RecoveryFromReverseLogOrIncrementalLog(msg.BatchID);
-                        //2. Clear the buffer
-                        messageBuffer.Clear();
-                        //3. Clear the reverse log and incremental log
-                        //4. Reset batch ID, the current ID should greatea than the committed id 
-                        currentBatchID = msg.BatchID + 1;
-                    }
-                }
-                numberCurrentRecoveryCommitReceived++;
-                if (numberCurrentRecoveryCommitReceived == numberOfUpStream)
-                {
-                    numberCurrentRecoveryCommitReceived = 0;
-                }
-                await batchTracker.CompleteOneOperatorRecovery(msg.barrierOrCommitInfo);
-            }
             return Task.CompletedTask;
         }
 
@@ -150,7 +120,6 @@ namespace GrainImplementation
             ClearReverseLog(msg.BatchID);
             currentBatchID++;
             //PrettyConsole.Line("LILILILILI");
-            //PrettyConsole.Line("A stateful grain" + "Clear Reverse log and save Incremental log: " + msg.BatchID);
             //tell the tracker commit is done in this operator
             await batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
             return Task.CompletedTask;
