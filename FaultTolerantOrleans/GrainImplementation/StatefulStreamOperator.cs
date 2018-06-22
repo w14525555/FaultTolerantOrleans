@@ -107,27 +107,6 @@ namespace GrainImplementation
                     numberCurrentBatchBarrierReceived = 0;
                 }
             }
-            else if (msg.Value == Constants.Commit_Value)
-            {
-                PrettyConsole.Line("A stateful grain" + "Clear Reverse log and save Incremental log: " + msg.BatchID);
-                   
-                numberCurrentBatchCommitReceived++;
-                await batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
-                //When all the commit message received, increment the batch id 
-                if (numberCurrentBatchCommitReceived == numberOfUpStream)
-                {
-                    await SaveIncrementalLogIntoStorage();
-                    numberCurrentBatchCommitReceived = 0;
-                    ClearIncrementalLog(msg.BatchID);
-                    ClearReverseLog(msg.BatchID);
-                    currentBatchID++;
-                    //
-                    if (messageBuffer.Count > 0)
-                    {
-                        await ProcessSpecialMessagesInTheBuffer();
-                    }
-                }
-            }
             else if (msg.Value == Constants.Recovery_Value)
             {
                 if (numberCurrentRecoveryCommitReceived == 0)
