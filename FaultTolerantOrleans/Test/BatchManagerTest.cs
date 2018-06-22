@@ -110,7 +110,7 @@ namespace Test
             //Commit the batch 0
             var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
             await batchCoordinator.StartCommit(0);
-            Thread.Sleep(300);
+            Thread.Sleep(100);
             var batchTracker = client.GetGrain<IBatchTracker>(Constants.Tracker);
             bool isCommitCompleted = await batchTracker.IsCommitSuccess(0);
             Assert.AreEqual(true, isCommitCompleted);
@@ -179,6 +179,7 @@ namespace Test
             await source.ProduceMessageAsync(wordCountMessage1);
             var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
             await batchCoordinator.StartCommit(0);
+            Thread.Sleep(100);
             int count = await source.GetStateInReverseLog(new StreamMessage(wordCountMessage1.Key, "go"));
             Assert.AreEqual(-2, count);
         }
@@ -201,12 +202,12 @@ namespace Test
             await source.ProduceMessageAsync(wordCountMessage1);
             var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
             await batchCoordinator.StartCommit(0);
+            Thread.Sleep(100);
             int count = await source.GetStateInIncrementalLog(new StreamMessage(wordCountMessage1.Key, "go"));
             Assert.AreEqual(-2, count);
         }
 
         //Recovery Tests
-
         [TestMethod]
         public async Task TestRecoveyFromReverseLog()
         {

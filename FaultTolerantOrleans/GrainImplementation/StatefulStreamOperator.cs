@@ -161,9 +161,27 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
+        //Commit Logic
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
+        public async Task<Task> Commit(StreamMessage msg)
+        {
+            //1.Save log into storage
+            SaveIncrementalLogIntoStorage();
+            ClearIncrementalLog(msg.BatchID);
+            ClearReverseLog(msg.BatchID);
+            currentBatchID++;
+            PrettyConsole.Line("A stateful grain" + "Clear Reverse log and save Incremental log: " + msg.BatchID);
+            //tell the tracker commit is done in this operator
+            await batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
+            return Task.CompletedTask;
+        }
+
         private Task ClearIncrementalLog(int batchID)
         {
-            incrementalLogMap.Remove(batchID);
+            if (incrementalLogMap.ContainsKey(batchID))
+            {
+                incrementalLogMap.Remove(batchID);
+            }
             return Task.CompletedTask;
         }
 
@@ -192,11 +210,6 @@ namespace GrainImplementation
             if (reverseLogMap.ContainsKey(batchID))
             {
                 reverseLogMap.Remove(batchID);
-            }
-            else
-            {
-                PrettyConsole.Line("Doesn't contain reverse log of batch: " + batchID);
-                throw new ArgumentException("Doesn't contain reverse log of batch: " + batchID);
             }
             return Task.CompletedTask;
         }

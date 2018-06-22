@@ -24,5 +24,7 @@ namespace SystemInterfaces
         Task<TopologyUnit> GetTopologyUnit();
 
         Task RemoveCustomeOperators(Guid guid);
+
+        Task Commit(StreamMessage msg);
     }
 }

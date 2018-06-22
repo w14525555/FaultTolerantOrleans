@@ -12,6 +12,13 @@ namespace SystemImplementation
     public class TopologyManager : Grain, ITopology
     {
         private Topology topology = new Topology();
+        private IBatchTracker batchTracker;
+
+        public override Task OnActivateAsync()
+        {
+            batchTracker = GrainFactory.GetGrain<IBatchTracker>(Constants.Tracker);
+            return base.OnActivateAsync();
+        }
 
         public Task AddUnit(TopologyUnit unit)
         {
@@ -93,6 +100,40 @@ namespace SystemImplementation
         public Task<TopologyUnit> GetUnit(Guid key)
         {
             return Task.FromResult(topology.GetUnit(key));
+        }
+
+        public async Task<Task> Commit(StreamMessage msg)
+        {
+            List<TopologyUnit> units = topology.GetAllTopologyUnits();
+            PrettyConsole.Line("Number of units: " + units.Count);
+            msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), units.Count);
+            await batchTracker.TrackingCommitMessages(msg);
+            foreach (TopologyUnit unit in units)
+            {
+                if (unit.operatorType == OperatorType.Source)
+                {
+                    PrettyConsole.Line("Start Commit Source " + unit.GetSourceKey());
+                    IStreamSource source = GrainFactory.GetGrain<IStreamSource>(unit.GetSourceKey());
+                    source.Commit(msg);
+                }
+                else if (unit.operatorType == OperatorType.Stateful)
+                {
+                    PrettyConsole.Line("Start Commit Stateful");
+                    IStatefulOperator statefulOperator = GrainFactory.GetGrain<IStatefulOperator>(unit.primaryKey, Constants.Stateful_Operator_Prefix);
+                    statefulOperator.Commit(msg);
+                }
+                else if (unit.operatorType == OperatorType.Stateless)
+                {
+                    PrettyConsole.Line("Start Commit Stateless");
+                    IStatelessOperator statelessOperator = GrainFactory.GetGrain<IStatelessOperator>(unit.primaryKey, Constants.Stateless_Operator_Prefix);
+                    statelessOperator.Commit(msg);
+                }
+                else
+                {
+                    throw new ArgumentException("Commit: The operator type is in valid!");
+                }
+            }
+            return Task.CompletedTask;
         }
     } 
 }

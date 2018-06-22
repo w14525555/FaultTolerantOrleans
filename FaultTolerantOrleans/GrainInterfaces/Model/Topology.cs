@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SystemInterfaces.Model
 {
@@ -75,6 +76,11 @@ namespace SystemInterfaces.Model
         public int GetSize()
         {
             return topologyUnits.Count;
+        }
+
+        public List<TopologyUnit> GetAllTopologyUnits()
+        {
+            return topologyUnits.Values.ToList();
         }
     }
 }

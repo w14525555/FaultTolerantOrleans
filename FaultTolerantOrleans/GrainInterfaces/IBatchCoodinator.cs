@@ -9,7 +9,7 @@ namespace SystemInterfaces
     {
         Task SetChannelAndRegisterTimer(IAsyncStream<StreamMessage> stream, IStreamSource channel);
 
-        Task<Task> StartCommit(int ID);
+        Task StartCommit(int ID);
 
         Task StartRecovery();
 

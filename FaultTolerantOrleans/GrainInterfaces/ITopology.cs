@@ -20,5 +20,7 @@ namespace SystemInterfaces
         Task<int> GetTopologySize();
 
         Task<TopologyUnit> GetUnit(Guid key);
+
+        Task<Task> Commit(StreamMessage msg);
     }
 }

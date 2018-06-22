@@ -16,7 +16,7 @@ namespace Utils
         public const string Coordinator = "Coordinator";
         public const string Topology_Manager = "Topology Manager";
         public const string Stateless_Operator_Prefix = "SystemImplementation.CountWordStatelessOperator";
-
+        public const string Stateful_Operator_Prefix = "SystemImplementation.CountWordStatefulOperator";
 
     }
 }

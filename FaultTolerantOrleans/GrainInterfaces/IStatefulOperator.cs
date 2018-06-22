@@ -29,5 +29,7 @@ namespace SystemInterfaces
         Task<TopologyUnit> GetTopologyUnit();
 
         Task DecreseNumberOfUpStreamOperator();
+
+        Task<Task> Commit(StreamMessage msg);
     }
 }

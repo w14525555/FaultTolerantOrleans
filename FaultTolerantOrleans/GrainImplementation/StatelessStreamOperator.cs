@@ -150,12 +150,6 @@ namespace SystemImplementation
             }
         }
 
-        protected Task ReplaceTheGrainFromTopology()
-        {
-            //The old grain's parents should 
-            return Task.CompletedTask;
-        }
-
         protected async Task<Task> ProcessSpecialMessageAsync(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
             BarrierOrCommitMsgTrackingInfo info = new BarrierOrCommitMsgTrackingInfo(msg.barrierOrCommitInfo.GetID(), msg.barrierOrCommitInfo.numberOfClientSent);
@@ -194,6 +188,16 @@ namespace SystemImplementation
             {
                 throw new NullReferenceException();
             }
+            return Task.CompletedTask;
+        }
+
+        //Commit Logic
+        public Task Commit(StreamMessage msg)
+        {
+            //tell the tracker commit is done in this operator
+            PrettyConsole.Line("Start commit in stateless");
+            batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
+            PrettyConsole.Line("Here");
             return Task.CompletedTask;
         }
 

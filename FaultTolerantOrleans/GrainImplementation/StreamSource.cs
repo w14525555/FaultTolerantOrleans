@@ -37,6 +37,7 @@ namespace GrainImplementation
             currentBatchID = 0;
             topologyManager = GrainFactory.GetGrain<ITopology>(Constants.Topology_Manager);
             topologyUnit = new TopologyUnit(OperatorType.Source, Guid.NewGuid());
+            topologyUnit.SetSourceKey(this.GetPrimaryKeyString());
             topologyManager.AddUnit(topologyUnit);
             InitOperators();
             statefulOperators = new HashSet<IStatefulOperator>();
@@ -185,14 +186,6 @@ namespace GrainImplementation
 
         private Task BroadcastSpecialMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
-            //If it is a commit message, it should clean the buffer
-            //This implementation is based on the the assumption that a source
-            //does not have upperstream operators
-            if (msg.Value == Constants.Commit_Value)
-            {
-                messageBuffer.Clear();
-            }
-
             foreach(IStatelessOperator item in statelessOperators)
             {
                 item.ExecuteMessage(msg, stream);
@@ -200,6 +193,17 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
+        //Commit Logic
+        public Task Commit(StreamMessage msg)
+        {
+            //Clean the buffer
+            messageBuffer.Clear();
+            //tell the tracker commit is done in this operator
+            batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
+            return Task.CompletedTask;
+        }
+
+        //Replay Logic
         public async Task<Task> ReplayTheMessageOnRecoveryCompleted()
         {
             PrettyConsole.Line("Start Replay!");

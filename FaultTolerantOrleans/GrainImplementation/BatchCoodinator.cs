@@ -22,6 +22,7 @@ namespace GrainImplementation
 
         private List<IStreamSource> sources = new List<IStreamSource>();
         private IBatchTracker tracker;
+        private ITopology topologyManager;
        
 
         private int currentBatchID { get; set; }
@@ -32,6 +33,7 @@ namespace GrainImplementation
             currentBatchID = 0;
             committedID = -1;
             tracker = GrainFactory.GetGrain<IBatchTracker>(Utils.Constants.Tracker);
+            topologyManager = GrainFactory.GetGrain<ITopology>(Constants.Topology_Manager);
             PrettyConsole.Line("Register Timer");
             var streamProvider = GetStreamProvider(Constants.FaultTolerantStreamProvider);
             return base.OnActivateAsync();
@@ -64,15 +66,10 @@ namespace GrainImplementation
         }
 
         //Commit 
-        public async Task<Task> StartCommit(int ID)
+        public Task StartCommit(int ID)
         {
             commitMsg.BatchID = ID;
-            commitMsg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), sources.Count);
-            await tracker.TrackingCommitMessages(commitMsg);
-            foreach (IStreamSource source in sources)
-            {
-                await source.ProduceMessageAsync(commitMsg);
-            }
+            topologyManager.Commit(commitMsg);
             return Task.CompletedTask;
         }
 

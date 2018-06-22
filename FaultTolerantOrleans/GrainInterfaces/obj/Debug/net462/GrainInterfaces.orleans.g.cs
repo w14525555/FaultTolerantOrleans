@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGeneee1ebcd15FeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen3a1f00511cFeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -102,9 +102,9 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Object>(1422291436, new global::System.Object[]{stream, channel is global::Orleans.Grain ? channel.AsReference<global::SystemInterfaces.IStreamSource>() : channel});
         }
 
-        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> StartCommit(global::System.Int32 ID)
+        public global::System.Threading.Tasks.Task StartCommit(global::System.Int32 ID)
         {
-            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-76047527, new global::System.Object[]{ID});
+            return base.InvokeMethodAsync<global::System.Object>(-76047527, new global::System.Object[]{ID});
         }
 
         public global::System.Threading.Tasks.Task StartRecovery()
@@ -152,7 +152,8 @@ namespace SystemInterfaces
                             await ((global::SystemInterfaces.IBatchCoordinator)grain).SetChannelAndRegisterTimer((global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage>)arguments[0], (global::SystemInterfaces.IStreamSource)arguments[1]);
                             return null;
                         case -76047527:
-                            return await ((global::SystemInterfaces.IBatchCoordinator)grain).StartCommit((global::System.Int32)arguments[0]);
+                            await ((global::SystemInterfaces.IBatchCoordinator)grain).StartCommit((global::System.Int32)arguments[0]);
+                            return null;
                         case -546505175:
                             await ((global::SystemInterfaces.IBatchCoordinator)grain).StartRecovery();
                             return null;
@@ -474,6 +475,8 @@ namespace SystemInterfaces
                             return @"GetTopologyUnit";
                         case -1126113540:
                             return @"DecreseNumberOfUpStreamOperator";
+                        case 1108646473:
+                            return @"Commit";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 498177181 + @",methodId=" + methodId);
                     }
@@ -537,6 +540,11 @@ namespace SystemInterfaces
         {
             return base.InvokeMethodAsync<global::System.Object>(-1126113540, null);
         }
+
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> Commit(global::SystemInterfaces.Model.StreamMessage msg)
+        {
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(1108646473, new global::System.Object[]{msg});
+        }
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute(typeof (global::SystemInterfaces.IStatefulOperator), 498177181), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
@@ -580,6 +588,8 @@ namespace SystemInterfaces
                         case -1126113540:
                             await ((global::SystemInterfaces.IStatefulOperator)grain).DecreseNumberOfUpStreamOperator();
                             return null;
+                        case 1108646473:
+                            return await ((global::SystemInterfaces.IStatefulOperator)grain).Commit((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 498177181 + @",methodId=" + methodId);
                     }
@@ -673,6 +683,8 @@ namespace SystemInterfaces
                             return @"GetTopologyUnit";
                         case 1294781576:
                             return @"RemoveCustomeOperators";
+                        case 1108646473:
+                            return @"Commit";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1903779801 + @",methodId=" + methodId);
                     }
@@ -721,6 +733,11 @@ namespace SystemInterfaces
         {
             return base.InvokeMethodAsync<global::System.Object>(1294781576, new global::System.Object[]{guid});
         }
+
+        public global::System.Threading.Tasks.Task Commit(global::SystemInterfaces.Model.StreamMessage msg)
+        {
+            return base.InvokeMethodAsync<global::System.Object>(1108646473, new global::System.Object[]{msg});
+        }
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute(typeof (global::SystemInterfaces.IStatelessOperator), -1903779801), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
@@ -754,6 +771,9 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).GetTopologyUnit();
                         case 1294781576:
                             await ((global::SystemInterfaces.IStatelessOperator)grain).RemoveCustomeOperators((global::System.Guid)arguments[0]);
+                            return null;
+                        case 1108646473:
+                            await ((global::SystemInterfaces.IStatelessOperator)grain).Commit((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
                             return null;
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1903779801 + @",methodId=" + methodId);
@@ -858,6 +878,8 @@ namespace SystemInterfaces
                             return @"GetStateInIncrementalLog";
                         case 211822306:
                             return @"GetTopologyUnit";
+                        case 1108646473:
+                            return @"Commit";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 710632260 + @",methodId=" + methodId);
                     }
@@ -938,6 +960,11 @@ namespace SystemInterfaces
         {
             return base.InvokeMethodAsync<global::SystemInterfaces.Model.TopologyUnit>(211822306, null);
         }
+
+        public global::System.Threading.Tasks.Task Commit(global::SystemInterfaces.Model.StreamMessage msg)
+        {
+            return base.InvokeMethodAsync<global::System.Object>(1108646473, new global::System.Object[]{msg});
+        }
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute(typeof (global::SystemInterfaces.IStreamSource), 710632260), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
@@ -981,6 +1008,9 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.IStreamSource)grain).GetStateInIncrementalLog((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
                         case 211822306:
                             return await ((global::SystemInterfaces.IStreamSource)grain).GetTopologyUnit();
+                        case 1108646473:
+                            await ((global::SystemInterfaces.IStreamSource)grain).Commit((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
+                            return null;
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 710632260 + @",methodId=" + methodId);
                     }
@@ -1079,6 +1109,8 @@ namespace SystemInterfaces
                             return @"GetTopologySize";
                         case -639283078:
                             return @"GetUnit";
+                        case 1108646473:
+                            return @"Commit";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1231133098 + @",methodId=" + methodId);
                     }
@@ -1129,6 +1161,11 @@ namespace SystemInterfaces
         {
             return base.InvokeMethodAsync<global::SystemInterfaces.Model.TopologyUnit>(-639283078, new global::System.Object[]{key});
         }
+
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> Commit(global::SystemInterfaces.Model.StreamMessage msg)
+        {
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(1108646473, new global::System.Object[]{msg});
+        }
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute(typeof (global::SystemInterfaces.ITopology), -1231133098), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
@@ -1165,6 +1202,8 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.ITopology)grain).GetTopologySize();
                         case -639283078:
                             return await ((global::SystemInterfaces.ITopology)grain).GetUnit((global::System.Guid)arguments[0]);
+                        case 1108646473:
+                            return await ((global::SystemInterfaces.ITopology)grain).Commit((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1231133098 + @",methodId=" + methodId);
                     }
@@ -1423,6 +1462,7 @@ namespace OrleansGeneratedCode38151279
             context.RecordCopy(original, result);
             result.operatorType = input.operatorType;
             result.primaryKey = (global::System.Guid)context.DeepCopyInner(input.primaryKey);
+            result.sourceKey = input.sourceKey;
             setField1(result, (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>)context.DeepCopyInner(getField1(input)));
             setField2(result, (global::SystemInterfaces.Model.OperatorSettings)context.DeepCopyInner(getField2(input)));
             setField0(result, (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>)context.DeepCopyInner(getField0(input)));
@@ -1435,6 +1475,7 @@ namespace OrleansGeneratedCode38151279
             global::SystemInterfaces.Model.TopologyUnit input = (global::SystemInterfaces.Model.TopologyUnit)untypedInput;
             context.SerializeInner(input.operatorType, typeof (global::SystemInterfaces.Model.OperatorType));
             context.SerializeInner(input.primaryKey, typeof (global::System.Guid));
+            context.SerializeInner(input.sourceKey, typeof (global::System.String));
             context.SerializeInner(getField1(input), typeof (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>));
             context.SerializeInner(getField2(input), typeof (global::SystemInterfaces.Model.OperatorSettings));
             context.SerializeInner(getField0(input), typeof (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>));
@@ -1447,6 +1488,7 @@ namespace OrleansGeneratedCode38151279
             context.RecordObject(result);
             result.operatorType = (global::SystemInterfaces.Model.OperatorType)context.DeserializeInner(typeof (global::SystemInterfaces.Model.OperatorType));
             result.primaryKey = (global::System.Guid)context.DeserializeInner(typeof (global::System.Guid));
+            result.sourceKey = (global::System.String)context.DeserializeInner(typeof (global::System.String));
             setField1(result, (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>)context.DeserializeInner(typeof (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>)));
             setField2(result, (global::SystemInterfaces.Model.OperatorSettings)context.DeserializeInner(typeof (global::SystemInterfaces.Model.OperatorSettings)));
             setField0(result, (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>)context.DeserializeInner(typeof (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>)));
@@ -1458,7 +1500,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGeneee1ebcd15FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGen3a1f00511cFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {
@@ -4365,6 +4407,885 @@ namespace OrleansGeneratedCode
             feature.AddKnownType(@"System.Runtime.InteropServices.WindowsRuntime.WindowsRuntimeMarshal+NativeOrStaticEventRegistrationImpl+ReaderWriterLockTimedOutException", @"ReaderWriterLockTimedOutException");
             feature.AddKnownType(@"System.Runtime.InteropServices.WindowsRuntime.WindowsRuntimeMarshal+NativeOrStaticEventRegistrationImpl+MyReaderWriterLock", @"MyReaderWriterLock");
             feature.AddKnownType(@"__DynamicallyInvokableAttribute", @"__DynamicallyInvokableAttribute");
+            feature.AddKnownType(@"Interop,System.Core", @"Interop");
+            feature.AddKnownType(@"FXAssembly,System.Core", @"FXAssembly");
+            feature.AddKnownType(@"ThisAssembly,System.Core", @"ThisAssembly");
+            feature.AddKnownType(@"AssemblyRef,System.Core", @"AssemblyRef");
+            feature.AddKnownType(@"Internal.Cryptography.Helpers,System.Core", @"Internal.Cryptography.Helpers");
+            feature.AddKnownType(@"Internal.Cryptography.ICngSymmetricAlgorithm,System.Core", @"Internal.Cryptography.ICngSymmetricAlgorithm");
+            feature.AddKnownType(@"Internal.Cryptography.SymmetricImportExportExtensions,System.Core", @"Internal.Cryptography.SymmetricImportExportExtensions");
+            feature.AddKnownType(@"Internal.Cryptography.KeyPropertyName,System.Core", @"Internal.Cryptography.KeyPropertyName");
+            feature.AddKnownType(@"Internal.Cryptography.CryptoThrowHelper,System.Core", @"Internal.Cryptography.CryptoThrowHelper");
+            feature.AddKnownType(@"Internal.Cryptography.BasicSymmetricCipher,System.Core", @"Internal.Cryptography.BasicSymmetricCipher");
+            feature.AddKnownType(@"Internal.Cryptography.UniversalCryptoDecryptor,System.Core", @"Internal.Cryptography.UniversalCryptoDecryptor");
+            feature.AddKnownType(@"Internal.Cryptography.UniversalCryptoTransform,System.Core", @"Internal.Cryptography.UniversalCryptoTransform");
+            feature.AddKnownType(@"Internal.Cryptography.UniversalCryptoEncryptor,System.Core", @"Internal.Cryptography.UniversalCryptoEncryptor");
+            feature.AddKnownType(@"Internal.Cryptography.BasicSymmetricCipherNCrypt,System.Core", @"Internal.Cryptography.BasicSymmetricCipherNCrypt");
+            feature.AddKnownType(@"Internal.Cryptography.BasicSymmetricCipherBCrypt,System.Core", @"Internal.Cryptography.BasicSymmetricCipherBCrypt");
+            feature.AddKnownType(@"Internal.Cryptography.CngSymmetricAlgorithmCore,System.Core", @"Internal.Cryptography.CngSymmetricAlgorithmCore");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods,System.Core", @"Microsoft.Win32.UnsafeNativeMethods");
+            feature.AddKnownType(@"Microsoft.Win32.SafeLibraryHandle,System.Core", @"Microsoft.Win32.SafeLibraryHandle");
+            feature.AddKnownType(@"Microsoft.Win32.SafeHandles.SafeBCryptAlgorithmHandle,System.Core", @"Microsoft.Win32.SafeHandles.SafeBCryptAlgorithmHandle");
+            feature.AddKnownType(@"Microsoft.Win32.SafeHandles.SafeBCryptHashHandle,System.Core", @"Microsoft.Win32.SafeHandles.SafeBCryptHashHandle");
+            feature.AddKnownType(@"Microsoft.Win32.SafeHandles.SafeBCryptKeyHandle,System.Core", @"Microsoft.Win32.SafeHandles.SafeBCryptKeyHandle");
+            feature.AddKnownType(@"Microsoft.Win32.SafeHandles.SafeAxlBufferHandle,System.Core", @"Microsoft.Win32.SafeHandles.SafeAxlBufferHandle");
+            feature.AddKnownType(@"Microsoft.Win32.SafeHandles.SafeCapiHandleBase,System.Core", @"Microsoft.Win32.SafeHandles.SafeCapiHandleBase");
+            feature.AddKnownType(@"Microsoft.Win32.SafeHandles.SafeCapiHashHandle,System.Core", @"Microsoft.Win32.SafeHandles.SafeCapiHashHandle");
+            feature.AddKnownType(@"Microsoft.Win32.SafeHandles.SafeCapiKeyHandle,System.Core", @"Microsoft.Win32.SafeHandles.SafeCapiKeyHandle");
+            feature.AddKnownType(@"Microsoft.Win32.SafeHandles.SafeCspHandle,System.Core", @"Microsoft.Win32.SafeHandles.SafeCspHandle");
+            feature.AddKnownType(@"Microsoft.Win32.SafeHandles.SafeNCryptHandle,System.Core", @"Microsoft.Win32.SafeHandles.SafeNCryptHandle");
+            feature.AddKnownType(@"Microsoft.Win32.SafeHandles.SafeNCryptKeyHandle,System.Core", @"Microsoft.Win32.SafeHandles.SafeNCryptKeyHandle");
+            feature.AddKnownType(@"Microsoft.Win32.SafeHandles.SafeNCryptProviderHandle,System.Core", @"Microsoft.Win32.SafeHandles.SafeNCryptProviderHandle");
+            feature.AddKnownType(@"Microsoft.Win32.SafeHandles.SafeNCryptSecretHandle,System.Core", @"Microsoft.Win32.SafeHandles.SafeNCryptSecretHandle");
+            feature.AddKnownType(@"Microsoft.Win32.SafeHandles.SafePipeHandle,System.Core", @"Microsoft.Win32.SafeHandles.SafePipeHandle");
+            feature.AddKnownType(@"Microsoft.Win32.SafeHandles.SafePerfProviderHandle,System.Core", @"Microsoft.Win32.SafeHandles.SafePerfProviderHandle");
+            feature.AddKnownType(@"Microsoft.Win32.SafeHandles.SafeMemoryMappedFileHandle,System.Core", @"Microsoft.Win32.SafeHandles.SafeMemoryMappedFileHandle");
+            feature.AddKnownType(@"Microsoft.Win32.SafeHandles.SafeMemoryMappedViewHandle,System.Core", @"Microsoft.Win32.SafeHandles.SafeMemoryMappedViewHandle");
+            feature.AddKnownType(@"System.LocalAppContextSwitches,System.Core", @"LocalAppContextSwitches");
+            feature.AddKnownType(@"System.AppContextDefaultValues,System.Core", @"AppContextDefaultValues");
+            feature.AddKnownType(@"System.Action`9,System.Core", @"Action`9'9");
+            feature.AddKnownType(@"System.Action`10,System.Core", @"Action`10'10");
+            feature.AddKnownType(@"System.Action`11,System.Core", @"Action`11'11");
+            feature.AddKnownType(@"System.Action`12,System.Core", @"Action`12'12");
+            feature.AddKnownType(@"System.Action`13,System.Core", @"Action`13'13");
+            feature.AddKnownType(@"System.Action`14,System.Core", @"Action`14'14");
+            feature.AddKnownType(@"System.Action`15,System.Core", @"Action`15'15");
+            feature.AddKnownType(@"System.Action`16,System.Core", @"Action`16'16");
+            feature.AddKnownType(@"System.Func`10,System.Core", @"Func`10'10");
+            feature.AddKnownType(@"System.Func`11,System.Core", @"Func`11'11");
+            feature.AddKnownType(@"System.Func`12,System.Core", @"Func`12'12");
+            feature.AddKnownType(@"System.Func`13,System.Core", @"Func`13'13");
+            feature.AddKnownType(@"System.Func`14,System.Core", @"Func`14'14");
+            feature.AddKnownType(@"System.Func`15,System.Core", @"Func`15'15");
+            feature.AddKnownType(@"System.Func`16,System.Core", @"Func`16'16");
+            feature.AddKnownType(@"System.Func`17,System.Core", @"Func`17'17");
+            feature.AddKnownType(@"System.LocalAppContext,System.Core", @"LocalAppContext");
+            feature.AddKnownType(@"System.SRDescriptionAttribute,System.Core", @"SRDescriptionAttribute");
+            feature.AddKnownType(@"System.SRCategoryAttribute,System.Core", @"SRCategoryAttribute");
+            feature.AddKnownType(@"System.SR,System.Core", @"SR");
+            feature.AddKnownType(@"System.Reflection.BlobUtilities,System.Core", @"BlobUtilities");
+            feature.AddKnownType(@"System.Reflection.Throw,System.Core", @"Throw");
+            feature.AddKnownType(@"System.Reflection.PortableExecutable.CoffHeader,System.Core", @"CoffHeader");
+            feature.AddKnownType(@"System.Reflection.PortableExecutable.CorFlags,System.Core", @"CorFlags");
+            feature.AddKnownType(@"System.Reflection.PortableExecutable.CorHeader,System.Core", @"CorHeader");
+            feature.AddKnownType(@"System.Reflection.PortableExecutable.CodeViewDebugDirectoryData,System.Core", @"CodeViewDebugDirectoryData");
+            feature.AddKnownType(@"System.Reflection.PortableExecutable.DebugDirectoryEntry,System.Core", @"DebugDirectoryEntry");
+            feature.AddKnownType(@"System.Reflection.PortableExecutable.DebugDirectoryEntryType,System.Core", @"DebugDirectoryEntryType");
+            feature.AddKnownType(@"System.Reflection.PortableExecutable.DirectoryEntry,System.Core", @"DirectoryEntry");
+            feature.AddKnownType(@"System.Reflection.PortableExecutable.Machine,System.Core", @"Machine");
+            feature.AddKnownType(@"System.Reflection.PortableExecutable.PEBinaryReader,System.Core", @"PEBinaryReader");
+            feature.AddKnownType(@"System.Reflection.PortableExecutable.Characteristics,System.Core", @"Characteristics");
+            feature.AddKnownType(@"System.Reflection.PortableExecutable.PEMagic,System.Core", @"PEMagic");
+            feature.AddKnownType(@"System.Reflection.PortableExecutable.Subsystem,System.Core", @"Subsystem");
+            feature.AddKnownType(@"System.Reflection.PortableExecutable.DllCharacteristics,System.Core", @"DllCharacteristics");
+            feature.AddKnownType(@"System.Reflection.PortableExecutable.SectionCharacteristics,System.Core", @"SectionCharacteristics");
+            feature.AddKnownType(@"System.Reflection.PortableExecutable.PEHeader,System.Core", @"PEHeader");
+            feature.AddKnownType(@"System.Reflection.PortableExecutable.PEHeaders,System.Core", @"PEHeaders");
+            feature.AddKnownType(@"System.Reflection.PortableExecutable.PEMemoryBlock,System.Core", @"PEMemoryBlock");
+            feature.AddKnownType(@"System.Reflection.PortableExecutable.PEReader,System.Core", @"PEReader");
+            feature.AddKnownType(@"System.Reflection.PortableExecutable.PEStreamOptions,System.Core", @"PEStreamOptions");
+            feature.AddKnownType(@"System.Reflection.PortableExecutable.PEStreamOptionsExtensions,System.Core", @"PEStreamOptionsExtensions");
+            feature.AddKnownType(@"System.Reflection.PortableExecutable.SectionHeader,System.Core", @"SectionHeader");
+            feature.AddKnownType(@"System.Reflection.Metadata.PathUtilities,System.Core", @"PathUtilities");
+            feature.AddKnownType(@"System.Reflection.Metadata.BlobContentId,System.Core", @"BlobContentId");
+            feature.AddKnownType(@"System.Reflection.Metadata.BlobReader,System.Core", @"BlobReader");
+            feature.AddKnownType(@"System.Reflection.Metadata.Handle,System.Core", @"Handle");
+            feature.AddKnownType(@"System.Reflection.Metadata.HandleKind,System.Core", @"HandleKind");
+            feature.AddKnownType(@"System.Reflection.Metadata.HandleKindExtensions,System.Core", @"HandleKindExtensions");
+            feature.AddKnownType(@"System.Reflection.Metadata.MetadataKind,System.Core", @"MetadataKind");
+            feature.AddKnownType(@"System.Reflection.Metadata.MetadataReader,System.Core", @"MetadataReader");
+            feature.AddKnownType(@"System.Reflection.Metadata.MetadataReaderOptions,System.Core", @"MetadataReaderOptions");
+            feature.AddKnownType(@"System.Reflection.Metadata.MetadataReaderProvider,System.Core", @"MetadataReaderProvider");
+            feature.AddKnownType(@"System.Reflection.Metadata.MetadataStreamOptions,System.Core", @"MetadataStreamOptions");
+            feature.AddKnownType(@"System.Reflection.Metadata.MetadataStreamOptionsExtensions,System.Core", @"MetadataStreamOptionsExtensions");
+            feature.AddKnownType(@"System.Reflection.Metadata.DebugMetadataHeader,System.Core", @"DebugMetadataHeader");
+            feature.AddKnownType(@"System.Reflection.Metadata.Document,System.Core", @"Document");
+            feature.AddKnownType(@"System.Reflection.Metadata.DocumentNameBlobHandle,System.Core", @"DocumentNameBlobHandle");
+            feature.AddKnownType(@"System.Reflection.Metadata.DocumentHandle,System.Core", @"DocumentHandle");
+            feature.AddKnownType(@"System.Reflection.Metadata.MethodDebugInformationHandle,System.Core", @"MethodDebugInformationHandle");
+            feature.AddKnownType(@"System.Reflection.Metadata.MethodDebugInformation,System.Core", @"MethodDebugInformation");
+            feature.AddKnownType(@"System.Reflection.Metadata.PortablePdbVersions,System.Core", @"PortablePdbVersions");
+            feature.AddKnownType(@"System.Reflection.Metadata.SequencePoint,System.Core", @"SequencePoint");
+            feature.AddKnownType(@"System.Reflection.Metadata.SequencePointCollection,System.Core", @"SequencePointCollection");
+            feature.AddKnownType(@"System.Reflection.Metadata.MethodDefinitionHandle,System.Core", @"MethodDefinitionHandle");
+            feature.AddKnownType(@"System.Reflection.Metadata.BlobHandle,System.Core", @"BlobHandle");
+            feature.AddKnownType(@"System.Reflection.Metadata.Ecma335.MetadataTokens,System.Core", @"MetadataTokens");
+            feature.AddKnownType(@"System.Reflection.Metadata.Ecma335.TableIndex,System.Core", @"TableIndex");
+            feature.AddKnownType(@"System.Reflection.Metadata.Ecma335.BlobHeap,System.Core", @"BlobHeap");
+            feature.AddKnownType(@"System.Reflection.Metadata.Ecma335.COR20Constants,System.Core", @"COR20Constants");
+            feature.AddKnownType(@"System.Reflection.Metadata.Ecma335.HeapSizeFlag,System.Core", @"HeapSizeFlag");
+            feature.AddKnownType(@"System.Reflection.Metadata.Ecma335.MetadataStreamKind,System.Core", @"MetadataStreamKind");
+            feature.AddKnownType(@"System.Reflection.Metadata.Ecma335.TableMask,System.Core", @"TableMask");
+            feature.AddKnownType(@"System.Reflection.Metadata.Ecma335.HeapSizes,System.Core", @"HeapSizes");
+            feature.AddKnownType(@"System.Reflection.Metadata.Ecma335.StringKind,System.Core", @"StringKind");
+            feature.AddKnownType(@"System.Reflection.Metadata.Ecma335.StringHandleType,System.Core", @"StringHandleType");
+            feature.AddKnownType(@"System.Reflection.Metadata.Ecma335.HeapHandleType,System.Core", @"HeapHandleType");
+            feature.AddKnownType(@"System.Reflection.Metadata.Ecma335.HandleType,System.Core", @"HandleType");
+            feature.AddKnownType(@"System.Reflection.Metadata.Ecma335.TokenTypeIds,System.Core", @"TokenTypeIds");
+            feature.AddKnownType(@"System.Reflection.Metadata.Ecma335.MetadataStreamConstants,System.Core", @"MetadataStreamConstants");
+            feature.AddKnownType(@"System.Reflection.Metadata.Ecma335.StreamHeader,System.Core", @"StreamHeader");
+            feature.AddKnownType(@"System.Reflection.Metadata.Ecma335.DocumentTableReader,System.Core", @"DocumentTableReader");
+            feature.AddKnownType(@"System.Reflection.Metadata.Ecma335.MethodDebugInformationTableReader,System.Core", @"MethodDebugInformationTableReader");
+            feature.AddKnownType(@"System.Reflection.Internal.AbstractMemoryBlock,System.Core", @"AbstractMemoryBlock");
+            feature.AddKnownType(@"System.Reflection.Internal.ByteArrayMemoryBlock,System.Core", @"ByteArrayMemoryBlock");
+            feature.AddKnownType(@"System.Reflection.Internal.ByteArrayMemoryProvider,System.Core", @"ByteArrayMemoryProvider");
+            feature.AddKnownType(@"System.Reflection.Internal.MemoryBlockProvider,System.Core", @"MemoryBlockProvider");
+            feature.AddKnownType(@"System.Reflection.Internal.ExternalMemoryBlock,System.Core", @"ExternalMemoryBlock");
+            feature.AddKnownType(@"System.Reflection.Internal.ExternalMemoryBlockProvider,System.Core", @"ExternalMemoryBlockProvider");
+            feature.AddKnownType(@"System.Reflection.Internal.MemoryMappedFileBlock,System.Core", @"MemoryMappedFileBlock");
+            feature.AddKnownType(@"System.Reflection.Internal.NativeHeapMemoryBlock,System.Core", @"NativeHeapMemoryBlock");
+            feature.AddKnownType(@"System.Reflection.Internal.StreamConstraints,System.Core", @"StreamConstraints");
+            feature.AddKnownType(@"System.Reflection.Internal.StreamMemoryBlockProvider,System.Core", @"StreamMemoryBlockProvider");
+            feature.AddKnownType(@"System.Reflection.Internal.CriticalDisposableObject,System.Core", @"CriticalDisposableObject");
+            feature.AddKnownType(@"System.Reflection.Internal.Hash,System.Core", @"Hash");
+            feature.AddKnownType(@"System.Reflection.Internal.LightUpHelper,System.Core", @"LightUpHelper");
+            feature.AddKnownType(@"System.Reflection.Internal.MemoryBlock,System.Core", @"MemoryBlock");
+            feature.AddKnownType(@"System.Reflection.Internal.MemoryMapLightUp,System.Core", @"MemoryMapLightUp");
+            feature.AddKnownType(@"System.Reflection.Internal.ImmutableMemoryStream,System.Core", @"ImmutableMemoryStream");
+            feature.AddKnownType(@"System.Reflection.Internal.ObjectPool`1,System.Core", @"ObjectPool`1'1");
+            feature.AddKnownType(@"System.Reflection.Internal.PinnedObject,System.Core", @"PinnedObject");
+            feature.AddKnownType(@"System.Reflection.Internal.PooledStringBuilder,System.Core", @"PooledStringBuilder");
+            feature.AddKnownType(@"System.Reflection.Internal.ReadOnlyUnmanagedMemoryStream,System.Core", @"ReadOnlyUnmanagedMemoryStream");
+            feature.AddKnownType(@"System.Reflection.Internal.StreamExtensions,System.Core", @"StreamExtensions");
+            feature.AddKnownType(@"System.Threading.LockRecursionPolicy,System.Core", @"LockRecursionPolicy");
+            feature.AddKnownType(@"System.Threading.ReaderWriterCount,System.Core", @"ReaderWriterCount");
+            feature.AddKnownType(@"System.Threading.ReaderWriterLockSlim,System.Core", @"ReaderWriterLockSlim");
+            feature.AddKnownType(@"System.Threading.Tasks.TaskExtensions,System.Core", @"TaskExtensions");
+            feature.AddKnownType(@"System.Collections.Immutable.ImmutableArray,System.Core", @"ImmutableArray");
+            feature.AddKnownType(@"System.Collections.Immutable.ImmutableArray`1,System.Core", @"ImmutableArray`1'1");
+            feature.AddKnownType(@"System.Collections.Generic.BitHelper,System.Core", @"BitHelper");
+            feature.AddKnownType(@"System.Collections.Generic.HashSetDebugView`1,System.Core", @"HashSetDebugView`1'1");
+            feature.AddKnownType(@"System.Collections.Generic.HashSetEqualityComparer`1,System.Core", @"HashSetEqualityComparer`1'1");
+            feature.AddKnownType(@"System.Collections.Generic.CopyPosition,System.Core", @"CopyPosition");
+            feature.AddKnownType(@"System.Collections.Generic.LargeArrayBuilder`1,System.Core", @"LargeArrayBuilder`1'1");
+            feature.AddKnownType(@"System.Collections.Generic.ArrayBuilder`1,System.Core", @"ArrayBuilder`1'1");
+            feature.AddKnownType(@"System.Collections.Generic.Marker,System.Core", @"Marker");
+            feature.AddKnownType(@"System.Collections.Generic.SparseArrayBuilder`1,System.Core", @"SparseArrayBuilder`1'1");
+            feature.AddKnownType(@"System.Collections.Generic.EnumerableHelpers,System.Core", @"EnumerableHelpers");
+            feature.AddKnownType(@"System.IO.__Error,System.Core", @"__Error");
+            feature.AddKnownType(@"System.IO.BufferedStream2,System.Core", @"BufferedStream2");
+            feature.AddKnownType(@"System.IO.LogStream,System.Core", @"LogStream");
+            feature.AddKnownType(@"System.IO.LogRetentionOption,System.Core", @"LogRetentionOption");
+            feature.AddKnownType(@"System.IO.HandleInheritability,System.Core", @"HandleInheritability");
+            feature.AddKnownType(@"System.IO.MemoryMappedFiles.MemoryMappedFileAccess,System.Core", @"MemoryMappedFileAccess");
+            feature.AddKnownType(@"System.IO.MemoryMappedFiles.MemoryMappedFileOptions,System.Core", @"MemoryMappedFileOptions");
+            feature.AddKnownType(@"System.IO.MemoryMappedFiles.MemoryMappedFile,System.Core", @"MemoryMappedFile");
+            feature.AddKnownType(@"System.IO.MemoryMappedFiles.MemoryMappedViewAccessor,System.Core", @"MemoryMappedViewAccessor");
+            feature.AddKnownType(@"System.IO.MemoryMappedFiles.MemoryMappedViewStream,System.Core", @"MemoryMappedViewStream");
+            feature.AddKnownType(@"System.IO.MemoryMappedFiles.MemoryMappedFileRights,System.Core", @"MemoryMappedFileRights");
+            feature.AddKnownType(@"System.IO.MemoryMappedFiles.MemoryMappedFileSecurity,System.Core", @"MemoryMappedFileSecurity");
+            feature.AddKnownType(@"System.IO.MemoryMappedFiles.MemoryMappedView,System.Core", @"MemoryMappedView");
+            feature.AddKnownType(@"System.IO.Pipes.PipeDirection,System.Core", @"PipeDirection");
+            feature.AddKnownType(@"System.IO.Pipes.PipeTransmissionMode,System.Core", @"PipeTransmissionMode");
+            feature.AddKnownType(@"System.IO.Pipes.PipeOptions,System.Core", @"PipeOptions");
+            feature.AddKnownType(@"System.IO.Pipes.IOCancellationHelper,System.Core", @"IOCancellationHelper");
+            feature.AddKnownType(@"System.IO.Pipes.AnonymousPipeServerStream,System.Core", @"AnonymousPipeServerStream");
+            feature.AddKnownType(@"System.IO.Pipes.PipeStream,System.Core", @"PipeStream");
+            feature.AddKnownType(@"System.IO.Pipes.AnonymousPipeClientStream,System.Core", @"AnonymousPipeClientStream");
+            feature.AddKnownType(@"System.IO.Pipes.PipeStreamImpersonationWorker,System.Core", @"PipeStreamImpersonationWorker");
+            feature.AddKnownType(@"System.IO.Pipes.NamedPipeServerStream,System.Core", @"NamedPipeServerStream");
+            feature.AddKnownType(@"System.IO.Pipes.NamedPipeClientStream,System.Core", @"NamedPipeClientStream");
+            feature.AddKnownType(@"System.IO.Pipes.PipeAsyncResult,System.Core", @"PipeAsyncResult");
+            feature.AddKnownType(@"System.IO.Pipes.PipeState,System.Core", @"PipeState");
+            feature.AddKnownType(@"System.IO.Pipes.PipeStreamAsyncResult,System.Core", @"PipeStreamAsyncResult");
+            feature.AddKnownType(@"System.IO.Pipes.PipeAccessRights,System.Core", @"PipeAccessRights");
+            feature.AddKnownType(@"System.IO.Pipes.PipeAccessRule,System.Core", @"PipeAccessRule");
+            feature.AddKnownType(@"System.IO.Pipes.PipeAuditRule,System.Core", @"PipeAuditRule");
+            feature.AddKnownType(@"System.IO.Pipes.PipeSecurity,System.Core", @"PipeSecurity");
+            feature.AddKnownType(@"System.Dynamic.BinaryOperationBinder,System.Core", @"BinaryOperationBinder");
+            feature.AddKnownType(@"System.Dynamic.DynamicMetaObjectBinder,System.Core", @"DynamicMetaObjectBinder");
+            feature.AddKnownType(@"System.Runtime.CompilerServices.CallSiteBinder,System.Core", @"CallSiteBinder");
+            feature.AddKnownType(@"System.Dynamic.BindingRestrictions,System.Core", @"BindingRestrictions");
+            feature.AddKnownType(@"System.Dynamic.CallInfo,System.Core", @"CallInfo");
+            feature.AddKnownType(@"System.Dynamic.ConvertBinder,System.Core", @"ConvertBinder");
+            feature.AddKnownType(@"System.Dynamic.CreateInstanceBinder,System.Core", @"CreateInstanceBinder");
+            feature.AddKnownType(@"System.Dynamic.DeleteIndexBinder,System.Core", @"DeleteIndexBinder");
+            feature.AddKnownType(@"System.Dynamic.DeleteMemberBinder,System.Core", @"DeleteMemberBinder");
+            feature.AddKnownType(@"System.Dynamic.DynamicMetaObject,System.Core", @"DynamicMetaObject");
+            feature.AddKnownType(@"System.Dynamic.DynamicObject,System.Core", @"DynamicObject");
+            feature.AddKnownType(@"System.Dynamic.IDynamicMetaObjectProvider,System.Core", @"IDynamicMetaObjectProvider");
+            feature.AddKnownType(@"System.Dynamic.ExpandoClass,System.Core", @"ExpandoClass");
+            feature.AddKnownType(@"System.Dynamic.ExpandoObject,System.Core", @"ExpandoObject");
+            feature.AddKnownType(@"System.Dynamic.GetIndexBinder,System.Core", @"GetIndexBinder");
+            feature.AddKnownType(@"System.Dynamic.GetMemberBinder,System.Core", @"GetMemberBinder");
+            feature.AddKnownType(@"System.Dynamic.IInvokeOnGetBinder,System.Core", @"IInvokeOnGetBinder");
+            feature.AddKnownType(@"System.Dynamic.InvokeBinder,System.Core", @"InvokeBinder");
+            feature.AddKnownType(@"System.Dynamic.InvokeMemberBinder,System.Core", @"InvokeMemberBinder");
+            feature.AddKnownType(@"System.Dynamic.SetIndexBinder,System.Core", @"SetIndexBinder");
+            feature.AddKnownType(@"System.Dynamic.SetMemberBinder,System.Core", @"SetMemberBinder");
+            feature.AddKnownType(@"System.Dynamic.UnaryOperationBinder,System.Core", @"UnaryOperationBinder");
+            feature.AddKnownType(@"System.Dynamic.UpdateDelegates,System.Core", @"UpdateDelegates");
+            feature.AddKnownType(@"System.Dynamic.Utils.TypeUtils,System.Core", @"TypeUtils");
+            feature.AddKnownType(@"System.Dynamic.Utils.CacheDict`2,System.Core", @"CacheDict`2'2");
+            feature.AddKnownType(@"System.Dynamic.Utils.CollectionExtensions,System.Core", @"CollectionExtensions");
+            feature.AddKnownType(@"System.Dynamic.Utils.EmptyReadOnlyCollection`1,System.Core", @"EmptyReadOnlyCollection`1'1");
+            feature.AddKnownType(@"System.Dynamic.Utils.ContractUtils,System.Core", @"ContractUtils");
+            feature.AddKnownType(@"System.Dynamic.Utils.Helpers,System.Core", @"Helpers");
+            feature.AddKnownType(@"System.Dynamic.Utils.ReferenceEqualityComparer`1,System.Core", @"ReferenceEqualityComparer`1'1");
+            feature.AddKnownType(@"System.Dynamic.Utils.TypeExtensions,System.Core", @"TypeExtensions");
+            feature.AddKnownType(@"System.Security.ManifestKinds,System.Core", @"ManifestKinds");
+            feature.AddKnownType(@"System.Security.Cryptography.IncrementalHash,System.Core", @"IncrementalHash");
+            feature.AddKnownType(@"System.Security.Cryptography.AesCng,System.Core", @"AesCng");
+            feature.AddKnownType(@"System.Security.Cryptography.AesCryptoServiceProvider,System.Core", @"AesCryptoServiceProvider");
+            feature.AddKnownType(@"System.Security.Cryptography.AesManaged,System.Core", @"AesManaged");
+            feature.AddKnownType(@"System.Security.Cryptography.AsymmetricPaddingMode,System.Core", @"AsymmetricPaddingMode");
+            feature.AddKnownType(@"System.Security.Cryptography.BCRYPT_DSA_KEY_BLOB_V2,System.Core", @"BCRYPT_DSA_KEY_BLOB_V2");
+            feature.AddKnownType(@"System.Security.Cryptography.HASHALGORITHM_ENUM,System.Core", @"HASHALGORITHM_ENUM");
+            feature.AddKnownType(@"System.Security.Cryptography.DSAFIPSVERSION_ENUM,System.Core", @"DSAFIPSVERSION_ENUM");
+            feature.AddKnownType(@"System.Security.Cryptography.BCryptNative,System.Core", @"BCryptNative");
+            feature.AddKnownType(@"System.Security.Cryptography.BCryptAlgorithmHandleCache,System.Core", @"BCryptAlgorithmHandleCache");
+            feature.AddKnownType(@"System.Security.Cryptography.BCryptHashAlgorithm,System.Core", @"BCryptHashAlgorithm");
+            feature.AddKnownType(@"System.Security.Cryptography.CngAlgorithm,System.Core", @"CngAlgorithm");
+            feature.AddKnownType(@"System.Security.Cryptography.CngAlgorithmGroup,System.Core", @"CngAlgorithmGroup");
+            feature.AddKnownType(@"System.Security.Cryptography.CngKeyHandleOpenOptions,System.Core", @"CngKeyHandleOpenOptions");
+            feature.AddKnownType(@"System.Security.Cryptography.CngKey,System.Core", @"CngKey");
+            feature.AddKnownType(@"System.Security.Cryptography.CngKeyBlobFormat,System.Core", @"CngKeyBlobFormat");
+            feature.AddKnownType(@"System.Security.Cryptography.CngKeyCreationParameters,System.Core", @"CngKeyCreationParameters");
+            feature.AddKnownType(@"System.Security.Cryptography.CngProperty,System.Core", @"CngProperty");
+            feature.AddKnownType(@"System.Security.Cryptography.CngPropertyCollection,System.Core", @"CngPropertyCollection");
+            feature.AddKnownType(@"System.Security.Cryptography.CngProvider,System.Core", @"CngProvider");
+            feature.AddKnownType(@"System.Security.Cryptography.CngUIPolicy,System.Core", @"CngUIPolicy");
+            feature.AddKnownType(@"System.Security.Cryptography.CapiHashAlgorithm,System.Core", @"CapiHashAlgorithm");
+            feature.AddKnownType(@"System.Security.Cryptography.CapiNative,System.Core", @"CapiNative");
+            feature.AddKnownType(@"System.Security.Cryptography.SafeLocalAllocHandle,System.Core", @"SafeLocalAllocHandle");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Utils,System.Core", @"X509Utils");
+            feature.AddKnownType(@"System.Security.Cryptography.EncryptionMode,System.Core", @"EncryptionMode");
+            feature.AddKnownType(@"System.Security.Cryptography.CapiSymmetricAlgorithm,System.Core", @"CapiSymmetricAlgorithm");
+            feature.AddKnownType(@"System.Security.Cryptography.DSACng,System.Core", @"DSACng");
+            feature.AddKnownType(@"System.Security.Cryptography.ECCng,System.Core", @"ECCng");
+            feature.AddKnownType(@"System.Security.Cryptography.ECCurve,System.Core", @"ECCurve");
+            feature.AddKnownType(@"System.Security.Cryptography.ECDiffieHellman,System.Core", @"ECDiffieHellman");
+            feature.AddKnownType(@"System.Security.Cryptography.ECDiffieHellmanPublicKey,System.Core", @"ECDiffieHellmanPublicKey");
+            feature.AddKnownType(@"System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction,System.Core", @"ECDiffieHellmanKeyDerivationFunction");
+            feature.AddKnownType(@"System.Security.Cryptography.ECDiffieHellmanCng,System.Core", @"ECDiffieHellmanCng");
+            feature.AddKnownType(@"System.Security.Cryptography.ECDiffieHellmanCngPublicKey,System.Core", @"ECDiffieHellmanCngPublicKey");
+            feature.AddKnownType(@"System.Security.Cryptography.ECDsa,System.Core", @"ECDsa");
+            feature.AddKnownType(@"System.Security.Cryptography.ECDsaCng,System.Core", @"ECDsaCng");
+            feature.AddKnownType(@"System.Security.Cryptography.ECKeyXmlFormat,System.Core", @"ECKeyXmlFormat");
+            feature.AddKnownType(@"System.Security.Cryptography.ECParameters,System.Core", @"ECParameters");
+            feature.AddKnownType(@"System.Security.Cryptography.ECPoint,System.Core", @"ECPoint");
+            feature.AddKnownType(@"System.Security.Cryptography.ManifestSignatureInformation,System.Core", @"ManifestSignatureInformation");
+            feature.AddKnownType(@"System.Security.Cryptography.ManifestSignatureInformationCollection,System.Core", @"ManifestSignatureInformationCollection");
+            feature.AddKnownType(@"System.Security.Cryptography.MD5Cng,System.Core", @"MD5Cng");
+            feature.AddKnownType(@"System.Security.Cryptography.CngExportPolicies,System.Core", @"CngExportPolicies");
+            feature.AddKnownType(@"System.Security.Cryptography.CngKeyCreationOptions,System.Core", @"CngKeyCreationOptions");
+            feature.AddKnownType(@"System.Security.Cryptography.CngKeyOpenOptions,System.Core", @"CngKeyOpenOptions");
+            feature.AddKnownType(@"System.Security.Cryptography.CngKeyTypes,System.Core", @"CngKeyTypes");
+            feature.AddKnownType(@"System.Security.Cryptography.CngKeyUsages,System.Core", @"CngKeyUsages");
+            feature.AddKnownType(@"System.Security.Cryptography.CngPropertyOptions,System.Core", @"CngPropertyOptions");
+            feature.AddKnownType(@"System.Security.Cryptography.CngUIProtectionLevels,System.Core", @"CngUIProtectionLevels");
+            feature.AddKnownType(@"System.Security.Cryptography.NCryptNative,System.Core", @"NCryptNative");
+            feature.AddKnownType(@"System.Security.Cryptography.Rfc4050KeyFormatter,System.Core", @"Rfc4050KeyFormatter");
+            feature.AddKnownType(@"System.Security.Cryptography.RSACng,System.Core", @"RSACng");
+            feature.AddKnownType(@"System.Security.Cryptography.SHA1Cng,System.Core", @"SHA1Cng");
+            feature.AddKnownType(@"System.Security.Cryptography.SHA256Cng,System.Core", @"SHA256Cng");
+            feature.AddKnownType(@"System.Security.Cryptography.SHA256CryptoServiceProvider,System.Core", @"SHA256CryptoServiceProvider");
+            feature.AddKnownType(@"System.Security.Cryptography.SHA384Cng,System.Core", @"SHA384Cng");
+            feature.AddKnownType(@"System.Security.Cryptography.SHA384CryptoServiceProvider,System.Core", @"SHA384CryptoServiceProvider");
+            feature.AddKnownType(@"System.Security.Cryptography.SHA512Cng,System.Core", @"SHA512Cng");
+            feature.AddKnownType(@"System.Security.Cryptography.SHA512CryptoServiceProvider,System.Core", @"SHA512CryptoServiceProvider");
+            feature.AddKnownType(@"System.Security.Cryptography.SignatureVerificationResult,System.Core", @"SignatureVerificationResult");
+            feature.AddKnownType(@"System.Security.Cryptography.StrongNameSignatureInformation,System.Core", @"StrongNameSignatureInformation");
+            feature.AddKnownType(@"System.Security.Cryptography.TripleDESCng,System.Core", @"TripleDESCng");
+            feature.AddKnownType(@"System.Security.Cryptography.Xml.ManifestSignedXml,System.Core", @"ManifestSignedXml");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.AuthenticodeSignatureInformation,System.Core", @"AuthenticodeSignatureInformation");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.CertificateExtensionsCommon,System.Core", @"CertificateExtensionsCommon");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.CertificateRequest,System.Core", @"CertificateRequest");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.DSACertificateExtensions,System.Core", @"DSACertificateExtensions");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.DerEncoder,System.Core", @"DerEncoder");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.DerSequenceReader,System.Core", @"DerSequenceReader");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.ECDsaCertificateExtensions,System.Core", @"ECDsaCertificateExtensions");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.ECDsaX509SignatureGenerator,System.Core", @"ECDsaX509SignatureGenerator");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.X509SignatureGenerator,System.Core", @"X509SignatureGenerator");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.EncodingHelpers,System.Core", @"EncodingHelpers");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.GeneralNameEncoder,System.Core", @"GeneralNameEncoder");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.Oids,System.Core", @"Oids");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.Pkcs10CertificationRequestInfo,System.Core", @"Pkcs10CertificationRequestInfo");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.Pkcs9ExtensionRequest,System.Core", @"Pkcs9ExtensionRequest");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.X501Attribute,System.Core", @"X501Attribute");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.RSACertificateExtensions,System.Core", @"RSACertificateExtensions");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.RSAPkcs1X509SignatureGenerator,System.Core", @"RSAPkcs1X509SignatureGenerator");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.RSAPssX509SignatureGenerator,System.Core", @"RSAPssX509SignatureGenerator");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.SubjectAlternativeNameBuilder,System.Core", @"SubjectAlternativeNameBuilder");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.TbsCertificate,System.Core", @"TbsCertificate");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.TimestampInformation,System.Core", @"TimestampInformation");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.TrustStatus,System.Core", @"TrustStatus");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.X509Native,System.Core", @"X509Native");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.PinAndClear,System.Core", @"PinAndClear");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.SafeCertContextHandle,System.Core", @"SafeCertContextHandle");
+            feature.AddKnownType(@"System.Runtime.InteropServices.ComAwareEventInfo,System.Core", @"ComAwareEventInfo");
+            feature.AddKnownType(@"System.Runtime.CompilerServices.ExecutionScope,System.Core", @"ExecutionScope");
+            feature.AddKnownType(@"System.Runtime.CompilerServices.DynamicAttribute,System.Core", @"DynamicAttribute");
+            feature.AddKnownType(@"System.Runtime.CompilerServices.CallSite,System.Core", @"CallSite");
+            feature.AddKnownType(@"System.Runtime.CompilerServices.CallSite`1,System.Core", @"CallSite`1'1");
+            feature.AddKnownType(@"System.Runtime.CompilerServices.CallSiteHelpers,System.Core", @"CallSiteHelpers");
+            feature.AddKnownType(@"System.Runtime.CompilerServices.CallSiteOps,System.Core", @"CallSiteOps");
+            feature.AddKnownType(@"System.Runtime.CompilerServices.RuntimeOps,System.Core", @"RuntimeOps");
+            feature.AddKnownType(@"System.Runtime.CompilerServices.RuleCache`1,System.Core", @"RuleCache`1'1");
+            feature.AddKnownType(@"System.Runtime.CompilerServices.Closure,System.Core", @"Closure");
+            feature.AddKnownType(@"System.Runtime.CompilerServices.DebugInfoGenerator,System.Core", @"DebugInfoGenerator");
+            feature.AddKnownType(@"System.Runtime.CompilerServices.SymbolDocumentGenerator,System.Core", @"SymbolDocumentGenerator");
+            feature.AddKnownType(@"System.Runtime.CompilerServices.IRuntimeVariables,System.Core", @"IRuntimeVariables");
+            feature.AddKnownType(@"System.Runtime.CompilerServices.ReadOnlyCollectionBuilder`1,System.Core", @"ReadOnlyCollectionBuilder`1'1");
+            feature.AddKnownType(@"System.Runtime.CompilerServices.StrongBox`1,System.Core", @"StrongBox`1'1");
+            feature.AddKnownType(@"System.Runtime.CompilerServices.IStrongBox,System.Core", @"IStrongBox");
+            feature.AddKnownType(@"System.Runtime.CompilerServices.TrueReadOnlyCollection`1,System.Core", @"TrueReadOnlyCollection`1'1");
+            feature.AddKnownType(@"System.Linq.IQueryable,System.Core", @"IQueryable");
+            feature.AddKnownType(@"System.Linq.IQueryable`1,System.Core", @"IQueryable`1'1");
+            feature.AddKnownType(@"System.Linq.IQueryProvider,System.Core", @"IQueryProvider");
+            feature.AddKnownType(@"System.Linq.IOrderedQueryable,System.Core", @"IOrderedQueryable");
+            feature.AddKnownType(@"System.Linq.IOrderedQueryable`1,System.Core", @"IOrderedQueryable`1'1");
+            feature.AddKnownType(@"System.Linq.Queryable,System.Core", @"Queryable");
+            feature.AddKnownType(@"System.Linq.Enumerable,System.Core", @"Enumerable");
+            feature.AddKnownType(@"System.Linq.EmptyEnumerable`1,System.Core", @"EmptyEnumerable`1'1");
+            feature.AddKnownType(@"System.Linq.IdentityFunction`1,System.Core", @"IdentityFunction`1'1");
+            feature.AddKnownType(@"System.Linq.IOrderedEnumerable`1,System.Core", @"IOrderedEnumerable`1'1");
+            feature.AddKnownType(@"System.Linq.IGrouping`2,System.Core", @"IGrouping`2'2");
+            feature.AddKnownType(@"System.Linq.ILookup`2,System.Core", @"ILookup`2'2");
+            feature.AddKnownType(@"System.Linq.Lookup`2,System.Core", @"Lookup`2'2");
+            feature.AddKnownType(@"System.Linq.Set`1,System.Core", @"Set`1'1");
+            feature.AddKnownType(@"System.Linq.GroupedEnumerable`4,System.Core", @"GroupedEnumerable`4'4");
+            feature.AddKnownType(@"System.Linq.GroupedEnumerable`3,System.Core", @"GroupedEnumerable`3'3");
+            feature.AddKnownType(@"System.Linq.OrderedEnumerable`1,System.Core", @"OrderedEnumerable`1'1");
+            feature.AddKnownType(@"System.Linq.OrderedEnumerable`2,System.Core", @"OrderedEnumerable`2'2");
+            feature.AddKnownType(@"System.Linq.EnumerableSorter`1,System.Core", @"EnumerableSorter`1'1");
+            feature.AddKnownType(@"System.Linq.EnumerableSorter`2,System.Core", @"EnumerableSorter`2'2");
+            feature.AddKnownType(@"System.Linq.Buffer`1,System.Core", @"Buffer`1'1");
+            feature.AddKnownType(@"System.Linq.SystemCore_EnumerableDebugView`1,System.Core", @"SystemCore_EnumerableDebugView`1'1");
+            feature.AddKnownType(@"System.Linq.SystemCore_EnumerableDebugViewEmptyException,System.Core", @"SystemCore_EnumerableDebugViewEmptyException");
+            feature.AddKnownType(@"System.Linq.SystemCore_EnumerableDebugView,System.Core", @"SystemCore_EnumerableDebugView");
+            feature.AddKnownType(@"System.Linq.IIListProvider`1,System.Core", @"IIListProvider`1'1");
+            feature.AddKnownType(@"System.Linq.SingleLinkedNode`1,System.Core", @"SingleLinkedNode`1'1");
+            feature.AddKnownType(@"System.Linq.EnumerableQuery,System.Core", @"EnumerableQuery");
+            feature.AddKnownType(@"System.Linq.EnumerableQuery`1,System.Core", @"EnumerableQuery`1'1");
+            feature.AddKnownType(@"System.Linq.EnumerableExecutor,System.Core", @"EnumerableExecutor");
+            feature.AddKnownType(@"System.Linq.EnumerableExecutor`1,System.Core", @"EnumerableExecutor`1'1");
+            feature.AddKnownType(@"System.Linq.EnumerableRewriter,System.Core", @"EnumerableRewriter");
+            feature.AddKnownType(@"System.Linq.Expressions.OldExpressionVisitor,System.Core", @"OldExpressionVisitor");
+            feature.AddKnownType(@"System.Linq.TypeHelper,System.Core", @"TypeHelper");
+            feature.AddKnownType(@"System.Linq.Strings,System.Core", @"Strings");
+            feature.AddKnownType(@"System.Linq.Error,System.Core", @"Error");
+            feature.AddKnownType(@"System.Linq.ParallelEnumerable,System.Core", @"ParallelEnumerable");
+            feature.AddKnownType(@"System.Linq.ParallelMergeOptions,System.Core", @"ParallelMergeOptions");
+            feature.AddKnownType(@"System.Linq.ParallelExecutionMode,System.Core", @"ParallelExecutionMode");
+            feature.AddKnownType(@"System.Linq.AggregationMinMaxHelpers`1,System.Core", @"AggregationMinMaxHelpers`1'1");
+            feature.AddKnownType(@"System.Linq.OrderedParallelQuery`1,System.Core", @"OrderedParallelQuery`1'1");
+            feature.AddKnownType(@"System.Linq.ParallelQuery`1,System.Core", @"ParallelQuery`1'1");
+            feature.AddKnownType(@"System.Linq.ParallelQuery,System.Core", @"ParallelQuery");
+            feature.AddKnownType(@"System.Linq.SRDescriptionAttribute,System.Core", @"SRDescriptionAttribute");
+            feature.AddKnownType(@"System.Linq.SRCategoryAttribute,System.Core", @"SRCategoryAttribute");
+            feature.AddKnownType(@"System.Linq.SR,System.Core", @"SR");
+            feature.AddKnownType(@"System.Linq.Parallel.AsynchronousChannel`1,System.Core", @"AsynchronousChannel`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.SynchronousChannel`1,System.Core", @"SynchronousChannel`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.EmptyEnumerable`1,System.Core", @"EmptyEnumerable`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.EmptyEnumerator`1,System.Core", @"EmptyEnumerator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.QueryOperatorEnumerator`2,System.Core", @"QueryOperatorEnumerator`2'2");
+            feature.AddKnownType(@"System.Linq.Parallel.EnumerableWrapperWeakToStrong,System.Core", @"EnumerableWrapperWeakToStrong");
+            feature.AddKnownType(@"System.Linq.Parallel.IParallelPartitionable`1,System.Core", @"IParallelPartitionable`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.ParallelEnumerableWrapper,System.Core", @"ParallelEnumerableWrapper");
+            feature.AddKnownType(@"System.Linq.Parallel.ParallelEnumerableWrapper`1,System.Core", @"ParallelEnumerableWrapper`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.QueryAggregationOptions,System.Core", @"QueryAggregationOptions");
+            feature.AddKnownType(@"System.Linq.Parallel.RangeEnumerable,System.Core", @"RangeEnumerable");
+            feature.AddKnownType(@"System.Linq.Parallel.RepeatEnumerable`1,System.Core", @"RepeatEnumerable`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.AsynchronousChannelMergeEnumerator`1,System.Core", @"AsynchronousChannelMergeEnumerator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.MergeEnumerator`1,System.Core", @"MergeEnumerator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.ArrayMergeHelper`1,System.Core", @"ArrayMergeHelper`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.IMergeHelper`1,System.Core", @"IMergeHelper`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.DefaultMergeHelper`2,System.Core", @"DefaultMergeHelper`2'2");
+            feature.AddKnownType(@"System.Linq.Parallel.MergeExecutor`1,System.Core", @"MergeExecutor`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.OrderPreservingMergeHelper`2,System.Core", @"OrderPreservingMergeHelper`2'2");
+            feature.AddKnownType(@"System.Linq.Parallel.OrderPreservingPipeliningMergeHelper`2,System.Core", @"OrderPreservingPipeliningMergeHelper`2'2");
+            feature.AddKnownType(@"System.Linq.Parallel.Producer`1,System.Core", @"Producer`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.ProducerComparerInt,System.Core", @"ProducerComparerInt");
+            feature.AddKnownType(@"System.Linq.Parallel.SynchronousChannelMergeEnumerator`1,System.Core", @"SynchronousChannelMergeEnumerator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.HashRepartitionEnumerator`3,System.Core", @"HashRepartitionEnumerator`3'3");
+            feature.AddKnownType(@"System.Linq.Parallel.Pair`2,System.Core", @"Pair`2'2");
+            feature.AddKnownType(@"System.Linq.Parallel.HashRepartitionStream`3,System.Core", @"HashRepartitionStream`3'3");
+            feature.AddKnownType(@"System.Linq.Parallel.PartitionedStream`2,System.Core", @"PartitionedStream`2'2");
+            feature.AddKnownType(@"System.Linq.Parallel.IPartitionedStreamRecipient`1,System.Core", @"IPartitionedStreamRecipient`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.OrderedHashRepartitionEnumerator`3,System.Core", @"OrderedHashRepartitionEnumerator`3'3");
+            feature.AddKnownType(@"System.Linq.Parallel.OrderedHashRepartitionStream`3,System.Core", @"OrderedHashRepartitionStream`3'3");
+            feature.AddKnownType(@"System.Linq.Parallel.PartitionedDataSource`1,System.Core", @"PartitionedDataSource`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.UnorderedHashRepartitionStream`3,System.Core", @"UnorderedHashRepartitionStream`3'3");
+            feature.AddKnownType(@"System.Linq.Parallel.AssociativeAggregationOperator`3,System.Core", @"AssociativeAggregationOperator`3'3");
+            feature.AddKnownType(@"System.Linq.Parallel.UnaryQueryOperator`2,System.Core", @"UnaryQueryOperator`2'2");
+            feature.AddKnownType(@"System.Linq.Parallel.QueryOperator`1,System.Core", @"QueryOperator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.PartitionerQueryOperator`1,System.Core", @"PartitionerQueryOperator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.ScanQueryOperator`1,System.Core", @"ScanQueryOperator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.ExceptQueryOperator`1,System.Core", @"ExceptQueryOperator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.BinaryQueryOperator`3,System.Core", @"BinaryQueryOperator`3'3");
+            feature.AddKnownType(@"System.Linq.Parallel.GroupJoinQueryOperator`4,System.Core", @"GroupJoinQueryOperator`4'4");
+            feature.AddKnownType(@"System.Linq.Parallel.HashJoinQueryOperatorEnumerator`5,System.Core", @"HashJoinQueryOperatorEnumerator`5'5");
+            feature.AddKnownType(@"System.Linq.Parallel.IntersectQueryOperator`1,System.Core", @"IntersectQueryOperator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.JoinQueryOperator`4,System.Core", @"JoinQueryOperator`4'4");
+            feature.AddKnownType(@"System.Linq.Parallel.UnionQueryOperator`1,System.Core", @"UnionQueryOperator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.ZipQueryOperator`3,System.Core", @"ZipQueryOperator`3'3");
+            feature.AddKnownType(@"System.Linq.Parallel.PartitionedStreamMerger`1,System.Core", @"PartitionedStreamMerger`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.QueryOpeningEnumerator`1,System.Core", @"QueryOpeningEnumerator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.CountAggregationOperator`1,System.Core", @"CountAggregationOperator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.InlinedAggregationOperator`3,System.Core", @"InlinedAggregationOperator`3'3");
+            feature.AddKnownType(@"System.Linq.Parallel.LongCountAggregationOperator`1,System.Core", @"LongCountAggregationOperator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.DecimalAverageAggregationOperator,System.Core", @"DecimalAverageAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.DecimalMinMaxAggregationOperator,System.Core", @"DecimalMinMaxAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.DecimalSumAggregationOperator,System.Core", @"DecimalSumAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.DoubleAverageAggregationOperator,System.Core", @"DoubleAverageAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.DoubleMinMaxAggregationOperator,System.Core", @"DoubleMinMaxAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.DoubleSumAggregationOperator,System.Core", @"DoubleSumAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.FloatAverageAggregationOperator,System.Core", @"FloatAverageAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.FloatMinMaxAggregationOperator,System.Core", @"FloatMinMaxAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.FloatSumAggregationOperator,System.Core", @"FloatSumAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.InlinedAggregationOperatorEnumerator`1,System.Core", @"InlinedAggregationOperatorEnumerator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.IntAverageAggregationOperator,System.Core", @"IntAverageAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.IntMinMaxAggregationOperator,System.Core", @"IntMinMaxAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.IntSumAggregationOperator,System.Core", @"IntSumAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.LongAverageAggregationOperator,System.Core", @"LongAverageAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.LongMinMaxAggregationOperator,System.Core", @"LongMinMaxAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.LongSumAggregationOperator,System.Core", @"LongSumAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.NullableDecimalAverageAggregationOperator,System.Core", @"NullableDecimalAverageAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.NullableDecimalMinMaxAggregationOperator,System.Core", @"NullableDecimalMinMaxAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.NullableDecimalSumAggregationOperator,System.Core", @"NullableDecimalSumAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.NullableDoubleAverageAggregationOperator,System.Core", @"NullableDoubleAverageAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.NullableDoubleMinMaxAggregationOperator,System.Core", @"NullableDoubleMinMaxAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.NullableDoubleSumAggregationOperator,System.Core", @"NullableDoubleSumAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.NullableFloatAverageAggregationOperator,System.Core", @"NullableFloatAverageAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.NullableFloatMinMaxAggregationOperator,System.Core", @"NullableFloatMinMaxAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.NullableFloatSumAggregationOperator,System.Core", @"NullableFloatSumAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.NullableIntAverageAggregationOperator,System.Core", @"NullableIntAverageAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.NullableIntMinMaxAggregationOperator,System.Core", @"NullableIntMinMaxAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.NullableIntSumAggregationOperator,System.Core", @"NullableIntSumAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.NullableLongAverageAggregationOperator,System.Core", @"NullableLongAverageAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.NullableLongMinMaxAggregationOperator,System.Core", @"NullableLongMinMaxAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.NullableLongSumAggregationOperator,System.Core", @"NullableLongSumAggregationOperator");
+            feature.AddKnownType(@"System.Linq.Parallel.ListQueryResults`1,System.Core", @"ListQueryResults`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.QueryResults`1,System.Core", @"QueryResults`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.OrdinalIndexState,System.Core", @"OrdinalIndexState");
+            feature.AddKnownType(@"System.Linq.Parallel.QuerySettings,System.Core", @"QuerySettings");
+            feature.AddKnownType(@"System.Linq.Parallel.OrderingQueryOperator`1,System.Core", @"OrderingQueryOperator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.QueryExecutionOption`1,System.Core", @"QueryExecutionOption`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.AnyAllSearchOperator`1,System.Core", @"AnyAllSearchOperator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.ConcatQueryOperator`1,System.Core", @"ConcatQueryOperator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.ConcatKey`2,System.Core", @"ConcatKey`2'2");
+            feature.AddKnownType(@"System.Linq.Parallel.ContainsSearchOperator`1,System.Core", @"ContainsSearchOperator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.DefaultIfEmptyQueryOperator`1,System.Core", @"DefaultIfEmptyQueryOperator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.DistinctQueryOperator`1,System.Core", @"DistinctQueryOperator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.ElementAtQueryOperator`1,System.Core", @"ElementAtQueryOperator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.FirstQueryOperator`1,System.Core", @"FirstQueryOperator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.ForAllOperator`1,System.Core", @"ForAllOperator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.GroupByQueryOperator`3,System.Core", @"GroupByQueryOperator`3'3");
+            feature.AddKnownType(@"System.Linq.Parallel.GroupByQueryOperatorEnumerator`4,System.Core", @"GroupByQueryOperatorEnumerator`4'4");
+            feature.AddKnownType(@"System.Linq.Parallel.GroupByIdentityQueryOperatorEnumerator`3,System.Core", @"GroupByIdentityQueryOperatorEnumerator`3'3");
+            feature.AddKnownType(@"System.Linq.Parallel.GroupByElementSelectorQueryOperatorEnumerator`4,System.Core", @"GroupByElementSelectorQueryOperatorEnumerator`4'4");
+            feature.AddKnownType(@"System.Linq.Parallel.OrderedGroupByQueryOperatorEnumerator`4,System.Core", @"OrderedGroupByQueryOperatorEnumerator`4'4");
+            feature.AddKnownType(@"System.Linq.Parallel.OrderedGroupByIdentityQueryOperatorEnumerator`3,System.Core", @"OrderedGroupByIdentityQueryOperatorEnumerator`3'3");
+            feature.AddKnownType(@"System.Linq.Parallel.OrderedGroupByElementSelectorQueryOperatorEnumerator`4,System.Core", @"OrderedGroupByElementSelectorQueryOperatorEnumerator`4'4");
+            feature.AddKnownType(@"System.Linq.Parallel.GroupByGrouping`2,System.Core", @"GroupByGrouping`2'2");
+            feature.AddKnownType(@"System.Linq.Parallel.OrderedGroupByGrouping`3,System.Core", @"OrderedGroupByGrouping`3'3");
+            feature.AddKnownType(@"System.Linq.Parallel.IndexedSelectQueryOperator`2,System.Core", @"IndexedSelectQueryOperator`2'2");
+            feature.AddKnownType(@"System.Linq.Parallel.IndexedWhereQueryOperator`1,System.Core", @"IndexedWhereQueryOperator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.LastQueryOperator`1,System.Core", @"LastQueryOperator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.ReverseQueryOperator`1,System.Core", @"ReverseQueryOperator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.SelectManyQueryOperator`3,System.Core", @"SelectManyQueryOperator`3'3");
+            feature.AddKnownType(@"System.Linq.Parallel.SelectQueryOperator`2,System.Core", @"SelectQueryOperator`2'2");
+            feature.AddKnownType(@"System.Linq.Parallel.SingleQueryOperator`1,System.Core", @"SingleQueryOperator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.SortQueryOperator`2,System.Core", @"SortQueryOperator`2'2");
+            feature.AddKnownType(@"System.Linq.Parallel.SortQueryOperatorResults`2,System.Core", @"SortQueryOperatorResults`2'2");
+            feature.AddKnownType(@"System.Linq.Parallel.SortQueryOperatorEnumerator`3,System.Core", @"SortQueryOperatorEnumerator`3'3");
+            feature.AddKnownType(@"System.Linq.Parallel.TakeOrSkipQueryOperator`1,System.Core", @"TakeOrSkipQueryOperator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.TakeOrSkipWhileQueryOperator`1,System.Core", @"TakeOrSkipWhileQueryOperator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.WhereQueryOperator`1,System.Core", @"WhereQueryOperator`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.CancellationState,System.Core", @"CancellationState");
+            feature.AddKnownType(@"System.Linq.Parallel.OrderPreservingSpoolingTask`2,System.Core", @"OrderPreservingSpoolingTask`2'2");
+            feature.AddKnownType(@"System.Linq.Parallel.SpoolingTaskBase,System.Core", @"SpoolingTaskBase");
+            feature.AddKnownType(@"System.Linq.Parallel.QueryTask,System.Core", @"QueryTask");
+            feature.AddKnownType(@"System.Linq.Parallel.OrderPreservingPipeliningSpoolingTask`2,System.Core", @"OrderPreservingPipeliningSpoolingTask`2'2");
+            feature.AddKnownType(@"System.Linq.Parallel.QueryLifecycle,System.Core", @"QueryLifecycle");
+            feature.AddKnownType(@"System.Linq.Parallel.QueryTaskGroupState,System.Core", @"QueryTaskGroupState");
+            feature.AddKnownType(@"System.Linq.Parallel.Scheduling,System.Core", @"Scheduling");
+            feature.AddKnownType(@"System.Linq.Parallel.SpoolingTask,System.Core", @"SpoolingTask");
+            feature.AddKnownType(@"System.Linq.Parallel.StopAndGoSpoolingTask`2,System.Core", @"StopAndGoSpoolingTask`2'2");
+            feature.AddKnownType(@"System.Linq.Parallel.PipelineSpoolingTask`2,System.Core", @"PipelineSpoolingTask`2'2");
+            feature.AddKnownType(@"System.Linq.Parallel.ForAllSpoolingTask`2,System.Core", @"ForAllSpoolingTask`2'2");
+            feature.AddKnownType(@"System.Linq.Parallel.CancellableEnumerable,System.Core", @"CancellableEnumerable");
+            feature.AddKnownType(@"System.Linq.Parallel.ExceptionAggregator,System.Core", @"ExceptionAggregator");
+            feature.AddKnownType(@"System.Linq.Parallel.ExchangeUtilities,System.Core", @"ExchangeUtilities");
+            feature.AddKnownType(@"System.Linq.Parallel.NoKeyMemoizationRequired,System.Core", @"NoKeyMemoizationRequired");
+            feature.AddKnownType(@"System.Linq.Parallel.FixedMaxHeap`1,System.Core", @"FixedMaxHeap`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.GrowingArray`1,System.Core", @"GrowingArray`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.HashLookup`2,System.Core", @"HashLookup`2'2");
+            feature.AddKnownType(@"System.Linq.Parallel.IntValueEvent,System.Core", @"IntValueEvent");
+            feature.AddKnownType(@"System.Linq.Parallel.ListChunk`1,System.Core", @"ListChunk`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.Lookup`2,System.Core", @"Lookup`2'2");
+            feature.AddKnownType(@"System.Linq.Parallel.PairComparer`2,System.Core", @"PairComparer`2'2");
+            feature.AddKnownType(@"System.Linq.Parallel.PlinqEtwProvider,System.Core", @"PlinqEtwProvider");
+            feature.AddKnownType(@"System.Linq.Parallel.ReverseComparer`1,System.Core", @"ReverseComparer`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.Shared`1,System.Core", @"Shared`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.SortHelper`1,System.Core", @"SortHelper`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.SortHelper`2,System.Core", @"SortHelper`2'2");
+            feature.AddKnownType(@"System.Linq.Parallel.TraceHelpers,System.Core", @"TraceHelpers");
+            feature.AddKnownType(@"System.Linq.Parallel.Util,System.Core", @"Util");
+            feature.AddKnownType(@"System.Linq.Parallel.Wrapper`1,System.Core", @"Wrapper`1'1");
+            feature.AddKnownType(@"System.Linq.Parallel.WrapperEqualityComparer`1,System.Core", @"WrapperEqualityComparer`1'1");
+            feature.AddKnownType(@"System.Linq.Expressions.ReadOnlyCollectionExtensions,System.Core", @"ReadOnlyCollectionExtensions");
+            feature.AddKnownType(@"System.Linq.Expressions.Strings,System.Core", @"Strings");
+            feature.AddKnownType(@"System.Linq.Expressions.Error,System.Core", @"Error");
+            feature.AddKnownType(@"System.Linq.Expressions.BinaryExpression,System.Core", @"BinaryExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression,System.Core", @"Expression");
+            feature.AddKnownType(@"System.Linq.Expressions.LogicalBinaryExpression,System.Core", @"LogicalBinaryExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.AssignBinaryExpression,System.Core", @"AssignBinaryExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.CoalesceConversionBinaryExpression,System.Core", @"CoalesceConversionBinaryExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.OpAssignMethodConversionBinaryExpression,System.Core", @"OpAssignMethodConversionBinaryExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.MethodBinaryExpression,System.Core", @"MethodBinaryExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.SimpleBinaryExpression,System.Core", @"SimpleBinaryExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.BlockExpression,System.Core", @"BlockExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.Block2,System.Core", @"Block2");
+            feature.AddKnownType(@"System.Linq.Expressions.Block3,System.Core", @"Block3");
+            feature.AddKnownType(@"System.Linq.Expressions.Block4,System.Core", @"Block4");
+            feature.AddKnownType(@"System.Linq.Expressions.Block5,System.Core", @"Block5");
+            feature.AddKnownType(@"System.Linq.Expressions.BlockN,System.Core", @"BlockN");
+            feature.AddKnownType(@"System.Linq.Expressions.ScopeExpression,System.Core", @"ScopeExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.Scope1,System.Core", @"Scope1");
+            feature.AddKnownType(@"System.Linq.Expressions.ScopeN,System.Core", @"ScopeN");
+            feature.AddKnownType(@"System.Linq.Expressions.ScopeWithType,System.Core", @"ScopeWithType");
+            feature.AddKnownType(@"System.Linq.Expressions.BlockExpressionList,System.Core", @"BlockExpressionList");
+            feature.AddKnownType(@"System.Linq.Expressions.CatchBlock,System.Core", @"CatchBlock");
+            feature.AddKnownType(@"System.Linq.Expressions.ConditionalExpression,System.Core", @"ConditionalExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.FullConditionalExpression,System.Core", @"FullConditionalExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.FullConditionalExpressionWithType,System.Core", @"FullConditionalExpressionWithType");
+            feature.AddKnownType(@"System.Linq.Expressions.ConstantExpression,System.Core", @"ConstantExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.TypedConstantExpression,System.Core", @"TypedConstantExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.DebugInfoExpression,System.Core", @"DebugInfoExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.SpanDebugInfoExpression,System.Core", @"SpanDebugInfoExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.ClearDebugInfoExpression,System.Core", @"ClearDebugInfoExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.DebugViewWriter,System.Core", @"DebugViewWriter");
+            feature.AddKnownType(@"System.Linq.Expressions.ExpressionVisitor,System.Core", @"ExpressionVisitor");
+            feature.AddKnownType(@"System.Linq.Expressions.DefaultExpression,System.Core", @"DefaultExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.DynamicExpression,System.Core", @"DynamicExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.IDynamicExpression,System.Core", @"IDynamicExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.IArgumentProvider,System.Core", @"IArgumentProvider");
+            feature.AddKnownType(@"System.Linq.Expressions.DynamicExpressionN,System.Core", @"DynamicExpressionN");
+            feature.AddKnownType(@"System.Linq.Expressions.TypedDynamicExpressionN,System.Core", @"TypedDynamicExpressionN");
+            feature.AddKnownType(@"System.Linq.Expressions.DynamicExpression1,System.Core", @"DynamicExpression1");
+            feature.AddKnownType(@"System.Linq.Expressions.TypedDynamicExpression1,System.Core", @"TypedDynamicExpression1");
+            feature.AddKnownType(@"System.Linq.Expressions.DynamicExpression2,System.Core", @"DynamicExpression2");
+            feature.AddKnownType(@"System.Linq.Expressions.TypedDynamicExpression2,System.Core", @"TypedDynamicExpression2");
+            feature.AddKnownType(@"System.Linq.Expressions.DynamicExpression3,System.Core", @"DynamicExpression3");
+            feature.AddKnownType(@"System.Linq.Expressions.TypedDynamicExpression3,System.Core", @"TypedDynamicExpression3");
+            feature.AddKnownType(@"System.Linq.Expressions.DynamicExpression4,System.Core", @"DynamicExpression4");
+            feature.AddKnownType(@"System.Linq.Expressions.TypedDynamicExpression4,System.Core", @"TypedDynamicExpression4");
+            feature.AddKnownType(@"System.Linq.Expressions.ElementInit,System.Core", @"ElementInit");
+            feature.AddKnownType(@"System.Linq.Expressions.ExpressionStringBuilder,System.Core", @"ExpressionStringBuilder");
+            feature.AddKnownType(@"System.Linq.Expressions.ExpressionType,System.Core", @"ExpressionType");
+            feature.AddKnownType(@"System.Linq.Expressions.DynamicExpressionVisitor,System.Core", @"DynamicExpressionVisitor");
+            feature.AddKnownType(@"System.Linq.Expressions.GotoExpressionKind,System.Core", @"GotoExpressionKind");
+            feature.AddKnownType(@"System.Linq.Expressions.GotoExpression,System.Core", @"GotoExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.ArgumentProviderOps,System.Core", @"ArgumentProviderOps");
+            feature.AddKnownType(@"System.Linq.Expressions.IndexExpression,System.Core", @"IndexExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.InvocationExpression,System.Core", @"InvocationExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.LabelExpression,System.Core", @"LabelExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.LabelTarget,System.Core", @"LabelTarget");
+            feature.AddKnownType(@"System.Linq.Expressions.LambdaExpression,System.Core", @"LambdaExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression`1,System.Core", @"Expression`1'1");
+            feature.AddKnownType(@"System.Linq.Expressions.ListArgumentProvider,System.Core", @"ListArgumentProvider");
+            feature.AddKnownType(@"System.Linq.Expressions.ListInitExpression,System.Core", @"ListInitExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.LoopExpression,System.Core", @"LoopExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.MemberAssignment,System.Core", @"MemberAssignment");
+            feature.AddKnownType(@"System.Linq.Expressions.MemberBinding,System.Core", @"MemberBinding");
+            feature.AddKnownType(@"System.Linq.Expressions.MemberBindingType,System.Core", @"MemberBindingType");
+            feature.AddKnownType(@"System.Linq.Expressions.MemberExpression,System.Core", @"MemberExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.FieldExpression,System.Core", @"FieldExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.PropertyExpression,System.Core", @"PropertyExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.MemberInitExpression,System.Core", @"MemberInitExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.MemberListBinding,System.Core", @"MemberListBinding");
+            feature.AddKnownType(@"System.Linq.Expressions.MemberMemberBinding,System.Core", @"MemberMemberBinding");
+            feature.AddKnownType(@"System.Linq.Expressions.MethodCallExpression,System.Core", @"MethodCallExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.MethodCallExpressionN,System.Core", @"MethodCallExpressionN");
+            feature.AddKnownType(@"System.Linq.Expressions.InstanceMethodCallExpressionN,System.Core", @"InstanceMethodCallExpressionN");
+            feature.AddKnownType(@"System.Linq.Expressions.MethodCallExpression1,System.Core", @"MethodCallExpression1");
+            feature.AddKnownType(@"System.Linq.Expressions.MethodCallExpression2,System.Core", @"MethodCallExpression2");
+            feature.AddKnownType(@"System.Linq.Expressions.MethodCallExpression3,System.Core", @"MethodCallExpression3");
+            feature.AddKnownType(@"System.Linq.Expressions.MethodCallExpression4,System.Core", @"MethodCallExpression4");
+            feature.AddKnownType(@"System.Linq.Expressions.MethodCallExpression5,System.Core", @"MethodCallExpression5");
+            feature.AddKnownType(@"System.Linq.Expressions.InstanceMethodCallExpression2,System.Core", @"InstanceMethodCallExpression2");
+            feature.AddKnownType(@"System.Linq.Expressions.InstanceMethodCallExpression3,System.Core", @"InstanceMethodCallExpression3");
+            feature.AddKnownType(@"System.Linq.Expressions.NewArrayExpression,System.Core", @"NewArrayExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.NewArrayInitExpression,System.Core", @"NewArrayInitExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.NewArrayBoundsExpression,System.Core", @"NewArrayBoundsExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.NewExpression,System.Core", @"NewExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.NewValueTypeExpression,System.Core", @"NewValueTypeExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.ParameterExpression,System.Core", @"ParameterExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.ByRefParameterExpression,System.Core", @"ByRefParameterExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.TypedParameterExpression,System.Core", @"TypedParameterExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.PrimitiveParameterExpression`1,System.Core", @"PrimitiveParameterExpression`1'1");
+            feature.AddKnownType(@"System.Linq.Expressions.RuntimeVariablesExpression,System.Core", @"RuntimeVariablesExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.SwitchCase,System.Core", @"SwitchCase");
+            feature.AddKnownType(@"System.Linq.Expressions.SwitchExpression,System.Core", @"SwitchExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.SymbolDocumentInfo,System.Core", @"SymbolDocumentInfo");
+            feature.AddKnownType(@"System.Linq.Expressions.SymbolDocumentWithGuids,System.Core", @"SymbolDocumentWithGuids");
+            feature.AddKnownType(@"System.Linq.Expressions.TryExpression,System.Core", @"TryExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.TypeBinaryExpression,System.Core", @"TypeBinaryExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.StackGuard,System.Core", @"StackGuard");
+            feature.AddKnownType(@"System.Linq.Expressions.UnaryExpression,System.Core", @"UnaryExpression");
+            feature.AddKnownType(@"System.Linq.Expressions.AnalyzeTypeIsResult,System.Core", @"AnalyzeTypeIsResult");
+            feature.AddKnownType(@"System.Linq.Expressions.ConstantCheck,System.Core", @"ConstantCheck");
+            feature.AddKnownType(@"System.Linq.Expressions.Set`1,System.Core", @"Set`1'1");
+            feature.AddKnownType(@"System.Linq.Expressions.SRDescriptionAttribute,System.Core", @"SRDescriptionAttribute");
+            feature.AddKnownType(@"System.Linq.Expressions.SRCategoryAttribute,System.Core", @"SRCategoryAttribute");
+            feature.AddKnownType(@"System.Linq.Expressions.SR,System.Core", @"SR");
+            feature.AddKnownType(@"System.Linq.Expressions.Compiler.AnalyzedTree,System.Core", @"AnalyzedTree");
+            feature.AddKnownType(@"System.Linq.Expressions.Compiler.AssemblyGen,System.Core", @"AssemblyGen");
+            feature.AddKnownType(@"System.Linq.Expressions.Compiler.SymbolGuids,System.Core", @"SymbolGuids");
+            feature.AddKnownType(@"System.Linq.Expressions.Compiler.BoundConstants,System.Core", @"BoundConstants");
+            feature.AddKnownType(@"System.Linq.Expressions.Compiler.VariableStorageKind,System.Core", @"VariableStorageKind");
+            feature.AddKnownType(@"System.Linq.Expressions.Compiler.CompilerScope,System.Core", @"CompilerScope");
+            feature.AddKnownType(@"System.Linq.Expressions.Compiler.DelegateHelpers,System.Core", @"DelegateHelpers");
+            feature.AddKnownType(@"System.Linq.Expressions.Compiler.HoistedLocals,System.Core", @"HoistedLocals");
+            feature.AddKnownType(@"System.Linq.Expressions.Compiler.ILGen,System.Core", @"ILGen");
+            feature.AddKnownType(@"System.Linq.Expressions.Compiler.KeyedQueue`2,System.Core", @"KeyedQueue`2'2");
+            feature.AddKnownType(@"System.Linq.Expressions.Compiler.LabelInfo,System.Core", @"LabelInfo");
+            feature.AddKnownType(@"System.Linq.Expressions.Compiler.LabelScopeKind,System.Core", @"LabelScopeKind");
+            feature.AddKnownType(@"System.Linq.Expressions.Compiler.LabelScopeInfo,System.Core", @"LabelScopeInfo");
+            feature.AddKnownType(@"System.Linq.Expressions.Compiler.LambdaCompiler,System.Core", @"LambdaCompiler");
+            feature.AddKnownType(@"System.Linq.Expressions.Compiler.StackSpiller,System.Core", @"StackSpiller");
+            feature.AddKnownType(@"System.Linq.Expressions.Compiler.SpilledExpressionBlock,System.Core", @"SpilledExpressionBlock");
+            feature.AddKnownType(@"System.Linq.Expressions.Compiler.VariableBinder,System.Core", @"VariableBinder");
+            feature.AddKnownType(@"System.Management.Instrumentation.ManagementEntityAttribute,System.Core", @"ManagementEntityAttribute");
+            feature.AddKnownType(@"System.Management.Instrumentation.ManagementHostingModel,System.Core", @"ManagementHostingModel");
+            feature.AddKnownType(@"System.Management.Instrumentation.WmiConfigurationAttribute,System.Core", @"WmiConfigurationAttribute");
+            feature.AddKnownType(@"System.Management.Instrumentation.ManagementMemberAttribute,System.Core", @"ManagementMemberAttribute");
+            feature.AddKnownType(@"System.Management.Instrumentation.ManagementNewInstanceAttribute,System.Core", @"ManagementNewInstanceAttribute");
+            feature.AddKnownType(@"System.Management.Instrumentation.ManagementBindAttribute,System.Core", @"ManagementBindAttribute");
+            feature.AddKnownType(@"System.Management.Instrumentation.ManagementCreateAttribute,System.Core", @"ManagementCreateAttribute");
+            feature.AddKnownType(@"System.Management.Instrumentation.ManagementRemoveAttribute,System.Core", @"ManagementRemoveAttribute");
+            feature.AddKnownType(@"System.Management.Instrumentation.ManagementEnumeratorAttribute,System.Core", @"ManagementEnumeratorAttribute");
+            feature.AddKnownType(@"System.Management.Instrumentation.ManagementProbeAttribute,System.Core", @"ManagementProbeAttribute");
+            feature.AddKnownType(@"System.Management.Instrumentation.ManagementTaskAttribute,System.Core", @"ManagementTaskAttribute");
+            feature.AddKnownType(@"System.Management.Instrumentation.ManagementKeyAttribute,System.Core", @"ManagementKeyAttribute");
+            feature.AddKnownType(@"System.Management.Instrumentation.ManagementReferenceAttribute,System.Core", @"ManagementReferenceAttribute");
+            feature.AddKnownType(@"System.Management.Instrumentation.ManagementConfigurationType,System.Core", @"ManagementConfigurationType");
+            feature.AddKnownType(@"System.Management.Instrumentation.ManagementConfigurationAttribute,System.Core", @"ManagementConfigurationAttribute");
+            feature.AddKnownType(@"System.Management.Instrumentation.ManagementCommitAttribute,System.Core", @"ManagementCommitAttribute");
+            feature.AddKnownType(@"System.Management.Instrumentation.ManagementNameAttribute,System.Core", @"ManagementNameAttribute");
+            feature.AddKnownType(@"System.Management.Instrumentation.InstrumentationBaseException,System.Core", @"InstrumentationBaseException");
+            feature.AddKnownType(@"System.Management.Instrumentation.InstrumentationException,System.Core", @"InstrumentationException");
+            feature.AddKnownType(@"System.Management.Instrumentation.InstanceNotFoundException,System.Core", @"InstanceNotFoundException");
+            feature.AddKnownType(@"System.Diagnostics.EventSchemaTraceListener,System.Core", @"EventSchemaTraceListener");
+            feature.AddKnownType(@"System.Diagnostics.TraceLogRetentionOption,System.Core", @"TraceLogRetentionOption");
+            feature.AddKnownType(@"System.Diagnostics.UnescapedXmlDiagnosticData,System.Core", @"UnescapedXmlDiagnosticData");
+            feature.AddKnownType(@"System.Diagnostics.StackTraceSymbols,System.Core", @"StackTraceSymbols");
+            feature.AddKnownType(@"System.Diagnostics.PerformanceData.CounterData,System.Core", @"CounterData");
+            feature.AddKnownType(@"System.Diagnostics.PerformanceData.CounterSetInstanceCounterDataSet,System.Core", @"CounterSetInstanceCounterDataSet");
+            feature.AddKnownType(@"System.Diagnostics.PerformanceData.CounterSet,System.Core", @"CounterSet");
+            feature.AddKnownType(@"System.Diagnostics.PerformanceData.CounterSetInstance,System.Core", @"CounterSetInstance");
+            feature.AddKnownType(@"System.Diagnostics.PerformanceData.CounterSetInstanceType,System.Core", @"CounterSetInstanceType");
+            feature.AddKnownType(@"System.Diagnostics.PerformanceData.CounterType,System.Core", @"CounterType");
+            feature.AddKnownType(@"System.Diagnostics.PerformanceData.PerfProvider,System.Core", @"PerfProvider");
+            feature.AddKnownType(@"System.Diagnostics.PerformanceData.PerfProviderCollection,System.Core", @"PerfProviderCollection");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.EventDescriptor,System.Core", @"EventDescriptor");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.EventProvider,System.Core", @"EventProvider");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.EventProviderTraceListener,System.Core", @"EventProviderTraceListener");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventBookmark,System.Core", @"EventBookmark");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventLogType,System.Core", @"EventLogType");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventLogIsolation,System.Core", @"EventLogIsolation");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventLogMode,System.Core", @"EventLogMode");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventLogConfiguration,System.Core", @"EventLogConfiguration");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventLogLink,System.Core", @"EventLogLink");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventLogStatus,System.Core", @"EventLogStatus");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventProperty,System.Core", @"EventProperty");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventLogPropertySelector,System.Core", @"EventLogPropertySelector");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventRecord,System.Core", @"EventRecord");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventKeyword,System.Core", @"EventKeyword");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventLevel,System.Core", @"EventLevel");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventLogRecord,System.Core", @"EventLogRecord");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventLogReader,System.Core", @"EventLogReader");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventLogWatcher,System.Core", @"EventLogWatcher");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventRecordWrittenEventArgs,System.Core", @"EventRecordWrittenEventArgs");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventLogQuery,System.Core", @"EventLogQuery");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventLogHandle,System.Core", @"EventLogHandle");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventLogPermissionHolder,System.Core", @"EventLogPermissionHolder");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.SessionAuthentication,System.Core", @"SessionAuthentication");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.PathType,System.Core", @"PathType");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventLogSession,System.Core", @"EventLogSession");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventMetadata,System.Core", @"EventMetadata");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventOpcode,System.Core", @"EventOpcode");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventTask,System.Core", @"EventTask");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventLogException,System.Core", @"EventLogException");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventLogNotFoundException,System.Core", @"EventLogNotFoundException");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventLogReadingException,System.Core", @"EventLogReadingException");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventLogProviderDisabledException,System.Core", @"EventLogProviderDisabledException");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventLogInvalidDataException,System.Core", @"EventLogInvalidDataException");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.EventLogInformation,System.Core", @"EventLogInformation");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.NativeWrapper,System.Core", @"NativeWrapper");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.ProviderMetadata,System.Core", @"ProviderMetadata");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.ProviderMetadataCachedInformation,System.Core", @"ProviderMetadataCachedInformation");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.CoTaskMemUnicodeSafeHandle,System.Core", @"CoTaskMemUnicodeSafeHandle");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.CoTaskMemSafeHandle,System.Core", @"CoTaskMemSafeHandle");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.StandardEventLevel,System.Core", @"StandardEventLevel");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.StandardEventTask,System.Core", @"StandardEventTask");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.StandardEventOpcode,System.Core", @"StandardEventOpcode");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.StandardEventKeywords,System.Core", @"StandardEventKeywords");
+            feature.AddKnownType(@"Interop+Libraries,System.Core", @"Libraries");
+            feature.AddKnownType(@"Interop+Crypt32,System.Core", @"Crypt32");
+            feature.AddKnownType(@"Interop+NCrypt,System.Core", @"NCrypt");
+            feature.AddKnownType(@"Interop+BCrypt,System.Core", @"BCrypt");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+SECURITY_ATTRIBUTES,System.Core", @"Microsoft.Win32.SECURITY_ATTRIBUTES");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+EtwEnableCallback,System.Core", @"Microsoft.Win32.EtwEnableCallback");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+PerfCounterSetInfoStruct,System.Core", @"Microsoft.Win32.PerfCounterSetInfoStruct");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+PerfCounterInfoStruct,System.Core", @"Microsoft.Win32.PerfCounterInfoStruct");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+PerfCounterSetInstanceStruct,System.Core", @"Microsoft.Win32.PerfCounterSetInstanceStruct");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+PERFLIBREQUEST,System.Core", @"Microsoft.Win32.PERFLIBREQUEST");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+EvtQueryFlags,System.Core", @"Microsoft.Win32.EvtQueryFlags");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+EvtSubscribeFlags,System.Core", @"Microsoft.Win32.EvtSubscribeFlags");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+EvtVariantType,System.Core", @"Microsoft.Win32.EvtVariantType");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+EvtMasks,System.Core", @"Microsoft.Win32.EvtMasks");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+SystemTime,System.Core", @"Microsoft.Win32.SystemTime");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+EvtVariant,System.Core", @"Microsoft.Win32.EvtVariant");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+EvtEventPropertyId,System.Core", @"Microsoft.Win32.EvtEventPropertyId");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+EvtQueryPropertyId,System.Core", @"Microsoft.Win32.EvtQueryPropertyId");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+EvtPublisherMetadataPropertyId,System.Core", @"Microsoft.Win32.EvtPublisherMetadataPropertyId");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+EvtChannelReferenceFlags,System.Core", @"Microsoft.Win32.EvtChannelReferenceFlags");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+EvtEventMetadataPropertyId,System.Core", @"Microsoft.Win32.EvtEventMetadataPropertyId");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+EvtChannelConfigPropertyId,System.Core", @"Microsoft.Win32.EvtChannelConfigPropertyId");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+EvtLogPropertyId,System.Core", @"Microsoft.Win32.EvtLogPropertyId");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+EvtExportLogFlags,System.Core", @"Microsoft.Win32.EvtExportLogFlags");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+EvtRenderContextFlags,System.Core", @"Microsoft.Win32.EvtRenderContextFlags");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+EvtRenderFlags,System.Core", @"Microsoft.Win32.EvtRenderFlags");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+EvtFormatMessageFlags,System.Core", @"Microsoft.Win32.EvtFormatMessageFlags");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+EvtSystemPropertyId,System.Core", @"Microsoft.Win32.EvtSystemPropertyId");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+EvtLoginClass,System.Core", @"Microsoft.Win32.EvtLoginClass");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+EvtRpcLogin,System.Core", @"Microsoft.Win32.EvtRpcLogin");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+EvtSeekFlags,System.Core", @"Microsoft.Win32.EvtSeekFlags");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+EvtStringVariant,System.Core", @"Microsoft.Win32.EvtStringVariant");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+MEMORY_BASIC_INFORMATION,System.Core", @"Microsoft.Win32.MEMORY_BASIC_INFORMATION");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+SYSTEM_INFO,System.Core", @"Microsoft.Win32.SYSTEM_INFO");
+            feature.AddKnownType(@"Microsoft.Win32.UnsafeNativeMethods+MEMORYSTATUSEX,System.Core", @"Microsoft.Win32.MEMORYSTATUSEX");
+            feature.AddKnownType(@"System.Reflection.Metadata.SequencePointCollection+Enumerator,System.Core", @"Enumerator");
+            feature.AddKnownType(@"System.Reflection.Metadata.BlobHandle+VirtualIndex,System.Core", @"VirtualIndex");
+            feature.AddKnownType(@"System.Collections.Immutable.ImmutableArray`1+Builder,System.Core", @"ImmutableArray`1'1.Builder'1");
+            feature.AddKnownType(@"System.Collections.Generic.HashSet`1+ElementCount,System.Core", @"ElementCount'1");
+            feature.AddKnownType(@"System.Collections.Generic.HashSet`1+Slot,System.Core", @"Slot'1");
+            feature.AddKnownType(@"System.Collections.Generic.HashSet`1+Enumerator,System.Core", @"HashSet`1'1.Enumerator'1");
+            feature.AddKnownType(@"System.IO.Pipes.NamedPipeServerStream+ExecuteHelper,System.Core", @"ExecuteHelper");
+            feature.AddKnownType(@"System.Dynamic.Utils.CacheDict`2+Entry,System.Core", @"Entry'2");
+            feature.AddKnownType(@"System.Security.Cryptography.BCryptNative+AlgorithmName,System.Core", @"AlgorithmName");
+            feature.AddKnownType(@"System.Security.Cryptography.BCryptNative+KeyBlobType,System.Core", @"KeyBlobType");
+            feature.AddKnownType(@"System.Security.Cryptography.BCryptNative+BCRYPT_RSAKEY_BLOB,System.Core", @"BCRYPT_RSAKEY_BLOB");
+            feature.AddKnownType(@"System.Security.Cryptography.BCryptNative+ErrorCode,System.Core", @"ErrorCode");
+            feature.AddKnownType(@"System.Security.Cryptography.BCryptNative+HashPropertyName,System.Core", @"HashPropertyName");
+            feature.AddKnownType(@"System.Security.Cryptography.BCryptNative+KeyBlobMagicNumber,System.Core", @"KeyBlobMagicNumber");
+            feature.AddKnownType(@"System.Security.Cryptography.BCryptNative+BCRYPT_OAEP_PADDING_INFO,System.Core", @"BCRYPT_OAEP_PADDING_INFO");
+            feature.AddKnownType(@"System.Security.Cryptography.BCryptNative+BCRYPT_PKCS1_PADDING_INFO,System.Core", @"BCRYPT_PKCS1_PADDING_INFO");
+            feature.AddKnownType(@"System.Security.Cryptography.BCryptNative+BCRYPT_PSS_PADDING_INFO,System.Core", @"BCRYPT_PSS_PADDING_INFO");
+            feature.AddKnownType(@"System.Security.Cryptography.BCryptNative+KeyDerivationFunction,System.Core", @"KeyDerivationFunction");
+            feature.AddKnownType(@"System.Security.Cryptography.BCryptNative+ProviderName,System.Core", @"ProviderName");
+            feature.AddKnownType(@"System.Security.Cryptography.BCryptNative+ObjectPropertyName,System.Core", @"ObjectPropertyName");
+            feature.AddKnownType(@"System.Security.Cryptography.BCryptNative+UnsafeNativeMethods,System.Core", @"UnsafeNativeMethods");
+            feature.AddKnownType(@"System.Security.Cryptography.BCryptNative+AesBCryptModes,System.Core", @"AesBCryptModes");
+            feature.AddKnownType(@"System.Security.Cryptography.BCryptNative+TripleDesBCryptModes,System.Core", @"TripleDesBCryptModes");
+            feature.AddKnownType(@"System.Security.Cryptography.CapiNative+AlgorithmClass,System.Core", @"AlgorithmClass");
+            feature.AddKnownType(@"System.Security.Cryptography.CapiNative+AlgorithmType,System.Core", @"AlgorithmType");
+            feature.AddKnownType(@"System.Security.Cryptography.CapiNative+AlgorithmSubId,System.Core", @"AlgorithmSubId");
+            feature.AddKnownType(@"System.Security.Cryptography.CapiNative+AlgorithmId,System.Core", @"AlgorithmId");
+            feature.AddKnownType(@"System.Security.Cryptography.CapiNative+CryptAcquireContextFlags,System.Core", @"CryptAcquireContextFlags");
+            feature.AddKnownType(@"System.Security.Cryptography.CapiNative+ErrorCode,System.Core", @"ErrorCode");
+            feature.AddKnownType(@"System.Security.Cryptography.CapiNative+HashParameter,System.Core", @"HashParameter");
+            feature.AddKnownType(@"System.Security.Cryptography.CapiNative+KeyBlobType,System.Core", @"KeyBlobType");
+            feature.AddKnownType(@"System.Security.Cryptography.CapiNative+KeyFlags,System.Core", @"KeyFlags");
+            feature.AddKnownType(@"System.Security.Cryptography.CapiNative+KeyParameter,System.Core", @"KeyParameter");
+            feature.AddKnownType(@"System.Security.Cryptography.CapiNative+ProviderNames,System.Core", @"ProviderNames");
+            feature.AddKnownType(@"System.Security.Cryptography.CapiNative+ProviderParameter,System.Core", @"ProviderParameter");
+            feature.AddKnownType(@"System.Security.Cryptography.CapiNative+ProviderParameterFlags,System.Core", @"ProviderParameterFlags");
+            feature.AddKnownType(@"System.Security.Cryptography.CapiNative+ProviderType,System.Core", @"ProviderType");
+            feature.AddKnownType(@"System.Security.Cryptography.CapiNative+BLOBHEADER,System.Core", @"BLOBHEADER");
+            feature.AddKnownType(@"System.Security.Cryptography.CapiNative+CRYPTOAPI_BLOB,System.Core", @"CRYPTOAPI_BLOB");
+            feature.AddKnownType(@"System.Security.Cryptography.CapiNative+CERT_DSS_PARAMETERS,System.Core", @"CERT_DSS_PARAMETERS");
+            feature.AddKnownType(@"System.Security.Cryptography.CapiNative+PROV_ENUMALGS,System.Core", @"PROV_ENUMALGS");
+            feature.AddKnownType(@"System.Security.Cryptography.CapiNative+CRYPT_OID_INFO,System.Core", @"CRYPT_OID_INFO");
+            feature.AddKnownType(@"System.Security.Cryptography.CapiNative+UnsafeNativeMethods,System.Core", @"UnsafeNativeMethods");
+            feature.AddKnownType(@"System.Security.Cryptography.ECCurve+ECCurveType,System.Core", @"ECCurve.ECCurveType");
+            feature.AddKnownType(@"System.Security.Cryptography.ECCurve+NamedCurves,System.Core", @"ECCurve.NamedCurves");
+            feature.AddKnownType(@"System.Security.Cryptography.NCryptNative+BufferType,System.Core", @"BufferType");
+            feature.AddKnownType(@"System.Security.Cryptography.NCryptNative+ErrorCode,System.Core", @"ErrorCode");
+            feature.AddKnownType(@"System.Security.Cryptography.NCryptNative+KeyPropertyName,System.Core", @"KeyPropertyName");
+            feature.AddKnownType(@"System.Security.Cryptography.NCryptNative+ProviderPropertyName,System.Core", @"ProviderPropertyName");
+            feature.AddKnownType(@"System.Security.Cryptography.NCryptNative+SecretAgreementFlags,System.Core", @"SecretAgreementFlags");
+            feature.AddKnownType(@"System.Security.Cryptography.NCryptNative+NCRYPT_UI_POLICY,System.Core", @"NCRYPT_UI_POLICY");
+            feature.AddKnownType(@"System.Security.Cryptography.NCryptNative+NCryptBuffer,System.Core", @"NCryptBuffer");
+            feature.AddKnownType(@"System.Security.Cryptography.NCryptNative+NCryptBufferDesc,System.Core", @"NCryptBufferDesc");
+            feature.AddKnownType(@"System.Security.Cryptography.NCryptNative+UnsafeNativeMethods,System.Core", @"UnsafeNativeMethods");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.DerSequenceReader+DerTag,System.Core", @"DerTag");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.X509Native+AxlVerificationFlags,System.Core", @"X509Native.AxlVerificationFlags");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.X509Native+CERT_CONTEXT,System.Core", @"CERT_CONTEXT");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.X509Native+CERT_PUBLIC_KEY_INFO,System.Core", @"CERT_PUBLIC_KEY_INFO");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.X509Native+CERT_INFO,System.Core", @"CERT_INFO");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.X509Native+CRYPT_ALGORITHM_IDENTIFIER,System.Core", @"CRYPT_ALGORITHM_IDENTIFIER");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.X509Native+CRYPT_BIT_BLOB,System.Core", @"CRYPT_BIT_BLOB");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.X509Native+CRYPTOAPI_BLOB,System.Core", @"CRYPTOAPI_BLOB");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.X509Native+AcquireCertificateKeyOptions,System.Core", @"AcquireCertificateKeyOptions");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.X509Native+CertificateProperty,System.Core", @"CertificateProperty");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.X509Native+CertSetPropertyFlags,System.Core", @"CertSetPropertyFlags");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.X509Native+ErrorCode,System.Core", @"ErrorCode");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.X509Native+CRYPT_KEY_PROV_INFO,System.Core", @"CRYPT_KEY_PROV_INFO");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.X509Native+AXL_AUTHENTICODE_SIGNER_INFO,System.Core", @"X509Native.AXL_AUTHENTICODE_SIGNER_INFO");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.X509Native+AXL_AUTHENTICODE_TIMESTAMPER_INFO,System.Core", @"X509Native.AXL_AUTHENTICODE_TIMESTAMPER_INFO");
+            feature.AddKnownType(@"System.Security.Cryptography.X509Certificates.X509Native+UnsafeNativeMethods,System.Core", @"X509Native.UnsafeNativeMethods");
+            feature.AddKnownType(@"System.Linq.Lookup`2+Grouping,System.Core", @"Grouping'2");
+            feature.AddKnownType(@"System.Linq.Set`1+Slot,System.Core", @"Slot'1");
+            feature.AddKnownType(@"System.Linq.Parallel.PartitionedDataSource`1+ArrayIndexRangeEnumerator,System.Core", @"ArrayIndexRangeEnumerator'1");
+            feature.AddKnownType(@"System.Linq.Parallel.PartitionedDataSource`1+ArrayContiguousIndexRangeEnumerator,System.Core", @"ArrayContiguousIndexRangeEnumerator'1");
+            feature.AddKnownType(@"System.Linq.Parallel.PartitionedDataSource`1+ListIndexRangeEnumerator,System.Core", @"ListIndexRangeEnumerator'1");
+            feature.AddKnownType(@"System.Linq.Parallel.PartitionedDataSource`1+ListContiguousIndexRangeEnumerator,System.Core", @"ListContiguousIndexRangeEnumerator'1");
+            feature.AddKnownType(@"System.Linq.Parallel.ZipQueryOperator`3+ZipQueryOperatorResults,System.Core", @"ZipQueryOperatorResults'3");
+            feature.AddKnownType(@"System.Linq.Parallel.BinaryQueryOperator`3+BinaryQueryOperatorResults,System.Core", @"BinaryQueryOperatorResults'3");
+            feature.AddKnownType(@"System.Linq.Parallel.OrderedGroupByQueryOperatorEnumerator`4+GroupKeyData,System.Core", @"GroupKeyData'4");
+            feature.AddKnownType(@"System.Linq.Parallel.UnaryQueryOperator`2+UnaryQueryOperatorResults,System.Core", @"UnaryQueryOperatorResults'2");
+            feature.AddKnownType(@"System.Linq.Parallel.HashLookup`2+Slot,System.Core", @"Slot'2");
+            feature.AddKnownType(@"System.Linq.Parallel.PlinqEtwProvider+Tasks,System.Core", @"PlinqEtwProvider.Tasks");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression+BinaryExpressionProxy,System.Core", @"BinaryExpressionProxy");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression+BlockExpressionProxy,System.Core", @"BlockExpressionProxy");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression+CatchBlockProxy,System.Core", @"CatchBlockProxy");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression+ConditionalExpressionProxy,System.Core", @"ConditionalExpressionProxy");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression+ConstantExpressionProxy,System.Core", @"ConstantExpressionProxy");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression+DebugInfoExpressionProxy,System.Core", @"DebugInfoExpressionProxy");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression+DefaultExpressionProxy,System.Core", @"DefaultExpressionProxy");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression+DynamicExpressionProxy,System.Core", @"DynamicExpressionProxy");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression+GotoExpressionProxy,System.Core", @"GotoExpressionProxy");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression+IndexExpressionProxy,System.Core", @"IndexExpressionProxy");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression+InvocationExpressionProxy,System.Core", @"InvocationExpressionProxy");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression+LabelExpressionProxy,System.Core", @"LabelExpressionProxy");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression+LambdaExpressionProxy,System.Core", @"LambdaExpressionProxy");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression+ListInitExpressionProxy,System.Core", @"ListInitExpressionProxy");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression+LoopExpressionProxy,System.Core", @"LoopExpressionProxy");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression+MemberExpressionProxy,System.Core", @"MemberExpressionProxy");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression+MemberInitExpressionProxy,System.Core", @"MemberInitExpressionProxy");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression+MethodCallExpressionProxy,System.Core", @"MethodCallExpressionProxy");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression+NewArrayExpressionProxy,System.Core", @"NewArrayExpressionProxy");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression+NewExpressionProxy,System.Core", @"NewExpressionProxy");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression+ParameterExpressionProxy,System.Core", @"ParameterExpressionProxy");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression+RuntimeVariablesExpressionProxy,System.Core", @"RuntimeVariablesExpressionProxy");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression+SwitchCaseProxy,System.Core", @"SwitchCaseProxy");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression+SwitchExpressionProxy,System.Core", @"SwitchExpressionProxy");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression+TryExpressionProxy,System.Core", @"TryExpressionProxy");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression+TypeBinaryExpressionProxy,System.Core", @"TypeBinaryExpressionProxy");
+            feature.AddKnownType(@"System.Linq.Expressions.Expression+UnaryExpressionProxy,System.Core", @"UnaryExpressionProxy");
+            feature.AddKnownType(@"System.Linq.Expressions.Compiler.DelegateHelpers+TypeInfo,System.Core", @"TypeInfo");
+            feature.AddKnownType(@"System.Linq.Expressions.Compiler.LambdaCompiler+CompilationFlags,System.Core", @"CompilationFlags");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.EventProvider+WriteEventErrorCode,System.Core", @"EventProvider.WriteEventErrorCode");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.NativeWrapper+SystemProperties,System.Core", @"NativeWrapper.SystemProperties");
+            feature.AddKnownType(@"System.Diagnostics.Eventing.Reader.ProviderMetadata+ObjectTypeName,System.Core", @"ObjectTypeName");
+            feature.AddKnownType(@"Interop+Crypt32+CRYPT_OID_INFO,System.Core", @"CRYPT_OID_INFO");
+            feature.AddKnownType(@"Interop+Crypt32+CryptOidInfoKeyType,System.Core", @"CryptOidInfoKeyType");
+            feature.AddKnownType(@"Interop+NCrypt+ErrorCode,System.Core", @"ErrorCode");
+            feature.AddKnownType(@"Interop+NCrypt+AsymmetricPaddingMode,System.Core", @"AsymmetricPaddingMode");
+            feature.AddKnownType(@"Interop+BCrypt+KeyBlobMagicNumber,System.Core", @"KeyBlobMagicNumber");
+            feature.AddKnownType(@"Interop+BCrypt+BCRYPT_ECCKEY_BLOB,System.Core", @"BCRYPT_ECCKEY_BLOB");
+            feature.AddKnownType(@"Interop+BCrypt+ECC_CURVE_TYPE_ENUM,System.Core", @"ECC_CURVE_TYPE_ENUM");
+            feature.AddKnownType(@"Interop+BCrypt+ECC_CURVE_ALG_ID_ENUM,System.Core", @"ECC_CURVE_ALG_ID_ENUM");
+            feature.AddKnownType(@"Interop+BCrypt+BCRYPT_ECCFULLKEY_BLOB,System.Core", @"BCRYPT_ECCFULLKEY_BLOB");
+            feature.AddKnownType(@"Interop+BCrypt+NCryptBufferDescriptors,System.Core", @"NCryptBufferDescriptors");
+            feature.AddKnownType(@"Interop+BCrypt+BCryptBuffer,System.Core", @"BCryptBuffer");
+            feature.AddKnownType(@"Interop+BCrypt+BCryptBufferDesc,System.Core", @"BCryptBufferDesc");
+            feature.AddKnownType(@"Interop+BCrypt+BCRYPT_ECC_PARAMETER_HEADER,System.Core", @"BCRYPT_ECC_PARAMETER_HEADER");
+            feature.AddKnownType(@"__DynamicallyInvokableAttribute,System.Core", @"__DynamicallyInvokableAttribute");
             feature.AddKnownType(@"SystemInterfaces.IBatchCoordinator,GrainInterfaces", @"SystemInterfaces.IBatchCoordinator");
             feature.AddKnownType(@"SystemInterfaces.IBatchTracker,GrainInterfaces", @"SystemInterfaces.IBatchTracker");
             feature.AddKnownType(@"SystemInterfaces.IStatefulOperator,GrainInterfaces", @"SystemInterfaces.IStatefulOperator");
