@@ -159,11 +159,6 @@ namespace SystemImplementation
                 await HandleBarrierMessages(msg);
                 await batchTracker.CompleteOneOperatorBarrier(info);
             }
-            else if (msg.Value == Constants.Recovery_Value)
-            {
-                await HandleRecoveryMessages(msg);
-                await batchTracker.CompleteOneOperatorRecovery(info);
-            }
             else
             {
                 throw new NotImplementedException("Unrecgonizable system message in stateless operator");
@@ -201,21 +196,6 @@ namespace SystemImplementation
         public Task Recovery(StreamMessage msg)
         {
             batchTracker.CompleteOneOperatorRecovery(msg.barrierOrCommitInfo);
-            return Task.CompletedTask;
-        }
-
-        private Task HandleRecoveryMessages(StreamMessage msg)
-        {
-            msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), statefulOperators.Count);
-            msg.barrierOrCommitInfo.BatchID = msg.BatchID;
-            if (batchTracker != null)
-            {
-                batchTracker.TrackingRecoveryMessages(msg);
-            }
-            else
-            {
-                throw new NullReferenceException();
-            }
             return Task.CompletedTask;
         }
 
