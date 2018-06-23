@@ -23,5 +23,6 @@ namespace SystemInterfaces
         Task<TopologyUnit> GetTopologyUnit();
         Task Commit(StreamMessage msg);
         Task Recovery(StreamMessage msg);
+        Task<int> GetNumberOfElementsInCountMap();
     }
 }

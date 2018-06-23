@@ -9,7 +9,7 @@ namespace SystemInterfaces
 {
     public interface IStatelessOperator : IGrainWithGuidKey
     {
-        Task<Task> ExecuteMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream);
+        Task ExecuteMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream);
 
         Task<int> GetState(string word);
 

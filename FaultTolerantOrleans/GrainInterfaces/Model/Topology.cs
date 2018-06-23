@@ -27,13 +27,13 @@ namespace SystemInterfaces.Model
 
         public void AddUnit(TopologyUnit unit)
         {
-            if (topologyUnits.ContainsKey(unit.primaryKey))
+            if (topologyUnits.ContainsKey(unit.PrimaryKey))
             {
                 throw new ArgumentException("Add Error: The target is already exist in upperStreamUnits!");
             }
             else
             {
-                topologyUnits.Add(unit.primaryKey, unit);
+                topologyUnits.Add(unit.PrimaryKey, unit);
             }
         }
 

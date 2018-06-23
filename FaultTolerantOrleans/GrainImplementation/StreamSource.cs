@@ -19,11 +19,15 @@ namespace GrainImplementation
         //Internal Implementation
         private HashSet<IStatelessOperator> statelessOperators;
         private HashSet<IStatefulOperator> statefulOperators;
-        private List<StreamMessage> messageBuffer = new List<StreamMessage>();
+
         private IBatchCoordinator batchCoordinator;
         private IBatchTracker batchTracker;
 		private IAsyncStream<StreamMessage> stream;
         private ITopology topologyManager;
+
+        private List<StreamMessage> messageBuffer = new List<StreamMessage>();
+        //A map that uses to ensure exactly once 
+        private Dictionary<Guid, int> messageCountMap = new Dictionary<Guid, int>(); 
         private TopologyUnit topologyUnit;
         private int currentBatchID;
 
@@ -45,7 +49,7 @@ namespace GrainImplementation
 		}
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
-        private async Task<Task> InitOperators()
+        private Task InitOperators()
         {
             statelessOperators = new HashSet<IStatelessOperator>();
             var operatorOne = GrainFactory.GetGrain<IStatelessOperator>(Guid.NewGuid(), Constants.Stateless_Operator_Prefix);
@@ -55,19 +59,47 @@ namespace GrainImplementation
             statelessOperators.Add(operatorOne);
             statelessOperators.Add(operatorTwo);
             statelessOperators.Add(operatorThree);
-            //Add customer guid list
+            
+            //Add custom guid list
             List<Guid> guidList = new List<Guid>();
             guidList.Add(Guid.NewGuid());
             guidList.Add(Guid.NewGuid());
+
             operatorOne.InitRandomOperators();
             operatorTwo.AddCustomeOperators(guidList);
             operatorThree.AddCustomeOperators(guidList);
 
-            await topologyManager.ConnectUnits(topologyUnit.primaryKey, operatorOne.GetPrimaryKey());
-            await topologyManager.ConnectUnits(topologyUnit.primaryKey, operatorTwo.GetPrimaryKey());
-            await topologyManager.ConnectUnits(topologyUnit.primaryKey, operatorThree.GetPrimaryKey());
+            //Add the units to the topology
+            InitTopology();
+
+            //Add the down stream operators to the count map
+            InitCountMap();
 
             return Task.CompletedTask;
+        }
+
+        private Task InitTopology()
+        {
+            foreach (var item in statelessOperators)
+            {
+                topologyManager.ConnectUnits(topologyUnit.PrimaryKey, item.GetPrimaryKey());
+            }
+            return Task.CompletedTask;
+        }
+
+
+        private Task InitCountMap()
+        {
+            foreach(var item in statelessOperators)
+            {
+                messageCountMap.Add(item.GetPrimaryKey(), 0);
+            }
+            return Task.CompletedTask;
+        }
+
+        public Task<int> GetNumberOfElementsInCountMap()
+        {
+            return Task.FromResult(messageCountMap.Count);
         }
 
         private Task SetUpBatchManager()
@@ -128,9 +160,24 @@ namespace GrainImplementation
         {
             //At first find a operator by hashing
             IStatelessOperator statelessOp = await SystemImplementation.PartitionFunction.PartitionStatelessByKey(msg.Key, statelessOperators);
+            msg.From = topologyUnit.PrimaryKey;
+            await IncrementCountMap(statelessOp.GetPrimaryKey());
             await statelessOp.ExecuteMessage(msg, stream);
 
             return Task.CompletedTask;
+        }
+
+        private Task IncrementCountMap(Guid key)
+        {
+            if (messageCountMap.ContainsKey(key))
+            {
+                messageCountMap[key] = messageCountMap[key] + 1;
+                return Task.CompletedTask;
+            }
+            else
+            {
+                throw new InvalidOperationException("Something wrong! The count map does not contains a key of its down stream");
+            }
         }
 
         //If it is special message, it has to send to all the operators. 

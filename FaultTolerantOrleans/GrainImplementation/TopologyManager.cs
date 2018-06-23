@@ -60,7 +60,7 @@ namespace SystemImplementation
                 //If stateful, load the settings and mark the new as a restart grain
                 if (newUnit.operatorType == OperatorType.Stateful)
                 {
-                    IStatefulOperator statefulOp = GrainFactory.GetGrain<IStatefulOperator>(newUnit.primaryKey);
+                    IStatefulOperator statefulOp = GrainFactory.GetGrain<IStatefulOperator>(newUnit.PrimaryKey);
                     statefulOp.LoadSettings(oldUnit.GetSettings());
                 }
             }
@@ -77,7 +77,7 @@ namespace SystemImplementation
                 int index = 0;
                 foreach (var item in upperStreamUnits.Values.ToList())
                 {
-                    DisConnectUnits(item.primaryKey, oldGuid);
+                    DisConnectUnits(item.PrimaryKey, oldGuid);
                     if (item.operatorType == OperatorType.Stateless)
                     {
                         IStatelessOperator statelessOperator = GrainFactory.GetGrain<IStatelessOperator>(keyList[index], Constants.Stateless_Operator_Prefix);
@@ -121,13 +121,13 @@ namespace SystemImplementation
                 else if (unit.operatorType == OperatorType.Stateful)
                 {
                     PrettyConsole.Line("Start Commit Stateful");
-                    IStatefulOperator statefulOperator = GrainFactory.GetGrain<IStatefulOperator>(unit.primaryKey, Constants.Stateful_Operator_Prefix);
+                    IStatefulOperator statefulOperator = GrainFactory.GetGrain<IStatefulOperator>(unit.PrimaryKey, Constants.Stateful_Operator_Prefix);
                     statefulOperator.Commit(msg);
                 }
                 else if (unit.operatorType == OperatorType.Stateless)
                 {
                     PrettyConsole.Line("Start Commit Stateless");
-                    IStatelessOperator statelessOperator = GrainFactory.GetGrain<IStatelessOperator>(unit.primaryKey, Constants.Stateless_Operator_Prefix);
+                    IStatelessOperator statelessOperator = GrainFactory.GetGrain<IStatelessOperator>(unit.PrimaryKey, Constants.Stateless_Operator_Prefix);
                     statelessOperator.Commit(msg);
                 }
                 else
@@ -156,12 +156,12 @@ namespace SystemImplementation
                 }
                 else if (unit.operatorType == OperatorType.Stateful)
                 {
-                    IStatefulOperator statefulOperator = GrainFactory.GetGrain<IStatefulOperator>(unit.primaryKey, Constants.Stateful_Operator_Prefix);
+                    IStatefulOperator statefulOperator = GrainFactory.GetGrain<IStatefulOperator>(unit.PrimaryKey, Constants.Stateful_Operator_Prefix);
                     statefulOperator.Recovery(msg);
                 }
                 else if (unit.operatorType == OperatorType.Stateless)
                 {
-                    IStatelessOperator statelessOperator = GrainFactory.GetGrain<IStatelessOperator>(unit.primaryKey, Constants.Stateless_Operator_Prefix);
+                    IStatelessOperator statelessOperator = GrainFactory.GetGrain<IStatelessOperator>(unit.PrimaryKey, Constants.Stateless_Operator_Prefix);
                     statelessOperator.Recovery(msg);
                 }
                 else

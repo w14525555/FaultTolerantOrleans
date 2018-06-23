@@ -10,14 +10,14 @@ namespace SystemInterfaces.Model
         private Dictionary<Guid, TopologyUnit> downStreamUnits = new Dictionary<Guid, TopologyUnit>();
         private OperatorSettings operatorSettings = new OperatorSettings();
         public OperatorType operatorType { get; set; }
-        public Guid primaryKey { get; set; }
+        public Guid PrimaryKey { get; set; }
         public String sourceKey { get; set; }
 
         public TopologyUnit(OperatorType operatorType, Guid key)
         {
             this.operatorType = operatorType;
-            primaryKey = new Guid();
-            primaryKey = key;
+            PrimaryKey = new Guid();
+            PrimaryKey = key;
         }
 
         public void SetSourceKey(String key)
@@ -46,50 +46,50 @@ namespace SystemInterfaces.Model
 
         public void AddUpperStreamUnit(TopologyUnit unit)
         {
-            if (upperStreamUnits.ContainsKey(unit.primaryKey))
+            if (upperStreamUnits.ContainsKey(unit.PrimaryKey))
             {
                 throw new ArgumentException("Add Error: The target is already exist in upperStreamUnits!");
             }
             else
             {
-                upperStreamUnits.Add(unit.primaryKey, unit);
+                upperStreamUnits.Add(unit.PrimaryKey, unit);
             }
         }
 
         public void RemoveFromUpperStreamUnits(TopologyUnit unit)
         {
-            if (!upperStreamUnits.ContainsKey(unit.primaryKey))
+            if (!upperStreamUnits.ContainsKey(unit.PrimaryKey))
             {
                 throw new ArgumentException("Remove Error: The target is not exist in upperStreamUnits!");
             }
             else
             {
-                upperStreamUnits.Remove(unit.primaryKey);
+                upperStreamUnits.Remove(unit.PrimaryKey);
             }
         }
 
         public void AddDownStreamUnit(TopologyUnit unit)
         {
-            if (downStreamUnits.ContainsKey(unit.primaryKey))
+            if (downStreamUnits.ContainsKey(unit.PrimaryKey))
             {
                 throw new ArgumentException("Add Error: The target is already exist in upperStreamUnits!");
             }
             else
             {
                 PrettyConsole.Line("Add");
-                downStreamUnits.Add(unit.primaryKey, unit);
+                downStreamUnits.Add(unit.PrimaryKey, unit);
             }
         }
 
         public void RemoveFromDownStreamUnits(TopologyUnit unit)
         {
-            if (!downStreamUnits.ContainsKey(unit.primaryKey))
+            if (!downStreamUnits.ContainsKey(unit.PrimaryKey))
             {
                 throw new ArgumentException("Remove Error: The target is not exist in upperStreamUnits!");
             }
             else
             {
-                downStreamUnits.Remove(unit.primaryKey);
+                downStreamUnits.Remove(unit.PrimaryKey);
             }
         }
 

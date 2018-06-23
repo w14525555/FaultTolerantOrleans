@@ -122,6 +122,7 @@ namespace Test
         {
             await SetUpSource();
             await source.ProduceMessageAsync(wordCountMessage1);
+            Thread.Sleep(100);
             int count = await source.GetState(new StreamMessage(wordCountMessage1.Key, "go"));
             Assert.AreEqual(3, count);
         }
@@ -318,6 +319,17 @@ namespace Test
             int size = await topologyManager.GetTopologySize();
             Assert.AreEqual(8, size);
         }
+
+        //Count Map Tests
+        [TestMethod]
+        public async Task TestCounterMapHasRightNumber()
+        {
+            await SetUpSource();
+            Thread.Sleep(100);
+            int size = await source.GetNumberOfElementsInCountMap();
+            Assert.AreEqual(3, size);
+        }
+
 
         //[TestMethod]
         //public async Task TestSourceHasRightDownStreamNumber()

@@ -19,6 +19,7 @@ namespace SystemImplementation
         protected ITopology topologyManager;
         protected TopologyUnit topologyUnit;
         protected OperatorSettings operatorSettings = new OperatorSettings();
+        private Dictionary<Guid, int> upStreamMessageCountMap = new Dictionary<Guid, int>();
 
         public override Task OnActivateAsync()
         {
@@ -60,9 +61,9 @@ namespace SystemImplementation
                 statefulOperators.Add(op);
                 op.IncrementNumberOfUpStreamOperator();
                 operatorSettings.AddOpratorToDict(op.GetPrimaryKey(), await op.GetOperatorSettings());
-                topologyManager.ConnectUnits(topologyUnit.primaryKey, op.GetPrimaryKey());
+                topologyManager.ConnectUnits(topologyUnit.PrimaryKey, op.GetPrimaryKey());
             }
-            topologyManager.UpdateOperatorSettings(topologyUnit.primaryKey, operatorSettings);
+            topologyManager.UpdateOperatorSettings(topologyUnit.PrimaryKey, operatorSettings);
             return Task.CompletedTask;
         }
 
@@ -92,16 +93,30 @@ namespace SystemImplementation
             return Task.CompletedTask;
         }
 
-        public async Task<Task> ExecuteMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
+        public Task ExecuteMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
             //At first split text into words
             if (msg.Key != Constants.System_Key)
             {
-                await CustomExcutionMethod(msg, stream);
+                IncrementUpStreamCount(msg);
+                CustomExcutionMethod(msg, stream);
             }
             else
             {
-                await ProcessSpecialMessageAsync(msg, stream);
+                ProcessSpecialMessageAsync(msg, stream);
+            }
+            return Task.CompletedTask;
+        }
+
+        private Task IncrementUpStreamCount(StreamMessage msg)
+        {
+            if (upStreamMessageCountMap.ContainsKey(msg.From))
+            {
+                upStreamMessageCountMap[msg.From] = upStreamMessageCountMap[msg.From] + 1;
+            }
+            else
+            {
+                upStreamMessageCountMap.Add(msg.From, 1);
             }
             return Task.CompletedTask;
         }

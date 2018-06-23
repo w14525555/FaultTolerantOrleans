@@ -12,6 +12,7 @@ namespace SystemInterfaces.Model
         public int BatchID { get; set; }
         public MessageType messageType { get; set; }
         public BarrierOrCommitMsgTrackingInfo barrierOrCommitInfo { get; set; }
+        public Guid From { get; set; }
 
 		public StreamMessage(string key, string value)
 		{
