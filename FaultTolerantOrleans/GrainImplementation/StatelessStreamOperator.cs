@@ -20,6 +20,7 @@ namespace SystemImplementation
         protected TopologyUnit topologyUnit;
         protected OperatorSettings operatorSettings = new OperatorSettings();
         private Dictionary<Guid, int> upStreamMessageCountMap = new Dictionary<Guid, int>();
+        private Dictionary<Guid, int> downStreamMessageCountMap = new Dictionary<Guid, int>();
 
         public override Task OnActivateAsync()
         {
@@ -64,6 +65,15 @@ namespace SystemImplementation
                 topologyManager.ConnectUnits(topologyUnit.PrimaryKey, op.GetPrimaryKey());
             }
             topologyManager.UpdateOperatorSettings(topologyUnit.PrimaryKey, operatorSettings);
+            return Task.CompletedTask;
+        }
+
+        private Task InitDownStreamMessageCountMap()
+        {
+            foreach (var item in statefulOperators)
+            {
+                downStreamMessageCountMap.Add(item.GetPrimaryKey(), 0);
+            }
             return Task.CompletedTask;
         }
 
@@ -174,6 +184,7 @@ namespace SystemImplementation
             {
                 if (CheckCount(msg))
                 {
+                    //ResetCountMap(upStreamMessageCountMap);
                     await HandleBarrierMessages(msg);
                     await batchTracker.CompleteOneOperatorBarrier(info);
                 }
@@ -200,6 +211,15 @@ namespace SystemImplementation
             {
                 PrettyConsole.Line("The count in stateless is not equal!");
                 return false;
+            }
+        }
+
+        private void ResetCountMap(Dictionary<Guid, int> countMap)
+        {
+            var keys = countMap.Keys.ToList();
+            for (int i = 0; i < keys.Count; i++)
+            {
+                countMap[keys[i]] = 0;
             }
         }
 

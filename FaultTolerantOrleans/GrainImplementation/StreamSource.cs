@@ -238,7 +238,17 @@ namespace GrainImplementation
                 }
                 item.ExecuteMessage(msg, stream);
             }
+            ResetCountMap();
             return Task.CompletedTask;
+        }
+
+        private void ResetCountMap()
+        {
+            var keys = messageCountMap.Keys.ToList();
+            for(int i = 0; i < keys.Count; i++)
+            {
+                messageCountMap[keys[i]] = 0;
+            }
         }
 
         //Replay Logic
