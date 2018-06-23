@@ -93,6 +93,7 @@ namespace SystemImplementation
             return Task.CompletedTask;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         public Task ExecuteMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
             //At first split text into words
@@ -171,8 +172,11 @@ namespace SystemImplementation
             info.BatchID = msg.BatchID;
             if (msg.Value == Constants.Barrier_Value)
             {
-                await HandleBarrierMessages(msg);
-                await batchTracker.CompleteOneOperatorBarrier(info);
+                if (CheckCount(msg))
+                {
+                    await HandleBarrierMessages(msg);
+                    await batchTracker.CompleteOneOperatorBarrier(info);
+                }
             }
             else
             {
@@ -180,6 +184,23 @@ namespace SystemImplementation
             }
             await BroadcastSpecialMessage(msg, stream);
             return Task.CompletedTask;
+        }
+
+        private bool CheckCount(StreamMessage msg)
+        {
+            if (upStreamMessageCountMap.ContainsKey(msg.From) && msg.Count == upStreamMessageCountMap[msg.From])
+            {
+                return true;
+            }
+            else if (!upStreamMessageCountMap.ContainsKey(msg.From) && msg.Count == 0)
+            {
+                return true;
+            }
+            else
+            {
+                PrettyConsole.Line("The count in stateless is not equal!");
+                return false;
+            }
         }
 
         private Task HandleBarrierMessages(StreamMessage msg)

@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen779645727aFeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGenc96534a6b2FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -1305,6 +1305,7 @@ namespace OrleansGeneratedCode38151279
             global::SystemInterfaces.Model.StreamMessage result = (global::SystemInterfaces.Model.StreamMessage)global::System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof (global::SystemInterfaces.Model.StreamMessage));
             context.RecordCopy(original, result);
             result.BatchID = input.BatchID;
+            result.Count = input.Count;
             result.Created = (global::System.DateTimeOffset)context.DeepCopyInner(input.Created);
             result.From = (global::System.Guid)context.DeepCopyInner(input.From);
             result.Key = input.Key;
@@ -1320,6 +1321,7 @@ namespace OrleansGeneratedCode38151279
         {
             global::SystemInterfaces.Model.StreamMessage input = (global::SystemInterfaces.Model.StreamMessage)untypedInput;
             context.SerializeInner(input.BatchID, typeof (global::System.Int32));
+            context.SerializeInner(input.Count, typeof (global::System.Int32));
             context.SerializeInner(input.Created, typeof (global::System.DateTimeOffset));
             context.SerializeInner(input.From, typeof (global::System.Guid));
             context.SerializeInner(input.Key, typeof (global::System.String));
@@ -1335,6 +1337,7 @@ namespace OrleansGeneratedCode38151279
             global::SystemInterfaces.Model.StreamMessage result = (global::SystemInterfaces.Model.StreamMessage)global::System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof (global::SystemInterfaces.Model.StreamMessage));
             context.RecordObject(result);
             result.BatchID = (global::System.Int32)context.DeserializeInner(typeof (global::System.Int32));
+            result.Count = (global::System.Int32)context.DeserializeInner(typeof (global::System.Int32));
             result.Created = (global::System.DateTimeOffset)context.DeserializeInner(typeof (global::System.DateTimeOffset));
             result.From = (global::System.Guid)context.DeserializeInner(typeof (global::System.Guid));
             result.Key = (global::System.String)context.DeserializeInner(typeof (global::System.String));
@@ -1551,7 +1554,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen779645727aFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGenc96534a6b2FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {

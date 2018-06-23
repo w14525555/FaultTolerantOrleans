@@ -140,6 +140,7 @@ namespace GrainImplementation
         //the stream sends messages to all its subscribers
          public async Task<Task> ProduceMessageAsync(StreamMessage msg)
         {
+            msg.From = topologyUnit.PrimaryKey;
             if (msg.Key != Constants.System_Key)
             {
                 if (msg.messageType != MessageType.Test)
@@ -160,7 +161,6 @@ namespace GrainImplementation
         {
             //At first find a operator by hashing
             IStatelessOperator statelessOp = await SystemImplementation.PartitionFunction.PartitionStatelessByKey(msg.Key, statelessOperators);
-            msg.From = topologyUnit.PrimaryKey;
             await IncrementCountMap(statelessOp.GetPrimaryKey());
             await statelessOp.ExecuteMessage(msg, stream);
 
@@ -228,6 +228,14 @@ namespace GrainImplementation
         {
             foreach(IStatelessOperator item in statelessOperators)
             {
+                if (messageCountMap.ContainsKey(item.GetPrimaryKey()))
+                {
+                    msg.Count = messageCountMap[item.GetPrimaryKey()];
+                }
+                else
+                {
+                    throw new InvalidOperationException("Message count map does not contain the key");
+                }
                 item.ExecuteMessage(msg, stream);
             }
             return Task.CompletedTask;
