@@ -330,6 +330,20 @@ namespace Test
             Assert.AreEqual(3, size);
         }
 
+        //Add New Operator to the topology test
+        [TestMethod]
+        public async Task TestAddNewOperatorToTopology()
+        {
+            await SetUpSource();
+            Thread.Sleep(100);
+            var guid = await source.GetTestGuid();
+            var topologyManager = client.GetGrain<ITopology>(Constants.Topology_Manager);
+            await topologyManager.AddASameTypeStatelessOperatorToTopology(guid);
+            Thread.Sleep(100);
+            int size = await topologyManager.GetTopologySize();
+            Assert.AreEqual(9, size);
+        }
+
 
         //[TestMethod]
         //public async Task TestSourceHasRightDownStreamNumber()
@@ -338,7 +352,7 @@ namespace Test
         //    Thread.Sleep(100);
         //    ITopology topologyManager = client.GetGrain<ITopology>(Constants.Topology_Manager);
         //    TopologyUnit topologyUnit = await source.GetTopologyUnit();
-        //    TopologyUnit unit = await topologyManager.GetUnit(topologyUnit.primaryKey);
+        //    TopologyUnit unit = await topologyManager.GetUnit(topologyUnit.PrimaryKey);
         //    Assert.AreEqual(3, unit.GetdownStreamUnits().Count);
         //}
 
@@ -366,9 +380,9 @@ namespace Test
             return Task.CompletedTask;
         }
 
-        private Task StopSilo()
+        private async Task<Task> StopSilo()
         {
-            silo.StopAsync().Wait();
+            await silo.StopAsync();
             return Task.CompletedTask;
         }
 
@@ -396,9 +410,9 @@ namespace Test
             return Task.FromResult(aClient);
         }
 
-        private Task StopClient()
+        private async Task<Task> StopClient()
         {
-            client.Close().Wait();
+            await client.Close();
             return Task.CompletedTask;
         }
 

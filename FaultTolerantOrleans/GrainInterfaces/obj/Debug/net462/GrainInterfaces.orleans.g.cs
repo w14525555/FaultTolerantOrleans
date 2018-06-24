@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen029e6bb3bfFeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen59c484ee9fFeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -686,8 +686,8 @@ namespace SystemInterfaces
                             return @"GetStateInIncrementalLog";
                         case 1333285083:
                             return @"InitRandomOperators";
-                        case 1007598868:
-                            return @"AddCustomeOperators";
+                        case 1169463686:
+                            return @"AddCustomOperators";
                         case 211822306:
                             return @"GetTopologyUnit";
                         case 1294781576:
@@ -730,9 +730,9 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(1333285083, null);
         }
 
-        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> AddCustomeOperators(global::System.Collections.Generic.List<global::System.Guid> guidList)
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> AddCustomOperators(global::System.Collections.Generic.List<global::System.Guid> guidList)
         {
-            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(1007598868, new global::System.Object[]{guidList});
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(1169463686, new global::System.Object[]{guidList});
         }
 
         public global::System.Threading.Tasks.Task<global::SystemInterfaces.Model.TopologyUnit> GetTopologyUnit()
@@ -782,8 +782,8 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).GetStateInIncrementalLog((global::System.String)arguments[0]);
                         case 1333285083:
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).InitRandomOperators();
-                        case 1007598868:
-                            return await ((global::SystemInterfaces.IStatelessOperator)grain).AddCustomeOperators((global::System.Collections.Generic.List<global::System.Guid>)arguments[0]);
+                        case 1169463686:
+                            return await ((global::SystemInterfaces.IStatelessOperator)grain).AddCustomOperators((global::System.Collections.Generic.List<global::System.Guid>)arguments[0]);
                         case 211822306:
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).GetTopologyUnit();
                         case 1294781576:
@@ -904,6 +904,10 @@ namespace SystemInterfaces
                             return @"Recovery";
                         case 461815089:
                             return @"GetNumberOfElementsInCountMap";
+                        case -1844445640:
+                            return @"AddAStatelessOperator";
+                        case -714662718:
+                            return @"GetTestGuid";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 710632260 + @",methodId=" + methodId);
                     }
@@ -999,6 +1003,16 @@ namespace SystemInterfaces
         {
             return base.InvokeMethodAsync<global::System.Int32>(461815089, null);
         }
+
+        public global::System.Threading.Tasks.Task AddAStatelessOperator(global::SystemInterfaces.IStatelessOperator statelessOperator)
+        {
+            return base.InvokeMethodAsync<global::System.Object>(-1844445640, new global::System.Object[]{statelessOperator is global::Orleans.Grain ? statelessOperator.AsReference<global::SystemInterfaces.IStatelessOperator>() : statelessOperator});
+        }
+
+        public global::System.Threading.Tasks.Task<global::System.Guid> GetTestGuid()
+        {
+            return base.InvokeMethodAsync<global::System.Guid>(-714662718, null);
+        }
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute(typeof (global::SystemInterfaces.IStreamSource), 710632260), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
@@ -1050,6 +1064,11 @@ namespace SystemInterfaces
                             return null;
                         case 461815089:
                             return await ((global::SystemInterfaces.IStreamSource)grain).GetNumberOfElementsInCountMap();
+                        case -1844445640:
+                            await ((global::SystemInterfaces.IStreamSource)grain).AddAStatelessOperator((global::SystemInterfaces.IStatelessOperator)arguments[0]);
+                            return null;
+                        case -714662718:
+                            return await ((global::SystemInterfaces.IStreamSource)grain).GetTestGuid();
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 710632260 + @",methodId=" + methodId);
                     }
@@ -1152,6 +1171,8 @@ namespace SystemInterfaces
                             return @"Commit";
                         case 2118799424:
                             return @"Recovery";
+                        case 892237176:
+                            return @"AddASameTypeStatelessOperatorToTopology";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1231133098 + @",methodId=" + methodId);
                     }
@@ -1212,6 +1233,11 @@ namespace SystemInterfaces
         {
             return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(2118799424, new global::System.Object[]{msg});
         }
+
+        public global::System.Threading.Tasks.Task AddASameTypeStatelessOperatorToTopology(global::System.Guid guid)
+        {
+            return base.InvokeMethodAsync<global::System.Object>(892237176, new global::System.Object[]{guid});
+        }
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute(typeof (global::SystemInterfaces.ITopology), -1231133098), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
@@ -1252,6 +1278,9 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.ITopology)grain).Commit((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
                         case 2118799424:
                             return await ((global::SystemInterfaces.ITopology)grain).Recovery((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
+                        case 892237176:
+                            await ((global::SystemInterfaces.ITopology)grain).AddASameTypeStatelessOperatorToTopology((global::System.Guid)arguments[0]);
+                            return null;
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1231133098 + @",methodId=" + methodId);
                     }
@@ -1514,8 +1543,8 @@ namespace OrleansGeneratedCode38151279
             global::SystemInterfaces.Model.TopologyUnit input = ((global::SystemInterfaces.Model.TopologyUnit)original);
             global::SystemInterfaces.Model.TopologyUnit result = (global::SystemInterfaces.Model.TopologyUnit)global::System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof (global::SystemInterfaces.Model.TopologyUnit));
             context.RecordCopy(original, result);
+            result.OperatorType = input.OperatorType;
             result.PrimaryKey = (global::System.Guid)context.DeepCopyInner(input.PrimaryKey);
-            result.operatorType = input.operatorType;
             result.sourceKey = input.sourceKey;
             setField1(result, (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>)context.DeepCopyInner(getField1(input)));
             setField2(result, (global::SystemInterfaces.Model.OperatorSettings)context.DeepCopyInner(getField2(input)));
@@ -1527,8 +1556,8 @@ namespace OrleansGeneratedCode38151279
         public void Serializer(global::System.Object untypedInput, global::Orleans.Serialization.ISerializationContext context, global::System.Type expected)
         {
             global::SystemInterfaces.Model.TopologyUnit input = (global::SystemInterfaces.Model.TopologyUnit)untypedInput;
+            context.SerializeInner(input.OperatorType, typeof (global::SystemInterfaces.Model.OperatorType));
             context.SerializeInner(input.PrimaryKey, typeof (global::System.Guid));
-            context.SerializeInner(input.operatorType, typeof (global::SystemInterfaces.Model.OperatorType));
             context.SerializeInner(input.sourceKey, typeof (global::System.String));
             context.SerializeInner(getField1(input), typeof (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>));
             context.SerializeInner(getField2(input), typeof (global::SystemInterfaces.Model.OperatorSettings));
@@ -1540,8 +1569,8 @@ namespace OrleansGeneratedCode38151279
         {
             global::SystemInterfaces.Model.TopologyUnit result = (global::SystemInterfaces.Model.TopologyUnit)global::System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof (global::SystemInterfaces.Model.TopologyUnit));
             context.RecordObject(result);
+            result.OperatorType = (global::SystemInterfaces.Model.OperatorType)context.DeserializeInner(typeof (global::SystemInterfaces.Model.OperatorType));
             result.PrimaryKey = (global::System.Guid)context.DeserializeInner(typeof (global::System.Guid));
-            result.operatorType = (global::SystemInterfaces.Model.OperatorType)context.DeserializeInner(typeof (global::SystemInterfaces.Model.OperatorType));
             result.sourceKey = (global::System.String)context.DeserializeInner(typeof (global::System.String));
             setField1(result, (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>)context.DeserializeInner(typeof (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>)));
             setField2(result, (global::SystemInterfaces.Model.OperatorSettings)context.DeserializeInner(typeof (global::SystemInterfaces.Model.OperatorSettings)));
@@ -1554,7 +1583,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen029e6bb3bfFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGen59c484ee9fFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {

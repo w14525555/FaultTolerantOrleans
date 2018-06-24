@@ -30,6 +30,7 @@ namespace GrainImplementation
         private Dictionary<Guid, int> messageCountMap = new Dictionary<Guid, int>(); 
         private TopologyUnit topologyUnit;
         private int currentBatchID;
+        private Guid testAddNewOperatorGuid;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         public override Task OnActivateAsync()
@@ -60,15 +61,15 @@ namespace GrainImplementation
             statelessOperators.Add(operatorTwo);
             statelessOperators.Add(operatorThree);
             
-            //Add custom guid list
+            //Add custom guid list to its child
             List<Guid> guidList = new List<Guid>();
             guidList.Add(Guid.NewGuid());
             guidList.Add(Guid.NewGuid());
 
             operatorOne.InitRandomOperators();
-            operatorTwo.AddCustomeOperators(guidList);
-            operatorThree.AddCustomeOperators(guidList);
-
+            operatorTwo.AddCustomOperators(guidList);
+            operatorThree.AddCustomOperators(guidList);
+            testAddNewOperatorGuid = operatorTwo.GetPrimaryKey();
             //Add the units to the topology
             InitTopology();
 
@@ -87,6 +88,10 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
+        public Task<Guid> GetTestGuid()
+        {
+            return Task.FromResult(testAddNewOperatorGuid);
+        }
 
         private Task InitCountMap()
         {
@@ -94,6 +99,17 @@ namespace GrainImplementation
             {
                 messageCountMap.Add(item.GetPrimaryKey(), 0);
             }
+            return Task.CompletedTask;
+        }
+
+        public Task AddAStatelessOperator(IStatelessOperator statelessOperator)
+        {
+            //Add to local
+            statelessOperators.Add(statelessOperator);
+            //Add it to global
+            topologyManager.ConnectUnits(topologyUnit.PrimaryKey, statelessOperator.GetPrimaryKey());
+            //Add it to counter map
+            messageCountMap.Add(statelessOperator.GetPrimaryKey(), 0);
             return Task.CompletedTask;
         }
 

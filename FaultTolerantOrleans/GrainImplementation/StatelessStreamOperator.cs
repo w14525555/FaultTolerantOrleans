@@ -54,7 +54,7 @@ namespace SystemImplementation
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
-        public async Task<Task> AddCustomeOperators(List<Guid> guidList)
+        public async Task<Task> AddCustomOperators(List<Guid> guidList)
         {
             foreach (var item in guidList)
             {

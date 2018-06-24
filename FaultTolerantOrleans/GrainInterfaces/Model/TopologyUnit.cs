@@ -9,20 +9,20 @@ namespace SystemInterfaces.Model
         private Dictionary<Guid, TopologyUnit> upperStreamUnits = new Dictionary<Guid, TopologyUnit>();
         private Dictionary<Guid, TopologyUnit> downStreamUnits = new Dictionary<Guid, TopologyUnit>();
         private OperatorSettings operatorSettings = new OperatorSettings();
-        public OperatorType operatorType { get; set; }
+        public OperatorType OperatorType { get; set; }
         public Guid PrimaryKey { get; set; }
         public String sourceKey { get; set; }
 
         public TopologyUnit(OperatorType operatorType, Guid key)
         {
-            this.operatorType = operatorType;
+            this.OperatorType = operatorType;
             PrimaryKey = new Guid();
             PrimaryKey = key;
         }
 
         public void SetSourceKey(String key)
         {
-            if (operatorType == OperatorType.Source)
+            if (OperatorType == OperatorType.Source)
             {
                 this.sourceKey = key;
             }
@@ -34,7 +34,7 @@ namespace SystemInterfaces.Model
 
         public String GetSourceKey()
         {
-            if (operatorType == OperatorType.Source)
+            if (OperatorType == OperatorType.Source)
             {
                 return sourceKey;
             }

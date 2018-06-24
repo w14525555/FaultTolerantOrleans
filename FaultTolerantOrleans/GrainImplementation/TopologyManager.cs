@@ -55,10 +55,10 @@ namespace SystemImplementation
             var oldUnit = topology.GetUnit(oldGuid);
             var newUnit = topology.GetUnit(newGuid);
 
-            if (oldUnit.operatorType == newUnit.operatorType)
+            if (oldUnit.OperatorType == newUnit.OperatorType)
             {
                 //If stateful, load the settings and mark the new as a restart grain
-                if (newUnit.operatorType == OperatorType.Stateful)
+                if (newUnit.OperatorType == OperatorType.Stateful)
                 {
                     IStatefulOperator statefulOp = GrainFactory.GetGrain<IStatefulOperator>(newUnit.PrimaryKey);
                     statefulOp.LoadSettings(oldUnit.GetSettings());
@@ -78,12 +78,12 @@ namespace SystemImplementation
                 foreach (var item in upperStreamUnits.Values.ToList())
                 {
                     DisConnectUnits(item.PrimaryKey, oldGuid);
-                    if (item.operatorType == OperatorType.Stateless)
+                    if (item.OperatorType == OperatorType.Stateless)
                     {
                         IStatelessOperator statelessOperator = GrainFactory.GetGrain<IStatelessOperator>(keyList[index], Constants.Stateless_Operator_Prefix);
                         var guidList = new List<Guid>();
                         guidList.Add(newGuid);
-                        statelessOperator.AddCustomeOperators(guidList);
+                        statelessOperator.AddCustomOperators(guidList);
                         statelessOperator.RemoveCustomeOperators(oldGuid);
                     }
                     index++;
@@ -92,15 +92,39 @@ namespace SystemImplementation
             return Task.CompletedTask;
         }
 
-        public Task<int> GetTopologySize()
+        public Task AddASameTypeStatelessOperatorToTopology(Guid guid)
         {
-            return Task.FromResult(topology.GetSize());
+            var unit = topology.GetUnit(guid);
+            if (unit.OperatorType == OperatorType.Stateless)
+            {
+                var newUnit = new TopologyUnit(OperatorType.Stateless, Guid.NewGuid());
+                //To Add a new operator, we need connect it with all the upper stream units 
+                //and lower stream unit
+                var upperStreamUnits = unit.GetUpperStreamUnits();
+                var downsStreamUnits = unit.GetdownStreamUnits();
+
+                var newStatelessOp = GrainFactory.GetGrain<IStatelessOperator>(newUnit.PrimaryKey, Constants.Stateless_Operator_Prefix);
+                
+                //Add down stream by this unit
+                newStatelessOp.AddCustomOperators(downsStreamUnits.Keys.ToList());
+
+                foreach (var op in upperStreamUnits)
+                {
+                    if (op.Value.OperatorType == OperatorType.Source)
+                    {
+                        var source = GrainFactory.GetGrain<IStreamSource>(op.Value.GetSourceKey());
+                        source.AddAStatelessOperator(newStatelessOp);
+                    }
+                }
+
+            }
+            else
+            {
+                throw new ArgumentException("The guid is not a stateless operator!");
+            }
+            return Task.CompletedTask;
         }
 
-        public Task<TopologyUnit> GetUnit(Guid key)
-        {
-            return Task.FromResult(topology.GetUnit(key));
-        }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         public async Task<Task> Commit(StreamMessage msg)
@@ -112,19 +136,19 @@ namespace SystemImplementation
             await batchTracker.TrackingCommitMessages(msg);
             foreach (TopologyUnit unit in units)
             {
-                if (unit.operatorType == OperatorType.Source)
+                if (unit.OperatorType == OperatorType.Source)
                 {
                     PrettyConsole.Line("Start Commit Source " + unit.GetSourceKey());
                     IStreamSource source = GrainFactory.GetGrain<IStreamSource>(unit.GetSourceKey());
                     source.Commit(msg);
                 }
-                else if (unit.operatorType == OperatorType.Stateful)
+                else if (unit.OperatorType == OperatorType.Stateful)
                 {
                     PrettyConsole.Line("Start Commit Stateful");
                     IStatefulOperator statefulOperator = GrainFactory.GetGrain<IStatefulOperator>(unit.PrimaryKey, Constants.Stateful_Operator_Prefix);
                     statefulOperator.Commit(msg);
                 }
-                else if (unit.operatorType == OperatorType.Stateless)
+                else if (unit.OperatorType == OperatorType.Stateless)
                 {
                     PrettyConsole.Line("Start Commit Stateless");
                     IStatelessOperator statelessOperator = GrainFactory.GetGrain<IStatelessOperator>(unit.PrimaryKey, Constants.Stateless_Operator_Prefix);
@@ -138,7 +162,6 @@ namespace SystemImplementation
             return Task.CompletedTask;
         }
 
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         public async Task<Task> Recovery(StreamMessage msg)
         {
@@ -149,17 +172,17 @@ namespace SystemImplementation
             await batchTracker.TrackingRecoveryMessages(msg);
             foreach (TopologyUnit unit in units)
             {
-                if (unit.operatorType == OperatorType.Source)
+                if (unit.OperatorType == OperatorType.Source)
                 {
                     IStreamSource source = GrainFactory.GetGrain<IStreamSource>(unit.GetSourceKey());
                     source.Recovery(msg);
                 }
-                else if (unit.operatorType == OperatorType.Stateful)
+                else if (unit.OperatorType == OperatorType.Stateful)
                 {
                     IStatefulOperator statefulOperator = GrainFactory.GetGrain<IStatefulOperator>(unit.PrimaryKey, Constants.Stateful_Operator_Prefix);
                     statefulOperator.Recovery(msg);
                 }
-                else if (unit.operatorType == OperatorType.Stateless)
+                else if (unit.OperatorType == OperatorType.Stateless)
                 {
                     IStatelessOperator statelessOperator = GrainFactory.GetGrain<IStatelessOperator>(unit.PrimaryKey, Constants.Stateless_Operator_Prefix);
                     statelessOperator.Recovery(msg);
@@ -170,6 +193,16 @@ namespace SystemImplementation
                 }
             }
             return Task.CompletedTask;
+        }
+
+        public Task<int> GetTopologySize()
+        {
+            return Task.FromResult(topology.GetSize());
+        }
+
+        public Task<TopologyUnit> GetUnit(Guid key)
+        {
+            return Task.FromResult(topology.GetUnit(key));
         }
     } 
 }

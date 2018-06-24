@@ -24,5 +24,7 @@ namespace SystemInterfaces
         Task<Task> Commit(StreamMessage msg);
 
         Task<Task> Recovery(StreamMessage msg);
+
+        Task AddASameTypeStatelessOperatorToTopology(Guid guid);
     }
 }
