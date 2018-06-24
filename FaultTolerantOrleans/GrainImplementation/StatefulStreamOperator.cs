@@ -18,6 +18,7 @@ namespace GrainImplementation
         private Dictionary<string, int> statesMap = new Dictionary<string, int>();
         private Dictionary<int, Dictionary<string, int>> reverseLogMap = new Dictionary<int, Dictionary<string, int>>();
         private Dictionary<int, Dictionary<string, int>> incrementalLogMap = new Dictionary<int, Dictionary<string, int>>();
+        private Dictionary<Guid, int> upStreamMessageCountMap = new Dictionary<Guid, int>();
         private List<StreamMessage> messageBuffer = new List<StreamMessage>();
         protected bool isOperatorFailed = false;
         protected bool isARestartOperator = false;
@@ -62,19 +63,17 @@ namespace GrainImplementation
                 var newIncrementalLog = new Dictionary<string, int>();
                 var newReverseLog = new Dictionary<string, int>();
                 incrementalLogMap.Add(msg.BatchID, newIncrementalLog);
-                if (reverseLogMap.ContainsKey(msg.BatchID))
-                {
-                    PrettyConsole.Line("Error!");
-                }
                 reverseLogMap.Add(msg.BatchID, newReverseLog);
             }
 
-            if (msg.BatchID > currentBatchID && msg.Value != Constants.Recovery_Value)
+            await IncrementUpStreamCount(msg);
+
+            if (msg.BatchID > currentBatchID)
             {
                 messageBuffer.Add(msg);
                 asyncStream = stream;
             }
-            else if (msg.BatchID == currentBatchID || msg.Value == Constants.Recovery_Value)
+            else if (msg.BatchID == currentBatchID)
             {
                 if (msg.Key != Constants.System_Key)
                 {
@@ -90,6 +89,44 @@ namespace GrainImplementation
                 throw new InvalidOperationException(msg.Key + " " + msg.Value + " The id " + msg.BatchID + " is less than the currentID");
             }
             return Task.CompletedTask;
+        }
+
+        private Task IncrementUpStreamCount(StreamMessage msg)
+        {
+            if (msg.Key == Constants.System_Key)
+            {
+                CheckCount(msg);
+            }
+            else
+            {
+                if (upStreamMessageCountMap.ContainsKey(msg.From))
+                {
+                    upStreamMessageCountMap[msg.From] = upStreamMessageCountMap[msg.From] + 1;
+                }
+                else
+                {
+                    upStreamMessageCountMap.Add(msg.From, 1);
+                }
+            }
+            
+            return Task.CompletedTask;
+        }
+
+        private void CheckCount(StreamMessage msg)
+        {
+            if (upStreamMessageCountMap.ContainsKey(msg.From) && msg.Count == upStreamMessageCountMap[msg.From])
+            {
+                return;
+            }
+            else if (!upStreamMessageCountMap.ContainsKey(msg.From) && msg.Count == 0)
+            {
+                return;
+            }
+            else
+            {
+                PrettyConsole.Line("The count in stateless operator is not equal!");
+                throw new InvalidOperationException("The count in stateless operator is not equal!");
+            }
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]

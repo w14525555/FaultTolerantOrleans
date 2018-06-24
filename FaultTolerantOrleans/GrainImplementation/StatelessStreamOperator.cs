@@ -68,15 +68,6 @@ namespace SystemImplementation
             return Task.CompletedTask;
         }
 
-        private Task InitDownStreamMessageCountMap()
-        {
-            foreach (var item in statefulOperators)
-            {
-                downStreamMessageCountMap.Add(item.GetPrimaryKey(), 0);
-            }
-            return Task.CompletedTask;
-        }
-
         public Task RemoveCustomeOperators(Guid guid)
         {
             int index = -1;
@@ -110,6 +101,7 @@ namespace SystemImplementation
             if (msg.Key != Constants.System_Key)
             {
                 IncrementUpStreamCount(msg);
+                msg.From = this.GetPrimaryKey();
                 CustomExcutionMethod(msg, stream);
             }
             else
@@ -133,48 +125,6 @@ namespace SystemImplementation
         }
 
         public abstract Task<Task> CustomExcutionMethod(StreamMessage msg, IAsyncStream<StreamMessage> stream);
-
-        protected async Task<Task> ExecuteMessagesByDownStreamOperators(StreamMessage msg, IAsyncStream<StreamMessage> stream, IStatefulOperator statefulOperator, int index)
-        {
-            try
-            {
-                await statefulOperator.ExecuteMessage(msg, stream);
-                return Task.CompletedTask;
-            }
-            catch (Exception e)
-            {
-                PrettyConsole.Line("Get Exception : " + e.GetType() + "; Start Receovry");
-                //1. Restart a new grain
-                IStatefulOperator newOperator = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
-                //2. Rollback the state
-                //a. Find the operator settings
-                //The method has to be called becasue grain initialize after the method call.
-                await newOperator.MarkOperatorAsFailed();
-                var item = operatorSettings.GetOperatorDict().ElementAt(index);
-                //b. Load the setting 
-                //await newOperator.LoadSettings(item.Value);
-                //c. mark as failed, so when it receive recovery message it will 
-                //revert states by incremental log
-                //await newOperator.MarkOperatorAsFailed();
-                //3. Remove the failed from the topology
-                //statefulOperators.RemoveAt(index);
-                //operatorSettings.RemoveOperatorFromDict(item.Key);
-                //4. Add the new grain to topology
-                //statefulOperators.Add(newOperator);
-                // operatorSettings.AddOpratorToDict(newOperator.GetPrimaryKey(), await newOperator.GetOperatorSettings());
-                //await topologyManager.UpdateOperatorSettings(this.GetPrimaryKey(), operatorSettings);
-                //Since the new operator will add itself to the topology it self, so it is ok
-                await topologyManager.ReplaceTheOldOperatorWithNew(item.Key, newOperator.GetPrimaryKey());
-                //5. Remove the old from the topology
-                await topologyManager.RemoveUnit(item.Key);
-                //6. Replace the new operator
-
-                //8. Start Recovery
-                var batchCoordinator = GrainFactory.GetGrain<IBatchCoordinator>(Constants.Coordinator);
-                await batchCoordinator.StartRecovery();
-                return Task.CompletedTask;
-            }
-        }
 
         protected async Task<Task> ProcessSpecialMessageAsync(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
@@ -209,7 +159,7 @@ namespace SystemImplementation
             }
             else
             {
-                PrettyConsole.Line("The count in stateless is not equal!");
+                PrettyConsole.Line("The count in stateless operator is not equal!");
                 return false;
             }
         }
@@ -264,6 +214,73 @@ namespace SystemImplementation
                 index++;
             }
             return Task.CompletedTask;
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
+        protected async Task<Task> ExecuteMessagesByDownStreamOperators(StreamMessage msg, IAsyncStream<StreamMessage> stream, IStatefulOperator statefulOperator, int index)
+        {
+            try
+            {
+                msg.From = this.GetPrimaryKey();
+                if (msg.Value == Constants.Barrier_Value)
+                {
+                    if (downStreamMessageCountMap.ContainsKey(statefulOperator.GetPrimaryKey()))
+                    {
+                        msg.Count = downStreamMessageCountMap[statefulOperator.GetPrimaryKey()];
+                    }
+                    else
+                    {
+                        msg.Count = 0;
+                    }
+                }
+                else if(msg.Value != Constants.System_Key)
+                {
+                    var key = statefulOperator.GetPrimaryKey();
+                    if (downStreamMessageCountMap.ContainsKey(key))
+                    {
+                        downStreamMessageCountMap[key] = downStreamMessageCountMap[key] + 1;
+                    }
+                    else
+                    {
+                        downStreamMessageCountMap.Add(key, 1);
+                    }
+                }
+                await statefulOperator.ExecuteMessage(msg, stream);
+                return Task.CompletedTask;
+            }
+            catch (Exception e)
+            {
+                PrettyConsole.Line("Get Exception : " + e.GetType() + "; Start Receovry");
+                //1. Restart a new grain
+                IStatefulOperator newOperator = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
+                //2. Rollback the state
+                //a. Find the operator settings
+                //The method has to be called becasue grain initialize after the method call.
+                await newOperator.MarkOperatorAsFailed();
+                var item = operatorSettings.GetOperatorDict().ElementAt(index);
+                //b. Load the setting 
+                //await newOperator.LoadSettings(item.Value);
+                //c. mark as failed, so when it receive recovery message it will 
+                //revert states by incremental log
+                //await newOperator.MarkOperatorAsFailed();
+                //3. Remove the failed from the topology
+                //statefulOperators.RemoveAt(index);
+                //operatorSettings.RemoveOperatorFromDict(item.Key);
+                //4. Add the new grain to topology
+                //statefulOperators.Add(newOperator);
+                // operatorSettings.AddOpratorToDict(newOperator.GetPrimaryKey(), await newOperator.GetOperatorSettings());
+                //await topologyManager.UpdateOperatorSettings(this.GetPrimaryKey(), operatorSettings);
+                //Since the new operator will add itself to the topology it self, so it is ok
+                await topologyManager.ReplaceTheOldOperatorWithNew(item.Key, newOperator.GetPrimaryKey());
+                //5. Remove the old from the topology
+                await topologyManager.RemoveUnit(item.Key);
+                //6. Replace the new operator
+
+                //8. Start Recovery
+                var batchCoordinator = GrainFactory.GetGrain<IBatchCoordinator>(Constants.Coordinator);
+                await batchCoordinator.StartRecovery();
+                return Task.CompletedTask;
+            }
         }
 
         public async Task<int> GetState(string word)
