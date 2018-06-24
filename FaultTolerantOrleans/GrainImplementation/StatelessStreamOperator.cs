@@ -134,7 +134,7 @@ namespace SystemImplementation
             {
                 if (CheckCount(msg))
                 {
-                    //ResetCountMap(upStreamMessageCountMap);
+                    ResetCountMap(upStreamMessageCountMap);
                     await HandleBarrierMessages(msg);
                     await batchTracker.CompleteOneOperatorBarrier(info);
                 }

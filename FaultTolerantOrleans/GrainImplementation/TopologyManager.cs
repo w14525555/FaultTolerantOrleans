@@ -138,19 +138,16 @@ namespace SystemImplementation
             {
                 if (unit.OperatorType == OperatorType.Source)
                 {
-                    PrettyConsole.Line("Start Commit Source " + unit.GetSourceKey());
                     IStreamSource source = GrainFactory.GetGrain<IStreamSource>(unit.GetSourceKey());
                     source.Commit(msg);
                 }
                 else if (unit.OperatorType == OperatorType.Stateful)
                 {
-                    PrettyConsole.Line("Start Commit Stateful");
                     IStatefulOperator statefulOperator = GrainFactory.GetGrain<IStatefulOperator>(unit.PrimaryKey, Constants.Stateful_Operator_Prefix);
                     statefulOperator.Commit(msg);
                 }
                 else if (unit.OperatorType == OperatorType.Stateless)
                 {
-                    PrettyConsole.Line("Start Commit Stateless");
                     IStatelessOperator statelessOperator = GrainFactory.GetGrain<IStatelessOperator>(unit.PrimaryKey, Constants.Stateless_Operator_Prefix);
                     statelessOperator.Commit(msg);
                 }
