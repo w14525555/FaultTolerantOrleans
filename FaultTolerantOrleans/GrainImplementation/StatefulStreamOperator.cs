@@ -140,7 +140,7 @@ namespace GrainImplementation
                 if (numberOfUpStream == numberCurrentBatchBarrierReceived)
                 {
                     //PrettyConsole.Line("Start process normal message");
-                    await ProcessNormalMessagesInTheBuffer(currentBatchID + 1);
+                    await ProcessMessagesInTheBuffer(currentBatchID + 1);
                     numberCurrentBatchBarrierReceived = 0;
                 }
             }
@@ -284,32 +284,8 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        //This method is used to process the special message after commit
-        protected async Task<Task> ProcessSpecialMessagesInTheBuffer()
-        {
-            if (messageBuffer.Count > 0)
-            {
-                if (asyncStream != null)
-                {
-                    for (int i = 0; i< messageBuffer.Count; i++)
-                    {
-                        var msg = messageBuffer[i];
-                        if (msg.BatchID == currentBatchID && msg.Key == Constants.System_Key)
-                        {
-                            await ExecuteMessage(messageBuffer[i], asyncStream);
-                        }
-                    }
-                }
-                else
-                {
-                    throw new InvalidOperationException("Process Buffer Message: no Stream!");
-                }
-            }
-            return Task.CompletedTask;
-        }
-
         //This method is used to process the normal message after barrier
-        protected async Task<Task> ProcessNormalMessagesInTheBuffer(int batchID)
+        protected async Task<Task> ProcessMessagesInTheBuffer(int batchID)
         {
             if (messageBuffer.Count > 0)
             {
@@ -321,6 +297,10 @@ namespace GrainImplementation
                         if (msg.BatchID == batchID && msg.Key != Constants.System_Key)
                         {
                             await CustomExecutionMethod(msg, asyncStream);
+                        }
+                        else if (msg.BatchID == batchID && msg.Key == Constants.System_Key)
+                        {
+                            await ExecuteMessage(messageBuffer[i], asyncStream);
                         }
                     }
                 }
