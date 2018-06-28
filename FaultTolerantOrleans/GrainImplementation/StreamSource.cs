@@ -17,8 +17,7 @@ namespace GrainImplementation
 		private readonly List<string> onlineMembers = new List<string>(10);
 
         //Internal Implementation
-        private HashSet<IStatelessOperator> statelessOperators;
-        private HashSet<IStatefulOperator> statefulOperators;
+        private HashSet<IOperator> downStreamOperators;
 
         private IBatchCoordinator batchCoordinator;
         private IBatchTracker batchTracker;
@@ -44,22 +43,21 @@ namespace GrainImplementation
             topologyUnit = new TopologyUnit(OperatorType.Source, Guid.NewGuid());
             topologyUnit.SetSourceKey(this.GetPrimaryKeyString());
             topologyManager.AddUnit(topologyUnit);
-            InitOperators();
-            statefulOperators = new HashSet<IStatefulOperator>();
+            InitDeaultOperators();
           return base.OnActivateAsync();
 		}
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
-        private Task InitOperators()
+        private Task InitDeaultOperators()
         {
-            statelessOperators = new HashSet<IStatelessOperator>();
+            downStreamOperators = new HashSet<IOperator>();
             var operatorOne = GrainFactory.GetGrain<IStatelessOperator>(Guid.NewGuid(), Constants.Stateless_Operator_Prefix);
             var operatorTwo = GrainFactory.GetGrain<IStatelessOperator>(Guid.NewGuid(), Constants.Stateless_Operator_Prefix);
             var operatorThree = GrainFactory.GetGrain<IStatelessOperator>(Guid.NewGuid(), Constants.Stateless_Operator_Prefix);
             //If too many use for loop
-            statelessOperators.Add(operatorOne);
-            statelessOperators.Add(operatorTwo);
-            statelessOperators.Add(operatorThree);
+            downStreamOperators.Add(operatorOne);
+            downStreamOperators.Add(operatorTwo);
+            downStreamOperators.Add(operatorThree);
             
             //Add custom guid list to its child
             List<Guid> guidList = new List<Guid>();
@@ -72,7 +70,6 @@ namespace GrainImplementation
             testAddNewOperatorGuid = operatorTwo.GetPrimaryKey();
             //Add the units to the topology
             InitTopology();
-
             //Add the down stream operators to the count map
             InitCountMap();
 
@@ -81,7 +78,7 @@ namespace GrainImplementation
 
         private Task InitTopology()
         {
-            foreach (var item in statelessOperators)
+            foreach (var item in downStreamOperators)
             {
                 topologyManager.ConnectUnits(topologyUnit.PrimaryKey, item.GetPrimaryKey());
             }
@@ -95,7 +92,7 @@ namespace GrainImplementation
 
         private Task InitCountMap()
         {
-            foreach(var item in statelessOperators)
+            foreach(var item in downStreamOperators)
             {
                 messageCountMap.Add(item.GetPrimaryKey(), 0);
             }
@@ -105,7 +102,7 @@ namespace GrainImplementation
         public Task AddAStatelessOperator(IStatelessOperator statelessOperator)
         {
             //Add to local
-            statelessOperators.Add(statelessOperator);
+            downStreamOperators.Add(statelessOperator);
             //Add it to global
             topologyManager.ConnectUnits(topologyUnit.PrimaryKey, statelessOperator.GetPrimaryKey());
             //Add it to counter map
@@ -176,9 +173,9 @@ namespace GrainImplementation
         private async Task<Task> ProcessNormalMessage(StreamMessage msg)
         {
             //At first find a operator by hashing
-            IStatelessOperator statelessOp = await SystemImplementation.PartitionFunction.PartitionStatelessByKey(msg.Key, statelessOperators);
-            await IncrementCountMap(statelessOp.GetPrimaryKey());
-            await statelessOp.ExecuteMessage(msg, stream);
+            IOperator op = await SystemImplementation.PartitionFunction.PartitionStatelessByKey(msg.Key, downStreamOperators);
+            await IncrementCountMap(op.GetPrimaryKey());
+            await op.ExecuteMessage(msg, stream);
 
             return Task.CompletedTask;
         }
@@ -235,14 +232,14 @@ namespace GrainImplementation
 
         private Task TrackingBarrierMessages(StreamMessage msg)
         {
-            msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), statelessOperators.Count);
+            msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), downStreamOperators.Count);
             batchTracker.TrackingBarrierMessages(msg);
             return Task.CompletedTask;
         }
 
         private Task BroadcastSpecialMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
-            foreach(IStatelessOperator item in statelessOperators)
+            foreach(IStatelessOperator item in downStreamOperators)
             {
                 if (messageCountMap.ContainsKey(item.GetPrimaryKey()))
                 {
@@ -306,7 +303,7 @@ namespace GrainImplementation
 
         public async Task<int> GetState(StreamMessage msg)
         {
-            foreach(var op in statelessOperators)
+            foreach(var op in downStreamOperators)
             {
                 var count = await op.GetState(msg.Value);
                 if (count != -1)
@@ -319,7 +316,7 @@ namespace GrainImplementation
 
         public async Task<int> GetStateInReverseLog(StreamMessage msg)
         {
-            foreach (var op in statelessOperators)
+            foreach (var op in downStreamOperators)
             {
                 var count = await op.GetStateInReverseLog(msg.Value);
                 if (count != -1)
@@ -332,7 +329,7 @@ namespace GrainImplementation
 
         public async Task<int> GetStateInIncrementalLog(StreamMessage msg)
         {
-            foreach (var op in statelessOperators)
+            foreach (var op in downStreamOperators)
             {
                 var count = await op.GetStateInIncrementalLog(msg.Value);
                 if (count != -1)

@@ -558,5 +558,14 @@ namespace GrainImplementation
             }
         }
 
+        public Task<Task> AddCustomOperators(List<Guid> guidList)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task RemoveCustomeOperators(Guid guid)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
