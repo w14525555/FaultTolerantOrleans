@@ -14,7 +14,7 @@ namespace SystemImplementation
     {
         //The StatelessConsumer does not have state.
             
-        protected List<IStatefulOperator> statefulOperators = new List<IStatefulOperator>();
+        protected List<IOperator> statefulOperators = new List<IOperator>();
         protected IBatchTracker batchTracker;
         protected ITopology topologyManager;
         protected TopologyUnit topologyUnit;
@@ -36,7 +36,6 @@ namespace SystemImplementation
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         public async Task<Task> InitRandomOperators()
         {
-            statefulOperators = new List<IStatefulOperator>();
             IStatefulOperator operatorOne = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
             IStatefulOperator operatorTwo = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
             statefulOperators.Add(operatorOne);
@@ -217,16 +216,16 @@ namespace SystemImplementation
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
-        protected async Task<Task> ExecuteMessagesByDownStreamOperators(StreamMessage msg, IAsyncStream<StreamMessage> stream, IStatefulOperator statefulOperator, int index)
+        protected async Task<Task> ExecuteMessagesByDownStreamOperators(StreamMessage msg, IAsyncStream<StreamMessage> stream, IOperator op, int index)
         {
             try
             {
                 msg.From = this.GetPrimaryKey();
                 if (msg.Value == Constants.Barrier_Value)
                 {
-                    if (downStreamMessageCountMap.ContainsKey(statefulOperator.GetPrimaryKey()))
+                    if (downStreamMessageCountMap.ContainsKey(op.GetPrimaryKey()))
                     {
-                        msg.Count = downStreamMessageCountMap[statefulOperator.GetPrimaryKey()];
+                        msg.Count = downStreamMessageCountMap[op.GetPrimaryKey()];
                     }
                     else
                     {
@@ -235,7 +234,7 @@ namespace SystemImplementation
                 }
                 else if(msg.Value != Constants.System_Key)
                 {
-                    var key = statefulOperator.GetPrimaryKey();
+                    var key = op.GetPrimaryKey();
                     if (downStreamMessageCountMap.ContainsKey(key))
                     {
                         downStreamMessageCountMap[key] = downStreamMessageCountMap[key] + 1;
@@ -245,7 +244,7 @@ namespace SystemImplementation
                         downStreamMessageCountMap.Add(key, 1);
                     }
                 }
-                await statefulOperator.ExecuteMessage(msg, stream);
+                await op.ExecuteMessage(msg, stream);
                 return Task.CompletedTask;
             }
             catch (Exception e)

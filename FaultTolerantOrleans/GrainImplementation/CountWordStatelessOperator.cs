@@ -16,10 +16,10 @@ namespace SystemImplementation
             foreach (string word in words)
             {
                 int index = SystemImplementation.PartitionFunction.PartitionStatefulByKey(msg.Key, statefulOperators.Count);
-                IStatefulOperator statefulOperator = statefulOperators.ElementAt(index);
+                IOperator op = statefulOperators.ElementAt(index);
                 StreamMessage newMessage = new StreamMessage(word, null);
                 newMessage.BatchID = msg.BatchID;
-                await ExecuteMessagesByDownStreamOperators(newMessage, stream, statefulOperator, index);
+                await ExecuteMessagesByDownStreamOperators(newMessage, stream, op, index);
             }
             return Task.CompletedTask;
         }
