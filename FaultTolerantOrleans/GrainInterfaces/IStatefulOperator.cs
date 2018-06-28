@@ -8,12 +8,9 @@ namespace SystemInterfaces
     public interface IStatefulOperator: IOperator
     {
         //Task<Task> ExecuteMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream);
-
         //Method that used for testing. 
         //Task<int> GetState(string key);
-
         //Task<int> GetStateInReverseLog(string key);
-
         //Task<int> GetStateInIncrementalLog(string key);
 
         Task<OperatorSettings> GetOperatorSettings();
