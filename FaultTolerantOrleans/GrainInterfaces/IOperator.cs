@@ -19,6 +19,6 @@ namespace SystemInterfaces
 
         Task<int> GetState(string word);
 
-        Task ExecuteMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream);
+        Task<Task> ExecuteMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream);
     }
 }

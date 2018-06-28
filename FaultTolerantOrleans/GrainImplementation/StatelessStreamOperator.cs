@@ -95,12 +95,12 @@ namespace SystemImplementation
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
-        public Task ExecuteMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
+        public async Task<Task> ExecuteMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
             //At first split text into words
             if (msg.Key != Constants.System_Key)
             {
-                IncrementUpStreamCount(msg);
+                await IncrementUpStreamCount(msg);
                 msg.From = this.GetPrimaryKey();
                 CustomExcutionMethod(msg, stream);
             }
