@@ -107,3 +107,9 @@ After you see a grain operation fail you can do one or more of the following.
 2. Try to fix/reset the partially changed state by calling a method which resets the state to the last known correct state or just reads it from storage by calling ReadStateAsync.
 3. Reset the state of all related activations as well to ensure a clean state for all of them.
 4. Perform multi-grain state manipulations using a Process Manager or database transaction to make sure it's either done completely or nothing is changed to avoid the state being partially updated.
+
+**Experiments Design**
+1. Processing Performance Testing
+      a. Throughput = 1/latency
+2. Fault Tolerance
+3. Scalability & Pipelinging 

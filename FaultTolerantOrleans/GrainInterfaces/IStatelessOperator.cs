@@ -7,7 +7,7 @@ using SystemInterfaces.Model;
 
 namespace SystemInterfaces
 {
-    public interface IStatelessOperator : IGrainWithGuidKey
+    public interface IStatelessOperator : IOperator
     {
         Task ExecuteMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream);
 
@@ -19,11 +19,11 @@ namespace SystemInterfaces
 
         Task<Task> InitRandomOperators();
 
-        Task<Task> AddCustomOperators(List<Guid> guidList);
+        //Task<Task> AddCustomOperators(List<Guid> guidList);
 
         Task<TopologyUnit> GetTopologyUnit();
 
-        Task RemoveCustomeOperators(Guid guid);
+        //Task RemoveCustomeOperators(Guid guid);
 
         Task Commit(StreamMessage msg);
 
