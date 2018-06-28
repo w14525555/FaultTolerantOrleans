@@ -15,11 +15,11 @@ namespace SystemImplementation
             //Then find a operator
             foreach (string word in words)
             {
-                int index = SystemImplementation.PartitionFunction.PartitionStatefulByKey(msg.Key, statefulOperators.Count);
-                IOperator op = statefulOperators.ElementAt(index);
+                int index = SystemImplementation.PartitionFunction.PartitionStatefulByKey(msg.Key, downStreamOperators.Count);
+                IOperator op = downStreamOperators.ElementAt(index);
                 StreamMessage newMessage = new StreamMessage(word, null);
                 newMessage.BatchID = msg.BatchID;
-                await ExecuteMessagesByDownStreamOperators(newMessage, stream, op, index);
+                await ExecuteMessagesByDownStreamOperators(newMessage, stream, op);
             }
             return Task.CompletedTask;
         }

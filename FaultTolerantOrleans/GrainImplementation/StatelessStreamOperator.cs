@@ -14,7 +14,7 @@ namespace SystemImplementation
     {
         //The StatelessConsumer does not have state.
             
-        protected List<IOperator> statefulOperators = new List<IOperator>();
+        protected List<IOperator> downStreamOperators = new List<IOperator>();
         protected IBatchTracker batchTracker;
         protected ITopology topologyManager;
         protected TopologyUnit topologyUnit;
@@ -38,9 +38,9 @@ namespace SystemImplementation
         {
             IStatefulOperator operatorOne = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
             IStatefulOperator operatorTwo = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
-            statefulOperators.Add(operatorOne);
+            downStreamOperators.Add(operatorOne);
             operatorOne.IncrementNumberOfUpStreamOperator();
-            statefulOperators.Add(operatorTwo);
+            downStreamOperators.Add(operatorTwo);
             operatorTwo.IncrementNumberOfUpStreamOperator();
             operatorSettings.AddOpratorToDict(operatorOne.GetPrimaryKey(), await operatorOne.GetOperatorSettings());
             operatorSettings.AddOpratorToDict(operatorTwo.GetPrimaryKey(), await operatorTwo.GetOperatorSettings());
@@ -58,7 +58,7 @@ namespace SystemImplementation
             foreach (var item in guidList)
             {
                 IStatefulOperator op = GrainFactory.GetGrain<IStatefulOperator>(item);
-                statefulOperators.Add(op);
+                downStreamOperators.Add(op);
                 op.IncrementNumberOfUpStreamOperator();
                 operatorSettings.AddOpratorToDict(op.GetPrimaryKey(), await op.GetOperatorSettings());
                 topologyManager.ConnectUnits(topologyUnit.PrimaryKey, op.GetPrimaryKey());
@@ -70,9 +70,9 @@ namespace SystemImplementation
         public Task RemoveCustomeOperators(Guid guid)
         {
             int index = -1;
-            for (int i = 0; i < statefulOperators.Count; i++)
+            for (int i = 0; i < downStreamOperators.Count; i++)
             {
-                if (statefulOperators[i].GetPrimaryKey() == guid)
+                if (downStreamOperators[i].GetPrimaryKey() == guid)
                 {
                     index = i;
                     break;
@@ -80,7 +80,7 @@ namespace SystemImplementation
             }
             if (index != -1)
             {
-                statefulOperators.RemoveAt(index);
+                downStreamOperators.RemoveAt(index);
                 PrettyConsole.Line("Remove old stateful from upper stream");
                 operatorSettings.RemoveOperatorFromDict(guid);
                 topologyManager.UpdateOperatorSettings(this.GetPrimaryKey(), operatorSettings);
@@ -174,7 +174,7 @@ namespace SystemImplementation
 
         private Task HandleBarrierMessages(StreamMessage msg)
         {
-            msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), statefulOperators.Count);
+            msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), downStreamOperators.Count);
             msg.barrierOrCommitInfo.BatchID = msg.BatchID;
             if (batchTracker != null)
             {
@@ -206,18 +206,17 @@ namespace SystemImplementation
 
         private async Task<Task> BroadcastSpecialMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
-            int index = 0;
-            foreach (IStatefulOperator item in statefulOperators)
+            foreach (IStatefulOperator item in downStreamOperators)
             {
-                await ExecuteMessagesByDownStreamOperators(msg, stream, item, index);
-                index++;
+                await ExecuteMessagesByDownStreamOperators(msg, stream, item);
             }
             return Task.CompletedTask;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
-        protected async Task<Task> ExecuteMessagesByDownStreamOperators(StreamMessage msg, IAsyncStream<StreamMessage> stream, IOperator op, int index)
+        protected async Task<Task> ExecuteMessagesByDownStreamOperators(StreamMessage msg, IAsyncStream<StreamMessage> stream, IOperator op)
         {
+            var targetKey = op.GetPrimaryKey();
             try
             {
                 msg.From = this.GetPrimaryKey();
@@ -252,30 +251,13 @@ namespace SystemImplementation
                 PrettyConsole.Line("Get Exception : " + e.GetType() + "; Start Receovry");
                 //1. Restart a new grain
                 IStatefulOperator newOperator = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
-                //2. Rollback the state
-                //a. Find the operator settings
-                //The method has to be called becasue grain initialize after the method call.
+                //2. make the new one as failed grain
                 await newOperator.MarkOperatorAsFailed();
-                var item = operatorSettings.GetOperatorDict().ElementAt(index);
-                //b. Load the setting 
-                //await newOperator.LoadSettings(item.Value);
-                //c. mark as failed, so when it receive recovery message it will 
-                //revert states by incremental log
-                //await newOperator.MarkOperatorAsFailed();
-                //3. Remove the failed from the topology
-                //statefulOperators.RemoveAt(index);
-                //operatorSettings.RemoveOperatorFromDict(item.Key);
-                //4. Add the new grain to topology
-                //statefulOperators.Add(newOperator);
-                // operatorSettings.AddOpratorToDict(newOperator.GetPrimaryKey(), await newOperator.GetOperatorSettings());
-                //await topologyManager.UpdateOperatorSettings(this.GetPrimaryKey(), operatorSettings);
-                //Since the new operator will add itself to the topology it self, so it is ok
-                await topologyManager.ReplaceTheOldOperatorWithNew(item.Key, newOperator.GetPrimaryKey());
-                //5. Remove the old from the topology
-                await topologyManager.RemoveUnit(item.Key);
-                //6. Replace the new operator
-
-                //8. Start Recovery
+                //3. Replace the old by new 
+                await topologyManager.ReplaceTheOldOperatorWithNew(targetKey, newOperator.GetPrimaryKey());
+                //4. Remove the old from the topology
+                await topologyManager.RemoveUnit(targetKey);
+                //5. Start Recovery
                 var batchCoordinator = GrainFactory.GetGrain<IBatchCoordinator>(Constants.Coordinator);
                 await batchCoordinator.StartRecovery();
                 return Task.CompletedTask;
@@ -284,7 +266,7 @@ namespace SystemImplementation
 
         public async Task<int> GetState(string word)
         {
-            foreach(var op in statefulOperators)
+            foreach(var op in downStreamOperators)
             {
                 var count = await op.GetState(word);
                 if (count != -1)
@@ -297,7 +279,7 @@ namespace SystemImplementation
 
         public async Task<int> GetStateInReverseLog(string word)
         {
-            foreach (var op in statefulOperators)
+            foreach (var op in downStreamOperators)
             {
                 var count = await op.GetStateInReverseLog(word);
                 if (count != -1)
@@ -310,7 +292,7 @@ namespace SystemImplementation
 
         public async Task<int> GetStateInIncrementalLog(string word)
         {
-            foreach (var op in statefulOperators)
+            foreach (var op in downStreamOperators)
             {
                 var count = await op.GetStateInIncrementalLog(word);
                 if (count != -1)
