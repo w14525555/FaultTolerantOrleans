@@ -53,7 +53,7 @@ namespace SystemImplementation
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
-        public async Task<Task> AddCustomOperators(List<Guid> guidList)
+        public async Task<Task> AddCustomDownStreamOperators(List<Guid> guidList)
         {
             foreach (var item in guidList)
             {
@@ -67,7 +67,7 @@ namespace SystemImplementation
             return Task.CompletedTask;
         }
 
-        public Task RemoveCustomeOperators(Guid guid)
+        public Task RemoveCustomeDownStreamOperators(Guid guid)
         {
             int index = -1;
             for (int i = 0; i < downStreamOperators.Count; i++)

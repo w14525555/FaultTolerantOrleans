@@ -9,9 +9,9 @@ namespace SystemInterfaces
 {
     public interface IOperator: IGrainWithGuidKey
     {
-        Task<Task> AddCustomOperators(List<Guid> guidList);
+        Task<Task> AddCustomDownStreamOperators(List<Guid> guidList);
 
-        Task RemoveCustomeOperators(Guid guid);
+        Task RemoveCustomeDownStreamOperators(Guid guid);
 
         Task<int> GetStateInReverseLog(string word);
 

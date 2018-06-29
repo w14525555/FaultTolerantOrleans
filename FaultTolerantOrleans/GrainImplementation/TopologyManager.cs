@@ -57,10 +57,10 @@ namespace SystemImplementation
 
             if (oldUnit.OperatorType == newUnit.OperatorType)
             {
-                //If stateful, load the settings and mark the new as a restart grain
+                //Only the stateful load the settings
                 if (newUnit.OperatorType == OperatorType.Stateful)
                 {
-                    IStatefulOperator statefulOp = GrainFactory.GetGrain<IStatefulOperator>(newUnit.PrimaryKey);
+                    IStatefulOperator statefulOp = GrainFactory.GetGrain<IStatefulOperator>(newUnit.PrimaryKey, Constants.Stateful_Operator_Prefix);
                     statefulOp.LoadSettings(oldUnit.GetSettings());
                 }
             }
@@ -78,19 +78,23 @@ namespace SystemImplementation
                 foreach (var item in upperStreamUnits.Values.ToList())
                 {
                     DisConnectUnits(item.PrimaryKey, oldGuid);
+                    IOperator op;
                     if (item.OperatorType == OperatorType.Stateless)
                     {
-                        IOperator statelessOperator = GrainFactory.GetGrain<IOperator>(keyList[index], Constants.Stateless_Operator_Prefix);
+                        op = GrainFactory.GetGrain<IOperator>(keyList[index], Constants.Stateless_Operator_Prefix);
                         var guidList = new List<Guid>();
                         guidList.Add(newGuid);
-                        statelessOperator.AddCustomOperators(guidList);
-                        statelessOperator.RemoveCustomeOperators(oldGuid);
+                        op.AddCustomDownStreamOperators(guidList);
+                        op.RemoveCustomeDownStreamOperators(oldGuid);
                     }
+
                     index++;
                 }
             }
             return Task.CompletedTask;
         }
+
+
 
         public Task AddASameTypeStatelessOperatorToTopology(Guid guid)
         {
@@ -106,7 +110,7 @@ namespace SystemImplementation
                 var newStatelessOp = GrainFactory.GetGrain<IStatelessOperator>(newUnit.PrimaryKey, Constants.Stateless_Operator_Prefix);
                 
                 //Add down stream by this unit
-                newStatelessOp.AddCustomOperators(downsStreamUnits.Keys.ToList());
+                newStatelessOp.AddCustomDownStreamOperators(downsStreamUnits.Keys.ToList());
 
                 foreach (var op in upperStreamUnits)
                 {

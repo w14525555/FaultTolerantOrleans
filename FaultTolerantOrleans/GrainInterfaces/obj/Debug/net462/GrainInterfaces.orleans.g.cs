@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen7bb2e59bc7FeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGenf1f4b63dd1FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -453,10 +453,10 @@ namespace SystemInterfaces
                 case -66543353:
                     switch (methodId)
                     {
-                        case 1169463686:
-                            return @"AddCustomOperators";
-                        case 1294781576:
-                            return @"RemoveCustomeOperators";
+                        case -793500431:
+                            return @"AddCustomDownStreamOperators";
+                        case -1973192780:
+                            return @"RemoveCustomeDownStreamOperators";
                         case 2075549514:
                             return @"GetStateInReverseLog";
                         case 408823471:
@@ -474,14 +474,14 @@ namespace SystemInterfaces
             }
         }
 
-        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> AddCustomOperators(global::System.Collections.Generic.List<global::System.Guid> guidList)
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> AddCustomDownStreamOperators(global::System.Collections.Generic.List<global::System.Guid> guidList)
         {
-            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(1169463686, new global::System.Object[]{guidList});
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-793500431, new global::System.Object[]{guidList});
         }
 
-        public global::System.Threading.Tasks.Task RemoveCustomeOperators(global::System.Guid guid)
+        public global::System.Threading.Tasks.Task RemoveCustomeDownStreamOperators(global::System.Guid guid)
         {
-            return base.InvokeMethodAsync<global::System.Object>(1294781576, new global::System.Object[]{guid});
+            return base.InvokeMethodAsync<global::System.Object>(-1973192780, new global::System.Object[]{guid});
         }
 
         public global::System.Threading.Tasks.Task<global::System.Int32> GetStateInReverseLog(global::System.String word)
@@ -520,10 +520,10 @@ namespace SystemInterfaces
                 case -66543353:
                     switch (methodId)
                     {
-                        case 1169463686:
-                            return await ((global::SystemInterfaces.IOperator)grain).AddCustomOperators((global::System.Collections.Generic.List<global::System.Guid>)arguments[0]);
-                        case 1294781576:
-                            await ((global::SystemInterfaces.IOperator)grain).RemoveCustomeOperators((global::System.Guid)arguments[0]);
+                        case -793500431:
+                            return await ((global::SystemInterfaces.IOperator)grain).AddCustomDownStreamOperators((global::System.Collections.Generic.List<global::System.Guid>)arguments[0]);
+                        case -1973192780:
+                            await ((global::SystemInterfaces.IOperator)grain).RemoveCustomeDownStreamOperators((global::System.Guid)arguments[0]);
                             return null;
                         case 2075549514:
                             return await ((global::SystemInterfaces.IOperator)grain).GetStateInReverseLog((global::System.String)arguments[0]);
@@ -628,10 +628,10 @@ namespace SystemInterfaces
                             return @"Commit";
                         case 2118799424:
                             return @"Recovery";
-                        case 1169463686:
-                            return @"AddCustomOperators";
-                        case 1294781576:
-                            return @"RemoveCustomeOperators";
+                        case -793500431:
+                            return @"AddCustomDownStreamOperators";
+                        case -1973192780:
+                            return @"RemoveCustomeDownStreamOperators";
                         case 2075549514:
                             return @"GetStateInReverseLog";
                         case 408823471:
@@ -647,10 +647,10 @@ namespace SystemInterfaces
                 case -66543353:
                     switch (methodId)
                     {
-                        case 1169463686:
-                            return @"AddCustomOperators";
-                        case 1294781576:
-                            return @"RemoveCustomeOperators";
+                        case -793500431:
+                            return @"AddCustomDownStreamOperators";
+                        case -1973192780:
+                            return @"RemoveCustomeDownStreamOperators";
                         case 2075549514:
                             return @"GetStateInReverseLog";
                         case 408823471:
@@ -713,14 +713,14 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(2118799424, new global::System.Object[]{msg});
         }
 
-        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> AddCustomOperators(global::System.Collections.Generic.List<global::System.Guid> guidList)
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> AddCustomDownStreamOperators(global::System.Collections.Generic.List<global::System.Guid> guidList)
         {
-            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(1169463686, new global::System.Object[]{guidList});
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-793500431, new global::System.Object[]{guidList});
         }
 
-        public global::System.Threading.Tasks.Task RemoveCustomeOperators(global::System.Guid guid)
+        public global::System.Threading.Tasks.Task RemoveCustomeDownStreamOperators(global::System.Guid guid)
         {
-            return base.InvokeMethodAsync<global::System.Object>(1294781576, new global::System.Object[]{guid});
+            return base.InvokeMethodAsync<global::System.Object>(-1973192780, new global::System.Object[]{guid});
         }
 
         public global::System.Threading.Tasks.Task<global::System.Int32> GetStateInReverseLog(global::System.String word)
@@ -781,10 +781,10 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).Commit((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
                         case 2118799424:
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).Recovery((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
-                        case 1169463686:
-                            return await ((global::SystemInterfaces.IStatefulOperator)grain).AddCustomOperators((global::System.Collections.Generic.List<global::System.Guid>)arguments[0]);
-                        case 1294781576:
-                            await ((global::SystemInterfaces.IStatefulOperator)grain).RemoveCustomeOperators((global::System.Guid)arguments[0]);
+                        case -793500431:
+                            return await ((global::SystemInterfaces.IStatefulOperator)grain).AddCustomDownStreamOperators((global::System.Collections.Generic.List<global::System.Guid>)arguments[0]);
+                        case -1973192780:
+                            await ((global::SystemInterfaces.IStatefulOperator)grain).RemoveCustomeDownStreamOperators((global::System.Guid)arguments[0]);
                             return null;
                         case 2075549514:
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).GetStateInReverseLog((global::System.String)arguments[0]);
@@ -801,10 +801,10 @@ namespace SystemInterfaces
                 case -66543353:
                     switch (methodId)
                     {
-                        case 1169463686:
-                            return await ((global::SystemInterfaces.IStatefulOperator)grain).AddCustomOperators((global::System.Collections.Generic.List<global::System.Guid>)arguments[0]);
-                        case 1294781576:
-                            await ((global::SystemInterfaces.IStatefulOperator)grain).RemoveCustomeOperators((global::System.Guid)arguments[0]);
+                        case -793500431:
+                            return await ((global::SystemInterfaces.IStatefulOperator)grain).AddCustomDownStreamOperators((global::System.Collections.Generic.List<global::System.Guid>)arguments[0]);
+                        case -1973192780:
+                            await ((global::SystemInterfaces.IStatefulOperator)grain).RemoveCustomeDownStreamOperators((global::System.Guid)arguments[0]);
                             return null;
                         case 2075549514:
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).GetStateInReverseLog((global::System.String)arguments[0]);
@@ -899,10 +899,10 @@ namespace SystemInterfaces
                             return @"Commit";
                         case 2118799424:
                             return @"Recovery";
-                        case 1169463686:
-                            return @"AddCustomOperators";
-                        case 1294781576:
-                            return @"RemoveCustomeOperators";
+                        case -793500431:
+                            return @"AddCustomDownStreamOperators";
+                        case -1973192780:
+                            return @"RemoveCustomeDownStreamOperators";
                         case 2075549514:
                             return @"GetStateInReverseLog";
                         case 408823471:
@@ -918,10 +918,10 @@ namespace SystemInterfaces
                 case -66543353:
                     switch (methodId)
                     {
-                        case 1169463686:
-                            return @"AddCustomOperators";
-                        case 1294781576:
-                            return @"RemoveCustomeOperators";
+                        case -793500431:
+                            return @"AddCustomDownStreamOperators";
+                        case -1973192780:
+                            return @"RemoveCustomeDownStreamOperators";
                         case 2075549514:
                             return @"GetStateInReverseLog";
                         case 408823471:
@@ -959,14 +959,14 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Object>(2118799424, new global::System.Object[]{msg});
         }
 
-        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> AddCustomOperators(global::System.Collections.Generic.List<global::System.Guid> guidList)
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> AddCustomDownStreamOperators(global::System.Collections.Generic.List<global::System.Guid> guidList)
         {
-            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(1169463686, new global::System.Object[]{guidList});
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-793500431, new global::System.Object[]{guidList});
         }
 
-        public global::System.Threading.Tasks.Task RemoveCustomeOperators(global::System.Guid guid)
+        public global::System.Threading.Tasks.Task RemoveCustomeDownStreamOperators(global::System.Guid guid)
         {
-            return base.InvokeMethodAsync<global::System.Object>(1294781576, new global::System.Object[]{guid});
+            return base.InvokeMethodAsync<global::System.Object>(-1973192780, new global::System.Object[]{guid});
         }
 
         public global::System.Threading.Tasks.Task<global::System.Int32> GetStateInReverseLog(global::System.String word)
@@ -1015,10 +1015,10 @@ namespace SystemInterfaces
                         case 2118799424:
                             await ((global::SystemInterfaces.IStatelessOperator)grain).Recovery((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
                             return null;
-                        case 1169463686:
-                            return await ((global::SystemInterfaces.IStatelessOperator)grain).AddCustomOperators((global::System.Collections.Generic.List<global::System.Guid>)arguments[0]);
-                        case 1294781576:
-                            await ((global::SystemInterfaces.IStatelessOperator)grain).RemoveCustomeOperators((global::System.Guid)arguments[0]);
+                        case -793500431:
+                            return await ((global::SystemInterfaces.IStatelessOperator)grain).AddCustomDownStreamOperators((global::System.Collections.Generic.List<global::System.Guid>)arguments[0]);
+                        case -1973192780:
+                            await ((global::SystemInterfaces.IStatelessOperator)grain).RemoveCustomeDownStreamOperators((global::System.Guid)arguments[0]);
                             return null;
                         case 2075549514:
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).GetStateInReverseLog((global::System.String)arguments[0]);
@@ -1035,10 +1035,10 @@ namespace SystemInterfaces
                 case -66543353:
                     switch (methodId)
                     {
-                        case 1169463686:
-                            return await ((global::SystemInterfaces.IStatelessOperator)grain).AddCustomOperators((global::System.Collections.Generic.List<global::System.Guid>)arguments[0]);
-                        case 1294781576:
-                            await ((global::SystemInterfaces.IStatelessOperator)grain).RemoveCustomeOperators((global::System.Guid)arguments[0]);
+                        case -793500431:
+                            return await ((global::SystemInterfaces.IStatelessOperator)grain).AddCustomDownStreamOperators((global::System.Collections.Generic.List<global::System.Guid>)arguments[0]);
+                        case -1973192780:
+                            await ((global::SystemInterfaces.IStatelessOperator)grain).RemoveCustomeDownStreamOperators((global::System.Guid)arguments[0]);
                             return null;
                         case 2075549514:
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).GetStateInReverseLog((global::System.String)arguments[0]);
@@ -1836,7 +1836,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen7bb2e59bc7FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGenf1f4b63dd1FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {

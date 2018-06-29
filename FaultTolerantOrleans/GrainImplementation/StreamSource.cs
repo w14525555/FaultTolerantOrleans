@@ -65,8 +65,8 @@ namespace GrainImplementation
             guidList.Add(Guid.NewGuid());
 
             operatorOne.InitRandomOperators();
-            operatorTwo.AddCustomOperators(guidList);
-            operatorThree.AddCustomOperators(guidList);
+            operatorTwo.AddCustomDownStreamOperators(guidList);
+            operatorThree.AddCustomDownStreamOperators(guidList);
             testAddNewOperatorGuid = operatorTwo.GetPrimaryKey();
             //Add the units to the topology
             InitTopology();

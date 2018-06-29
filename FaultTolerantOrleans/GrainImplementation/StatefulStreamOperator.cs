@@ -25,12 +25,11 @@ namespace GrainImplementation
         protected const int Default_ZERO = 0;
         protected int numberOfUpStream = 0;
         protected int numberCurrentBatchBarrierReceived = 0;
-        protected int numberCurrentBatchCommitReceived = 0;
-        protected int numberCurrentRecoveryCommitReceived = 0;
         protected IBatchTracker batchTracker;
         protected IAsyncStream<StreamMessage> asyncStream;
         protected ITopology topologyManager;
         protected TopologyUnit topologyUnit;
+        protected List<IOperator> downStreamOperators = new List<IOperator>();
 
         protected int currentBatchID;
         protected OperatorSettings operatorSettings = new OperatorSettings();
@@ -558,14 +557,45 @@ namespace GrainImplementation
             }
         }
 
-        public Task<Task> AddCustomOperators(List<Guid> guidList)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
+        public async Task<Task> AddCustomDownStreamOperators(List<Guid> guidList)
         {
-            throw new NotImplementedException();
+            foreach (var item in guidList)
+            {
+                IStatefulOperator op = GrainFactory.GetGrain<IStatefulOperator>(item);
+                downStreamOperators.Add(op);
+                op.IncrementNumberOfUpStreamOperator();
+                operatorSettings.AddOpratorToDict(op.GetPrimaryKey(), await op.GetOperatorSettings());
+                topologyManager.ConnectUnits(topologyUnit.PrimaryKey, op.GetPrimaryKey());
+            }
+            topologyManager.UpdateOperatorSettings(topologyUnit.PrimaryKey, operatorSettings);
+            return Task.CompletedTask;
         }
 
-        public Task RemoveCustomeOperators(Guid guid)
+        public Task RemoveCustomeDownStreamOperators(Guid guid)
         {
-            throw new NotImplementedException();
+            int index = -1;
+            for (int i = 0; i < downStreamOperators.Count; i++)
+            {
+                if (downStreamOperators[i].GetPrimaryKey() == guid)
+                {
+                    index = i;
+                    break;
+                }
+            }
+            if (index != -1)
+            {
+                downStreamOperators.RemoveAt(index);
+                PrettyConsole.Line("Remove old stateful from upper stream");
+                operatorSettings.RemoveOperatorFromDict(guid);
+                topologyManager.UpdateOperatorSettings(this.GetPrimaryKey(), operatorSettings);
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
+
+            return Task.CompletedTask;
         }
     }
 }
