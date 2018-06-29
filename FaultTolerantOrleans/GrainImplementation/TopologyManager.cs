@@ -79,15 +79,25 @@ namespace SystemImplementation
                 {
                     DisConnectUnits(item.PrimaryKey, oldGuid);
                     IOperator op;
+                    var guidList = new List<Guid>();
+                    guidList.Add(newGuid);
+
                     if (item.OperatorType == OperatorType.Stateless)
                     {
                         op = GrainFactory.GetGrain<IOperator>(keyList[index], Constants.Stateless_Operator_Prefix);
-                        var guidList = new List<Guid>();
-                        guidList.Add(newGuid);
                         op.AddCustomDownStreamOperators(guidList);
                         op.RemoveCustomeDownStreamOperators(oldGuid);
                     }
+                    else if (item.OperatorType == OperatorType.Stateful)
+                    {
+                        op = GrainFactory.GetGrain<IOperator>(keyList[index], Constants.Stateful_Operator_Prefix);
+                        op.AddCustomDownStreamOperators(guidList);
+                        op.RemoveCustomeDownStreamOperators(oldGuid);
+                    }
+                    else if (item.OperatorType == OperatorType.Source)
+                    {
 
+                    }
                     index++;
                 }
             }
