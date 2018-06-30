@@ -313,7 +313,6 @@ namespace Test
         public async Task TestTopologyHasRightSize()
         {
             await SetUpSource();
-            await source.GetBatchManager();
             Thread.Sleep(100);
             var topologyManager = client.GetGrain<ITopology>(Constants.Topology_Manager);
             int size = await topologyManager.GetTopologySize();

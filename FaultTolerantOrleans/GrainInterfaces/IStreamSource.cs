@@ -16,8 +16,6 @@ namespace SystemInterfaces
         Task<Task> ProduceMessageAsync(StreamMessage msg);
         Task<Task> ReplayTheMessageOnRecoveryCompleted();
 
-        Task<IBatchCoordinator> GetBatchManager();
-        Task<IBatchTracker> GetBatchTracker();
         Task<int> GetState(StreamMessage msg);
         Task<int> GetStateInReverseLog(StreamMessage msg);
         Task<int> GetStateInIncrementalLog(StreamMessage msg);
