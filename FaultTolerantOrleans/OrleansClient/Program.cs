@@ -82,7 +82,7 @@ namespace OrleansClient
         private static void PrintHints()
         {
             var menuColor = ConsoleColor.Magenta;
-            PrettyConsole.Line("Type '/j <channel>' to join specific channel", menuColor);
+            PrettyConsole.Line("Type '/start to start with default topology", menuColor);
             PrettyConsole.Line("Type '<any text>' to send a message", menuColor);
         }
 
@@ -98,7 +98,7 @@ namespace OrleansClient
 
                 if (input.StartsWith("/j"))
                 {
-                    await JoinChannel(client, input.Replace("/j", "").Trim());
+                    await StartDefaultTopology(client, input.Replace("/j", "").Trim());
                 }
                 else if (!input.StartsWith("/exit"))
                 {
@@ -113,7 +113,7 @@ namespace OrleansClient
             await room.Message(new StreamMessage(userName, messageText));
         }
 
-        private static async Task JoinChannel(IClusterClient client, string channelName)
+        private static async Task StartDefaultTopology(IClusterClient client, string channelName)
         {
             if (joinedChannel == channelName)
             {
@@ -121,7 +121,7 @@ namespace OrleansClient
                                    $"which would result in receiving duplicated messages. For more information, please refer to Orleans streaming documentation.");
                 return;
             }
-            PrettyConsole.Line($"Joining to channel {channelName}");
+            PrettyConsole.Line($"Start!");
             joinedChannel = channelName;
             var room = client.GetGrain<IStreamSource>(joinedChannel);
             //var room2 = client.GetGrain<IStreamSource>("new");
