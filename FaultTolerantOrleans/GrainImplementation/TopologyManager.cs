@@ -80,28 +80,27 @@ namespace SystemImplementation
                 {
                     DisConnectUnits(item.PrimaryKey, oldGuid);
                     IOperator op;
-                    var guidList = new List<Guid>();
-                    guidList.Add(newGuid);
+                    var unitList = new List<TopologyUnit>();
+                    unitList.Add(newUnit);
 
                     if (item.OperatorType == OperatorType.Stateless)
                     {
                         op = GrainFactory.GetGrain<IOperator>(keyList[index], Constants.Stateless_Operator_Prefix);
-                        op.AddCustomDownStreamOperators(guidList);
+                        op.AddCustomDownStreamOperators(unitList);
                         op.RemoveCustomDownStreamOperators(oldGuid);
                     }
                     else if (item.OperatorType == OperatorType.Stateful)
                     {
                         op = GrainFactory.GetGrain<IOperator>(keyList[index], Constants.Stateful_Operator_Prefix);
-                        op.AddCustomDownStreamOperators(guidList);
+                        op.AddCustomDownStreamOperators(unitList);
                         op.RemoveCustomDownStreamOperators(oldGuid);
                     }
                     else if (item.OperatorType == OperatorType.Source)
                     {
                         string sourceKey = upperStreamUnits[keyList[index]].GetSourceKey();
                         var source = GrainFactory.GetGrain<IStreamSource>(sourceKey);
-                        source.AddCustomDownStreamOperators(guidList);
+                        source.AddCustomDownStreamOperators(unitList);
                         source.RemoveCustomDownStreamOperator(oldGuid);
-                        
                     }
                     index++;
                 }
@@ -110,22 +109,22 @@ namespace SystemImplementation
             //Handle Down Stream
             if (downsStreamUnits.Count > 0)
             {
-                var keyList = downsStreamUnits.Keys.ToList();
+                var units = downsStreamUnits.Values.ToList();
                 IOperator newOp;
                 if (newUnit.OperatorType == OperatorType.Stateless)
                 {
                     newOp = GrainFactory.GetGrain<IStatelessOperator>(newGuid, Constants.Stateless_Operator_Prefix);
-                    newOp.AddCustomDownStreamOperators(keyList);
+                    newOp.AddCustomDownStreamOperators(units);
                 }
                 else if (newUnit.OperatorType == OperatorType.Stateful)
                 {
                     newOp = GrainFactory.GetGrain<IStatefulOperator>(newGuid, Constants.Stateful_Operator_Prefix);
-                    newOp.AddCustomDownStreamOperators(keyList);
+                    newOp.AddCustomDownStreamOperators(units);
                 }
                 else if (newUnit.OperatorType == OperatorType.Source)
                 {
                     var source = GrainFactory.GetGrain<IStreamSource>(newUnit.GetSourceKey(), Constants.Stateful_Operator_Prefix);
-                    source.AddCustomDownStreamOperators(keyList);
+                    source.AddCustomDownStreamOperators(units);
                 }
             }
             return Task.CompletedTask;
@@ -147,7 +146,7 @@ namespace SystemImplementation
                 var newStatelessOp = GrainFactory.GetGrain<IStatelessOperator>(newUnit.PrimaryKey, Constants.Stateless_Operator_Prefix);
                 
                 //Add down stream by this unit
-                newStatelessOp.AddCustomDownStreamOperators(downsStreamUnits.Keys.ToList());
+                newStatelessOp.AddCustomDownStreamOperators(downsStreamUnits.Values.ToList());
 
                 foreach (var op in upperStreamUnits)
                 {

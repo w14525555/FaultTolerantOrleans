@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen9b9fac2e1dFeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGenefcbf67b5bFeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -453,7 +453,7 @@ namespace SystemInterfaces
                 case -66543353:
                     switch (methodId)
                     {
-                        case -793500431:
+                        case -547603550:
                             return @"AddCustomDownStreamOperators";
                         case 1427574996:
                             return @"RemoveCustomDownStreamOperators";
@@ -474,9 +474,9 @@ namespace SystemInterfaces
             }
         }
 
-        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> AddCustomDownStreamOperators(global::System.Collections.Generic.List<global::System.Guid> guidList)
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> AddCustomDownStreamOperators(global::System.Collections.Generic.List<global::SystemInterfaces.Model.TopologyUnit> units)
         {
-            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-793500431, new global::System.Object[]{guidList});
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-547603550, new global::System.Object[]{units});
         }
 
         public global::System.Threading.Tasks.Task RemoveCustomDownStreamOperators(global::System.Guid guid)
@@ -520,8 +520,8 @@ namespace SystemInterfaces
                 case -66543353:
                     switch (methodId)
                     {
-                        case -793500431:
-                            return await ((global::SystemInterfaces.IOperator)grain).AddCustomDownStreamOperators((global::System.Collections.Generic.List<global::System.Guid>)arguments[0]);
+                        case -547603550:
+                            return await ((global::SystemInterfaces.IOperator)grain).AddCustomDownStreamOperators((global::System.Collections.Generic.List<global::SystemInterfaces.Model.TopologyUnit>)arguments[0]);
                         case 1427574996:
                             await ((global::SystemInterfaces.IOperator)grain).RemoveCustomDownStreamOperators((global::System.Guid)arguments[0]);
                             return null;
@@ -628,7 +628,7 @@ namespace SystemInterfaces
                             return @"Commit";
                         case 2118799424:
                             return @"Recovery";
-                        case -793500431:
+                        case -547603550:
                             return @"AddCustomDownStreamOperators";
                         case 1427574996:
                             return @"RemoveCustomDownStreamOperators";
@@ -647,7 +647,7 @@ namespace SystemInterfaces
                 case -66543353:
                     switch (methodId)
                     {
-                        case -793500431:
+                        case -547603550:
                             return @"AddCustomDownStreamOperators";
                         case 1427574996:
                             return @"RemoveCustomDownStreamOperators";
@@ -713,9 +713,9 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(2118799424, new global::System.Object[]{msg});
         }
 
-        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> AddCustomDownStreamOperators(global::System.Collections.Generic.List<global::System.Guid> guidList)
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> AddCustomDownStreamOperators(global::System.Collections.Generic.List<global::SystemInterfaces.Model.TopologyUnit> units)
         {
-            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-793500431, new global::System.Object[]{guidList});
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-547603550, new global::System.Object[]{units});
         }
 
         public global::System.Threading.Tasks.Task RemoveCustomDownStreamOperators(global::System.Guid guid)
@@ -781,8 +781,8 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).Commit((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
                         case 2118799424:
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).Recovery((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
-                        case -793500431:
-                            return await ((global::SystemInterfaces.IStatefulOperator)grain).AddCustomDownStreamOperators((global::System.Collections.Generic.List<global::System.Guid>)arguments[0]);
+                        case -547603550:
+                            return await ((global::SystemInterfaces.IStatefulOperator)grain).AddCustomDownStreamOperators((global::System.Collections.Generic.List<global::SystemInterfaces.Model.TopologyUnit>)arguments[0]);
                         case 1427574996:
                             await ((global::SystemInterfaces.IStatefulOperator)grain).RemoveCustomDownStreamOperators((global::System.Guid)arguments[0]);
                             return null;
@@ -801,8 +801,8 @@ namespace SystemInterfaces
                 case -66543353:
                     switch (methodId)
                     {
-                        case -793500431:
-                            return await ((global::SystemInterfaces.IStatefulOperator)grain).AddCustomDownStreamOperators((global::System.Collections.Generic.List<global::System.Guid>)arguments[0]);
+                        case -547603550:
+                            return await ((global::SystemInterfaces.IStatefulOperator)grain).AddCustomDownStreamOperators((global::System.Collections.Generic.List<global::SystemInterfaces.Model.TopologyUnit>)arguments[0]);
                         case 1427574996:
                             await ((global::SystemInterfaces.IStatefulOperator)grain).RemoveCustomDownStreamOperators((global::System.Guid)arguments[0]);
                             return null;
@@ -899,7 +899,7 @@ namespace SystemInterfaces
                             return @"Commit";
                         case 2118799424:
                             return @"Recovery";
-                        case -793500431:
+                        case -547603550:
                             return @"AddCustomDownStreamOperators";
                         case 1427574996:
                             return @"RemoveCustomDownStreamOperators";
@@ -918,7 +918,7 @@ namespace SystemInterfaces
                 case -66543353:
                     switch (methodId)
                     {
-                        case -793500431:
+                        case -547603550:
                             return @"AddCustomDownStreamOperators";
                         case 1427574996:
                             return @"RemoveCustomDownStreamOperators";
@@ -959,9 +959,9 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Object>(2118799424, new global::System.Object[]{msg});
         }
 
-        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> AddCustomDownStreamOperators(global::System.Collections.Generic.List<global::System.Guid> guidList)
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> AddCustomDownStreamOperators(global::System.Collections.Generic.List<global::SystemInterfaces.Model.TopologyUnit> units)
         {
-            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-793500431, new global::System.Object[]{guidList});
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-547603550, new global::System.Object[]{units});
         }
 
         public global::System.Threading.Tasks.Task RemoveCustomDownStreamOperators(global::System.Guid guid)
@@ -1015,8 +1015,8 @@ namespace SystemInterfaces
                         case 2118799424:
                             await ((global::SystemInterfaces.IStatelessOperator)grain).Recovery((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
                             return null;
-                        case -793500431:
-                            return await ((global::SystemInterfaces.IStatelessOperator)grain).AddCustomDownStreamOperators((global::System.Collections.Generic.List<global::System.Guid>)arguments[0]);
+                        case -547603550:
+                            return await ((global::SystemInterfaces.IStatelessOperator)grain).AddCustomDownStreamOperators((global::System.Collections.Generic.List<global::SystemInterfaces.Model.TopologyUnit>)arguments[0]);
                         case 1427574996:
                             await ((global::SystemInterfaces.IStatelessOperator)grain).RemoveCustomDownStreamOperators((global::System.Guid)arguments[0]);
                             return null;
@@ -1035,8 +1035,8 @@ namespace SystemInterfaces
                 case -66543353:
                     switch (methodId)
                     {
-                        case -793500431:
-                            return await ((global::SystemInterfaces.IStatelessOperator)grain).AddCustomDownStreamOperators((global::System.Collections.Generic.List<global::System.Guid>)arguments[0]);
+                        case -547603550:
+                            return await ((global::SystemInterfaces.IStatelessOperator)grain).AddCustomDownStreamOperators((global::System.Collections.Generic.List<global::SystemInterfaces.Model.TopologyUnit>)arguments[0]);
                         case 1427574996:
                             await ((global::SystemInterfaces.IStatelessOperator)grain).RemoveCustomDownStreamOperators((global::System.Guid)arguments[0]);
                             return null;
@@ -1161,7 +1161,7 @@ namespace SystemInterfaces
                             return @"AddCustomDownStreamOperator";
                         case -714662718:
                             return @"GetTestGuid";
-                        case -793500431:
+                        case -547603550:
                             return @"AddCustomDownStreamOperators";
                         case 1005660065:
                             return @"RemoveCustomDownStreamOperator";
@@ -1271,9 +1271,9 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Guid>(-714662718, null);
         }
 
-        public global::System.Threading.Tasks.Task AddCustomDownStreamOperators(global::System.Collections.Generic.List<global::System.Guid> guidList)
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> AddCustomDownStreamOperators(global::System.Collections.Generic.List<global::SystemInterfaces.Model.TopologyUnit> units)
         {
-            return base.InvokeMethodAsync<global::System.Object>(-793500431, new global::System.Object[]{guidList});
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-547603550, new global::System.Object[]{units});
         }
 
         public global::System.Threading.Tasks.Task RemoveCustomDownStreamOperator(global::System.Guid guid)
@@ -1336,9 +1336,8 @@ namespace SystemInterfaces
                             return null;
                         case -714662718:
                             return await ((global::SystemInterfaces.IStreamSource)grain).GetTestGuid();
-                        case -793500431:
-                            await ((global::SystemInterfaces.IStreamSource)grain).AddCustomDownStreamOperators((global::System.Collections.Generic.List<global::System.Guid>)arguments[0]);
-                            return null;
+                        case -547603550:
+                            return await ((global::SystemInterfaces.IStreamSource)grain).AddCustomDownStreamOperators((global::System.Collections.Generic.List<global::SystemInterfaces.Model.TopologyUnit>)arguments[0]);
                         case 1005660065:
                             await ((global::SystemInterfaces.IStreamSource)grain).RemoveCustomDownStreamOperator((global::System.Guid)arguments[0]);
                             return null;
@@ -1743,51 +1742,6 @@ namespace OrleansGeneratedCode38151279
         }
     }
 
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.SerializerAttribute(typeof (global::SystemInterfaces.Model.OperatorSettings))]
-    internal sealed class OrleansCodeGenSystemInterfaces_Model_OperatorSettingsSerializer
-    {
-        private readonly global::System.Func<global::SystemInterfaces.Model.OperatorSettings, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>> getField2;
-        private readonly global::System.Action<global::SystemInterfaces.Model.OperatorSettings, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>> setField2;
-        public OrleansCodeGenSystemInterfaces_Model_OperatorSettingsSerializer(global::Orleans.Serialization.IFieldUtils fieldUtils)
-        {
-            global::System.Reflection.FieldInfo field2 = typeof (global::SystemInterfaces.Model.OperatorSettings).GetField(@"operatorDict", (System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public));
-            getField2 = (global::System.Func<global::SystemInterfaces.Model.OperatorSettings, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>>)fieldUtils.GetGetter(field2);
-            setField2 = (global::System.Action<global::SystemInterfaces.Model.OperatorSettings, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>>)fieldUtils.GetReferenceSetter(field2);
-        }
-
-        [global::Orleans.CodeGeneration.CopierMethodAttribute]
-        public global::System.Object DeepCopier(global::System.Object original, global::Orleans.Serialization.ICopyContext context)
-        {
-            global::SystemInterfaces.Model.OperatorSettings input = ((global::SystemInterfaces.Model.OperatorSettings)original);
-            global::SystemInterfaces.Model.OperatorSettings result = new global::SystemInterfaces.Model.OperatorSettings();
-            context.RecordCopy(original, result);
-            result.incrementalLogAddress = input.incrementalLogAddress;
-            result.operatorType = input.operatorType;
-            setField2(result, (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>)context.DeepCopyInner(getField2(input)));
-            return result;
-        }
-
-        [global::Orleans.CodeGeneration.SerializerMethodAttribute]
-        public void Serializer(global::System.Object untypedInput, global::Orleans.Serialization.ISerializationContext context, global::System.Type expected)
-        {
-            global::SystemInterfaces.Model.OperatorSettings input = (global::SystemInterfaces.Model.OperatorSettings)untypedInput;
-            context.SerializeInner(input.incrementalLogAddress, typeof (global::System.String));
-            context.SerializeInner(input.operatorType, typeof (global::SystemInterfaces.Model.OperatorType));
-            context.SerializeInner(getField2(input), typeof (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>));
-        }
-
-        [global::Orleans.CodeGeneration.DeserializerMethodAttribute]
-        public global::System.Object Deserializer(global::System.Type expected, global::Orleans.Serialization.IDeserializationContext context)
-        {
-            global::SystemInterfaces.Model.OperatorSettings result = new global::SystemInterfaces.Model.OperatorSettings();
-            context.RecordObject(result);
-            result.incrementalLogAddress = (global::System.String)context.DeserializeInner(typeof (global::System.String));
-            result.operatorType = (global::SystemInterfaces.Model.OperatorType)context.DeserializeInner(typeof (global::SystemInterfaces.Model.OperatorType));
-            setField2(result, (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>)context.DeserializeInner(typeof (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>)));
-            return (global::SystemInterfaces.Model.OperatorSettings)result;
-        }
-    }
-
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.SerializerAttribute(typeof (global::SystemInterfaces.Model.TopologyUnit))]
     internal sealed class OrleansCodeGenSystemInterfaces_Model_TopologyUnitSerializer
     {
@@ -1851,12 +1805,57 @@ namespace OrleansGeneratedCode38151279
             return (global::SystemInterfaces.Model.TopologyUnit)result;
         }
     }
+
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.SerializerAttribute(typeof (global::SystemInterfaces.Model.OperatorSettings))]
+    internal sealed class OrleansCodeGenSystemInterfaces_Model_OperatorSettingsSerializer
+    {
+        private readonly global::System.Func<global::SystemInterfaces.Model.OperatorSettings, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>> getField2;
+        private readonly global::System.Action<global::SystemInterfaces.Model.OperatorSettings, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>> setField2;
+        public OrleansCodeGenSystemInterfaces_Model_OperatorSettingsSerializer(global::Orleans.Serialization.IFieldUtils fieldUtils)
+        {
+            global::System.Reflection.FieldInfo field2 = typeof (global::SystemInterfaces.Model.OperatorSettings).GetField(@"operatorDict", (System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public));
+            getField2 = (global::System.Func<global::SystemInterfaces.Model.OperatorSettings, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>>)fieldUtils.GetGetter(field2);
+            setField2 = (global::System.Action<global::SystemInterfaces.Model.OperatorSettings, global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>>)fieldUtils.GetReferenceSetter(field2);
+        }
+
+        [global::Orleans.CodeGeneration.CopierMethodAttribute]
+        public global::System.Object DeepCopier(global::System.Object original, global::Orleans.Serialization.ICopyContext context)
+        {
+            global::SystemInterfaces.Model.OperatorSettings input = ((global::SystemInterfaces.Model.OperatorSettings)original);
+            global::SystemInterfaces.Model.OperatorSettings result = new global::SystemInterfaces.Model.OperatorSettings();
+            context.RecordCopy(original, result);
+            result.incrementalLogAddress = input.incrementalLogAddress;
+            result.operatorType = input.operatorType;
+            setField2(result, (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>)context.DeepCopyInner(getField2(input)));
+            return result;
+        }
+
+        [global::Orleans.CodeGeneration.SerializerMethodAttribute]
+        public void Serializer(global::System.Object untypedInput, global::Orleans.Serialization.ISerializationContext context, global::System.Type expected)
+        {
+            global::SystemInterfaces.Model.OperatorSettings input = (global::SystemInterfaces.Model.OperatorSettings)untypedInput;
+            context.SerializeInner(input.incrementalLogAddress, typeof (global::System.String));
+            context.SerializeInner(input.operatorType, typeof (global::SystemInterfaces.Model.OperatorType));
+            context.SerializeInner(getField2(input), typeof (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>));
+        }
+
+        [global::Orleans.CodeGeneration.DeserializerMethodAttribute]
+        public global::System.Object Deserializer(global::System.Type expected, global::Orleans.Serialization.IDeserializationContext context)
+        {
+            global::SystemInterfaces.Model.OperatorSettings result = new global::SystemInterfaces.Model.OperatorSettings();
+            context.RecordObject(result);
+            result.incrementalLogAddress = (global::System.String)context.DeserializeInner(typeof (global::System.String));
+            result.operatorType = (global::SystemInterfaces.Model.OperatorType)context.DeserializeInner(typeof (global::SystemInterfaces.Model.OperatorType));
+            setField2(result, (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>)context.DeserializeInner(typeof (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.OperatorSettings>)));
+            return (global::SystemInterfaces.Model.OperatorSettings)result;
+        }
+    }
 }
 
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen9b9fac2e1dFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGenefcbf67b5bFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {
@@ -1878,8 +1877,8 @@ namespace OrleansGeneratedCode
             feature.AddSerializerType(typeof (global::SystemInterfaces.Model.StreamMessage), typeof (OrleansGeneratedCode38151279.OrleansCodeGenSystemInterfaces_Model_StreamMessageSerializer));
             feature.AddSerializerType(typeof (global::SystemInterfaces.Model.StreamValue), typeof (OrleansGeneratedCode38151279.OrleansCodeGenSystemInterfaces_Model_StreamValueSerializer));
             feature.AddSerializerType(typeof (global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo), typeof (OrleansGeneratedCode38151279.OrleansCodeGenSystemInterfaces_Model_BarrierOrCommitMsgTrackingInfoSerializer));
-            feature.AddSerializerType(typeof (global::SystemInterfaces.Model.OperatorSettings), typeof (OrleansGeneratedCode38151279.OrleansCodeGenSystemInterfaces_Model_OperatorSettingsSerializer));
             feature.AddSerializerType(typeof (global::SystemInterfaces.Model.TopologyUnit), typeof (OrleansGeneratedCode38151279.OrleansCodeGenSystemInterfaces_Model_TopologyUnitSerializer));
+            feature.AddSerializerType(typeof (global::SystemInterfaces.Model.OperatorSettings), typeof (OrleansGeneratedCode38151279.OrleansCodeGenSystemInterfaces_Model_OperatorSettingsSerializer));
             feature.AddKnownType(@"EmptyArray`1", @"EmptyArray`1'1");
             feature.AddKnownType(@"FXAssembly", @"FXAssembly");
             feature.AddKnownType(@"ThisAssembly", @"ThisAssembly");

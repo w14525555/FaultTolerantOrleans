@@ -18,16 +18,15 @@ namespace GrainImplementation
 
         //Internal Implementation
         private List<IOperator> downStreamOperators = new List<IOperator>();
-
         private IBatchCoordinator batchCoordinator;
         private IBatchTracker batchTracker;
 		private IAsyncStream<StreamMessage> stream;
         private ITopology topologyManager;
 
         private List<StreamMessage> messageBuffer = new List<StreamMessage>();
-        //A map that uses to ensure exactly once 
         private Dictionary<Guid, int> messageCountMap = new Dictionary<Guid, int>(); 
         private TopologyUnit topologyUnit;
+        protected OperatorSettings operatorSettings = new OperatorSettings();
         private int currentBatchID;
         private Guid testAddNewOperatorGuid;
 
@@ -59,13 +58,13 @@ namespace GrainImplementation
             downStreamOperators.Add(operatorThree);
             
             //Add custom guid list to its child
-            List<Guid> guidList = new List<Guid>();
-            guidList.Add(Guid.NewGuid());
-            guidList.Add(Guid.NewGuid());
+            List<TopologyUnit> units = new List<TopologyUnit>();
+            units.Add(new TopologyUnit(OperatorType.Stateful, Guid.NewGuid()));
+            units.Add(new TopologyUnit(OperatorType.Stateful, Guid.NewGuid()));
 
             operatorOne.InitRandomOperators();
-            operatorTwo.AddCustomDownStreamOperators(guidList);
-            operatorThree.AddCustomDownStreamOperators(guidList);
+            operatorTwo.AddCustomDownStreamOperators(units);
+            operatorThree.AddCustomDownStreamOperators(units);
             testAddNewOperatorGuid = operatorTwo.GetPrimaryKey();
             //Add the units to the topology
             InitTopology();
@@ -110,14 +109,30 @@ namespace GrainImplementation
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
-        public Task AddCustomDownStreamOperators(List<Guid> guidList)
+        public async Task<Task> AddCustomDownStreamOperators(List<TopologyUnit> units)
         {
-            foreach (var item in guidList)
+            foreach (var unit in units)
             {
-                IStatelessOperator op = GrainFactory.GetGrain<IStatelessOperator>(item, Constants.Stateless_Operator_Prefix);
-                downStreamOperators.Add(op);
-                topologyManager.ConnectUnits(topologyUnit.PrimaryKey, op.GetPrimaryKey());
+                if (unit.OperatorType == OperatorType.Stateful)
+                {
+                    var op = GrainFactory.GetGrain<IStatefulOperator>(unit.PrimaryKey, Constants.Stateful_Operator_Prefix);
+                    op.IncrementNumberOfUpStreamOperator();
+                    downStreamOperators.Add(op);
+                    operatorSettings.AddOpratorToDict(op.GetPrimaryKey(), await op.GetOperatorSettings());
+                    topologyManager.ConnectUnits(topologyUnit.PrimaryKey, op.GetPrimaryKey());
+                }
+                else if (unit.OperatorType == OperatorType.Stateless)
+                {
+                    var op = GrainFactory.GetGrain<IStatelessOperator>(unit.PrimaryKey, Constants.Stateless_Operator_Prefix);
+                    downStreamOperators.Add(op);
+                    topologyManager.ConnectUnits(topologyUnit.PrimaryKey, op.GetPrimaryKey());
+                }
+                else
+                {
+                    throw new ArgumentException("The down stream operor cannot be a source");
+                }
             }
+            topologyManager.UpdateOperatorSettings(topologyUnit.PrimaryKey, operatorSettings);
             return Task.CompletedTask;
         }
 
@@ -378,5 +393,6 @@ namespace GrainImplementation
         {
             return Task.FromResult(topologyUnit);
         }
+
     }
 }

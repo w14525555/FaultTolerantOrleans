@@ -9,7 +9,7 @@ namespace SystemInterfaces
 {
     public interface IOperator: IGrainWithGuidKey
     {
-        Task<Task> AddCustomDownStreamOperators(List<Guid> guidList);
+        Task<Task> AddCustomDownStreamOperators(List<TopologyUnit> units);
 
         Task RemoveCustomDownStreamOperators(Guid guid);
 

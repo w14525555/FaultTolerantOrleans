@@ -53,15 +53,28 @@ namespace SystemImplementation
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
-        public async Task<Task> AddCustomDownStreamOperators(List<Guid> guidList)
+        public async Task<Task> AddCustomDownStreamOperators(List<TopologyUnit> units)
         {
-            foreach (var item in guidList)
+            foreach (var unit in units)
             {
-                IStatefulOperator op = GrainFactory.GetGrain<IStatefulOperator>(item);
-                downStreamOperators.Add(op);
-                op.IncrementNumberOfUpStreamOperator();
-                operatorSettings.AddOpratorToDict(op.GetPrimaryKey(), await op.GetOperatorSettings());
-                topologyManager.ConnectUnits(topologyUnit.PrimaryKey, op.GetPrimaryKey());
+                if (unit.OperatorType == OperatorType.Stateful)
+                {
+                    var op = GrainFactory.GetGrain<IStatefulOperator>(unit.PrimaryKey, Constants.Stateful_Operator_Prefix);
+                    op.IncrementNumberOfUpStreamOperator();
+                    downStreamOperators.Add(op);
+                    operatorSettings.AddOpratorToDict(op.GetPrimaryKey(), await op.GetOperatorSettings());
+                    topologyManager.ConnectUnits(topologyUnit.PrimaryKey, op.GetPrimaryKey());
+                }
+                else if (unit.OperatorType == OperatorType.Stateless)
+                {
+                    var op = GrainFactory.GetGrain<IStatelessOperator>(unit.PrimaryKey, Constants.Stateless_Operator_Prefix);
+                    downStreamOperators.Add(op);
+                    topologyManager.ConnectUnits(topologyUnit.PrimaryKey, op.GetPrimaryKey());
+                }
+                else
+                {
+                    throw new ArgumentException("The down stream operor cannot be a source");
+                }
             }
             topologyManager.UpdateOperatorSettings(topologyUnit.PrimaryKey, operatorSettings);
             return Task.CompletedTask;

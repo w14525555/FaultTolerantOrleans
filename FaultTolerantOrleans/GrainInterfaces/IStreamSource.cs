@@ -27,7 +27,7 @@ namespace SystemInterfaces
         Task<int> GetNumberOfElementsInCountMap();
         Task AddCustomDownStreamOperator(IStatelessOperator statelessOperator);
         Task<Guid> GetTestGuid();
-        Task AddCustomDownStreamOperators(List<Guid> guidList);
+        Task<Task> AddCustomDownStreamOperators(List<TopologyUnit> units);
         Task RemoveCustomDownStreamOperator(Guid guid);
     }
 }
