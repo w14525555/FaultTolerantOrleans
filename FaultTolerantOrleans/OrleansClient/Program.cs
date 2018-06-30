@@ -83,19 +83,13 @@ namespace OrleansClient
         {
             var menuColor = ConsoleColor.Magenta;
             PrettyConsole.Line("Type '/j <channel>' to join specific channel", menuColor);
-            PrettyConsole.Line("Type '/n <username>' to set your user name", menuColor);
-            PrettyConsole.Line("Type '/l' to leave specific channel", menuColor);
             PrettyConsole.Line("Type '<any text>' to send a message", menuColor);
-            PrettyConsole.Line("Type '/h' to re-read channel history", menuColor);
-            PrettyConsole.Line("Type '/m' to query members in the channel", menuColor);
-            PrettyConsole.Line("Type '/exit' to exit client.", menuColor);
         }
 
         private static async Task Menu(IClusterClient client)
         {
             string input;
             PrintHints();
-
             do
             {
                 input = Console.ReadLine();
@@ -106,54 +100,11 @@ namespace OrleansClient
                 {
                     await JoinChannel(client, input.Replace("/j", "").Trim());
                 }
-                else if (input.StartsWith("/n"))
-                {
-                    userName = input.Replace("/n", "").Trim();
-                    PrettyConsole.Line($"Your user name is set to be {userName}", ConsoleColor.DarkGreen);
-                }
-                else if (input.StartsWith("/l"))
-                {
-                    await LeaveChannel(client);
-                }
-                else if (input.StartsWith("/h"))
-                {
-                    await ShowCurrentChannelHistory(client);
-                }
-                else if (input.StartsWith("/m"))
-                {
-                    await ShowChannelMembers(client);
-                }
                 else if (!input.StartsWith("/exit"))
                 {
                     await SendMessage(client, input);
                 }
             } while (input != "/exit");
-        }
-
-        private static async Task ShowChannelMembers(IClusterClient client)
-        {
-            var source = client.GetGrain<IStreamSource>(joinedChannel);
-            var members = await source.GetMembers();
-
-            PrettyConsole.Line($"====== Members for '{joinedChannel}' Channel ======", ConsoleColor.DarkGreen);
-            foreach (var member in members)
-            {
-                PrettyConsole.Line(member, ConsoleColor.DarkGreen);
-            }
-            PrettyConsole.Line("============", ConsoleColor.DarkGreen);
-        }
-
-        private static async Task ShowCurrentChannelHistory(IClusterClient client)
-        {
-            var source = client.GetGrain<IStreamSource>(joinedChannel);
-            var history = await source.ReadHistory(1000);
-
-            PrettyConsole.Line($"====== History for '{joinedChannel}' Channel ======", ConsoleColor.DarkGreen);
-            foreach (var chatMsg in history)
-            {
-                PrettyConsole.Line($" ({chatMsg.Created:g}) {chatMsg.Key}> {chatMsg.Value}", ConsoleColor.DarkGreen);
-            }
-            PrettyConsole.Line("============", ConsoleColor.DarkGreen);
         }
 
         private static async Task SendMessage(IClusterClient client, string messageText)
@@ -184,21 +135,5 @@ namespace OrleansClient
             await stream.SubscribeAsync(observer);
         }
 
-        private static async Task LeaveChannel(IClusterClient client)
-        {
-            PrettyConsole.Line($"Leaving channel {joinedChannel}");
-            var source = client.GetGrain<IStreamSource>(joinedChannel);
-            var streamId = await source.Leave(userName);
-            var stream = client.GetStreamProvider(Constants.FaultTolerantStreamProvider)
-                .GetStream<StreamMessage>(streamId, Constants.FaultTolerantStreamNameSpace);
-
-            //unsubscribe from the channel/stream since client left, so that client won't
-            //receive furture messages from this channel/stream
-            var subscriptionHandles = await stream.GetAllSubscriptionHandles();
-            foreach (var handle in subscriptionHandles)
-            {
-                await handle.UnsubscribeAsync();
-            }
-        }
     }
 }
