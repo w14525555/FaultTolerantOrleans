@@ -572,7 +572,7 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        public Task RemoveCustomeDownStreamOperators(Guid guid)
+        public Task RemoveCustomDownStreamOperators(Guid guid)
         {
             int index = -1;
             for (int i = 0; i < downStreamOperators.Count; i++)

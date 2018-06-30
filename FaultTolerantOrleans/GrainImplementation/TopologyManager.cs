@@ -71,6 +71,7 @@ namespace SystemImplementation
             PrettyConsole.Line("Number of upperStream : " + upperStreamUnits.Count);
             PrettyConsole.Line("Number of downStream : " + downsStreamUnits.Count);
 
+            //Handle Upper Stream
             if (upperStreamUnits.Count > 0)
             {
                 var keyList = upperStreamUnits.Keys.ToList();
@@ -86,19 +87,45 @@ namespace SystemImplementation
                     {
                         op = GrainFactory.GetGrain<IOperator>(keyList[index], Constants.Stateless_Operator_Prefix);
                         op.AddCustomDownStreamOperators(guidList);
-                        op.RemoveCustomeDownStreamOperators(oldGuid);
+                        op.RemoveCustomDownStreamOperators(oldGuid);
                     }
                     else if (item.OperatorType == OperatorType.Stateful)
                     {
                         op = GrainFactory.GetGrain<IOperator>(keyList[index], Constants.Stateful_Operator_Prefix);
                         op.AddCustomDownStreamOperators(guidList);
-                        op.RemoveCustomeDownStreamOperators(oldGuid);
+                        op.RemoveCustomDownStreamOperators(oldGuid);
                     }
                     else if (item.OperatorType == OperatorType.Source)
                     {
-
+                        string sourceKey = upperStreamUnits[keyList[index]].GetSourceKey();
+                        var source = GrainFactory.GetGrain<IStreamSource>(sourceKey);
+                        source.AddCustomDownStreamOperators(guidList);
+                        source.RemoveCustomDownStreamOperator(oldGuid);
+                        
                     }
                     index++;
+                }
+            }
+
+            //Handle Down Stream
+            if (downsStreamUnits.Count > 0)
+            {
+                var keyList = downsStreamUnits.Keys.ToList();
+                IOperator newOp;
+                if (newUnit.OperatorType == OperatorType.Stateless)
+                {
+                    newOp = GrainFactory.GetGrain<IStatelessOperator>(newGuid, Constants.Stateless_Operator_Prefix);
+                    newOp.AddCustomDownStreamOperators(keyList);
+                }
+                else if (newUnit.OperatorType == OperatorType.Stateful)
+                {
+                    newOp = GrainFactory.GetGrain<IStatefulOperator>(newGuid, Constants.Stateful_Operator_Prefix);
+                    newOp.AddCustomDownStreamOperators(keyList);
+                }
+                else if (newUnit.OperatorType == OperatorType.Source)
+                {
+                    var source = GrainFactory.GetGrain<IStreamSource>(newUnit.GetSourceKey(), Constants.Stateful_Operator_Prefix);
+                    source.AddCustomDownStreamOperators(keyList);
                 }
             }
             return Task.CompletedTask;
@@ -127,7 +154,7 @@ namespace SystemImplementation
                     if (op.Value.OperatorType == OperatorType.Source)
                     {
                         var source = GrainFactory.GetGrain<IStreamSource>(op.Value.GetSourceKey());
-                        source.AddAStatelessOperator(newStatelessOp);
+                        source.AddCustomDownStreamOperator(newStatelessOp);
                     }
                 }
 

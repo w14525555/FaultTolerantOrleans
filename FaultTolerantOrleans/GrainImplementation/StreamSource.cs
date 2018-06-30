@@ -17,7 +17,7 @@ namespace GrainImplementation
 		private readonly List<string> onlineMembers = new List<string>(10);
 
         //Internal Implementation
-        private HashSet<IOperator> downStreamOperators;
+        private List<IOperator> downStreamOperators = new List<IOperator>();
 
         private IBatchCoordinator batchCoordinator;
         private IBatchTracker batchTracker;
@@ -50,7 +50,6 @@ namespace GrainImplementation
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         private Task InitDeaultOperators()
         {
-            downStreamOperators = new HashSet<IOperator>();
             var operatorOne = GrainFactory.GetGrain<IStatelessOperator>(Guid.NewGuid(), Constants.Stateless_Operator_Prefix);
             var operatorTwo = GrainFactory.GetGrain<IStatelessOperator>(Guid.NewGuid(), Constants.Stateless_Operator_Prefix);
             var operatorThree = GrainFactory.GetGrain<IStatelessOperator>(Guid.NewGuid(), Constants.Stateless_Operator_Prefix);
@@ -99,7 +98,7 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        public Task AddAStatelessOperator(IStatelessOperator statelessOperator)
+        public Task AddCustomDownStreamOperator(IStatelessOperator statelessOperator)
         {
             //Add to local
             downStreamOperators.Add(statelessOperator);
@@ -107,6 +106,41 @@ namespace GrainImplementation
             topologyManager.ConnectUnits(topologyUnit.PrimaryKey, statelessOperator.GetPrimaryKey());
             //Add it to counter map
             messageCountMap.Add(statelessOperator.GetPrimaryKey(), 0);
+            return Task.CompletedTask;
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
+        public Task AddCustomDownStreamOperators(List<Guid> guidList)
+        {
+            foreach (var item in guidList)
+            {
+                IStatelessOperator op = GrainFactory.GetGrain<IStatelessOperator>(item, Constants.Stateless_Operator_Prefix);
+                downStreamOperators.Add(op);
+                topologyManager.ConnectUnits(topologyUnit.PrimaryKey, op.GetPrimaryKey());
+            }
+            return Task.CompletedTask;
+        }
+
+        public Task RemoveCustomDownStreamOperator(Guid guid)
+        {
+            int index = -1;
+            for (int i = 0; i < downStreamOperators.Count; i++)
+            {
+                if (downStreamOperators[i].GetPrimaryKey() == guid)
+                {
+                    index = i;
+                    break;
+                }
+            }
+            if (index != -1)
+            {
+                downStreamOperators.RemoveAt(index);
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
+
             return Task.CompletedTask;
         }
 

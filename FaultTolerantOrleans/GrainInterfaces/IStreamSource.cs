@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Orleans;
 using SystemInterfaces.Model;
@@ -24,7 +25,9 @@ namespace SystemInterfaces
         Task Commit(StreamMessage msg);
         Task Recovery(StreamMessage msg);
         Task<int> GetNumberOfElementsInCountMap();
-        Task AddAStatelessOperator(IStatelessOperator statelessOperator);
+        Task AddCustomDownStreamOperator(IStatelessOperator statelessOperator);
         Task<Guid> GetTestGuid();
+        Task AddCustomDownStreamOperators(List<Guid> guidList);
+        Task RemoveCustomDownStreamOperator(Guid guid);
     }
 }

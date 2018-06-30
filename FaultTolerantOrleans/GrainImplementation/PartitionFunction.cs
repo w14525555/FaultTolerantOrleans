@@ -13,7 +13,7 @@ namespace SystemImplementation
             return index;
         }
 
-        public static Task<IOperator> PartitionStatelessByKey(string key, HashSet<IOperator> statelessOperators)
+        public static Task<IOperator> PartitionStatelessByKey(string key, List<IOperator> statelessOperators)
         {
             int index = Utils.Functions.CalculateHash(key) % statelessOperators.Count;
             return Task.FromResult(statelessOperators.ElementAt(index));

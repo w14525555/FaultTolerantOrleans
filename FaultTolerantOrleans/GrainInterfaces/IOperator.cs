@@ -11,7 +11,7 @@ namespace SystemInterfaces
     {
         Task<Task> AddCustomDownStreamOperators(List<Guid> guidList);
 
-        Task RemoveCustomeDownStreamOperators(Guid guid);
+        Task RemoveCustomDownStreamOperators(Guid guid);
 
         Task<int> GetStateInReverseLog(string word);
 
