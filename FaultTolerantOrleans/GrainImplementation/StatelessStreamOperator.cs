@@ -80,7 +80,7 @@ namespace SystemImplementation
             return Task.CompletedTask;
         }
 
-        public Task RemoveCustomDownStreamOperators(Guid guid)
+        public Task RemoveCustomDownStreamOperator(Guid guid)
         {
             int index = -1;
             for (int i = 0; i < downStreamOperators.Count; i++)

@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen7163b1f272FeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGenbc8fc094a1FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -455,16 +455,18 @@ namespace SystemInterfaces
                     {
                         case -547603550:
                             return @"AddCustomDownStreamOperators";
-                        case 1427574996:
-                            return @"RemoveCustomDownStreamOperators";
+                        case 1005660065:
+                            return @"RemoveCustomDownStreamOperator";
+                        case 211822306:
+                            return @"GetTopologyUnit";
+                        case -1221400782:
+                            return @"ExecuteMessage";
                         case 2075549514:
                             return @"GetStateInReverseLog";
                         case 408823471:
                             return @"GetStateInIncrementalLog";
                         case -1226735009:
                             return @"GetState";
-                        case -1221400782:
-                            return @"ExecuteMessage";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -66543353 + @",methodId=" + methodId);
                     }
@@ -479,9 +481,19 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-547603550, new global::System.Object[]{units});
         }
 
-        public global::System.Threading.Tasks.Task RemoveCustomDownStreamOperators(global::System.Guid guid)
+        public global::System.Threading.Tasks.Task RemoveCustomDownStreamOperator(global::System.Guid guid)
         {
-            return base.InvokeMethodAsync<global::System.Object>(1427574996, new global::System.Object[]{guid});
+            return base.InvokeMethodAsync<global::System.Object>(1005660065, new global::System.Object[]{guid});
+        }
+
+        public global::System.Threading.Tasks.Task<global::SystemInterfaces.Model.TopologyUnit> GetTopologyUnit()
+        {
+            return base.InvokeMethodAsync<global::SystemInterfaces.Model.TopologyUnit>(211822306, null);
+        }
+
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> ExecuteMessage(global::SystemInterfaces.Model.StreamMessage msg, global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage> stream)
+        {
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-1221400782, new global::System.Object[]{msg, stream});
         }
 
         public global::System.Threading.Tasks.Task<global::System.Int32> GetStateInReverseLog(global::System.String word)
@@ -497,11 +509,6 @@ namespace SystemInterfaces
         public global::System.Threading.Tasks.Task<global::System.Int32> GetState(global::System.String word)
         {
             return base.InvokeMethodAsync<global::System.Int32>(-1226735009, new global::System.Object[]{word});
-        }
-
-        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> ExecuteMessage(global::SystemInterfaces.Model.StreamMessage msg, global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage> stream)
-        {
-            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-1221400782, new global::System.Object[]{msg, stream});
         }
     }
 
@@ -522,17 +529,19 @@ namespace SystemInterfaces
                     {
                         case -547603550:
                             return await ((global::SystemInterfaces.IOperator)grain).AddCustomDownStreamOperators((global::System.Collections.Generic.List<global::SystemInterfaces.Model.TopologyUnit>)arguments[0]);
-                        case 1427574996:
-                            await ((global::SystemInterfaces.IOperator)grain).RemoveCustomDownStreamOperators((global::System.Guid)arguments[0]);
+                        case 1005660065:
+                            await ((global::SystemInterfaces.IOperator)grain).RemoveCustomDownStreamOperator((global::System.Guid)arguments[0]);
                             return null;
+                        case 211822306:
+                            return await ((global::SystemInterfaces.IOperator)grain).GetTopologyUnit();
+                        case -1221400782:
+                            return await ((global::SystemInterfaces.IOperator)grain).ExecuteMessage((global::SystemInterfaces.Model.StreamMessage)arguments[0], (global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage>)arguments[1]);
                         case 2075549514:
                             return await ((global::SystemInterfaces.IOperator)grain).GetStateInReverseLog((global::System.String)arguments[0]);
                         case 408823471:
                             return await ((global::SystemInterfaces.IOperator)grain).GetStateInIncrementalLog((global::System.String)arguments[0]);
                         case -1226735009:
                             return await ((global::SystemInterfaces.IOperator)grain).GetState((global::System.String)arguments[0]);
-                        case -1221400782:
-                            return await ((global::SystemInterfaces.IOperator)grain).ExecuteMessage((global::SystemInterfaces.Model.StreamMessage)arguments[0], (global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage>)arguments[1]);
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -66543353 + @",methodId=" + methodId);
                     }
@@ -620,8 +629,6 @@ namespace SystemInterfaces
                             return @"MarkOperatorAsFailed";
                         case 2061992567:
                             return @"IncrementNumberOfUpStreamOperator";
-                        case 211822306:
-                            return @"GetTopologyUnit";
                         case -1126113540:
                             return @"DecreseNumberOfUpStreamOperator";
                         case 1108646473:
@@ -630,16 +637,18 @@ namespace SystemInterfaces
                             return @"Recovery";
                         case -547603550:
                             return @"AddCustomDownStreamOperators";
-                        case 1427574996:
-                            return @"RemoveCustomDownStreamOperators";
+                        case 1005660065:
+                            return @"RemoveCustomDownStreamOperator";
+                        case 211822306:
+                            return @"GetTopologyUnit";
+                        case -1221400782:
+                            return @"ExecuteMessage";
                         case 2075549514:
                             return @"GetStateInReverseLog";
                         case 408823471:
                             return @"GetStateInIncrementalLog";
                         case -1226735009:
                             return @"GetState";
-                        case -1221400782:
-                            return @"ExecuteMessage";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 498177181 + @",methodId=" + methodId);
                     }
@@ -649,16 +658,18 @@ namespace SystemInterfaces
                     {
                         case -547603550:
                             return @"AddCustomDownStreamOperators";
-                        case 1427574996:
-                            return @"RemoveCustomDownStreamOperators";
+                        case 1005660065:
+                            return @"RemoveCustomDownStreamOperator";
+                        case 211822306:
+                            return @"GetTopologyUnit";
+                        case -1221400782:
+                            return @"ExecuteMessage";
                         case 2075549514:
                             return @"GetStateInReverseLog";
                         case 408823471:
                             return @"GetStateInIncrementalLog";
                         case -1226735009:
                             return @"GetState";
-                        case -1221400782:
-                            return @"ExecuteMessage";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -66543353 + @",methodId=" + methodId);
                     }
@@ -693,11 +704,6 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Object>(2061992567, null);
         }
 
-        public global::System.Threading.Tasks.Task<global::SystemInterfaces.Model.TopologyUnit> GetTopologyUnit()
-        {
-            return base.InvokeMethodAsync<global::SystemInterfaces.Model.TopologyUnit>(211822306, null);
-        }
-
         public global::System.Threading.Tasks.Task DecreseNumberOfUpStreamOperator()
         {
             return base.InvokeMethodAsync<global::System.Object>(-1126113540, null);
@@ -718,9 +724,19 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-547603550, new global::System.Object[]{units});
         }
 
-        public global::System.Threading.Tasks.Task RemoveCustomDownStreamOperators(global::System.Guid guid)
+        public global::System.Threading.Tasks.Task RemoveCustomDownStreamOperator(global::System.Guid guid)
         {
-            return base.InvokeMethodAsync<global::System.Object>(1427574996, new global::System.Object[]{guid});
+            return base.InvokeMethodAsync<global::System.Object>(1005660065, new global::System.Object[]{guid});
+        }
+
+        public global::System.Threading.Tasks.Task<global::SystemInterfaces.Model.TopologyUnit> GetTopologyUnit()
+        {
+            return base.InvokeMethodAsync<global::SystemInterfaces.Model.TopologyUnit>(211822306, null);
+        }
+
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> ExecuteMessage(global::SystemInterfaces.Model.StreamMessage msg, global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage> stream)
+        {
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-1221400782, new global::System.Object[]{msg, stream});
         }
 
         public global::System.Threading.Tasks.Task<global::System.Int32> GetStateInReverseLog(global::System.String word)
@@ -736,11 +752,6 @@ namespace SystemInterfaces
         public global::System.Threading.Tasks.Task<global::System.Int32> GetState(global::System.String word)
         {
             return base.InvokeMethodAsync<global::System.Int32>(-1226735009, new global::System.Object[]{word});
-        }
-
-        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> ExecuteMessage(global::SystemInterfaces.Model.StreamMessage msg, global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage> stream)
-        {
-            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-1221400782, new global::System.Object[]{msg, stream});
         }
     }
 
@@ -772,8 +783,6 @@ namespace SystemInterfaces
                         case 2061992567:
                             await ((global::SystemInterfaces.IStatefulOperator)grain).IncrementNumberOfUpStreamOperator();
                             return null;
-                        case 211822306:
-                            return await ((global::SystemInterfaces.IStatefulOperator)grain).GetTopologyUnit();
                         case -1126113540:
                             await ((global::SystemInterfaces.IStatefulOperator)grain).DecreseNumberOfUpStreamOperator();
                             return null;
@@ -783,17 +792,19 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).Recovery((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
                         case -547603550:
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).AddCustomDownStreamOperators((global::System.Collections.Generic.List<global::SystemInterfaces.Model.TopologyUnit>)arguments[0]);
-                        case 1427574996:
-                            await ((global::SystemInterfaces.IStatefulOperator)grain).RemoveCustomDownStreamOperators((global::System.Guid)arguments[0]);
+                        case 1005660065:
+                            await ((global::SystemInterfaces.IStatefulOperator)grain).RemoveCustomDownStreamOperator((global::System.Guid)arguments[0]);
                             return null;
+                        case 211822306:
+                            return await ((global::SystemInterfaces.IStatefulOperator)grain).GetTopologyUnit();
+                        case -1221400782:
+                            return await ((global::SystemInterfaces.IStatefulOperator)grain).ExecuteMessage((global::SystemInterfaces.Model.StreamMessage)arguments[0], (global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage>)arguments[1]);
                         case 2075549514:
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).GetStateInReverseLog((global::System.String)arguments[0]);
                         case 408823471:
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).GetStateInIncrementalLog((global::System.String)arguments[0]);
                         case -1226735009:
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).GetState((global::System.String)arguments[0]);
-                        case -1221400782:
-                            return await ((global::SystemInterfaces.IStatefulOperator)grain).ExecuteMessage((global::SystemInterfaces.Model.StreamMessage)arguments[0], (global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage>)arguments[1]);
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 498177181 + @",methodId=" + methodId);
                     }
@@ -803,17 +814,19 @@ namespace SystemInterfaces
                     {
                         case -547603550:
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).AddCustomDownStreamOperators((global::System.Collections.Generic.List<global::SystemInterfaces.Model.TopologyUnit>)arguments[0]);
-                        case 1427574996:
-                            await ((global::SystemInterfaces.IStatefulOperator)grain).RemoveCustomDownStreamOperators((global::System.Guid)arguments[0]);
+                        case 1005660065:
+                            await ((global::SystemInterfaces.IStatefulOperator)grain).RemoveCustomDownStreamOperator((global::System.Guid)arguments[0]);
                             return null;
+                        case 211822306:
+                            return await ((global::SystemInterfaces.IStatefulOperator)grain).GetTopologyUnit();
+                        case -1221400782:
+                            return await ((global::SystemInterfaces.IStatefulOperator)grain).ExecuteMessage((global::SystemInterfaces.Model.StreamMessage)arguments[0], (global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage>)arguments[1]);
                         case 2075549514:
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).GetStateInReverseLog((global::System.String)arguments[0]);
                         case 408823471:
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).GetStateInIncrementalLog((global::System.String)arguments[0]);
                         case -1226735009:
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).GetState((global::System.String)arguments[0]);
-                        case -1221400782:
-                            return await ((global::SystemInterfaces.IStatefulOperator)grain).ExecuteMessage((global::SystemInterfaces.Model.StreamMessage)arguments[0], (global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage>)arguments[1]);
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -66543353 + @",methodId=" + methodId);
                     }
@@ -893,24 +906,24 @@ namespace SystemInterfaces
                     {
                         case 1333285083:
                             return @"InitRandomOperators";
-                        case 211822306:
-                            return @"GetTopologyUnit";
                         case 1108646473:
                             return @"Commit";
                         case 2118799424:
                             return @"Recovery";
                         case -547603550:
                             return @"AddCustomDownStreamOperators";
-                        case 1427574996:
-                            return @"RemoveCustomDownStreamOperators";
+                        case 1005660065:
+                            return @"RemoveCustomDownStreamOperator";
+                        case 211822306:
+                            return @"GetTopologyUnit";
+                        case -1221400782:
+                            return @"ExecuteMessage";
                         case 2075549514:
                             return @"GetStateInReverseLog";
                         case 408823471:
                             return @"GetStateInIncrementalLog";
                         case -1226735009:
                             return @"GetState";
-                        case -1221400782:
-                            return @"ExecuteMessage";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1903779801 + @",methodId=" + methodId);
                     }
@@ -920,16 +933,18 @@ namespace SystemInterfaces
                     {
                         case -547603550:
                             return @"AddCustomDownStreamOperators";
-                        case 1427574996:
-                            return @"RemoveCustomDownStreamOperators";
+                        case 1005660065:
+                            return @"RemoveCustomDownStreamOperator";
+                        case 211822306:
+                            return @"GetTopologyUnit";
+                        case -1221400782:
+                            return @"ExecuteMessage";
                         case 2075549514:
                             return @"GetStateInReverseLog";
                         case 408823471:
                             return @"GetStateInIncrementalLog";
                         case -1226735009:
                             return @"GetState";
-                        case -1221400782:
-                            return @"ExecuteMessage";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -66543353 + @",methodId=" + methodId);
                     }
@@ -942,11 +957,6 @@ namespace SystemInterfaces
         public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> InitRandomOperators()
         {
             return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(1333285083, null);
-        }
-
-        public global::System.Threading.Tasks.Task<global::SystemInterfaces.Model.TopologyUnit> GetTopologyUnit()
-        {
-            return base.InvokeMethodAsync<global::SystemInterfaces.Model.TopologyUnit>(211822306, null);
         }
 
         public global::System.Threading.Tasks.Task Commit(global::SystemInterfaces.Model.StreamMessage msg)
@@ -964,9 +974,19 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-547603550, new global::System.Object[]{units});
         }
 
-        public global::System.Threading.Tasks.Task RemoveCustomDownStreamOperators(global::System.Guid guid)
+        public global::System.Threading.Tasks.Task RemoveCustomDownStreamOperator(global::System.Guid guid)
         {
-            return base.InvokeMethodAsync<global::System.Object>(1427574996, new global::System.Object[]{guid});
+            return base.InvokeMethodAsync<global::System.Object>(1005660065, new global::System.Object[]{guid});
+        }
+
+        public global::System.Threading.Tasks.Task<global::SystemInterfaces.Model.TopologyUnit> GetTopologyUnit()
+        {
+            return base.InvokeMethodAsync<global::SystemInterfaces.Model.TopologyUnit>(211822306, null);
+        }
+
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> ExecuteMessage(global::SystemInterfaces.Model.StreamMessage msg, global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage> stream)
+        {
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-1221400782, new global::System.Object[]{msg, stream});
         }
 
         public global::System.Threading.Tasks.Task<global::System.Int32> GetStateInReverseLog(global::System.String word)
@@ -982,11 +1002,6 @@ namespace SystemInterfaces
         public global::System.Threading.Tasks.Task<global::System.Int32> GetState(global::System.String word)
         {
             return base.InvokeMethodAsync<global::System.Int32>(-1226735009, new global::System.Object[]{word});
-        }
-
-        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> ExecuteMessage(global::SystemInterfaces.Model.StreamMessage msg, global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage> stream)
-        {
-            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-1221400782, new global::System.Object[]{msg, stream});
         }
     }
 
@@ -1007,8 +1022,6 @@ namespace SystemInterfaces
                     {
                         case 1333285083:
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).InitRandomOperators();
-                        case 211822306:
-                            return await ((global::SystemInterfaces.IStatelessOperator)grain).GetTopologyUnit();
                         case 1108646473:
                             await ((global::SystemInterfaces.IStatelessOperator)grain).Commit((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
                             return null;
@@ -1017,17 +1030,19 @@ namespace SystemInterfaces
                             return null;
                         case -547603550:
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).AddCustomDownStreamOperators((global::System.Collections.Generic.List<global::SystemInterfaces.Model.TopologyUnit>)arguments[0]);
-                        case 1427574996:
-                            await ((global::SystemInterfaces.IStatelessOperator)grain).RemoveCustomDownStreamOperators((global::System.Guid)arguments[0]);
+                        case 1005660065:
+                            await ((global::SystemInterfaces.IStatelessOperator)grain).RemoveCustomDownStreamOperator((global::System.Guid)arguments[0]);
                             return null;
+                        case 211822306:
+                            return await ((global::SystemInterfaces.IStatelessOperator)grain).GetTopologyUnit();
+                        case -1221400782:
+                            return await ((global::SystemInterfaces.IStatelessOperator)grain).ExecuteMessage((global::SystemInterfaces.Model.StreamMessage)arguments[0], (global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage>)arguments[1]);
                         case 2075549514:
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).GetStateInReverseLog((global::System.String)arguments[0]);
                         case 408823471:
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).GetStateInIncrementalLog((global::System.String)arguments[0]);
                         case -1226735009:
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).GetState((global::System.String)arguments[0]);
-                        case -1221400782:
-                            return await ((global::SystemInterfaces.IStatelessOperator)grain).ExecuteMessage((global::SystemInterfaces.Model.StreamMessage)arguments[0], (global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage>)arguments[1]);
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1903779801 + @",methodId=" + methodId);
                     }
@@ -1037,17 +1052,19 @@ namespace SystemInterfaces
                     {
                         case -547603550:
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).AddCustomDownStreamOperators((global::System.Collections.Generic.List<global::SystemInterfaces.Model.TopologyUnit>)arguments[0]);
-                        case 1427574996:
-                            await ((global::SystemInterfaces.IStatelessOperator)grain).RemoveCustomDownStreamOperators((global::System.Guid)arguments[0]);
+                        case 1005660065:
+                            await ((global::SystemInterfaces.IStatelessOperator)grain).RemoveCustomDownStreamOperator((global::System.Guid)arguments[0]);
                             return null;
+                        case 211822306:
+                            return await ((global::SystemInterfaces.IStatelessOperator)grain).GetTopologyUnit();
+                        case -1221400782:
+                            return await ((global::SystemInterfaces.IStatelessOperator)grain).ExecuteMessage((global::SystemInterfaces.Model.StreamMessage)arguments[0], (global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage>)arguments[1]);
                         case 2075549514:
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).GetStateInReverseLog((global::System.String)arguments[0]);
                         case 408823471:
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).GetStateInIncrementalLog((global::System.String)arguments[0]);
                         case -1226735009:
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).GetState((global::System.String)arguments[0]);
-                        case -1221400782:
-                            return await ((global::SystemInterfaces.IStatelessOperator)grain).ExecuteMessage((global::SystemInterfaces.Model.StreamMessage)arguments[0], (global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage>)arguments[1]);
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -66543353 + @",methodId=" + methodId);
                     }
@@ -1405,6 +1422,12 @@ namespace SystemInterfaces
                             return @"Recovery";
                         case 892237176:
                             return @"AddASameTypeStatelessOperatorToTopology";
+                        case -1458974650:
+                            return @"GetRandomSources";
+                        case 1188547119:
+                            return @"GetRandomStatefulOperators";
+                        case -231380958:
+                            return @"GetRandomStatelessOperators";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1231133098 + @",methodId=" + methodId);
                     }
@@ -1470,6 +1493,21 @@ namespace SystemInterfaces
         {
             return base.InvokeMethodAsync<global::System.Object>(892237176, new global::System.Object[]{guid});
         }
+
+        public global::System.Threading.Tasks.Task<global::System.Collections.Generic.List<global::SystemInterfaces.IStreamSource>> GetRandomSources(global::System.Int32 num)
+        {
+            return base.InvokeMethodAsync<global::System.Collections.Generic.List<global::SystemInterfaces.IStreamSource>>(-1458974650, new global::System.Object[]{num});
+        }
+
+        public global::System.Threading.Tasks.Task<global::System.Collections.Generic.List<global::SystemInterfaces.IStatefulOperator>> GetRandomStatefulOperators(global::System.Int32 num)
+        {
+            return base.InvokeMethodAsync<global::System.Collections.Generic.List<global::SystemInterfaces.IStatefulOperator>>(1188547119, new global::System.Object[]{num});
+        }
+
+        public global::System.Threading.Tasks.Task<global::System.Collections.Generic.List<global::SystemInterfaces.IStatelessOperator>> GetRandomStatelessOperators(global::System.Int32 num)
+        {
+            return base.InvokeMethodAsync<global::System.Collections.Generic.List<global::SystemInterfaces.IStatelessOperator>>(-231380958, new global::System.Object[]{num});
+        }
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute(typeof (global::SystemInterfaces.ITopology), -1231133098), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
@@ -1513,6 +1551,12 @@ namespace SystemInterfaces
                         case 892237176:
                             await ((global::SystemInterfaces.ITopology)grain).AddASameTypeStatelessOperatorToTopology((global::System.Guid)arguments[0]);
                             return null;
+                        case -1458974650:
+                            return await ((global::SystemInterfaces.ITopology)grain).GetRandomSources((global::System.Int32)arguments[0]);
+                        case 1188547119:
+                            return await ((global::SystemInterfaces.ITopology)grain).GetRandomStatefulOperators((global::System.Int32)arguments[0]);
+                        case -231380958:
+                            return await ((global::SystemInterfaces.ITopology)grain).GetRandomStatelessOperators((global::System.Int32)arguments[0]);
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1231133098 + @",methodId=" + methodId);
                     }
@@ -1812,7 +1856,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen7163b1f272FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGenbc8fc094a1FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {

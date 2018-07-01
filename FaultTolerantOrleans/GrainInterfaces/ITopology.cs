@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Orleans;
 using SystemInterfaces.Model;
@@ -26,5 +27,11 @@ namespace SystemInterfaces
         Task<Task> Recovery(StreamMessage msg);
 
         Task AddASameTypeStatelessOperatorToTopology(Guid guid);
+
+        Task<List<IStreamSource>> GetRandomSources(int num);
+
+        Task<List<IStatefulOperator>> GetRandomStatefulOperators(int num);
+
+        Task<List<IStatelessOperator>> GetRandomStatelessOperators(int num);
     }
 }

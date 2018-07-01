@@ -87,13 +87,13 @@ namespace SystemImplementation
                     {
                         op = GrainFactory.GetGrain<IOperator>(keyList[index], Constants.Stateless_Operator_Prefix);
                         op.AddCustomDownStreamOperators(unitList);
-                        op.RemoveCustomDownStreamOperators(oldGuid);
+                        op.RemoveCustomDownStreamOperator(oldGuid);
                     }
                     else if (item.OperatorType == OperatorType.Stateful)
                     {
                         op = GrainFactory.GetGrain<IOperator>(keyList[index], Constants.Stateful_Operator_Prefix);
                         op.AddCustomDownStreamOperators(unitList);
-                        op.RemoveCustomDownStreamOperators(oldGuid);
+                        op.RemoveCustomDownStreamOperator(oldGuid);
                     }
                     else if (item.OperatorType == OperatorType.Source)
                     {
@@ -237,6 +237,86 @@ namespace SystemImplementation
         public Task<TopologyUnit> GetUnit(Guid key)
         {
             return Task.FromResult(topology.GetUnit(key));
+        }
+
+        public Task<List<IStreamSource>> GetRandomSources(int num)
+        {
+            CheckNum(num);
+            List<IStreamSource> sources = new List<IStreamSource>();
+            for (int i = 0; i < num; i++)
+            {
+                var source = GrainFactory.GetGrain<IStreamSource>(Guid.NewGuid());
+                sources.Add(source);
+            }
+            return Task.FromResult(sources);
+        }
+
+        public Task<List<IStatefulOperator>> GetRandomStatefulOperators(int num)
+        {
+            CheckNum(num);
+            List<IStatefulOperator> statefulOps = new List<IStatefulOperator>();
+            for (int i = 0; i < num; i++)
+            {
+                var op = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid(), Constants.Stateful_Operator_Prefix);
+                statefulOps.Add(op);
+            }
+            return Task.FromResult(statefulOps);
+        }
+
+        public Task<List<IStatelessOperator>> GetRandomStatelessOperators(int num)
+        {
+            CheckNum(num);
+            List<IStatelessOperator> statelessOps = new List<IStatelessOperator>();
+            for (int i = 0; i < num; i++)
+            {
+                var op = GrainFactory.GetGrain<IStatelessOperator>(Guid.NewGuid(), Constants.Stateless_Operator_Prefix);
+                statelessOps.Add(op);
+            }
+            return Task.FromResult(statelessOps);
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
+        public async Task<Task> AddCustomeOperatorsToSources(List<IStreamSource> sources, List<IOperator> operators)
+        {
+            List<TopologyUnit> units = new List<TopologyUnit>();
+            foreach (var op in operators)
+            {
+                units.Add(await op.GetTopologyUnit());
+            }
+
+            foreach (var source in sources)
+            {
+                source.AddCustomDownStreamOperators(units);
+            }
+
+            return Task.CompletedTask;
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
+        public async Task<Task> AddCustomeOperatorsToNonSourceOperators(List<IOperator> ops, List<IOperator> operators)
+        {
+            List<TopologyUnit> units = new List<TopologyUnit>();
+            foreach (var op in operators)
+            {
+                units.Add(await op.GetTopologyUnit());
+            }
+
+            foreach (var op in ops)
+            {
+                op.AddCustomDownStreamOperators(units);
+            }
+
+            return Task.CompletedTask;
+        }
+
+
+
+        private void CheckNum(int num)
+        {
+            if (num <= 0)
+            {
+                throw new ArgumentException("The num must be greater than 0");
+            }
         }
     } 
 }

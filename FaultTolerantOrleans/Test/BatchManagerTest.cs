@@ -25,8 +25,6 @@ namespace Test
         private IStreamSource source;
         private IStreamSource source2;
         private StatefulStreamObserver statefulStreamObserver;
-        private static string joinedChannel = "general";
-        private static string joinedChannel2 = "second";
         private static string userName = "You Wu";
         private const string NOT_EXIST = "Not Exist";
         private const string INITIAL_KEY = "initialKey";

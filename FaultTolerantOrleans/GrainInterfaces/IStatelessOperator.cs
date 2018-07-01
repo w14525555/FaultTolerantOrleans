@@ -9,21 +9,7 @@ namespace SystemInterfaces
 {
     public interface IStatelessOperator : IOperator
     {
-        //Task ExecuteMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream);
-
-        //Task<int> GetState(string word);
-
-        //Task<int> GetStateInReverseLog(string word);
-
-        //Task<int> GetStateInIncrementalLog(string word);
-
         Task<Task> InitRandomOperators();
-
-        //Task<Task> AddCustomOperators(List<Guid> guidList);
-
-        Task<TopologyUnit> GetTopologyUnit();
-
-        //Task RemoveCustomeOperators(Guid guid);
 
         Task Commit(StreamMessage msg);
 
