@@ -11,37 +11,12 @@ namespace SystemInterfaces.Model
         private OperatorSettings operatorSettings = new OperatorSettings();
         public OperatorType OperatorType { get; set; }
         public Guid PrimaryKey { get; set; }
-        public String sourceKey { get; set; }
 
         public TopologyUnit(OperatorType operatorType, Guid key)
         {
             this.OperatorType = operatorType;
             PrimaryKey = new Guid();
             PrimaryKey = key;
-        }
-
-        public void SetSourceKey(String key)
-        {
-            if (OperatorType == OperatorType.Source)
-            {
-                this.sourceKey = key;
-            }
-            else
-            {
-                throw new InvalidOperationException("Cannot set the source key if it is not a source");
-            }
-        }
-
-        public String GetSourceKey()
-        {
-            if (OperatorType == OperatorType.Source)
-            {
-                return sourceKey;
-            }
-            else
-            {
-                throw new InvalidOperationException("Cannot get the source key if it is not a source");
-            }
         }
 
         public void AddUpperStreamUnit(TopologyUnit unit)

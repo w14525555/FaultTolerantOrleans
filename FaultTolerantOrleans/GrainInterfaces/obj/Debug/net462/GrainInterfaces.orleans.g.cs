@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen753853389dFeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen7163b1f272FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -1732,7 +1732,6 @@ namespace OrleansGeneratedCode38151279
             context.RecordCopy(original, result);
             result.OperatorType = input.OperatorType;
             result.PrimaryKey = (global::System.Guid)context.DeepCopyInner(input.PrimaryKey);
-            result.sourceKey = input.sourceKey;
             setField1(result, (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>)context.DeepCopyInner(getField1(input)));
             setField2(result, (global::SystemInterfaces.Model.OperatorSettings)context.DeepCopyInner(getField2(input)));
             setField0(result, (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>)context.DeepCopyInner(getField0(input)));
@@ -1745,7 +1744,6 @@ namespace OrleansGeneratedCode38151279
             global::SystemInterfaces.Model.TopologyUnit input = (global::SystemInterfaces.Model.TopologyUnit)untypedInput;
             context.SerializeInner(input.OperatorType, typeof (global::SystemInterfaces.Model.OperatorType));
             context.SerializeInner(input.PrimaryKey, typeof (global::System.Guid));
-            context.SerializeInner(input.sourceKey, typeof (global::System.String));
             context.SerializeInner(getField1(input), typeof (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>));
             context.SerializeInner(getField2(input), typeof (global::SystemInterfaces.Model.OperatorSettings));
             context.SerializeInner(getField0(input), typeof (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>));
@@ -1758,7 +1756,6 @@ namespace OrleansGeneratedCode38151279
             context.RecordObject(result);
             result.OperatorType = (global::SystemInterfaces.Model.OperatorType)context.DeserializeInner(typeof (global::SystemInterfaces.Model.OperatorType));
             result.PrimaryKey = (global::System.Guid)context.DeserializeInner(typeof (global::System.Guid));
-            result.sourceKey = (global::System.String)context.DeserializeInner(typeof (global::System.String));
             setField1(result, (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>)context.DeserializeInner(typeof (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>)));
             setField2(result, (global::SystemInterfaces.Model.OperatorSettings)context.DeserializeInner(typeof (global::SystemInterfaces.Model.OperatorSettings)));
             setField0(result, (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>)context.DeserializeInner(typeof (global::System.Collections.Generic.Dictionary<global::System.Guid, global::SystemInterfaces.Model.TopologyUnit>)));
@@ -1815,7 +1812,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen753853389dFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGen7163b1f272FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {
