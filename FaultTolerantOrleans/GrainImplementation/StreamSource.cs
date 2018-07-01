@@ -280,7 +280,7 @@ namespace GrainImplementation
 
         private Task BroadcastSpecialMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
-            foreach(IStatelessOperator item in downStreamOperators)
+            foreach(IOperator item in downStreamOperators)
             {
                 if (messageCountMap.ContainsKey(item.GetPrimaryKey()))
                 {
