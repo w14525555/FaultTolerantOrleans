@@ -27,5 +27,6 @@ namespace SystemInterfaces
         Task<Guid> GetTestGuid();
         Task<Task> AddCustomDownStreamOperators(List<TopologyUnit> units);
         Task RemoveCustomDownStreamOperator(Guid guid);
+        Task InitDeaultOperators();
     }
 }

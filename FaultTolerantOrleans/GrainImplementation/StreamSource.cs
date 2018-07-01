@@ -42,12 +42,11 @@ namespace GrainImplementation
             topologyUnit = new TopologyUnit(OperatorType.Source, Guid.NewGuid());
             topologyUnit.SetSourceKey(this.GetPrimaryKeyString());
             topologyManager.AddUnit(topologyUnit);
-            InitDeaultOperators();
           return base.OnActivateAsync();
 		}
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
-        private Task InitDeaultOperators()
+        public Task InitDeaultOperators()
         {
             var operatorOne = GrainFactory.GetGrain<IStatelessOperator>(Guid.NewGuid(), Constants.Stateless_Operator_Prefix);
             var operatorTwo = GrainFactory.GetGrain<IStatelessOperator>(Guid.NewGuid(), Constants.Stateless_Operator_Prefix);

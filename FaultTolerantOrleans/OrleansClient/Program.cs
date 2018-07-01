@@ -96,9 +96,9 @@ namespace OrleansClient
 
                 if (string.IsNullOrWhiteSpace(input)) continue;
 
-                if (input.StartsWith("/j"))
+                if (input.StartsWith("/start"))
                 {
-                    await StartDefaultTopology(client, input.Replace("/j", "").Trim());
+                    await StartDefaultTopology(client);
                 }
                 else if (!input.StartsWith("/exit"))
                 {
@@ -113,19 +113,12 @@ namespace OrleansClient
             await room.Message(new StreamMessage(userName, messageText));
         }
 
-        private static async Task StartDefaultTopology(IClusterClient client, string channelName)
+        private static async Task StartDefaultTopology(IClusterClient client)
         {
-            if (joinedChannel == channelName)
-            {
-                PrettyConsole.Line($"You already joined channel {channelName}. Double joining a channel, which is implemented as a stream, would result in double subscription to the same stream, " +
-                                   $"which would result in receiving duplicated messages. For more information, please refer to Orleans streaming documentation.");
-                return;
-            }
-            PrettyConsole.Line($"Start!");
-            joinedChannel = channelName;
-            var room = client.GetGrain<IStreamSource>(joinedChannel);
+            var source = client.GetGrain<IStreamSource>(joinedChannel);
+            await source.InitDeaultOperators();
             //var room2 = client.GetGrain<IStreamSource>("new");
-            var streamId = await room.Join(userName);
+            var streamId = await source.Join(userName);
             //var streamId2 = await room2.Join(userName);
             var stream = client.GetStreamProvider(Constants.FaultTolerantStreamProvider)
                 .GetStream<StreamMessage>(streamId, Constants.FaultTolerantStreamNameSpace);

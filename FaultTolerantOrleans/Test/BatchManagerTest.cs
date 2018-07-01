@@ -418,6 +418,7 @@ namespace Test
         private async Task<Task> SetUpSource()
         {
             source = client.GetGrain<IStreamSource>(joinedChannel);
+            await source.InitDeaultOperators();
             var streamId = await source.Join(userName);
             var stream = client.GetStreamProvider(Constants.FaultTolerantStreamProvider)
                 .GetStream<StreamMessage>(streamId, Constants.FaultTolerantStreamNameSpace);
@@ -432,6 +433,7 @@ namespace Test
         private async Task<Task> SetUpSource2()
         {
             source2 = client.GetGrain<IStreamSource>(joinedChannel2);
+            await source2.InitDeaultOperators();
             var streamId = await source2.Join(userName);
             var stream = client.GetStreamProvider(Constants.FaultTolerantStreamProvider)
                 .GetStream<StreamMessage>(streamId, Constants.FaultTolerantStreamNameSpace);

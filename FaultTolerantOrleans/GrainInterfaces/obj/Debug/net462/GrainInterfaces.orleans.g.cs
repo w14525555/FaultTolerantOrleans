@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGend47722b027FeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGene16d803a79FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -1161,6 +1161,8 @@ namespace SystemInterfaces
                             return @"AddCustomDownStreamOperators";
                         case 1005660065:
                             return @"RemoveCustomDownStreamOperator";
+                        case -976595730:
+                            return @"InitDeaultOperators";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 710632260 + @",methodId=" + methodId);
                     }
@@ -1266,6 +1268,11 @@ namespace SystemInterfaces
         {
             return base.InvokeMethodAsync<global::System.Object>(1005660065, new global::System.Object[]{guid});
         }
+
+        public global::System.Threading.Tasks.Task InitDeaultOperators()
+        {
+            return base.InvokeMethodAsync<global::System.Object>(-976595730, null);
+        }
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute(typeof (global::SystemInterfaces.IStreamSource), 710632260), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
@@ -1322,6 +1329,9 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.IStreamSource)grain).AddCustomDownStreamOperators((global::System.Collections.Generic.List<global::SystemInterfaces.Model.TopologyUnit>)arguments[0]);
                         case 1005660065:
                             await ((global::SystemInterfaces.IStreamSource)grain).RemoveCustomDownStreamOperator((global::System.Guid)arguments[0]);
+                            return null;
+                        case -976595730:
+                            await ((global::SystemInterfaces.IStreamSource)grain).InitDeaultOperators();
                             return null;
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 710632260 + @",methodId=" + methodId);
@@ -1837,7 +1847,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGend47722b027FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGene16d803a79FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {
