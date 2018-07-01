@@ -205,9 +205,7 @@ namespace SystemImplementation
         public Task Commit(StreamMessage msg)
         {
             //tell the tracker commit is done in this operator
-            PrettyConsole.Line("Start commit in stateless");
             batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
-            PrettyConsole.Line("Here");
             return Task.CompletedTask;
         }
 

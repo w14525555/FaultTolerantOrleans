@@ -121,10 +121,9 @@ namespace SystemImplementation
                     newOp = GrainFactory.GetGrain<IStatefulOperator>(newGuid, Constants.Stateful_Operator_Prefix);
                     newOp.AddCustomDownStreamOperators(units);
                 }
-                else if (newUnit.OperatorType == OperatorType.Source)
+                else
                 {
-                    var source = GrainFactory.GetGrain<IStreamSource>(newUnit.GetSourceKey(), Constants.Stateful_Operator_Prefix);
-                    source.AddCustomDownStreamOperators(units);
+                    throw new ArgumentException("Source cannot be down stream operator");
                 }
             }
             return Task.CompletedTask;
@@ -203,7 +202,6 @@ namespace SystemImplementation
         public async Task<Task> Recovery(StreamMessage msg)
         {
             List<TopologyUnit> units = topology.GetAllTopologyUnits();
-            //PrettyConsole.Line("Number of units: " + units.Count);
             msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), units.Count);
             msg.barrierOrCommitInfo.BatchID = msg.BatchID;
             await batchTracker.TrackingRecoveryMessages(msg);

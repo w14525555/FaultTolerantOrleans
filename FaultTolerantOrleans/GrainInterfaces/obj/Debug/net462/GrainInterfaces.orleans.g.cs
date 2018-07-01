@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGene16d803a79FeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen17e59e977fFeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -1127,12 +1127,8 @@ namespace SystemInterfaces
                     {
                         case 2143463833:
                             return @"Join";
-                        case 2006074335:
-                            return @"Leave";
                         case -1388410912:
                             return @"Message";
-                        case -921051725:
-                            return @"ReadHistory";
                         case -1374740813:
                             return @"GetMembers";
                         case 1145415620:
@@ -1184,19 +1180,9 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Guid>(2143463833, new global::System.Object[]{nickname});
         }
 
-        public global::System.Threading.Tasks.Task<global::System.Guid> Leave(global::System.String nickname)
-        {
-            return base.InvokeMethodAsync<global::System.Guid>(2006074335, new global::System.Object[]{nickname});
-        }
-
         public global::System.Threading.Tasks.Task<global::System.Boolean> Message(global::SystemInterfaces.Model.StreamMessage msg)
         {
             return base.InvokeMethodAsync<global::System.Boolean>(-1388410912, new global::System.Object[]{msg});
-        }
-
-        public global::System.Threading.Tasks.Task<global::SystemInterfaces.Model.StreamMessage[]> ReadHistory(global::System.Int32 numberOfMessages)
-        {
-            return base.InvokeMethodAsync<global::SystemInterfaces.Model.StreamMessage[]>(-921051725, new global::System.Object[]{numberOfMessages});
         }
 
         public global::System.Threading.Tasks.Task<global::System.String[]> GetMembers()
@@ -1292,12 +1278,8 @@ namespace SystemInterfaces
                     {
                         case 2143463833:
                             return await ((global::SystemInterfaces.IStreamSource)grain).Join((global::System.String)arguments[0]);
-                        case 2006074335:
-                            return await ((global::SystemInterfaces.IStreamSource)grain).Leave((global::System.String)arguments[0]);
                         case -1388410912:
                             return await ((global::SystemInterfaces.IStreamSource)grain).Message((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
-                        case -921051725:
-                            return await ((global::SystemInterfaces.IStreamSource)grain).ReadHistory((global::System.Int32)arguments[0]);
                         case -1374740813:
                             return await ((global::SystemInterfaces.IStreamSource)grain).GetMembers();
                         case 1145415620:
@@ -1847,7 +1829,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGene16d803a79FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGen17e59e977fFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {

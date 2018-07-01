@@ -183,13 +183,6 @@ namespace GrainImplementation
 			return Task.FromResult(stream.Guid);
 		}
 
-		public Task<Guid> Leave(string nickname)
-		{
-			onlineMembers.Remove(nickname);
-
-			return Task.FromResult(stream.Guid);
-        }
-
 		public async Task<bool> Message(StreamMessage msg)
 		{
 			messages.Add(msg);
@@ -326,17 +319,6 @@ namespace GrainImplementation
         public Task<string[]> GetMembers()
 	    {
 	        return Task.FromResult(onlineMembers.ToArray());
-	    }
-
-	    public Task<StreamMessage[]> ReadHistory(int numberOfMessages)
-	    {
-	        var response = messages
-	            .OrderByDescending(x => x.Created)
-	            .Take(numberOfMessages)
-	            .OrderBy(x => x.Created)
-	            .ToArray();
-
-	        return Task.FromResult(response);
 	    }
 
         public Task<IBatchCoordinator> GetBatchManager()

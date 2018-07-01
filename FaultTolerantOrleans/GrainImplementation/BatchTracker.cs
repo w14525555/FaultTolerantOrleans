@@ -65,7 +65,7 @@ namespace GrainImplementation
                 Functions.CheckNotNull(msg.barrierOrCommitInfo);
                 newBatch.AddBarrierOrCommitMsgTrackingHelper(msg.barrierOrCommitInfo);
                 commitTrackingMap.Add(msg.BatchID, newBatch);
-                PrettyConsole.Line("Add batch " + msg.BatchID + " to the commitTrackingMap");
+                //PrettyConsole.Line("Add batch " + msg.BatchID + " to the commitTrackingMap");
             }
             else
             {
@@ -110,7 +110,7 @@ namespace GrainImplementation
             }
             else
             {
-                PrettyConsole.Line("Finish Tracking one message in batchID: " + msgInfo.BatchID);
+                //PrettyConsole.Line("Finish Tracking one message in batchID: " + msgInfo.BatchID);
                 StreamBatch targetBatch = batchTrackingMap[msgInfo.BatchID];
                 targetBatch.CompleteOneMessageTracking(msgInfo);
                 if (targetBatch.readForCommitting)
@@ -137,7 +137,7 @@ namespace GrainImplementation
             }
             else
             {
-                PrettyConsole.Line("Finish Tracking one message in batchID: " + msgInfo.BatchID);
+                //PrettyConsole.Line("Finish Tracking one message in batchID: " + msgInfo.BatchID);
                 StreamBatch targetBatch = commitTrackingMap[msgInfo.BatchID];
                 targetBatch.CompleteOneMessageTracking(msgInfo);
                 if (targetBatch.readForCommitting)
