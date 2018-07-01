@@ -97,8 +97,7 @@ namespace SystemImplementation
                     }
                     else if (item.OperatorType == OperatorType.Source)
                     {
-                        string sourceKey = upperStreamUnits[keyList[index]].GetSourceKey();
-                        var source = GrainFactory.GetGrain<IStreamSource>(sourceKey);
+                        var source = GrainFactory.GetGrain<IStreamSource>(item.PrimaryKey);
                         source.AddCustomDownStreamOperators(unitList);
                         source.RemoveCustomDownStreamOperator(oldGuid);
                     }
@@ -151,7 +150,7 @@ namespace SystemImplementation
                 {
                     if (op.Value.OperatorType == OperatorType.Source)
                     {
-                        var source = GrainFactory.GetGrain<IStreamSource>(op.Value.GetSourceKey());
+                        var source = GrainFactory.GetGrain<IStreamSource>(op.Key);
                         source.AddCustomDownStreamOperator(newStatelessOp);
                     }
                 }
@@ -177,7 +176,7 @@ namespace SystemImplementation
             {
                 if (unit.OperatorType == OperatorType.Source)
                 {
-                    IStreamSource source = GrainFactory.GetGrain<IStreamSource>(unit.GetSourceKey());
+                    IStreamSource source = GrainFactory.GetGrain<IStreamSource>(unit.PrimaryKey);
                     source.Commit(msg);
                 }
                 else if (unit.OperatorType == OperatorType.Stateful)
@@ -209,7 +208,7 @@ namespace SystemImplementation
             {
                 if (unit.OperatorType == OperatorType.Source)
                 {
-                    IStreamSource source = GrainFactory.GetGrain<IStreamSource>(unit.GetSourceKey());
+                    IStreamSource source = GrainFactory.GetGrain<IStreamSource>(unit.PrimaryKey);
                     source.Recovery(msg);
                 }
                 else if (unit.OperatorType == OperatorType.Stateful)

@@ -17,7 +17,7 @@ namespace OrleansClient
         //To make this sample simple
         //In this sample, one client can only join one channel, hence we have a static variable of one channel name.
         //client can send messages to the channel , and receive messages sent to the channel/stream from other clients. 
-        private static string joinedChannel = "general";
+        private static Guid joinedChannel = Guid.NewGuid();
         private static string userName = "UserWithNoName";
         public static void Main(string[] args)
         {

@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Moq;
 using SystemInterfaces;
 using System.Threading;
+using System;
 
 namespace Test
 {
@@ -417,7 +418,7 @@ namespace Test
 
         private async Task<Task> SetUpSource()
         {
-            source = client.GetGrain<IStreamSource>(joinedChannel);
+            source = client.GetGrain<IStreamSource>(Guid.NewGuid());
             await source.InitDeaultOperators();
             var streamId = await source.Join(userName);
             var stream = client.GetStreamProvider(Constants.FaultTolerantStreamProvider)
@@ -432,7 +433,7 @@ namespace Test
 
         private async Task<Task> SetUpSource2()
         {
-            source2 = client.GetGrain<IStreamSource>(joinedChannel2);
+            source2 = client.GetGrain<IStreamSource>(Guid.NewGuid());
             await source2.InitDeaultOperators();
             var streamId = await source2.Join(userName);
             var stream = client.GetStreamProvider(Constants.FaultTolerantStreamProvider)

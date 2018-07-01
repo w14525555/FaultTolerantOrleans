@@ -6,8 +6,8 @@ using SystemInterfaces.Model;
 
 namespace SystemInterfaces
 {
-	public interface IStreamSource : IGrainWithStringKey
-	{
+	public interface IStreamSource : IGrainWithGuidKey
+    {
 	    Task<Guid> Join(string nickname);
 	    Task<bool> Message(StreamMessage msg);
 	    Task<string[]> GetMembers();

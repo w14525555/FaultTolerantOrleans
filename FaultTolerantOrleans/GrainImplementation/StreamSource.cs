@@ -39,7 +39,7 @@ namespace GrainImplementation
             SetUpBatchTracker();
             currentBatchID = 0;
             topologyManager = GrainFactory.GetGrain<ITopology>(Constants.Topology_Manager);
-            topologyUnit = new TopologyUnit(OperatorType.Source, Guid.NewGuid());
+            topologyUnit = new TopologyUnit(OperatorType.Source, this.GetPrimaryKey());
             topologyUnit.SetSourceKey(this.GetPrimaryKeyString());
             topologyManager.AddUnit(topologyUnit);
           return base.OnActivateAsync();
