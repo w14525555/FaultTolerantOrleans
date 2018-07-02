@@ -32,6 +32,7 @@ namespace GrainImplementation
         protected List<IOperator> downStreamOperators = new List<IOperator>();
 
         protected int currentBatchID;
+        private int currentReverseLogID  = 0;
         protected OperatorSettings operatorSettings = new OperatorSettings();
 
         public override Task OnActivateAsync()
@@ -57,7 +58,7 @@ namespace GrainImplementation
         {
             //At frist, if it is a new batch, just creat the incremental log 
             //for it
-            if (!incrementalLogMap.ContainsKey(msg.BatchID) && msg.Value != Constants.Recovery_Value)
+            if (!incrementalLogMap.ContainsKey(msg.BatchID))
             {
                 var newIncrementalLog = new Dictionary<string, int>();
                 var newReverseLog = new Dictionary<string, int>();
@@ -65,7 +66,12 @@ namespace GrainImplementation
                 reverseLogMap.Add(msg.BatchID, newReverseLog);
             }
 
-            await IncrementUpStreamCount(msg);
+            if (msg.BatchID > currentReverseLogID)
+            {
+                currentReverseLogID = msg.BatchID;
+            }
+
+                await IncrementUpStreamCount(msg);
 
             if (msg.BatchID > currentBatchID)
             {
@@ -207,7 +213,10 @@ namespace GrainImplementation
             }
             else
             {
-                await RevertStateFromReverseLog(batchID + 1);
+                for (int i = currentReverseLogID; i >= batchID + 1; i--)
+                {
+                    await RevertStateFromReverseLog(i);
+                }
             }
             return Task.CompletedTask;
         }
