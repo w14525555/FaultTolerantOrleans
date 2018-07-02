@@ -403,14 +403,14 @@ namespace GrainImplementation
         public async Task<Task> RevertStateFromIncrementalLog(int batchID)
         {
             PrettyConsole.Line("This grain is restarted! Recovery from Incremental log");
-            List<Dictionary<string, int>> logs = await ReadFromBinaryFile<Dictionary<string, int>>(operatorSettings.incrementalLogAddress);
+            List<IncrementalLog> logs = await ReadFromBinaryFile<IncrementalLog>(operatorSettings.incrementalLogAddress);
             if (logs.Count == 0)
             {
                 statesMap.Clear();
             }
             else if (logs.Count == 1)
             {
-                statesMap = logs[0];
+                statesMap = logs[0].Log;
             }
             else
             {
@@ -419,11 +419,11 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        private Task CalculateStatesFromIncrementalLog(List<Dictionary<string, int>> logs)
+        private Task CalculateStatesFromIncrementalLog(List<IncrementalLog> logs)
         {
             foreach (var log in logs)
             {
-                foreach (var item in log)
+                foreach (var item in log.Log)
                 {
                     if (statesMap.ContainsKey(item.Key))
                     {

@@ -265,6 +265,7 @@ namespace Test
             await batchCoordinator.SendBarrier();
             Thread.Sleep(100);
             await source.ProduceMessageAsync(wordCountMessage1);
+            Thread.Sleep(500);
             await source.ReplayTheMessageOnRecoveryCompleted();
             Thread.Sleep(100);
             int countAfterReplay = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
