@@ -222,18 +222,6 @@ namespace Test
         }
 
         [TestMethod]
-        public async Task TestReverseLogClearAfterRevert()
-        {
-            await SetUpSource();
-            await source.ProduceMessageAsync(wordCountMessage1);
-            var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
-            await batchCoordinator.StartRecovery();
-            Thread.Sleep(100);
-            int count = await source.GetStateInReverseLog(new StreamMessage(wordCountMessage1.Key, "me"));
-            Assert.AreEqual(-2, count);
-        }
-
-        [TestMethod]
         public async Task TestRecoveyFromReverseLogAfterOneBatch()
         {
             await SetUpSource();
@@ -256,17 +244,14 @@ namespace Test
         {
             await SetUpSource();
             await source.ProduceMessageAsync(wordCountMessage1);
+            await source.ProduceMessageAsync(wordCountMessage1);
             var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
             await batchCoordinator.SendBarrier();
             Thread.Sleep(100);
             await source.ProduceMessageAsync(wordCountMessage1);
-            int count = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
-            Thread.Sleep(100);
-            Assert.AreEqual(2, count);
-            await source.ProduceMessageAsync(wordCountMessage1);
-            Thread.Sleep(100);
+            Thread.Sleep(300);
             int countAfterRecovery = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
-            Assert.AreEqual(1, countAfterRecovery);
+            Assert.AreEqual(2, countAfterRecovery);
         }
 
         [TestMethod]
@@ -274,14 +259,12 @@ namespace Test
         {
             await SetUpSource();
             await source.ProduceMessageAsync(wordCountMessage1);
+            await source.ProduceMessageAsync(wordCountMessage1);
+            Thread.Sleep(100);
             var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
             await batchCoordinator.SendBarrier();
             Thread.Sleep(100);
             await source.ProduceMessageAsync(wordCountMessage1);
-            await source.ProduceMessageAsync(wordCountMessage1);
-            Thread.Sleep(100);
-            int countAfterRecovery = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
-            Assert.AreEqual(1, countAfterRecovery);
             await source.ReplayTheMessageOnRecoveryCompleted();
             Thread.Sleep(100);
             int countAfterReplay = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
@@ -297,6 +280,7 @@ namespace Test
             await batchCoordinator.SendBarrier();
             Thread.Sleep(100);
             await source.ProduceMessageAsync(wordCountMessage1);
+            Thread.Sleep(100);
             int count = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
             Assert.AreEqual(2, count);
             //Commit

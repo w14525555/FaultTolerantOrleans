@@ -177,8 +177,6 @@ namespace GrainImplementation
 			return true;
 		}
 
-        //This method has to be async because you have to wait
-        //the stream sends messages to all its subscribers
          public async Task<Task> ProduceMessageAsync(StreamMessage msg)
         {
             msg.From = topologyUnit.PrimaryKey;
@@ -187,6 +185,7 @@ namespace GrainImplementation
                 if (msg.messageType != MessageType.Test)
                 {
                     msg.BatchID = currentBatchID;
+                    PrettyConsole.Line("Set ID: " + currentBatchID);
                 }
                 messageBuffer.Add(msg);
                 await ProcessNormalMessage(msg);
@@ -232,6 +231,7 @@ namespace GrainImplementation
             if (msg.Value == Constants.Barrier_Value)
             {
                 currentBatchID = msg.BatchID + 1;
+                PrettyConsole.Line("Increment ID " + currentBatchID);
                 await TrackingBarrierMessages(msg);
                 await batchTracker.CompleteOneOperatorBarrier(info);
                 await BroadcastSpecialMessage(msg, stream);

@@ -113,7 +113,7 @@ namespace SystemImplementation
             {
                 await IncrementUpStreamCount(msg);
                 msg.From = this.GetPrimaryKey();
-                CustomExcutionMethod(msg, stream);
+                await CustomExcutionMethod(msg, stream);
             }
             else
             {
@@ -263,7 +263,7 @@ namespace SystemImplementation
                 }
                 catch (Exception e)
                 {
-                    PrettyConsole.Line("Get Exception : " + e.GetType() + "; Start Receovry");
+                    PrettyConsole.Line("Get Exception : " + e + "; Start Receovry");
                     //1. Restart a new grain
                     IStatefulOperator newOperator = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
                     //2. make the new one as failed grain

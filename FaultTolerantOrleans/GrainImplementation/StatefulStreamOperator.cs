@@ -72,7 +72,7 @@ namespace GrainImplementation
                 messageBuffer.Add(msg);
                 asyncStream = stream;
             }
-            else if (msg.BatchID == currentBatchID)
+            else if (msg.BatchID == currentBatchID || msg.Key == Constants.System_Key)
             {
                 if (msg.Key != Constants.System_Key)
                 {
@@ -85,7 +85,7 @@ namespace GrainImplementation
             }
             else
             {
-                throw new InvalidOperationException(msg.Key + " " + msg.Value + " The id " + msg.BatchID + " is less than the currentID");
+                throw new InvalidOperationException(msg.Key + " " + msg.Value + " The id " + msg.BatchID + " is less than the currentID:" + currentBatchID);
             }
             return Task.CompletedTask;
         }

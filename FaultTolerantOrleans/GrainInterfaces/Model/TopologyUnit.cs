@@ -51,7 +51,6 @@ namespace SystemInterfaces.Model
             }
             else
             {
-                PrettyConsole.Line("Add");
                 downStreamUnits.Add(unit.PrimaryKey, unit);
             }
         }
