@@ -29,7 +29,6 @@ namespace SystemImplementation
             topologyManager = GrainFactory.GetGrain<ITopology>(Constants.Topology_Manager);
             topologyUnit = new TopologyUnit(OperatorType.Stateless, this.GetPrimaryKey());
             topologyManager.AddUnit(topologyUnit);
-
             return base.OnActivateAsync();
         }
 
@@ -217,9 +216,12 @@ namespace SystemImplementation
 
         private async Task<Task> BroadcastSpecialMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
-            foreach (IStatefulOperator item in downStreamOperators)
+            if (downStreamOperators.Count > 0)
             {
-                await ExecuteMessagesByDownStreamOperators(msg, stream, item);
+                foreach (IStatefulOperator item in downStreamOperators)
+                {
+                    await ExecuteMessagesByDownStreamOperators(msg, stream, item);
+                }
             }
             return Task.CompletedTask;
         }
@@ -227,52 +229,55 @@ namespace SystemImplementation
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         protected async Task<Task> ExecuteMessagesByDownStreamOperators(StreamMessage msg, IAsyncStream<StreamMessage> stream, IOperator op)
         {
-            var targetKey = op.GetPrimaryKey();
-            try
+            if (downStreamOperators.Count > 0)
             {
-                msg.From = this.GetPrimaryKey();
-                if (msg.Value == Constants.Barrier_Value)
+
+                var targetKey = op.GetPrimaryKey();
+                try
                 {
-                    if (downStreamMessageCountMap.ContainsKey(op.GetPrimaryKey()))
+                    msg.From = this.GetPrimaryKey();
+                    if (msg.Value == Constants.Barrier_Value)
                     {
-                        msg.Count = downStreamMessageCountMap[op.GetPrimaryKey()];
+                        if (downStreamMessageCountMap.ContainsKey(op.GetPrimaryKey()))
+                        {
+                            msg.Count = downStreamMessageCountMap[op.GetPrimaryKey()];
+                        }
+                        else
+                        {
+                            msg.Count = 0;
+                        }
                     }
-                    else
+                    else if (msg.Value != Constants.System_Key)
                     {
-                        msg.Count = 0;
+                        var key = op.GetPrimaryKey();
+                        if (downStreamMessageCountMap.ContainsKey(key))
+                        {
+                            downStreamMessageCountMap[key] = downStreamMessageCountMap[key] + 1;
+                        }
+                        else
+                        {
+                            downStreamMessageCountMap.Add(key, 1);
+                        }
                     }
+                    await op.ExecuteMessage(msg, stream);
                 }
-                else if(msg.Value != Constants.System_Key)
+                catch (Exception e)
                 {
-                    var key = op.GetPrimaryKey();
-                    if (downStreamMessageCountMap.ContainsKey(key))
-                    {
-                        downStreamMessageCountMap[key] = downStreamMessageCountMap[key] + 1;
-                    }
-                    else
-                    {
-                        downStreamMessageCountMap.Add(key, 1);
-                    }
+                    PrettyConsole.Line("Get Exception : " + e.GetType() + "; Start Receovry");
+                    //1. Restart a new grain
+                    IStatefulOperator newOperator = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
+                    //2. make the new one as failed grain
+                    await newOperator.MarkOperatorAsFailed();
+                    //3. Replace the old by new 
+                    await topologyManager.ReplaceTheOldOperatorWithNew(targetKey, newOperator.GetPrimaryKey());
+                    //4. Remove the old from the topology
+                    await topologyManager.RemoveUnit(targetKey);
+                    //5. Start Recovery
+                    var batchCoordinator = GrainFactory.GetGrain<IBatchCoordinator>(Constants.Coordinator);
+                    await batchCoordinator.StartRecovery();
                 }
-                await op.ExecuteMessage(msg, stream);
-                return Task.CompletedTask;
             }
-            catch (Exception e)
-            {
-                PrettyConsole.Line("Get Exception : " + e.GetType() + "; Start Receovry");
-                //1. Restart a new grain
-                IStatefulOperator newOperator = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
-                //2. make the new one as failed grain
-                await newOperator.MarkOperatorAsFailed();
-                //3. Replace the old by new 
-                await topologyManager.ReplaceTheOldOperatorWithNew(targetKey, newOperator.GetPrimaryKey());
-                //4. Remove the old from the topology
-                await topologyManager.RemoveUnit(targetKey);
-                //5. Start Recovery
-                var batchCoordinator = GrainFactory.GetGrain<IBatchCoordinator>(Constants.Coordinator);
-                await batchCoordinator.StartRecovery();
-                return Task.CompletedTask;
-            }
+            return Task.CompletedTask;
         }
 
         public async Task<int> GetState(string word)

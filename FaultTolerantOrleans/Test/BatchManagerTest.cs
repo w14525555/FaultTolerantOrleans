@@ -190,6 +190,7 @@ namespace Test
         {
             await SetUpSource();
             await source.ProduceMessageAsync(wordCountMessage1);
+            Thread.Sleep(100);
             //Here wait becasue
             int count = await source.GetStateInIncrementalLog(new StreamMessage(wordCountMessage1.Key, "go"));
             Assert.AreEqual(3, count);
@@ -318,16 +319,6 @@ namespace Test
             Assert.AreEqual(8, size);
         }
 
-        //Count Map Tests
-        [TestMethod]
-        public async Task TestCounterMapHasRightNumber()
-        {
-            await SetUpSource();
-            Thread.Sleep(100);
-            int size = await source.GetNumberOfElementsInCountMap();
-            Assert.AreEqual(3, size);
-        }
-
         //Add New Operator to the topology test
         [TestMethod]
         public async Task TestAddNewOperatorToTopology()
@@ -418,6 +409,8 @@ namespace Test
         {
             source = client.GetGrain<IStreamSource>(Guid.NewGuid());
             await source.InitDeaultOperators();
+            var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
+            await batchCoordinator.StartBarrierTimer();
             var streamId = await source.Join(userName);
             var stream = client.GetStreamProvider(Constants.FaultTolerantStreamProvider)
                 .GetStream<StreamMessage>(streamId, Constants.FaultTolerantStreamNameSpace);

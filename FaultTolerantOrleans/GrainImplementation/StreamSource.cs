@@ -66,8 +66,6 @@ namespace GrainImplementation
             testAddNewOperatorGuid = operatorTwo.GetPrimaryKey();
             //Add the units to the topology
             InitTopology();
-            //Add the down stream operators to the count map
-            InitCountMap();
 
             return Task.CompletedTask;
         }
@@ -86,23 +84,12 @@ namespace GrainImplementation
             return Task.FromResult(testAddNewOperatorGuid);
         }
 
-        private Task InitCountMap()
-        {
-            foreach(var item in downStreamOperators)
-            {
-                messageCountMap.Add(item.GetPrimaryKey(), 0);
-            }
-            return Task.CompletedTask;
-        }
-
         public Task AddCustomDownStreamOperator(IStatelessOperator statelessOperator)
         {
             //Add to local
             downStreamOperators.Add(statelessOperator);
             //Add it to global
             topologyManager.ConnectUnits(topologyUnit.PrimaryKey, statelessOperator.GetPrimaryKey());
-            //Add it to counter map
-            messageCountMap.Add(statelessOperator.GetPrimaryKey(), 0);
             return Task.CompletedTask;
         }
 
@@ -130,7 +117,6 @@ namespace GrainImplementation
                     throw new ArgumentException("The down stream operor cannot be a source");
                 }
             }
-            InitCountMap();
             topologyManager.UpdateOperatorSettings(topologyUnit.PrimaryKey, operatorSettings);
             return Task.CompletedTask;
         }
@@ -226,12 +212,12 @@ namespace GrainImplementation
             if (messageCountMap.ContainsKey(key))
             {
                 messageCountMap[key] = messageCountMap[key] + 1;
-                return Task.CompletedTask;
             }
             else
             {
-                throw new InvalidOperationException("Something wrong! The count map does not contains a key of its down stream");
+                messageCountMap.Add(key, 1);
             }
+            return Task.CompletedTask;
         }
 
         //If it is special message, it has to send to all the operators. 
@@ -288,7 +274,7 @@ namespace GrainImplementation
                 }
                 else
                 {
-                    throw new InvalidOperationException("Message count map does not contain the key");
+                    msg.Count = 0;
                 }
                 item.ExecuteMessage(msg, stream);
             }

@@ -99,7 +99,7 @@ namespace OrleansClient
 
                 if (input.StartsWith("/start"))
                 {
-                    await TestCustomTopology(client);
+                    await StartDefaultTopology(client);
                 }
                 else if (!input.StartsWith("/exit"))
                 {
@@ -118,6 +118,8 @@ namespace OrleansClient
         {
             var source = client.GetGrain<IStreamSource>(joinedChannel);
             await source.InitDeaultOperators();
+            var coordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
+            await coordinator.StartBarrierTimer();
             //var room2 = client.GetGrain<IStreamSource>("new");
             var streamId = await source.Join(userName);
             //var streamId2 = await room2.Join(userName);
