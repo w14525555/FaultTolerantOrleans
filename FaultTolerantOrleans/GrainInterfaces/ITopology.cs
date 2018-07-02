@@ -30,12 +30,8 @@ namespace SystemInterfaces
 
         Task<List<IStreamSource>> GetRandomSources(int num);
 
-        Task<List<IOperator>> GetRandomStatefulOperators(int num);
+        Task<List<IStatefulOperator>> GetRandomStatefulOperators(int num);
 
-        Task<List<IOperator>> GetRandomStatelessOperators(int num);
-
-        Task<Task> AddCustomeOperatorsToNonSourceOperators(List<IOperator> ops, List<IOperator> operators);
-
-        Task<Task> AddCustomeOperatorsToSources(List<IStreamSource> sources, List<IOperator> operators);
+        Task<List<IStatelessOperator>> GetRandomStatelessOperators(int num);
     }
 }

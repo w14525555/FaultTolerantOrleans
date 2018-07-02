@@ -130,7 +130,6 @@ namespace GrainImplementation
                     throw new ArgumentException("The down stream operor cannot be a source");
                 }
             }
-            InitCountMap();
             topologyManager.UpdateOperatorSettings(topologyUnit.PrimaryKey, operatorSettings);
             return Task.CompletedTask;
         }
@@ -166,7 +165,7 @@ namespace GrainImplementation
         private Task SetUpBatchManager()
         {
             batchCoordinator = GrainFactory.GetGrain<IBatchCoordinator>(Constants.Coordinator);
-            batchCoordinator.AddSourceAndRegisterTimer(stream, this);
+            batchCoordinator.SetChannelAndRegisterTimer(stream, this);
 
             return Task.CompletedTask;
         }

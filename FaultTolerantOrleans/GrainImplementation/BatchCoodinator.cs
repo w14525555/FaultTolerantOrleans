@@ -39,15 +39,10 @@ namespace GrainImplementation
             return base.OnActivateAsync();
         }
 
-        public Task AddSourceAndRegisterTimer(IAsyncStream<StreamMessage> stream, IStreamSource source)
-        {
-            sources.Add(source);
-            return Task.CompletedTask;
-        }
-
-        public Task StartBarrierTimer()
+        public Task SetChannelAndRegisterTimer(IAsyncStream<StreamMessage> stream, IStreamSource source)
         {
             disposable = RegisterTimer(SendBarrierOnPeriodOfTime, null, barrierTimeInterval, barrierTimeInterval);
+            sources.Add(source);
             return Task.CompletedTask;
         }
 
