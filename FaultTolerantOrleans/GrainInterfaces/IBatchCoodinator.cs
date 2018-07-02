@@ -7,7 +7,7 @@ namespace SystemInterfaces
 {
     public interface IBatchCoordinator: IGrainWithStringKey
     {
-        Task SetChannelAndRegisterTimer(IAsyncStream<StreamMessage> stream, IStreamSource channel);
+        Task AddSourceAndRegisterTimer(IAsyncStream<StreamMessage> stream, IStreamSource channel);
 
         Task StartCommit(int ID);
 
@@ -20,5 +20,7 @@ namespace SystemInterfaces
         Task CompleteRecovery(int batchID);
 
         Task<int> GetCommittedBatchID();
+
+        Task StartBarrierTimer();
     }
 }

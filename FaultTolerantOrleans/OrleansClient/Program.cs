@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Utils;
 using SystemInterfaces;
 using SystemInterfaces.Model;
+using System.Collections.Generic;
 
 namespace OrleansClient
 {
@@ -98,7 +99,7 @@ namespace OrleansClient
 
                 if (input.StartsWith("/start"))
                 {
-                    await StartDefaultTopology(client);
+                    await TestCustomTopology(client);
                 }
                 else if (!input.StartsWith("/exit"))
                 {
@@ -117,6 +118,37 @@ namespace OrleansClient
         {
             var source = client.GetGrain<IStreamSource>(joinedChannel);
             await source.InitDeaultOperators();
+            //var room2 = client.GetGrain<IStreamSource>("new");
+            var streamId = await source.Join(userName);
+            //var streamId2 = await room2.Join(userName);
+            var stream = client.GetStreamProvider(Constants.FaultTolerantStreamProvider)
+                .GetStream<StreamMessage>(streamId, Constants.FaultTolerantStreamNameSpace);
+            //subscribe to the stream to receiver furthur messages sent to the chatroom
+            StatefulStreamObserver observer = new StatefulStreamObserver(client.ServiceProvider.GetService<ILoggerFactory>()
+                .CreateLogger($"{joinedChannel} channel"));
+            await stream.SubscribeAsync(observer);
+        }
+
+        private static async Task TestCustomTopology(IClusterClient client)
+        {
+            var topologyManager = client.GetGrain<ITopology>(Constants.Topology_Manager);
+            //Get and add source
+            var sources = await topologyManager.GetRandomSources(1);
+            var source = sources[0];
+
+            //Get and add stateless to sources 
+            var statelessOps = await topologyManager.GetRandomStatelessOperators(3);
+            await topologyManager.AddCustomeOperatorsToSources(sources, statelessOps);
+
+            //Get and Add stateful to stateless
+            var statefulOps = await topologyManager.GetRandomStatefulOperators(2);
+            await topologyManager.AddCustomeOperatorsToNonSourceOperators(statelessOps, statefulOps);
+
+            PrettyConsole.Line("Stateless: " + statelessOps.Count + " StatefulOps: " + statefulOps.Count);
+            //Start Timer
+            var coordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
+            await coordinator.StartBarrierTimer();
+
             //var room2 = client.GetGrain<IStreamSource>("new");
             var streamId = await source.Join(userName);
             //var streamId2 = await room2.Join(userName);

@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGenbc8fc094a1FeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen26703e04a6FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -67,8 +67,8 @@ namespace SystemInterfaces
                 case 2046360863:
                     switch (methodId)
                     {
-                        case 1422291436:
-                            return @"SetChannelAndRegisterTimer";
+                        case -2122526991:
+                            return @"AddSourceAndRegisterTimer";
                         case -76047527:
                             return @"StartCommit";
                         case -546505175:
@@ -81,6 +81,8 @@ namespace SystemInterfaces
                             return @"CompleteRecovery";
                         case 1408175506:
                             return @"GetCommittedBatchID";
+                        case 1955114601:
+                            return @"StartBarrierTimer";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 2046360863 + @",methodId=" + methodId);
                     }
@@ -97,9 +99,9 @@ namespace SystemInterfaces
             }
         }
 
-        public global::System.Threading.Tasks.Task SetChannelAndRegisterTimer(global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage> stream, global::SystemInterfaces.IStreamSource channel)
+        public global::System.Threading.Tasks.Task AddSourceAndRegisterTimer(global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage> stream, global::SystemInterfaces.IStreamSource channel)
         {
-            return base.InvokeMethodAsync<global::System.Object>(1422291436, new global::System.Object[]{stream, channel is global::Orleans.Grain ? channel.AsReference<global::SystemInterfaces.IStreamSource>() : channel});
+            return base.InvokeMethodAsync<global::System.Object>(-2122526991, new global::System.Object[]{stream, channel is global::Orleans.Grain ? channel.AsReference<global::SystemInterfaces.IStreamSource>() : channel});
         }
 
         public global::System.Threading.Tasks.Task StartCommit(global::System.Int32 ID)
@@ -131,6 +133,11 @@ namespace SystemInterfaces
         {
             return base.InvokeMethodAsync<global::System.Int32>(1408175506, null);
         }
+
+        public global::System.Threading.Tasks.Task StartBarrierTimer()
+        {
+            return base.InvokeMethodAsync<global::System.Object>(1955114601, null);
+        }
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute(typeof (global::SystemInterfaces.IBatchCoordinator), 2046360863), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
@@ -148,8 +155,8 @@ namespace SystemInterfaces
                 case 2046360863:
                     switch (methodId)
                     {
-                        case 1422291436:
-                            await ((global::SystemInterfaces.IBatchCoordinator)grain).SetChannelAndRegisterTimer((global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage>)arguments[0], (global::SystemInterfaces.IStreamSource)arguments[1]);
+                        case -2122526991:
+                            await ((global::SystemInterfaces.IBatchCoordinator)grain).AddSourceAndRegisterTimer((global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage>)arguments[0], (global::SystemInterfaces.IStreamSource)arguments[1]);
                             return null;
                         case -76047527:
                             await ((global::SystemInterfaces.IBatchCoordinator)grain).StartCommit((global::System.Int32)arguments[0]);
@@ -167,6 +174,9 @@ namespace SystemInterfaces
                             return null;
                         case 1408175506:
                             return await ((global::SystemInterfaces.IBatchCoordinator)grain).GetCommittedBatchID();
+                        case 1955114601:
+                            await ((global::SystemInterfaces.IBatchCoordinator)grain).StartBarrierTimer();
+                            return null;
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 2046360863 + @",methodId=" + methodId);
                     }
@@ -1428,6 +1438,10 @@ namespace SystemInterfaces
                             return @"GetRandomStatefulOperators";
                         case -231380958:
                             return @"GetRandomStatelessOperators";
+                        case -2090660120:
+                            return @"AddCustomeOperatorsToNonSourceOperators";
+                        case 450086419:
+                            return @"AddCustomeOperatorsToSources";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1231133098 + @",methodId=" + methodId);
                     }
@@ -1499,14 +1513,24 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Collections.Generic.List<global::SystemInterfaces.IStreamSource>>(-1458974650, new global::System.Object[]{num});
         }
 
-        public global::System.Threading.Tasks.Task<global::System.Collections.Generic.List<global::SystemInterfaces.IStatefulOperator>> GetRandomStatefulOperators(global::System.Int32 num)
+        public global::System.Threading.Tasks.Task<global::System.Collections.Generic.List<global::SystemInterfaces.IOperator>> GetRandomStatefulOperators(global::System.Int32 num)
         {
-            return base.InvokeMethodAsync<global::System.Collections.Generic.List<global::SystemInterfaces.IStatefulOperator>>(1188547119, new global::System.Object[]{num});
+            return base.InvokeMethodAsync<global::System.Collections.Generic.List<global::SystemInterfaces.IOperator>>(1188547119, new global::System.Object[]{num});
         }
 
-        public global::System.Threading.Tasks.Task<global::System.Collections.Generic.List<global::SystemInterfaces.IStatelessOperator>> GetRandomStatelessOperators(global::System.Int32 num)
+        public global::System.Threading.Tasks.Task<global::System.Collections.Generic.List<global::SystemInterfaces.IOperator>> GetRandomStatelessOperators(global::System.Int32 num)
         {
-            return base.InvokeMethodAsync<global::System.Collections.Generic.List<global::SystemInterfaces.IStatelessOperator>>(-231380958, new global::System.Object[]{num});
+            return base.InvokeMethodAsync<global::System.Collections.Generic.List<global::SystemInterfaces.IOperator>>(-231380958, new global::System.Object[]{num});
+        }
+
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> AddCustomeOperatorsToNonSourceOperators(global::System.Collections.Generic.List<global::SystemInterfaces.IOperator> ops, global::System.Collections.Generic.List<global::SystemInterfaces.IOperator> operators)
+        {
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-2090660120, new global::System.Object[]{ops, operators});
+        }
+
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> AddCustomeOperatorsToSources(global::System.Collections.Generic.List<global::SystemInterfaces.IStreamSource> sources, global::System.Collections.Generic.List<global::SystemInterfaces.IOperator> operators)
+        {
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(450086419, new global::System.Object[]{sources, operators});
         }
     }
 
@@ -1557,6 +1581,10 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.ITopology)grain).GetRandomStatefulOperators((global::System.Int32)arguments[0]);
                         case -231380958:
                             return await ((global::SystemInterfaces.ITopology)grain).GetRandomStatelessOperators((global::System.Int32)arguments[0]);
+                        case -2090660120:
+                            return await ((global::SystemInterfaces.ITopology)grain).AddCustomeOperatorsToNonSourceOperators((global::System.Collections.Generic.List<global::SystemInterfaces.IOperator>)arguments[0], (global::System.Collections.Generic.List<global::SystemInterfaces.IOperator>)arguments[1]);
+                        case 450086419:
+                            return await ((global::SystemInterfaces.ITopology)grain).AddCustomeOperatorsToSources((global::System.Collections.Generic.List<global::SystemInterfaces.IStreamSource>)arguments[0], (global::System.Collections.Generic.List<global::SystemInterfaces.IOperator>)arguments[1]);
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + -1231133098 + @",methodId=" + methodId);
                     }
@@ -1856,7 +1884,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGenbc8fc094a1FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGen26703e04a6FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {
