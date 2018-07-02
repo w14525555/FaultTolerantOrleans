@@ -421,9 +421,9 @@ namespace GrainImplementation
 
         private Task CalculateStatesFromIncrementalLog(List<IncrementalLog> logs)
         {
-            foreach (var log in logs)
+            for (int i = logs.Count -1; i>=0; i++)
             {
-                foreach (var item in log.Log)
+                foreach (var item in logs[i].Log)
                 {
                     if (statesMap.ContainsKey(item.Key))
                     {
