@@ -261,6 +261,7 @@ namespace Test
             Thread.Sleep(100);
             await source.ProduceMessageAsync(wordCountMessage1);
             int count = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
+            Thread.Sleep(100);
             Assert.AreEqual(2, count);
             await source.ProduceMessageAsync(wordCountMessage1);
             Thread.Sleep(100);
@@ -316,7 +317,7 @@ namespace Test
             Thread.Sleep(100);
             var topologyManager = client.GetGrain<ITopology>(Constants.Topology_Manager);
             int size = await topologyManager.GetTopologySize();
-            Assert.AreEqual(8, size);
+            Assert.AreEqual(7, size);
         }
 
         //Add New Operator to the topology test
@@ -330,7 +331,7 @@ namespace Test
             await topologyManager.AddASameTypeStatelessOperatorToTopology(guid);
             Thread.Sleep(100);
             int size = await topologyManager.GetTopologySize();
-            Assert.AreEqual(9, size);
+            Assert.AreEqual(8, size);
         }
 
 
@@ -407,10 +408,7 @@ namespace Test
 
         private async Task<Task> SetUpSource()
         {
-            source = client.GetGrain<IStreamSource>(Guid.NewGuid());
-            await source.InitDeaultOperators();
-            var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
-            await batchCoordinator.StartBarrierTimer();
+            await SetUpTopology();
             var streamId = await source.Join(userName);
             var stream = client.GetStreamProvider(Constants.FaultTolerantStreamProvider)
                 .GetStream<StreamMessage>(streamId, Constants.FaultTolerantStreamNameSpace);
@@ -419,6 +417,28 @@ namespace Test
             statefulStreamObserver = new StatefulStreamObserver(mockLogger.Object);
             await stream.SubscribeAsync(statefulStreamObserver);
             members = await source.GetMembers();
+            return Task.CompletedTask;
+        }
+
+        private async Task<Task> SetUpTopology()
+        {
+            var topologyManager = client.GetGrain<ITopology>(Constants.Topology_Manager);
+            //Get and add source
+            var sources = await topologyManager.GetRandomSources(1);
+            source = sources[0];
+            //Get and add stateless to sources 
+            var statelessOps = await topologyManager.GetRandomStatelessOperators(3);
+            await topologyManager.AddCustomeOperatorsToSources(sources, statelessOps);
+
+            //Get and Add stateful to stateless
+            var statefulOps = await topologyManager.GetRandomStatefulOperators(3);
+            await topologyManager.AddCustomeOperatorsToNonSourceOperators(statelessOps, statefulOps);
+
+            PrettyConsole.Line("Stateless: " + statelessOps.Count + " StatefulOps: " + statefulOps.Count);
+            //Start Timer
+            var coordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
+            await coordinator.StartBarrierTimer();
+
             return Task.CompletedTask;
         }
 

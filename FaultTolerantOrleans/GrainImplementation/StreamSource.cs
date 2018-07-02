@@ -118,6 +118,7 @@ namespace GrainImplementation
                 }
             }
             topologyManager.UpdateOperatorSettings(topologyUnit.PrimaryKey, operatorSettings);
+            testAddNewOperatorGuid = units[0].PrimaryKey;
             return Task.CompletedTask;
         }
 

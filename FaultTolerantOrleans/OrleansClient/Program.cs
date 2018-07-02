@@ -99,7 +99,7 @@ namespace OrleansClient
 
                 if (input.StartsWith("/start"))
                 {
-                    await StartDefaultTopology(client);
+                    await TestCustomTopology(client);
                 }
                 else if (!input.StartsWith("/exit"))
                 {
@@ -137,7 +137,7 @@ namespace OrleansClient
             //Get and add source
             var sources = await topologyManager.GetRandomSources(1);
             var source = sources[0];
-
+            joinedChannel = source.GetPrimaryKey();
             //Get and add stateless to sources 
             var statelessOps = await topologyManager.GetRandomStatelessOperators(3);
             await topologyManager.AddCustomeOperatorsToSources(sources, statelessOps);
