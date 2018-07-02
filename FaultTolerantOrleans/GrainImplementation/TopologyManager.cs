@@ -251,10 +251,10 @@ namespace SystemImplementation
             return Task.FromResult(sources);
         }
 
-        public Task<List<IStatefulOperator>> GetRandomStatefulOperators(int num)
+        public Task<List<IOperator>> GetRandomStatefulOperators(int num)
         {
             CheckNum(num);
-            List<IStatefulOperator> statefulOps = new List<IStatefulOperator>();
+            List<IOperator> statefulOps = new List<IOperator>();
             for (int i = 0; i < num; i++)
             {
                 var op = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid(), Constants.Stateful_Operator_Prefix);
@@ -263,10 +263,10 @@ namespace SystemImplementation
             return Task.FromResult(statefulOps);
         }
 
-        public Task<List<IStatelessOperator>> GetRandomStatelessOperators(int num)
+        public Task<List<IOperator>> GetRandomStatelessOperators(int num)
         {
             CheckNum(num);
-            List<IStatelessOperator> statelessOps = new List<IStatelessOperator>();
+            List<IOperator> statelessOps = new List<IOperator>();
             for (int i = 0; i < num; i++)
             {
                 var op = GrainFactory.GetGrain<IStatelessOperator>(Guid.NewGuid(), Constants.Stateless_Operator_Prefix);
@@ -293,23 +293,22 @@ namespace SystemImplementation
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
-        public async Task<Task> AddCustomeOperatorsToNonSourceOperators(List<IOperator> ops, List<IOperator> operators)
+        public async Task<Task> AddCustomeOperatorsToNonSourceOperators(List<IOperator> upperOps, List<IOperator> downOps)
         {
             List<TopologyUnit> units = new List<TopologyUnit>();
-            foreach (var op in operators)
+            foreach (var op in downOps)
             {
                 units.Add(await op.GetTopologyUnit());
             }
 
-            foreach (var op in ops)
+            foreach (var op in upperOps)
             {
                 op.AddCustomDownStreamOperators(units);
+                PrettyConsole.Line("Add 1");
             }
 
             return Task.CompletedTask;
         }
-
-
 
         private void CheckNum(int num)
         {
