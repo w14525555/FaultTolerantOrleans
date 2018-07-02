@@ -204,7 +204,7 @@ namespace GrainImplementation
             {
                 try
                 {
-                    await RevertStateFromIncrementalLog();
+                    await RevertStateFromIncrementalLog(batchID);
                 }
                 catch (Exception e)
                 {
@@ -235,7 +235,7 @@ namespace GrainImplementation
             //Once save the state to files, then clear
             //The incremental log
             var incrementalLog = await GetIncrementalLog(currentBatchID);
-            await SaveStateToFile(incrementalLog);
+            await SaveStateToFile(new IncrementalLog(incrementalLog, currentBatchID));
             //incrementalLogMap.Remove(currentBatchID);
             return Task.CompletedTask;
         }
@@ -318,7 +318,7 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        protected Task SaveStateToFile(Dictionary<string, int> state)
+        protected Task SaveStateToFile(IncrementalLog state)
         {
             PrettyConsole.Line("Save the incremental log to " + operatorSettings.incrementalLogAddress);
             try
@@ -400,7 +400,7 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        public async Task<Task> RevertStateFromIncrementalLog()
+        public async Task<Task> RevertStateFromIncrementalLog(int batchID)
         {
             PrettyConsole.Line("This grain is restarted! Recovery from Incremental log");
             List<Dictionary<string, int>> logs = await ReadFromBinaryFile<Dictionary<string, int>>(operatorSettings.incrementalLogAddress);

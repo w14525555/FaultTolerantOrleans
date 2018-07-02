@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGend747436649FeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen191e222b1bFeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -633,8 +633,6 @@ namespace SystemInterfaces
                             return @"GetOperatorSettings";
                         case -1645967079:
                             return @"LoadSettings";
-                        case -529808064:
-                            return @"RevertStateFromIncrementalLog";
                         case 1032606503:
                             return @"MarkOperatorAsFailed";
                         case 2061992567:
@@ -697,11 +695,6 @@ namespace SystemInterfaces
         public global::System.Threading.Tasks.Task LoadSettings(global::SystemInterfaces.Model.OperatorSettings operatorSettings)
         {
             return base.InvokeMethodAsync<global::System.Object>(-1645967079, new global::System.Object[]{operatorSettings});
-        }
-
-        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> RevertStateFromIncrementalLog()
-        {
-            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-529808064, null);
         }
 
         public global::System.Threading.Tasks.Task MarkOperatorAsFailed()
@@ -785,8 +778,6 @@ namespace SystemInterfaces
                         case -1645967079:
                             await ((global::SystemInterfaces.IStatefulOperator)grain).LoadSettings((global::SystemInterfaces.Model.OperatorSettings)arguments[0]);
                             return null;
-                        case -529808064:
-                            return await ((global::SystemInterfaces.IStatefulOperator)grain).RevertStateFromIncrementalLog();
                         case 1032606503:
                             await ((global::SystemInterfaces.IStatefulOperator)grain).MarkOperatorAsFailed();
                             return null;
@@ -1624,6 +1615,43 @@ namespace OrleansGeneratedCode38151279
     using global::Orleans;
     using global::System.Reflection;
 
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.SerializerAttribute(typeof (global::SystemInterfaces.Model.IncrementalLog))]
+    internal sealed class OrleansCodeGenSystemInterfaces_Model_IncrementalLogSerializer
+    {
+        public OrleansCodeGenSystemInterfaces_Model_IncrementalLogSerializer(global::Orleans.Serialization.IFieldUtils fieldUtils)
+        {
+        }
+
+        [global::Orleans.CodeGeneration.CopierMethodAttribute]
+        public global::System.Object DeepCopier(global::System.Object original, global::Orleans.Serialization.ICopyContext context)
+        {
+            global::SystemInterfaces.Model.IncrementalLog input = ((global::SystemInterfaces.Model.IncrementalLog)original);
+            global::SystemInterfaces.Model.IncrementalLog result = (global::SystemInterfaces.Model.IncrementalLog)global::System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof (global::SystemInterfaces.Model.IncrementalLog));
+            context.RecordCopy(original, result);
+            result.BatchID = input.BatchID;
+            result.Log = (global::System.Collections.Generic.Dictionary<global::System.String, global::System.Int32>)context.DeepCopyInner(input.Log);
+            return result;
+        }
+
+        [global::Orleans.CodeGeneration.SerializerMethodAttribute]
+        public void Serializer(global::System.Object untypedInput, global::Orleans.Serialization.ISerializationContext context, global::System.Type expected)
+        {
+            global::SystemInterfaces.Model.IncrementalLog input = (global::SystemInterfaces.Model.IncrementalLog)untypedInput;
+            context.SerializeInner(input.BatchID, typeof (global::System.Int32));
+            context.SerializeInner(input.Log, typeof (global::System.Collections.Generic.Dictionary<global::System.String, global::System.Int32>));
+        }
+
+        [global::Orleans.CodeGeneration.DeserializerMethodAttribute]
+        public global::System.Object Deserializer(global::System.Type expected, global::Orleans.Serialization.IDeserializationContext context)
+        {
+            global::SystemInterfaces.Model.IncrementalLog result = (global::SystemInterfaces.Model.IncrementalLog)global::System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof (global::SystemInterfaces.Model.IncrementalLog));
+            context.RecordObject(result);
+            result.BatchID = (global::System.Int32)context.DeserializeInner(typeof (global::System.Int32));
+            result.Log = (global::System.Collections.Generic.Dictionary<global::System.String, global::System.Int32>)context.DeserializeInner(typeof (global::System.Collections.Generic.Dictionary<global::System.String, global::System.Int32>));
+            return (global::SystemInterfaces.Model.IncrementalLog)result;
+        }
+    }
+
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.SerializerAttribute(typeof (global::SystemInterfaces.Model.StreamMessage))]
     internal sealed class OrleansCodeGenSystemInterfaces_Model_StreamMessageSerializer
     {
@@ -1884,7 +1912,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGend747436649FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGen191e222b1bFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {
@@ -1903,6 +1931,7 @@ namespace OrleansGeneratedCode
 
         public void Populate(global::Orleans.Serialization.SerializerFeature feature)
         {
+            feature.AddSerializerType(typeof (global::SystemInterfaces.Model.IncrementalLog), typeof (OrleansGeneratedCode38151279.OrleansCodeGenSystemInterfaces_Model_IncrementalLogSerializer));
             feature.AddSerializerType(typeof (global::SystemInterfaces.Model.StreamMessage), typeof (OrleansGeneratedCode38151279.OrleansCodeGenSystemInterfaces_Model_StreamMessageSerializer));
             feature.AddSerializerType(typeof (global::SystemInterfaces.Model.StreamValue), typeof (OrleansGeneratedCode38151279.OrleansCodeGenSystemInterfaces_Model_StreamValueSerializer));
             feature.AddSerializerType(typeof (global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo), typeof (OrleansGeneratedCode38151279.OrleansCodeGenSystemInterfaces_Model_BarrierOrCommitMsgTrackingInfoSerializer));
@@ -5680,6 +5709,7 @@ namespace OrleansGeneratedCode
             feature.AddKnownType(@"SystemInterfaces.ITopology,GrainInterfaces", @"SystemInterfaces.ITopology");
             feature.AddKnownType(@"SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo,GrainInterfaces", @"SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo");
             feature.AddKnownType(@"SystemInterfaces.Model.Excutable,GrainInterfaces", @"SystemInterfaces.Model.Excutable");
+            feature.AddKnownType(@"SystemInterfaces.Model.IncrementalLog,GrainInterfaces", @"SystemInterfaces.Model.IncrementalLog");
             feature.AddKnownType(@"SystemInterfaces.Model.OperatorSettings,GrainInterfaces", @"SystemInterfaces.Model.OperatorSettings");
             feature.AddKnownType(@"SystemInterfaces.Model.OperatorType,GrainInterfaces", @"SystemInterfaces.Model.OperatorType");
             feature.AddKnownType(@"SystemInterfaces.Model.StreamBatch,GrainInterfaces", @"SystemInterfaces.Model.StreamBatch");
