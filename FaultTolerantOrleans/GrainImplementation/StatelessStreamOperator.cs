@@ -20,7 +20,7 @@ namespace SystemImplementation
         protected TopologyUnit topologyUnit;
         protected OperatorSettings operatorSettings = new OperatorSettings();
         private Dictionary<int, Dictionary<Guid, int>> upStreamMessageCountMaps = new Dictionary<int, Dictionary<Guid, int>>();
-        private Dictionary<Guid, int> downStreamMessageCountMap = new Dictionary<Guid, int>();
+        private Dictionary<int, Dictionary<Guid, int>> downStreamMessageCountMaps = new Dictionary<int, Dictionary<Guid, int>>();
 
         public override Task OnActivateAsync()
         {
@@ -247,32 +247,46 @@ namespace SystemImplementation
         {
             if (downStreamOperators.Count > 0)
             {
-
+                int batchID = msg.BatchID;
                 var targetKey = op.GetPrimaryKey();
                 try
                 {
                     msg.From = this.GetPrimaryKey();
+                    //if is barrier message, set the message count
                     if (msg.Value == Constants.Barrier_Value)
                     {
-                        if (downStreamMessageCountMap.ContainsKey(op.GetPrimaryKey()))
+                        if (downStreamMessageCountMaps.ContainsKey(batchID))
                         {
-                            msg.Count = downStreamMessageCountMap[op.GetPrimaryKey()];
+                            if (downStreamMessageCountMaps[batchID].ContainsKey(op.GetPrimaryKey()))
+                            {
+                                msg.Count = downStreamMessageCountMaps[batchID][op.GetPrimaryKey()];
+                            }
+                            else
+                            {
+                                msg.Count = 0;
+                            }
                         }
                         else
                         {
                             msg.Count = 0;
                         }
                     }
+                    //if it is a normal message, increment the count map
                     else if (msg.Value != Constants.System_Key)
                     {
-                        var key = op.GetPrimaryKey();
-                        if (downStreamMessageCountMap.ContainsKey(key))
+                        if (!downStreamMessageCountMaps.ContainsKey(batchID))
                         {
-                            downStreamMessageCountMap[key] = downStreamMessageCountMap[key] + 1;
+                            downStreamMessageCountMaps.Add(batchID, new Dictionary<Guid, int>());
+                        }
+
+                        var key = op.GetPrimaryKey();
+                        if (downStreamMessageCountMaps[batchID].ContainsKey(key))
+                        {
+                            downStreamMessageCountMaps[batchID][key] = downStreamMessageCountMaps[batchID][key] + 1;
                         }
                         else
                         {
-                            downStreamMessageCountMap.Add(key, 1);
+                            downStreamMessageCountMaps[batchID].Add(key, 1);
                         }
                     }
                     await op.ExecuteMessage(msg, stream);

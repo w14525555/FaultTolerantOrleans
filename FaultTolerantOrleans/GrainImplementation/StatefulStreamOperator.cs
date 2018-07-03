@@ -18,22 +18,23 @@ namespace GrainImplementation
         private Dictionary<string, int> statesMap = new Dictionary<string, int>();
         private Dictionary<int, Dictionary<string, int>> reverseLogMap = new Dictionary<int, Dictionary<string, int>>();
         private Dictionary<int, Dictionary<string, int>> incrementalLogMap = new Dictionary<int, Dictionary<string, int>>();
-        private Dictionary<Guid, int> upStreamMessageCountMap = new Dictionary<Guid, int>();
+        private Dictionary<int, Dictionary<Guid, int>> upStreamMessageCountMaps = new Dictionary<int, Dictionary<Guid, int>>();
         private List<StreamMessage> messageBuffer = new List<StreamMessage>();
+        protected OperatorSettings operatorSettings = new OperatorSettings();
+        protected TopologyUnit topologyUnit;
+
         protected bool isOperatorFailed = false;
         protected bool isARestartOperator = false;
         protected const int Default_ZERO = 0;
         protected int numberOfUpStream = 0;
         protected int numberCurrentBatchBarrierReceived = 0;
+        protected int currentBatchID;
+        private int currentReverseLogID = 0;
+
         protected IBatchTracker batchTracker;
         protected IAsyncStream<StreamMessage> asyncStream;
         protected ITopology topologyManager;
-        protected TopologyUnit topologyUnit;
         protected List<IOperator> downStreamOperators = new List<IOperator>();
-
-        protected int currentBatchID;
-        private int currentReverseLogID  = 0;
-        protected OperatorSettings operatorSettings = new OperatorSettings();
 
         public override Task OnActivateAsync()
         {
@@ -71,8 +72,6 @@ namespace GrainImplementation
                 currentReverseLogID = msg.BatchID;
             }
 
-                await IncrementUpStreamCount(msg);
-
             if (msg.BatchID > currentBatchID)
             {
                 messageBuffer.Add(msg);
@@ -82,11 +81,15 @@ namespace GrainImplementation
             {
                 if (msg.Key != Constants.System_Key)
                 {
+                    await IncrementUpStreamCount(msg);
                     await CustomExecutionMethod(msg, stream);
                 }
                 else
                 {
-                    await ProcessSpecialMessage(msg);
+                    if (CheckCount(msg))
+                    {
+                        await ProcessSpecialMessage(msg);
+                    }
                 }
             }
             else
@@ -98,39 +101,48 @@ namespace GrainImplementation
 
         private Task IncrementUpStreamCount(StreamMessage msg)
         {
-            if (msg.Key == Constants.System_Key)
+            int batchID = msg.BatchID;
+            if (!upStreamMessageCountMaps.ContainsKey(batchID))
             {
-                CheckCount(msg);
+                upStreamMessageCountMaps.Add(batchID, new Dictionary<Guid, int>());
+            }
+
+            if (upStreamMessageCountMaps[batchID].ContainsKey(msg.From))
+            {
+                upStreamMessageCountMaps[batchID][msg.From] = upStreamMessageCountMaps[batchID][msg.From] + 1;
             }
             else
             {
-                if (upStreamMessageCountMap.ContainsKey(msg.From))
-                {
-                    upStreamMessageCountMap[msg.From] = upStreamMessageCountMap[msg.From] + 1;
-                }
-                else
-                {
-                    upStreamMessageCountMap.Add(msg.From, 1);
-                }
+                upStreamMessageCountMaps[batchID].Add(msg.From, 1);
             }
-            
             return Task.CompletedTask;
         }
 
-        private void CheckCount(StreamMessage msg)
+        private bool CheckCount(StreamMessage msg)
         {
-            if (upStreamMessageCountMap.ContainsKey(msg.From) && msg.Count == upStreamMessageCountMap[msg.From])
+            if (!upStreamMessageCountMaps.ContainsKey(msg.BatchID))
             {
-                return;
+                if (msg.Count == 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else if (!upStreamMessageCountMap.ContainsKey(msg.From) && msg.Count == 0)
+            else if (upStreamMessageCountMaps[msg.BatchID].ContainsKey(msg.From) && msg.Count == upStreamMessageCountMaps[msg.BatchID][msg.From])
             {
-                return;
+                return true;
+            }
+            else if (!upStreamMessageCountMaps[msg.BatchID].ContainsKey(msg.From) && msg.Count == 0)
+            {
+                return true;
             }
             else
             {
-                PrettyConsole.Line("The count in stateless operator is not equal!");
-                throw new InvalidOperationException("The count in stateless operator is not equal!");
+                PrettyConsole.Line("The count in stateful operator is not equal!");
+                throw new InvalidOperationException("The count in stateful operator is not equal!");
             }
         }
 
