@@ -90,6 +90,10 @@ namespace GrainImplementation
                     if (CheckCount(msg))
                     {
                         await ProcessSpecialMessage(msg);
+                        if (downStreamOperators.Count > 0)
+                        {
+                            await BroadcastSpecialMessage(msg, stream);
+                        }
                     }
                 }
             }
@@ -189,6 +193,86 @@ namespace GrainImplementation
             {
                 downStreamMessageCountMaps.Remove(batchID);
             }
+        }
+
+        private async Task<Task> BroadcastSpecialMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
+        {
+            if (downStreamOperators.Count > 0)
+            {
+                foreach (IStatefulOperator item in downStreamOperators)
+                {
+                    await ExecuteMessagesByDownStreamOperators(msg, stream, item);
+                }
+            }
+            return Task.CompletedTask;
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
+        protected async Task<Task> ExecuteMessagesByDownStreamOperators(StreamMessage msg, IAsyncStream<StreamMessage> stream, IOperator op)
+        {
+            if (downStreamOperators.Count > 0)
+            {
+                int batchID = msg.BatchID;
+                var targetKey = op.GetPrimaryKey();
+                try
+                {
+                    msg.From = this.GetPrimaryKey();
+                    //if is barrier message, set the message count
+                    if (msg.Value == Constants.Barrier_Value)
+                    {
+                        if (downStreamMessageCountMaps.ContainsKey(batchID))
+                        {
+                            if (downStreamMessageCountMaps[batchID].ContainsKey(op.GetPrimaryKey()))
+                            {
+                                msg.Count = downStreamMessageCountMaps[batchID][op.GetPrimaryKey()];
+                            }
+                            else
+                            {
+                                msg.Count = 0;
+                            }
+                        }
+                        else
+                        {
+                            msg.Count = 0;
+                        }
+                    }
+                    //if it is a normal message, increment the count map
+                    else if (msg.Value != Constants.System_Key)
+                    {
+                        if (!downStreamMessageCountMaps.ContainsKey(batchID))
+                        {
+                            downStreamMessageCountMaps.Add(batchID, new Dictionary<Guid, int>());
+                        }
+
+                        var key = op.GetPrimaryKey();
+                        if (downStreamMessageCountMaps[batchID].ContainsKey(key))
+                        {
+                            downStreamMessageCountMaps[batchID][key] = downStreamMessageCountMaps[batchID][key] + 1;
+                        }
+                        else
+                        {
+                            downStreamMessageCountMaps[batchID].Add(key, 1);
+                        }
+                    }
+                    await op.ExecuteMessage(msg, stream);
+                }
+                catch (Exception e)
+                {
+                    PrettyConsole.Line("Get Exception : " + e + "; Start Receovry");
+                    //1. Restart a new grain
+                    IStatefulOperator newOperator = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
+                    //2. make the new one as failed grain
+                    await newOperator.MarkOperatorAsFailed();
+                    //3. Replace the old by new 
+                    await topologyManager.ReplaceTheOldOperatorWithNew(targetKey, newOperator.GetPrimaryKey());
+                    //4. Remove the old from the topology
+                    await topologyManager.RemoveUnit(targetKey);
+                    //5. Start Recovery
+                    var batchCoordinator = GrainFactory.GetGrain<IBatchCoordinator>(Constants.Coordinator);
+                    await batchCoordinator.StartRecovery();
+                }
+            }
+            return Task.CompletedTask;
         }
 
         public async Task<Task> Recovery(StreamMessage msg)

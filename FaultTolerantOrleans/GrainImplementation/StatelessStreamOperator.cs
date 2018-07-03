@@ -191,15 +191,6 @@ namespace SystemImplementation
             }
         }
 
-        private void ResetCountMap(Dictionary<Guid, int> countMap)
-        {
-            var keys = countMap.Keys.ToList();
-            for (int i = 0; i < keys.Count; i++)
-            {
-                countMap[keys[i]] = 0;
-            }
-        }
-
         private Task HandleBarrierMessages(StreamMessage msg)
         {
             msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), downStreamOperators.Count);
