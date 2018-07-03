@@ -19,6 +19,7 @@ namespace GrainImplementation
         private Dictionary<int, Dictionary<string, int>> reverseLogMap = new Dictionary<int, Dictionary<string, int>>();
         private Dictionary<int, Dictionary<string, int>> incrementalLogMap = new Dictionary<int, Dictionary<string, int>>();
         private Dictionary<int, Dictionary<Guid, int>> upStreamMessageCountMaps = new Dictionary<int, Dictionary<Guid, int>>();
+        private Dictionary<int, Dictionary<Guid, int>> downStreamMessageCountMaps = new Dictionary<int, Dictionary<Guid, int>>();
         private List<StreamMessage> messageBuffer = new List<StreamMessage>();
         protected OperatorSettings operatorSettings = new OperatorSettings();
         protected TopologyUnit topologyUnit;
@@ -173,6 +174,14 @@ namespace GrainImplementation
             ClearIncrementalLog(msg.BatchID);
             ClearReverseLog(msg.BatchID);
             currentBatchID++;
+            if (upStreamMessageCountMaps.ContainsKey(msg.BatchID))
+            {
+                upStreamMessageCountMaps.Remove(msg.BatchID);
+            }
+            if (downStreamMessageCountMaps.ContainsKey(msg.BatchID))
+            {
+                downStreamMessageCountMaps.Remove(msg.BatchID);
+            }
             await batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
             return Task.CompletedTask;
         }

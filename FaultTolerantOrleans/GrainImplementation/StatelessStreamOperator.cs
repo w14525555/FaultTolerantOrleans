@@ -220,6 +220,14 @@ namespace SystemImplementation
         public Task Commit(StreamMessage msg)
         {
             //tell the tracker commit is done in this operator
+            if (upStreamMessageCountMaps.ContainsKey(msg.BatchID))
+            {
+                upStreamMessageCountMaps.Remove(msg.BatchID);
+            }
+            if (downStreamMessageCountMaps.ContainsKey(msg.BatchID))
+            {
+                downStreamMessageCountMaps.Remove(msg.BatchID);
+            }
             batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
             return Task.CompletedTask;
         }
