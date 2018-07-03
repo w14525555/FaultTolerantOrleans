@@ -243,10 +243,14 @@ namespace GrainImplementation
         //Commit Logic
         public Task Commit(StreamMessage msg)
         {
-            //Clean the buffer
-            messageBuffer.Clear();
             //tell the tracker commit is done in this operator
             batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
+            //Clean the buffer
+            messageBuffer.Clear();
+            if (messageCountMaps.ContainsKey(msg.BatchID))
+            {
+                messageCountMaps.Remove(msg.BatchID);
+            }
             return Task.CompletedTask;
         }
 
