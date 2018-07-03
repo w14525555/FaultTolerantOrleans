@@ -19,7 +19,7 @@ namespace SystemImplementation
         protected ITopology topologyManager;
         protected TopologyUnit topologyUnit;
         protected OperatorSettings operatorSettings = new OperatorSettings();
-        private Dictionary<Guid, int> upStreamMessageCountMap = new Dictionary<Guid, int>();
+        private Dictionary<int, Dictionary<Guid, int>> upStreamMessageCountMaps = new Dictionary<int, Dictionary<Guid, int>>();
         private Dictionary<Guid, int> downStreamMessageCountMap = new Dictionary<Guid, int>();
 
         public override Task OnActivateAsync()
@@ -124,13 +124,19 @@ namespace SystemImplementation
 
         private Task IncrementUpStreamCount(StreamMessage msg)
         {
-            if (upStreamMessageCountMap.ContainsKey(msg.From))
+            int batchID = msg.BatchID;
+            if (!upStreamMessageCountMaps.ContainsKey(batchID))
             {
-                upStreamMessageCountMap[msg.From] = upStreamMessageCountMap[msg.From] + 1;
+                upStreamMessageCountMaps.Add(batchID, new Dictionary<Guid, int>());
+            }
+
+            if (upStreamMessageCountMaps[batchID].ContainsKey(msg.From))
+            {
+                upStreamMessageCountMaps[batchID][msg.From] = upStreamMessageCountMaps[batchID][msg.From] + 1;
             }
             else
             {
-                upStreamMessageCountMap.Add(msg.From, 1);
+                upStreamMessageCountMaps[batchID].Add(msg.From, 1);
             }
             return Task.CompletedTask;
         }
@@ -145,7 +151,6 @@ namespace SystemImplementation
             {
                 if (CheckCount(msg))
                 {
-                    ResetCountMap(upStreamMessageCountMap);
                     await HandleBarrierMessages(msg);
                     await batchTracker.CompleteOneOperatorBarrier(info);
                 }
@@ -160,11 +165,22 @@ namespace SystemImplementation
 
         private bool CheckCount(StreamMessage msg)
         {
-            if (upStreamMessageCountMap.ContainsKey(msg.From) && msg.Count == upStreamMessageCountMap[msg.From])
+            if (!upStreamMessageCountMaps.ContainsKey(msg.BatchID))
+            {
+                if (msg.Count == 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else if (upStreamMessageCountMaps[msg.BatchID].ContainsKey(msg.From) && msg.Count == upStreamMessageCountMaps[msg.BatchID][msg.From])
             {
                 return true;
             }
-            else if (!upStreamMessageCountMap.ContainsKey(msg.From) && msg.Count == 0)
+            else if (!upStreamMessageCountMaps[msg.BatchID].ContainsKey(msg.From) && msg.Count == 0)
             {
                 return true;
             }

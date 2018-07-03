@@ -24,7 +24,7 @@ namespace GrainImplementation
         private ITopology topologyManager;
 
         private List<StreamMessage> messageBuffer = new List<StreamMessage>();
-        private Dictionary<Guid, int> messageCountMap = new Dictionary<Guid, int>(); 
+        private Dictionary<int, Dictionary<Guid, int>> messageCountMaps = new Dictionary<int, Dictionary<Guid, int>>(); 
         private TopologyUnit topologyUnit;
         protected OperatorSettings operatorSettings = new OperatorSettings();
         private int currentBatchID;
@@ -145,11 +145,6 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        public Task<int> GetNumberOfElementsInCountMap()
-        {
-            return Task.FromResult(messageCountMap.Count);
-        }
-
         private Task SetUpBatchManager()
         {
             batchCoordinator = GrainFactory.GetGrain<IBatchCoordinator>(Constants.Coordinator);
@@ -201,22 +196,28 @@ namespace GrainImplementation
         {
             //At first find a operator by hashing
             IOperator op = await SystemImplementation.PartitionFunction.PartitionStatelessByKey(msg.Key, downStreamOperators);
-            await IncrementCountMap(op.GetPrimaryKey());
+            await IncrementCountMap(op.GetPrimaryKey(), msg.BatchID);
             await op.ExecuteMessage(msg, stream);
 
             return Task.CompletedTask;
         }
 
-        private Task IncrementCountMap(Guid key)
+        private Task IncrementCountMap(Guid key, int batchID)
         {
-            if (messageCountMap.ContainsKey(key))
+            if (!messageCountMaps.ContainsKey(batchID))
             {
-                messageCountMap[key] = messageCountMap[key] + 1;
+                messageCountMaps.Add(batchID, new Dictionary<Guid, int>());
+            }
+
+            if (messageCountMaps[batchID].ContainsKey(key))
+            {
+                messageCountMaps[batchID][key] = messageCountMaps[batchID][key] + 1;
             }
             else
             {
-                messageCountMap.Add(key, 1);
+                messageCountMaps[batchID].Add(key, 1);
             }
+
             return Task.CompletedTask;
         }
 
@@ -269,27 +270,26 @@ namespace GrainImplementation
         {
             foreach(IOperator item in downStreamOperators)
             {
-                if (messageCountMap.ContainsKey(item.GetPrimaryKey()))
+                if (messageCountMaps.ContainsKey(msg.BatchID))
                 {
-                    msg.Count = messageCountMap[item.GetPrimaryKey()];
+                    if (messageCountMaps[msg.BatchID].ContainsKey(item.GetPrimaryKey()))
+                    {
+                        msg.Count = messageCountMaps[msg.BatchID][item.GetPrimaryKey()];
+                    }
+                    else
+                    {
+                        msg.Count = 0;
+                    }
                 }
+                //If not contain, means it does not receive any messages of
+                //that batch
                 else
                 {
-                    msg.Count = 0;
+                    msg.Count = 0;    
                 }
                 item.ExecuteMessage(msg, stream);
             }
-            ResetCountMap();
             return Task.CompletedTask;
-        }
-
-        private void ResetCountMap()
-        {
-            var keys = messageCountMap.Keys.ToList();
-            for(int i = 0; i < keys.Count; i++)
-            {
-                messageCountMap[keys[i]] = 0;
-            }
         }
 
         //Replay Logic

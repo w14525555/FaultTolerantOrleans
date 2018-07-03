@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen86725ceb58FeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen4486c83ca6FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -1165,8 +1165,6 @@ namespace SystemInterfaces
                             return @"Commit";
                         case 2118799424:
                             return @"Recovery";
-                        case 461815089:
-                            return @"GetNumberOfElementsInCountMap";
                         case -388420872:
                             return @"AddCustomDownStreamOperator";
                         case -714662718:
@@ -1241,11 +1239,6 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Object>(2118799424, new global::System.Object[]{msg});
         }
 
-        public global::System.Threading.Tasks.Task<global::System.Int32> GetNumberOfElementsInCountMap()
-        {
-            return base.InvokeMethodAsync<global::System.Int32>(461815089, null);
-        }
-
         public global::System.Threading.Tasks.Task AddCustomDownStreamOperator(global::SystemInterfaces.IStatelessOperator statelessOperator)
         {
             return base.InvokeMethodAsync<global::System.Object>(-388420872, new global::System.Object[]{statelessOperator is global::Orleans.Grain ? statelessOperator.AsReference<global::SystemInterfaces.IStatelessOperator>() : statelessOperator});
@@ -1311,8 +1304,6 @@ namespace SystemInterfaces
                         case 2118799424:
                             await ((global::SystemInterfaces.IStreamSource)grain).Recovery((global::SystemInterfaces.Model.StreamMessage)arguments[0]);
                             return null;
-                        case 461815089:
-                            return await ((global::SystemInterfaces.IStreamSource)grain).GetNumberOfElementsInCountMap();
                         case -388420872:
                             await ((global::SystemInterfaces.IStreamSource)grain).AddCustomDownStreamOperator((global::SystemInterfaces.IStatelessOperator)arguments[0]);
                             return null;
@@ -1912,7 +1903,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen86725ceb58FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGen4486c83ca6FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {
