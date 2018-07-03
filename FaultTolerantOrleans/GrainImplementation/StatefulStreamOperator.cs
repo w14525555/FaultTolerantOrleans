@@ -174,16 +174,21 @@ namespace GrainImplementation
             ClearIncrementalLog(msg.BatchID);
             ClearReverseLog(msg.BatchID);
             currentBatchID++;
-            if (upStreamMessageCountMaps.ContainsKey(msg.BatchID))
-            {
-                upStreamMessageCountMaps.Remove(msg.BatchID);
-            }
-            if (downStreamMessageCountMaps.ContainsKey(msg.BatchID))
-            {
-                downStreamMessageCountMaps.Remove(msg.BatchID);
-            }
+            ClearCountMap(msg.BatchID);
             await batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
             return Task.CompletedTask;
+        }
+
+        private void ClearCountMap(int batchID)
+        {
+            if (upStreamMessageCountMaps.ContainsKey(batchID))
+            {
+                upStreamMessageCountMaps.Remove(batchID);
+            }
+            if (downStreamMessageCountMaps.ContainsKey(batchID))
+            {
+                downStreamMessageCountMaps.Remove(batchID);
+            }
         }
 
         public async Task<Task> Recovery(StreamMessage msg)
