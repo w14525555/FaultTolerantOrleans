@@ -6,9 +6,9 @@ namespace SystemInterfaces.Model
     [Serializable]
     public class IncrementalLog
     {
-        public Dictionary<string, int> Log { get; set;}
+        public Dictionary<string, object> Log { get; set;}
         public int BatchID { get; set; }
-        public IncrementalLog(Dictionary<string, int> Log, int batchID)
+        public IncrementalLog(Dictionary<string, object> Log, int batchID)
         {
             this.Log = Log;
             this.BatchID = batchID;

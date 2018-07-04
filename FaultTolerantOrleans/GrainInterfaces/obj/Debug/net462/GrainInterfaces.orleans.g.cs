@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen2652e59432FeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen7658370384FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -1619,7 +1619,7 @@ namespace OrleansGeneratedCode38151279
             global::SystemInterfaces.Model.IncrementalLog result = (global::SystemInterfaces.Model.IncrementalLog)global::System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof (global::SystemInterfaces.Model.IncrementalLog));
             context.RecordCopy(original, result);
             result.BatchID = input.BatchID;
-            result.Log = (global::System.Collections.Generic.Dictionary<global::System.String, global::System.Int32>)context.DeepCopyInner(input.Log);
+            result.Log = (global::System.Collections.Generic.Dictionary<global::System.String, global::System.Object>)context.DeepCopyInner(input.Log);
             return result;
         }
 
@@ -1628,7 +1628,7 @@ namespace OrleansGeneratedCode38151279
         {
             global::SystemInterfaces.Model.IncrementalLog input = (global::SystemInterfaces.Model.IncrementalLog)untypedInput;
             context.SerializeInner(input.BatchID, typeof (global::System.Int32));
-            context.SerializeInner(input.Log, typeof (global::System.Collections.Generic.Dictionary<global::System.String, global::System.Int32>));
+            context.SerializeInner(input.Log, typeof (global::System.Collections.Generic.Dictionary<global::System.String, global::System.Object>));
         }
 
         [global::Orleans.CodeGeneration.DeserializerMethodAttribute]
@@ -1637,7 +1637,7 @@ namespace OrleansGeneratedCode38151279
             global::SystemInterfaces.Model.IncrementalLog result = (global::SystemInterfaces.Model.IncrementalLog)global::System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof (global::SystemInterfaces.Model.IncrementalLog));
             context.RecordObject(result);
             result.BatchID = (global::System.Int32)context.DeserializeInner(typeof (global::System.Int32));
-            result.Log = (global::System.Collections.Generic.Dictionary<global::System.String, global::System.Int32>)context.DeserializeInner(typeof (global::System.Collections.Generic.Dictionary<global::System.String, global::System.Int32>));
+            result.Log = (global::System.Collections.Generic.Dictionary<global::System.String, global::System.Object>)context.DeserializeInner(typeof (global::System.Collections.Generic.Dictionary<global::System.String, global::System.Object>));
             return (global::SystemInterfaces.Model.IncrementalLog)result;
         }
     }
@@ -1902,7 +1902,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen2652e59432FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGen7658370384FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {

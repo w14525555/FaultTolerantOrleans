@@ -15,9 +15,9 @@ namespace GrainImplementation
 
     public abstract class StatefulStreamOperator : Grain, IStatefulOperator
     {
-        private Dictionary<string, int> statesMap = new Dictionary<string, int>();
-        private Dictionary<int, Dictionary<string, int>> reverseLogMap = new Dictionary<int, Dictionary<string, int>>();
-        private Dictionary<int, Dictionary<string, int>> incrementalLogMap = new Dictionary<int, Dictionary<string, int>>();
+        private Dictionary<string, object> statesMap = new Dictionary<string, object>();
+        private Dictionary<int, Dictionary<string, object>> reverseLogMap = new Dictionary<int, Dictionary<string, object>>();
+        private Dictionary<int, Dictionary<string, object>> incrementalLogMap = new Dictionary<int, Dictionary<string, object>>();
         private Dictionary<int, Dictionary<Guid, int>> upStreamMessageCountMaps = new Dictionary<int, Dictionary<Guid, int>>();
         private Dictionary<int, Dictionary<Guid, int>> downStreamMessageCountMaps = new Dictionary<int, Dictionary<Guid, int>>();
         private List<StreamMessage> messageBuffer = new List<StreamMessage>();
@@ -62,8 +62,8 @@ namespace GrainImplementation
             //for it
             if (!incrementalLogMap.ContainsKey(msg.BatchID))
             {
-                var newIncrementalLog = new Dictionary<string, int>();
-                var newReverseLog = new Dictionary<string, int>();
+                var newIncrementalLog = new Dictionary<string, object>();
+                var newReverseLog = new Dictionary<string, object>();
                 incrementalLogMap.Add(msg.BatchID, newIncrementalLog);
                 reverseLogMap.Add(msg.BatchID, newReverseLog);
             }
@@ -343,7 +343,7 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        protected Task<Dictionary<string, int>>GetIncrementalLog(int batchID)
+        protected Task<Dictionary<string, object>>GetIncrementalLog(int batchID)
         {
             if (incrementalLogMap.ContainsKey(batchID))
             {
@@ -355,7 +355,7 @@ namespace GrainImplementation
             }
         }
 
-        protected Task<Dictionary<string, int>> GetReverseLog(int batchID)
+        protected Task<Dictionary<string, object>> GetReverseLog(int batchID)
         {
             if (reverseLogMap.ContainsKey(batchID))
             {
@@ -487,7 +487,7 @@ namespace GrainImplementation
                     else
                     {
                         //If null, means it was inserted value
-                        if (item.Value == Default_ZERO)
+                        if ((int)item.Value == Default_ZERO)
                         {
                             statesMap.Remove(item.Key);
                         }
@@ -565,7 +565,7 @@ namespace GrainImplementation
         {
             if (statesMap.ContainsKey(key))
             {
-                return Task.FromResult(statesMap[key]);
+                return Task.FromResult((int)statesMap[key]);
             }
             else
             {
@@ -580,7 +580,7 @@ namespace GrainImplementation
                 var reverseLog = await GetReverseLog(currentBatchID);
                 if (reverseLog.ContainsKey(key))
                 {
-                    return await Task.FromResult(reverseLog[key]);
+                    return await Task.FromResult((int)reverseLog[key]);
                 }
             }
 
@@ -594,7 +594,7 @@ namespace GrainImplementation
                 var incrementalLog = await GetIncrementalLog(currentBatchID);
                 if (incrementalLog.ContainsKey(key))
                 {
-                    return await Task.FromResult(incrementalLog[key]);
+                    return await Task.FromResult((int)incrementalLog[key]);
                 }
             }
             return await Task.FromResult(-1);
@@ -637,7 +637,7 @@ namespace GrainImplementation
         {
             if (CheckStatesMapConstainTheKey(key))
             {
-                return statesMap[key];
+                return (int)statesMap[key];
             }
             else
             {
