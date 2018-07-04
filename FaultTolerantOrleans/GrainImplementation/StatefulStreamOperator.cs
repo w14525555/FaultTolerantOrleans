@@ -259,13 +259,7 @@ namespace GrainImplementation
                 catch (Exception e)
                 {
                     PrettyConsole.Line("Get Exception : " + e + "; Start Receovry");
-
-                    await topologyManager.ReplaceTheOldOperator(targetKey);
-                    //4. Remove the old from the topology
-                    await topologyManager.RemoveUnit(targetKey);
-                    //5. Start Recovery
-                    var batchCoordinator = GrainFactory.GetGrain<IBatchCoordinator>(Constants.Coordinator);
-                    await batchCoordinator.StartRecovery();
+                    topologyManager.ReplaceTheOldOperator(targetKey);
                 }
             }
             return Task.CompletedTask;

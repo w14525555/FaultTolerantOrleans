@@ -50,11 +50,15 @@ namespace SystemImplementation
             return Task.CompletedTask;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         public async Task<Task> ReplaceTheOldOperator(Guid oldGuid)
         {
             var oldUnit = topology.GetUnit(oldGuid);
             var newUnit = new TopologyUnit(oldUnit.OperatorType, Guid.NewGuid());
             var newGuid = newUnit.PrimaryKey;
+
+            //Remove the old 
+            //await RemoveUnit(oldGuid);
 
             //Only the stateful load the settings
             if (newUnit.OperatorType == OperatorType.Stateful)
@@ -124,6 +128,11 @@ namespace SystemImplementation
                     throw new ArgumentException("Source cannot be down stream operator");
                 }
             }
+
+            //Start Recovery
+            var batchCoordinator = GrainFactory.GetGrain<IBatchCoordinator>(Constants.Coordinator);
+            batchCoordinator.StartRecovery();
+
             return Task.CompletedTask;
         }
 

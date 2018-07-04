@@ -247,14 +247,13 @@ namespace Test
             await source.ProduceMessageAsync(wordCountMessage1);
             var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
             await batchCoordinator.SendBarrier();
-            Thread.Sleep(100);
             await source.ProduceMessageAsync(wordCountMessage1);
-            Thread.Sleep(300);
             int countAfterRecovery = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
             Assert.AreEqual(2, countAfterRecovery);
         }
 
         [TestMethod]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         public async Task TestReplayWillRestoreTheStates()
         {
             await SetUpSource();
@@ -266,7 +265,7 @@ namespace Test
             Thread.Sleep(200);
             await source.ProduceMessageAsync(wordCountMessage1);
             Thread.Sleep(200);
-            await source.ReplayTheMessageOnRecoveryCompleted();
+            source.ReplayTheMessageOnRecoveryCompleted();
             Thread.Sleep(200);
             int countAfterReplay = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
             Assert.AreEqual(3, countAfterReplay);
