@@ -213,6 +213,7 @@ namespace SystemImplementation
                 }
                 else if (unit.OperatorType == OperatorType.Stateful)
                 {
+                    PrettyConsole.Line("Recovery a stateful");
                     IStatefulOperator statefulOperator = GrainFactory.GetGrain<IStatefulOperator>(unit.PrimaryKey, Constants.Stateful_Operator_Prefix);
                     statefulOperator.Recovery(msg);
                 }

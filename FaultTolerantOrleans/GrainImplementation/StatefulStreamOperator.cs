@@ -323,8 +323,11 @@ namespace GrainImplementation
             }
             else
             {
-                for (int i = currentReverseLogID; i >= batchID + 1; i--)
+                PrettyConsole.Line("Revert from Reverse Log!");
+                PrettyConsole.Line("Reverse id: " + currentReverseLogID);
+                for (int i = currentReverseLogID; i > batchID; i--)
                 {
+                    PrettyConsole.Line("Reverse id: " + currentReverseLogID);
                     await RevertStateFromReverseLog(i);
                 }
             }
@@ -536,7 +539,7 @@ namespace GrainImplementation
             //so we neeed read by reverse order
             for (int i = 0; i < logs.Count; i++)
             {
-                PrettyConsole.Line("read incremental id: " + logs[i].BatchID.ToString());
+                //PrettyConsole.Line("read incremental id: " + logs[i].BatchID.ToString());
                 foreach (var item in logs[i].Log)
                 {
                     if (logs[i].BatchID > batchID)
