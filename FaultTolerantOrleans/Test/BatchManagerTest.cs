@@ -259,13 +259,12 @@ namespace Test
             await SetUpSource();
             await source.ProduceMessageAsync(wordCountMessage1);
             await source.ProduceMessageAsync(wordCountMessage1);
-            Thread.Sleep(200);
             var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
             await batchCoordinator.SendBarrier();
-            Thread.Sleep(200);
+            Thread.Sleep(500);
             source.ProduceMessageAsync(wordCountMessage1);
             Thread.Sleep(200);
-            source.ReplayTheMessageOnRecoveryCompleted();
+            await source.ReplayTheMessageOnRecoveryCompleted();
             Thread.Sleep(200);
             int countAfterReplay = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
             Assert.AreEqual(3, countAfterReplay);
