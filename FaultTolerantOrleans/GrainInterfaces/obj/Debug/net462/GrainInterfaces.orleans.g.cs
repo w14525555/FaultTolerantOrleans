@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen973db4960dFeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGenc8c0501e61FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -1402,8 +1402,8 @@ namespace SystemInterfaces
                             return @"ConnectUnits";
                         case 837591487:
                             return @"UpdateOperatorSettings";
-                        case 535966154:
-                            return @"ReplaceTheOldOperatorWithNew";
+                        case -1358962994:
+                            return @"ReplaceTheOldOperator";
                         case 924243555:
                             return @"GetTopologySize";
                         case -639283078:
@@ -1460,9 +1460,9 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Object>(837591487, new global::System.Object[]{guid, operatorSettings});
         }
 
-        public global::System.Threading.Tasks.Task ReplaceTheOldOperatorWithNew(global::System.Guid oldGuid, global::System.Guid newGuid)
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> ReplaceTheOldOperator(global::System.Guid oldGuid)
         {
-            return base.InvokeMethodAsync<global::System.Object>(535966154, new global::System.Object[]{oldGuid, newGuid});
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-1358962994, new global::System.Object[]{oldGuid});
         }
 
         public global::System.Threading.Tasks.Task<global::System.Int32> GetTopologySize()
@@ -1543,9 +1543,8 @@ namespace SystemInterfaces
                         case 837591487:
                             await ((global::SystemInterfaces.ITopology)grain).UpdateOperatorSettings((global::System.Guid)arguments[0], (global::SystemInterfaces.Model.OperatorSettings)arguments[1]);
                             return null;
-                        case 535966154:
-                            await ((global::SystemInterfaces.ITopology)grain).ReplaceTheOldOperatorWithNew((global::System.Guid)arguments[0], (global::System.Guid)arguments[1]);
-                            return null;
+                        case -1358962994:
+                            return await ((global::SystemInterfaces.ITopology)grain).ReplaceTheOldOperator((global::System.Guid)arguments[0]);
                         case 924243555:
                             return await ((global::SystemInterfaces.ITopology)grain).GetTopologySize();
                         case -639283078:
@@ -1903,7 +1902,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen973db4960dFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGenc8c0501e61FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {

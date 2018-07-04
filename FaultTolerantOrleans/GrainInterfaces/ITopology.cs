@@ -16,7 +16,7 @@ namespace SystemInterfaces
 
         Task UpdateOperatorSettings(Guid guid, OperatorSettings operatorSettings);
 
-        Task ReplaceTheOldOperatorWithNew(Guid oldGuid, Guid newGuid);
+        Task<Task> ReplaceTheOldOperator(Guid oldGuid);
 
         Task<int> GetTopologySize();
 

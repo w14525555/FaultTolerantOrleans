@@ -50,19 +50,18 @@ namespace SystemImplementation
             return Task.CompletedTask;
         }
 
-        public Task ReplaceTheOldOperatorWithNew(Guid oldGuid, Guid newGuid)
+        public async Task<Task> ReplaceTheOldOperator(Guid oldGuid)
         {
             var oldUnit = topology.GetUnit(oldGuid);
-            var newUnit = topology.GetUnit(newGuid);
+            var newUnit = new TopologyUnit(oldUnit.OperatorType, Guid.NewGuid());
+            var newGuid = newUnit.PrimaryKey;
 
-            if (oldUnit.OperatorType == newUnit.OperatorType)
+            //Only the stateful load the settings
+            if (newUnit.OperatorType == OperatorType.Stateful)
             {
-                //Only the stateful load the settings
-                if (newUnit.OperatorType == OperatorType.Stateful)
-                {
-                    IStatefulOperator statefulOp = GrainFactory.GetGrain<IStatefulOperator>(newUnit.PrimaryKey, Constants.Stateful_Operator_Prefix);
-                    statefulOp.LoadSettings(oldUnit.GetSettings());
-                }
+                IStatefulOperator statefulOp = GrainFactory.GetGrain<IStatefulOperator>(newUnit.PrimaryKey, Constants.Stateful_Operator_Prefix);
+                await statefulOp.MarkOperatorAsFailed();
+                await statefulOp.LoadSettings(oldUnit.GetSettings());
             }
 
             //Disconnect the old and connect new
@@ -78,7 +77,7 @@ namespace SystemImplementation
                 int index = 0;
                 foreach (var item in upperStreamUnits.Values.ToList())
                 {
-                    DisConnectUnits(item.PrimaryKey, oldGuid);
+                    await DisConnectUnits(item.PrimaryKey, oldGuid);
                     IOperator op;
                     var unitList = new List<TopologyUnit>();
                     unitList.Add(newUnit);
@@ -86,20 +85,20 @@ namespace SystemImplementation
                     if (item.OperatorType == OperatorType.Stateless)
                     {
                         op = GrainFactory.GetGrain<IOperator>(keyList[index], Constants.Stateless_Operator_Prefix);
-                        op.AddCustomDownStreamOperators(unitList);
-                        op.RemoveCustomDownStreamOperator(oldGuid);
+                        await op.AddCustomDownStreamOperators(unitList);
+                        await op.RemoveCustomDownStreamOperator(oldGuid);
                     }
                     else if (item.OperatorType == OperatorType.Stateful)
                     {
                         op = GrainFactory.GetGrain<IOperator>(keyList[index], Constants.Stateful_Operator_Prefix);
-                        op.AddCustomDownStreamOperators(unitList);
-                        op.RemoveCustomDownStreamOperator(oldGuid);
+                        await op.AddCustomDownStreamOperators(unitList);
+                        await op.RemoveCustomDownStreamOperator(oldGuid);
                     }
                     else if (item.OperatorType == OperatorType.Source)
                     {
                         var source = GrainFactory.GetGrain<IStreamSource>(item.PrimaryKey);
-                        source.AddCustomDownStreamOperators(unitList);
-                        source.RemoveCustomDownStreamOperator(oldGuid);
+                        await source.AddCustomDownStreamOperators(unitList);
+                        await source.RemoveCustomDownStreamOperator(oldGuid);
                     }
                     index++;
                 }
@@ -113,12 +112,12 @@ namespace SystemImplementation
                 if (newUnit.OperatorType == OperatorType.Stateless)
                 {
                     newOp = GrainFactory.GetGrain<IStatelessOperator>(newGuid, Constants.Stateless_Operator_Prefix);
-                    newOp.AddCustomDownStreamOperators(units);
+                    await newOp.AddCustomDownStreamOperators(units);
                 }
                 else if (newUnit.OperatorType == OperatorType.Stateful)
                 {
                     newOp = GrainFactory.GetGrain<IStatefulOperator>(newGuid, Constants.Stateful_Operator_Prefix);
-                    newOp.AddCustomDownStreamOperators(units);
+                    await newOp.AddCustomDownStreamOperators(units);
                 }
                 else
                 {
@@ -127,8 +126,6 @@ namespace SystemImplementation
             }
             return Task.CompletedTask;
         }
-
-
 
         public Task AddASameTypeStatelessOperatorToTopology(Guid guid)
         {
@@ -213,7 +210,6 @@ namespace SystemImplementation
                 }
                 else if (unit.OperatorType == OperatorType.Stateful)
                 {
-                    PrettyConsole.Line("Recovery a stateful");
                     IStatefulOperator statefulOperator = GrainFactory.GetGrain<IStatefulOperator>(unit.PrimaryKey, Constants.Stateful_Operator_Prefix);
                     statefulOperator.Recovery(msg);
                 }

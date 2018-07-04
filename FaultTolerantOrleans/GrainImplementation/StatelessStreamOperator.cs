@@ -293,12 +293,8 @@ namespace SystemImplementation
                 catch (Exception e)
                 {
                     PrettyConsole.Line("Get Exception : " + e + "; Start Receovry");
-                    //1. Restart a new grain
-                    IStatefulOperator newOperator = GrainFactory.GetGrain<IStatefulOperator>(Guid.NewGuid());
-                    //2. make the new one as failed grain
-                    await newOperator.MarkOperatorAsFailed();
-                    //3. Replace the old by new 
-                    await topologyManager.ReplaceTheOldOperatorWithNew(targetKey, newOperator.GetPrimaryKey());
+
+                    await topologyManager.ReplaceTheOldOperator(targetKey);
                     //4. Remove the old from the topology
                     await topologyManager.RemoveUnit(targetKey);
                     //5. Start Recovery
