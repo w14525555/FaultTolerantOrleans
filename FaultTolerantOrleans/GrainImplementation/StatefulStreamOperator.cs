@@ -524,26 +524,17 @@ namespace GrainImplementation
             }
             else
             {
-                await CalculateStatesFromIncrementalLog(logs, batchID);
+                await CalculateStatesFromIncrementalLog(logs);
             }
             return Task.CompletedTask;
         }
 
-        private Task CalculateStatesFromIncrementalLog(List<IncrementalLog> logs, int batchID)
+        private Task CalculateStatesFromIncrementalLog(List<IncrementalLog> logs)
         {
-            //Since we need calculate state from batch 0, 1, 2
-            //and the log are read by reverse order 
-            //so we neeed read by reverse order
-            for (int i = 0; i < logs.Count; i++)
+            for (int i = logs.Count -1; i>=0; i--)
             {
-                PrettyConsole.Line("read incremental id: " + logs[i].BatchID.ToString());
                 foreach (var item in logs[i].Log)
                 {
-                    if (logs[i].BatchID > batchID)
-                    {
-                        break;
-                    }
-
                     if (statesMap.ContainsKey(item.Key))
                     {
                         statesMap[item.Key] = item.Value;
