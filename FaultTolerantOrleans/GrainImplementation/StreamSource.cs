@@ -29,6 +29,7 @@ namespace GrainImplementation
         protected OperatorSettings operatorSettings = new OperatorSettings();
         private int currentBatchID;
         private Guid testAddNewOperatorGuid;
+        private int roundRobinValue = 0;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         public override Task OnActivateAsync()
@@ -196,7 +197,8 @@ namespace GrainImplementation
         private Task ProcessNormalMessage(StreamMessage msg)
         {
             //At first find a operator by hashing
-            int index = SystemImplementation.PartitionFunction.PartitionOperatorByKey(msg.Key, downStreamOperators.Count);
+            int index = roundRobinValue % downStreamOperators.Count;
+            roundRobinValue++;
             CheckIfOutOfBoundry(downStreamOperators, index);
             var op = downStreamOperators[index];
             IncrementCountMap(op.GetPrimaryKey(), msg.BatchID);
