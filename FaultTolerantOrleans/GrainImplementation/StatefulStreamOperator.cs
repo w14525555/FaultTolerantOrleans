@@ -195,13 +195,14 @@ namespace GrainImplementation
             }
         }
 
-        private async Task<Task> BroadcastSpecialMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
+        private Task BroadcastSpecialMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
             if (downStreamOperators.Count > 0)
             {
                 foreach (IStatefulOperator item in downStreamOperators)
                 {
-                    await ExecuteMessagesByDownStreamOperators(msg, stream, item);
+                    ExecuteMessagesByDownStreamOperators(msg, stream, item);
                 }
             }
             return Task.CompletedTask;

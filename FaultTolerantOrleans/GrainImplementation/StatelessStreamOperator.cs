@@ -229,6 +229,7 @@ namespace SystemImplementation
             return Task.CompletedTask;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         private Task BroadcastSpecialMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
             if (downStreamOperators.Count > 0)
