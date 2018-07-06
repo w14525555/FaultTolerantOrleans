@@ -229,13 +229,13 @@ namespace SystemImplementation
             return Task.CompletedTask;
         }
 
-        private async Task<Task> BroadcastSpecialMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
+        private Task BroadcastSpecialMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream)
         {
             if (downStreamOperators.Count > 0)
             {
                 foreach (IStatefulOperator item in downStreamOperators)
                 {
-                    await ExecuteMessagesByDownStreamOperators(msg, stream, item);
+                    ExecuteMessagesByDownStreamOperators(msg, stream, item);
                 }
             }
             return Task.CompletedTask;
@@ -293,7 +293,7 @@ namespace SystemImplementation
                 catch (Exception e)
                 {
                     PrettyConsole.Line("Get Exception : " + e + "; Start Receovry");
-                    await topologyManager.ReplaceTheOldOperator(targetKey);
+                    topologyManager.ReplaceTheOldOperator(targetKey);
                 }
             }
             return Task.CompletedTask;

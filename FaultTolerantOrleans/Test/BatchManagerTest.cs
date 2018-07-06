@@ -262,7 +262,7 @@ namespace Test
             var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
             await batchCoordinator.SendBarrier();
             Thread.Sleep(200);
-            source.ProduceMessageAsync(wordCountMessage1);
+            await source.ProduceMessageAsync(wordCountMessage1);
             Thread.Sleep(200);
             await source.ReplayTheMessageOnRecoveryCompleted();
             Thread.Sleep(300);
