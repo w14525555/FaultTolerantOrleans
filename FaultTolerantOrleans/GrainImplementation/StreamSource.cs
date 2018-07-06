@@ -192,14 +192,25 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         private async Task<Task> ProcessNormalMessage(StreamMessage msg)
         {
             //At first find a operator by hashing
-            IOperator op = await SystemImplementation.PartitionFunction.PartitionStatelessByKey(msg.Key, downStreamOperators);
+            int index = SystemImplementation.PartitionFunction.PartitionOperatorByKey(msg.Key, downStreamOperators.Count);
+            CheckIfOutOfBoundry(downStreamOperators, index);
+            var op = downStreamOperators[index];
             await IncrementCountMap(op.GetPrimaryKey(), msg.BatchID);
-            await op.ExecuteMessage(msg, stream);
+            op.ExecuteMessage(msg, stream);
 
             return Task.CompletedTask;
+        }
+
+        private void CheckIfOutOfBoundry(List<IOperator> list, int index)
+        {
+            if (index >= list.Count)
+            {
+                throw new ArgumentException("The list in streamSouce is out of boundrary");
+            }
         }
 
         private Task IncrementCountMap(Guid key, int batchID)

@@ -15,7 +15,7 @@ namespace SystemImplementation
             //Then find a operator
             foreach (string word in words)
             {
-                int index = SystemImplementation.PartitionFunction.PartitionStatefulByKey(msg.Key, downStreamOperators.Count);
+                int index = SystemImplementation.PartitionFunction.PartitionOperatorByKey(msg.Key, downStreamOperators.Count);
                 IOperator op = downStreamOperators.ElementAt(index);
                 StreamMessage newMessage = new StreamMessage(word, null);
                 newMessage.BatchID = msg.BatchID;
