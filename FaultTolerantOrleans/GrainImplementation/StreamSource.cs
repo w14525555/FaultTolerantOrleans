@@ -193,13 +193,13 @@ namespace GrainImplementation
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
-        private async Task<Task> ProcessNormalMessage(StreamMessage msg)
+        private Task ProcessNormalMessage(StreamMessage msg)
         {
             //At first find a operator by hashing
             int index = SystemImplementation.PartitionFunction.PartitionOperatorByKey(msg.Key, downStreamOperators.Count);
             CheckIfOutOfBoundry(downStreamOperators, index);
             var op = downStreamOperators[index];
-            await IncrementCountMap(op.GetPrimaryKey(), msg.BatchID);
+            IncrementCountMap(op.GetPrimaryKey(), msg.BatchID);
             op.ExecuteMessage(msg, stream);
 
             return Task.CompletedTask;
@@ -213,7 +213,7 @@ namespace GrainImplementation
             }
         }
 
-        private Task IncrementCountMap(Guid key, int batchID)
+        private void IncrementCountMap(Guid key, int batchID)
         {
             if (!messageCountMaps.ContainsKey(batchID))
             {
@@ -228,8 +228,6 @@ namespace GrainImplementation
             {
                 messageCountMaps[batchID].Add(key, 1);
             }
-
-            return Task.CompletedTask;
         }
 
         //If it is special message, it has to send to all the operators. 
@@ -246,7 +244,7 @@ namespace GrainImplementation
                 PrettyConsole.Line("Increment ID " + currentBatchID);
                 await TrackingBarrierMessages(msg);
                 await batchTracker.CompleteOneOperatorBarrier(info);
-                await BroadcastSpecialMessage(msg, stream);
+                BroadcastSpecialMessage(msg, stream);
             }
             return Task.CompletedTask;
         }
