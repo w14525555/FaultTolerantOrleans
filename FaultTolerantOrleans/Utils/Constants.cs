@@ -17,6 +17,6 @@ namespace Utils
         public const string Topology_Manager = "Topology Manager";
         public const string Stateless_Operator_Prefix = "SystemImplementation.CountWordStatelessOperator";
         public const string Stateful_Operator_Prefix = "SystemImplementation.CountWordStatefulOperator";
-
+        public const int Checkpoint_Interval = 2;
     }
 }

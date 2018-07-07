@@ -315,10 +315,8 @@ namespace GrainImplementation
             else
             {
                 PrettyConsole.Line("Revert from Reverse Log!");
-                PrettyConsole.Line("Reverse id: " + currentReverseLogID);
                 for (int i = currentReverseLogID; i > batchID; i--)
                 {
-                    PrettyConsole.Line("Reverse id: " + currentReverseLogID);
                     await RevertStateFromReverseLog(i);
                 }
             }
@@ -338,9 +336,16 @@ namespace GrainImplementation
         {
             //Once save the state to files, then clear
             //The incremental log
-            var incrementalLog = await GetIncrementalLog(currentBatchID);
-            await SaveStateToFile(new IncrementalLog(incrementalLog, currentBatchID));
-            //incrementalLogMap.Remove(currentBatchID);
+            if ((currentBatchID % Constants.Checkpoint_Interval == 0) && currentBatchID != 0)
+            {
+                await SaveStateToFile(new IncrementalLog(statesMap, currentBatchID, LogType.CheckPoint));
+                PrettyConsole.Line("Save checkpoint: " + currentBatchID % Constants.Checkpoint_Interval + " in batch: " + currentBatchID);
+            }
+            else
+            {
+                var incrementalLog = await GetIncrementalLog(currentBatchID);
+                await SaveStateToFile(new IncrementalLog(incrementalLog, currentBatchID, LogType.Incremental));
+            }
             return Task.CompletedTask;
         }
 
@@ -525,10 +530,31 @@ namespace GrainImplementation
 
         private Task CalculateStatesFromIncrementalLog(List<IncrementalLog> logs, int batchID)
         {
-            //Since we need calculate state from batch 0, 1, 2
-            //and the log are read by reverse order 
-            //so we neeed read by reverse order
-            for (int i = 0; i < logs.Count; i++)
+            //At frist, try to load the checkpoint
+            int index = FindCheckpointIndex(logs);
+
+            if (index != 0)
+            {
+                //If index is 0, load the checkpoint
+                statesMap = logs[index].Log;
+                //If after the checkpoint, there are other logs
+                if (index != logs.Count - 1)
+                {
+                    LoadLogs(logs, index + 1, batchID);
+                }
+            }
+            else
+            {
+                LoadLogs(logs, 0, batchID);
+            }
+
+
+            return Task.CompletedTask;
+        }
+
+        private void LoadLogs(List<IncrementalLog> logs, int startIndex, int batchID)
+        {
+            for (int i = startIndex; i < logs.Count; i++)
             {
                 //PrettyConsole.Line("read incremental id: " + logs[i].BatchID.ToString());
                 foreach (var item in logs[i].Log)
@@ -548,7 +574,20 @@ namespace GrainImplementation
                     }
                 }
             }
-            return Task.CompletedTask;
+        }
+
+        private int FindCheckpointIndex(List<IncrementalLog> logs)
+        {
+            int index = 0;
+            for (int i = logs.Count - 1; i > 0; i--)
+            {
+                if (logs[i].logType == LogType.CheckPoint)
+                {
+                    index = i;
+                    break;
+                }
+            }
+            return index;
         }
 
         public Task<OperatorSettings> GetOperatorSettings()

@@ -8,11 +8,19 @@ namespace SystemInterfaces.Model
     {
         public Dictionary<string, object> Log { get; set;}
         public int BatchID { get; set; }
-        public IncrementalLog(Dictionary<string, object> Log, int batchID)
+        public LogType logType;
+        public IncrementalLog(Dictionary<string, object> Log, int batchID, LogType logType)
         {
             this.Log = Log;
             this.BatchID = batchID;
+            this.logType = logType;
         }
 
+    }
+
+    public enum LogType
+    {
+        Incremental,
+        CheckPoint
     }
 }

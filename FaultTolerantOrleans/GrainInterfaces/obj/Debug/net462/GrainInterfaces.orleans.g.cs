@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen4c0b1c4fc3FeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGend34e383e40FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -1608,8 +1608,13 @@ namespace OrleansGeneratedCode38151279
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.SerializerAttribute(typeof (global::SystemInterfaces.Model.IncrementalLog))]
     internal sealed class OrleansCodeGenSystemInterfaces_Model_IncrementalLogSerializer
     {
+        private readonly global::System.Func<global::SystemInterfaces.Model.IncrementalLog, global::SystemInterfaces.Model.LogType> getField2;
+        private readonly global::System.Action<global::SystemInterfaces.Model.IncrementalLog, global::SystemInterfaces.Model.LogType> setField2;
         public OrleansCodeGenSystemInterfaces_Model_IncrementalLogSerializer(global::Orleans.Serialization.IFieldUtils fieldUtils)
         {
+            global::System.Reflection.FieldInfo field2 = typeof (global::SystemInterfaces.Model.IncrementalLog).GetField(@"logType", (System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public));
+            getField2 = (global::System.Func<global::SystemInterfaces.Model.IncrementalLog, global::SystemInterfaces.Model.LogType>)fieldUtils.GetGetter(field2);
+            setField2 = (global::System.Action<global::SystemInterfaces.Model.IncrementalLog, global::SystemInterfaces.Model.LogType>)fieldUtils.GetReferenceSetter(field2);
         }
 
         [global::Orleans.CodeGeneration.CopierMethodAttribute]
@@ -1620,6 +1625,7 @@ namespace OrleansGeneratedCode38151279
             context.RecordCopy(original, result);
             result.BatchID = input.BatchID;
             result.Log = (global::System.Collections.Generic.Dictionary<global::System.String, global::System.Object>)context.DeepCopyInner(input.Log);
+            setField2(result, getField2(input));
             return result;
         }
 
@@ -1629,6 +1635,7 @@ namespace OrleansGeneratedCode38151279
             global::SystemInterfaces.Model.IncrementalLog input = (global::SystemInterfaces.Model.IncrementalLog)untypedInput;
             context.SerializeInner(input.BatchID, typeof (global::System.Int32));
             context.SerializeInner(input.Log, typeof (global::System.Collections.Generic.Dictionary<global::System.String, global::System.Object>));
+            context.SerializeInner(getField2(input), typeof (global::SystemInterfaces.Model.LogType));
         }
 
         [global::Orleans.CodeGeneration.DeserializerMethodAttribute]
@@ -1638,6 +1645,7 @@ namespace OrleansGeneratedCode38151279
             context.RecordObject(result);
             result.BatchID = (global::System.Int32)context.DeserializeInner(typeof (global::System.Int32));
             result.Log = (global::System.Collections.Generic.Dictionary<global::System.String, global::System.Object>)context.DeserializeInner(typeof (global::System.Collections.Generic.Dictionary<global::System.String, global::System.Object>));
+            setField2(result, (global::SystemInterfaces.Model.LogType)context.DeserializeInner(typeof (global::SystemInterfaces.Model.LogType)));
             return (global::SystemInterfaces.Model.IncrementalLog)result;
         }
     }
@@ -1902,7 +1910,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen4c0b1c4fc3FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGend34e383e40FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {
@@ -5700,6 +5708,7 @@ namespace OrleansGeneratedCode
             feature.AddKnownType(@"SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo,GrainInterfaces", @"SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo");
             feature.AddKnownType(@"SystemInterfaces.Model.Excutable,GrainInterfaces", @"SystemInterfaces.Model.Excutable");
             feature.AddKnownType(@"SystemInterfaces.Model.IncrementalLog,GrainInterfaces", @"SystemInterfaces.Model.IncrementalLog");
+            feature.AddKnownType(@"SystemInterfaces.Model.LogType,GrainInterfaces", @"SystemInterfaces.Model.LogType");
             feature.AddKnownType(@"SystemInterfaces.Model.OperatorSettings,GrainInterfaces", @"SystemInterfaces.Model.OperatorSettings");
             feature.AddKnownType(@"SystemInterfaces.Model.OperatorType,GrainInterfaces", @"SystemInterfaces.Model.OperatorType");
             feature.AddKnownType(@"SystemInterfaces.Model.StreamBatch,GrainInterfaces", @"SystemInterfaces.Model.StreamBatch");
