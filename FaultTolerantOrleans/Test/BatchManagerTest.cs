@@ -257,16 +257,28 @@ namespace Test
         public async Task TestReplayWillRestoreTheStates()
         {
             await SetUpSource();
-            await source.ProduceMessageAsync(wordCountMessage1);
-            await source.ProduceMessageAsync(wordCountMessage1);
+            //batch 0 contains 2 messages
+            await source.ProduceMessageAsync(wordCountMessage2);
+            await source.ProduceMessageAsync(wordCountMessage2);
             var batchCoordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
+            //Send barrier and commit
             await batchCoordinator.SendBarrier();
             Thread.Sleep(200);
-            await source.ProduceMessageAsync(wordCountMessage1);
+            //Send message for next batch
+            await source.ProduceMessageAsync(wordCountMessage2);
             Thread.Sleep(200);
+            //replace a stateless
+            var oldGuid = await source.GetTestGuid();
+            var topologyManager = client.GetGrain<ITopology>(Constants.Topology_Manager);
+            await topologyManager.ReplaceTheOldOperator(oldGuid);
+            Thread.Sleep(200);
+            //Test the count before replay
+            int countBeforeReplay = await source.GetState(new StreamMessage(wordCountMessage2.Key, "restart"));
+            Assert.AreEqual(2, countBeforeReplay);
+            //Replace the message.
             await source.ReplayTheMessageOnRecoveryCompleted();
             Thread.Sleep(300);
-            int countAfterReplay = await source.GetState(new StreamMessage(wordCountMessage1.Key, "me"));
+            int countAfterReplay = await source.GetState(new StreamMessage(wordCountMessage2.Key, "restart"));
             Assert.AreEqual(3, countAfterReplay);
         }
 
