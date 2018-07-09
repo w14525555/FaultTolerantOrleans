@@ -2,6 +2,7 @@
 using Orleans.Streams;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using SystemInterfaces;
 using SystemInterfaces.Model;
@@ -19,6 +20,7 @@ namespace GrainImplementation
         private const int Barrier_Interval = 10;
         private IDisposable disposable;
         private TimeSpan barrierTimeInterval = TimeSpan.FromSeconds(Barrier_Interval);
+        private List<int> processTimeList = new List<int>();
 
         private List<IStreamSource> sources = new List<IStreamSource>();
         private IBatchTracker tracker;
@@ -144,5 +146,28 @@ namespace GrainImplementation
             return Task.FromResult(committedID);
         }
 
+        public Task AddProcessingTime(int time)
+        {
+            processTimeList.Add(time);
+            if (processTimeList.Count >= 20)
+            {
+                SaveProcessingTimeIntoFiles();
+                processTimeList.Clear();
+            }
+            return Task.CompletedTask;
+        }
+
+        private Task SaveProcessingTimeIntoFiles()
+        {
+            TextWriter tw = new StreamWriter(@"D:\time.txt", true);
+
+            foreach (int s in processTimeList)
+            {
+                tw.WriteLine(s);
+            }
+
+            tw.Close();
+            return Task.CompletedTask;
+        }
     }
 }

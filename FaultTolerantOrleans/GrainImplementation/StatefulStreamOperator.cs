@@ -33,6 +33,7 @@ namespace GrainImplementation
         private int currentReverseLogID = 0;
 
         protected IBatchTracker batchTracker;
+        protected IBatchCoordinator batchCoordinator;
         protected IAsyncStream<StreamMessage> asyncStream;
         protected ITopology topologyManager;
         protected List<IOperator> downStreamOperators = new List<IOperator>();
@@ -44,6 +45,7 @@ namespace GrainImplementation
             //Generate random file name
             var name = @"D:\grainStates\grain" + Guid.NewGuid().ToString() + ".dat";
             batchTracker = GrainFactory.GetGrain<IBatchTracker>(Constants.Tracker);
+            batchCoordinator = GrainFactory.GetGrain<IBatchCoordinator>(Constants.Coordinator);
             operatorSettings.incrementalLogAddress = name;
             operatorSettings.operatorType = OperatorType.Stateful;
             topologyManager = GrainFactory.GetGrain<ITopology>(Constants.Topology_Manager);

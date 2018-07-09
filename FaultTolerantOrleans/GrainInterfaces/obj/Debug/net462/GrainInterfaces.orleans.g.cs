@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen5aef3a2304FeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen13479f457bFeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -83,6 +83,8 @@ namespace SystemInterfaces
                             return @"GetCommittedBatchID";
                         case 1955114601:
                             return @"StartBarrierTimer";
+                        case -1621021040:
+                            return @"AddProcessingTime";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 2046360863 + @",methodId=" + methodId);
                     }
@@ -138,6 +140,11 @@ namespace SystemInterfaces
         {
             return base.InvokeMethodAsync<global::System.Object>(1955114601, null);
         }
+
+        public global::System.Threading.Tasks.Task AddProcessingTime(global::System.Int32 time)
+        {
+            return base.InvokeMethodAsync<global::System.Object>(-1621021040, new global::System.Object[]{time});
+        }
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute(typeof (global::SystemInterfaces.IBatchCoordinator), 2046360863), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
@@ -176,6 +183,9 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.IBatchCoordinator)grain).GetCommittedBatchID();
                         case 1955114601:
                             await ((global::SystemInterfaces.IBatchCoordinator)grain).StartBarrierTimer();
+                            return null;
+                        case -1621021040:
+                            await ((global::SystemInterfaces.IBatchCoordinator)grain).AddProcessingTime((global::System.Int32)arguments[0]);
                             return null;
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 2046360863 + @",methodId=" + methodId);
@@ -1794,6 +1804,7 @@ namespace OrleansGeneratedCode38151279
             result.Created = (global::System.DateTimeOffset)context.DeepCopyInner(input.Created);
             result.From = (global::System.Guid)context.DeepCopyInner(input.From);
             result.Key = input.Key;
+            result.Start_Time = input.Start_Time;
             result.Value = input.Value;
             result.barrierOrCommitInfo = (global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo)context.DeepCopyInner(input.barrierOrCommitInfo);
             result.messageType = input.messageType;
@@ -1810,6 +1821,7 @@ namespace OrleansGeneratedCode38151279
             context.SerializeInner(input.Created, typeof (global::System.DateTimeOffset));
             context.SerializeInner(input.From, typeof (global::System.Guid));
             context.SerializeInner(input.Key, typeof (global::System.String));
+            context.SerializeInner(input.Start_Time, typeof (global::System.Int32));
             context.SerializeInner(input.Value, typeof (global::System.String));
             context.SerializeInner(input.barrierOrCommitInfo, typeof (global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo));
             context.SerializeInner(input.messageType, typeof (global::SystemInterfaces.Model.MessageType));
@@ -1826,6 +1838,7 @@ namespace OrleansGeneratedCode38151279
             result.Created = (global::System.DateTimeOffset)context.DeserializeInner(typeof (global::System.DateTimeOffset));
             result.From = (global::System.Guid)context.DeserializeInner(typeof (global::System.Guid));
             result.Key = (global::System.String)context.DeserializeInner(typeof (global::System.String));
+            result.Start_Time = (global::System.Int32)context.DeserializeInner(typeof (global::System.Int32));
             result.Value = (global::System.String)context.DeserializeInner(typeof (global::System.String));
             result.barrierOrCommitInfo = (global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo)context.DeserializeInner(typeof (global::SystemInterfaces.Model.BarrierOrCommitMsgTrackingInfo));
             result.messageType = (global::SystemInterfaces.Model.MessageType)context.DeserializeInner(typeof (global::SystemInterfaces.Model.MessageType));
@@ -2036,7 +2049,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen5aef3a2304FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGen13479f457bFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {

@@ -1,5 +1,6 @@
 ﻿using GrainImplementation;
 using Orleans.Streams;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using SystemInterfaces.Model;
@@ -19,11 +20,13 @@ namespace SystemImplementation
                     throw new EndOfStreamException();
                 }
                 UpdateStatesMap(msg, GetValueFromStatesMap(msg.Key)+ 1);
+                batchCoordinator.AddProcessingTime(DateTime.Now.Millisecond - msg.Start_Time);
                 stream.OnNextAsync(new StreamMessage(msg.Key, GetValueFromStatesMap(msg.Key).ToString()));
             }
             else
             {
                 InsertIntoStatesMap(msg, 1);
+                batchCoordinator.AddProcessingTime(DateTime.Now.Millisecond - msg.Start_Time);
                 stream.OnNextAsync(new StreamMessage(msg.Key, "1"));
             }
             return Task.CompletedTask;

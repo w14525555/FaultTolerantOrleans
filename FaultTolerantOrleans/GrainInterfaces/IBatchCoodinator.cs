@@ -22,5 +22,7 @@ namespace SystemInterfaces
         Task<int> GetCommittedBatchID();
 
         Task StartBarrierTimer();
+
+        Task AddProcessingTime(int time);
     }
 }

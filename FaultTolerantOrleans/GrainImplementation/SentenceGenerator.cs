@@ -20,16 +20,20 @@ namespace SystemImplementation
         public Task RegisterTimerAndSetSources(List<IStreamSource> sources)
         {
             this.sources = sources; 
+            
             disposable = RegisterTimer(GenerateAndSendSentences, null, sentenceInterval, sentenceInterval);
             return Task.CompletedTask;
         }
 
-        private Task GenerateAndSendSentences(object org)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
+        private async Task<Task> GenerateAndSendSentences(object org)
         {
             string sentence = GetRandomSentence();
+            var message = new StreamMessage("message", sentence);
+            message.Start_Time = DateTime.Now.Millisecond;
             foreach (var item in sources)
             {
-                item.ProduceMessageAsync(new StreamMessage("message", sentence));
+                item.ProduceMessageAsync(message);
             }
 
             return Task.CompletedTask;

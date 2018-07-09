@@ -14,6 +14,7 @@ namespace SystemInterfaces.Model
         public string Key { get; set; } = "Alexey";
 		public string Value { get; set; }
         public int BatchID { get; set; }
+        public int Start_Time { get; set; }
 
 		public StreamMessage(string key, string value)
 		{
