@@ -477,7 +477,6 @@ namespace GrainImplementation
             //Insert: Should remove the value from map
             //Update: revert the value
             //delete: add the key and value back
-            PrettyConsole.Line("Revert from Reverse Log!");
             //If the reverse log does not contain the batch id
             //means there is no change in the states map
             if (reverseLogMap.ContainsKey(batchID))
