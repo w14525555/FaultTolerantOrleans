@@ -329,18 +329,6 @@ namespace Test
             Assert.AreEqual(8, size);
         }
 
-
-        //[TestMethod]
-        //public async Task TestSourceHasRightDownStreamNumber()
-        //{
-        //    await SetUpSource();
-        //    Thread.Sleep(100);
-        //    ITopology topologyManager = client.GetGrain<ITopology>(Constants.Topology_Manager);
-        //    TopologyUnit topologyUnit = await source.GetTopologyUnit();
-        //    TopologyUnit unit = await topologyManager.GetUnit(topologyUnit.PrimaryKey);
-        //    Assert.AreEqual(3, unit.GetdownStreamUnits().Count);
-        //}
-
         //SetUp Functions 
 
         private Task StartSilo()
