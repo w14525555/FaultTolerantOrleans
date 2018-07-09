@@ -159,6 +159,11 @@ namespace OrleansClient
             //subscribe to the stream to receiver furthur messages sent to the chatroom
             StatefulStreamObserver observer = new StatefulStreamObserver(client.ServiceProvider.GetService<ILoggerFactory>()
                 .CreateLogger($"{joinedChannel} channel"));
+
+            //Start Word Generator
+            var sentenceGenerator = client.GetGrain<ISentenceGenerator>(Constants.Sentence_Generator);
+            await sentenceGenerator.RegisterTimerAndSetSources(sources);
+
             await stream.SubscribeAsync(observer);
         }
 

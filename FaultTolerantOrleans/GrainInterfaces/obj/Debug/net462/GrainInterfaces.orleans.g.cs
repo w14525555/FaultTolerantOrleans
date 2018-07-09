@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen7a15df7d22FeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen5aef3a2304FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -566,6 +566,132 @@ namespace SystemInterfaces
             get
             {
                 return -66543353;
+            }
+        }
+
+        public global::System.UInt16 InterfaceVersion
+        {
+            get
+            {
+                return 1;
+            }
+        }
+    }
+
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::System.SerializableAttribute, global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.GrainReferenceAttribute(typeof (global::SystemInterfaces.ISentenceGenerator))]
+    internal class OrleansCodeGenSentenceGeneratorReference : global::Orleans.Runtime.GrainReference, global::SystemInterfaces.ISentenceGenerator
+    {
+        protected OrleansCodeGenSentenceGeneratorReference(global::Orleans.Runtime.GrainReference other): base (other)
+        {
+        }
+
+        OrleansCodeGenSentenceGeneratorReference(global::Orleans.Runtime.GrainReference other, global::Orleans.CodeGeneration.InvokeMethodOptions invokeMethodOptions): base (other, invokeMethodOptions)
+        {
+        }
+
+        protected OrleansCodeGenSentenceGeneratorReference(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context): base (info, context)
+        {
+        }
+
+        public override global::System.Int32 InterfaceId
+        {
+            get
+            {
+                return 1422618689;
+            }
+        }
+
+        public override global::System.UInt16 InterfaceVersion
+        {
+            get
+            {
+                return 1;
+            }
+        }
+
+        public override global::System.String InterfaceName
+        {
+            get
+            {
+                return @"global::SystemInterfaces.ISentenceGenerator";
+            }
+        }
+
+        public override global::System.Boolean IsCompatible(global::System.Int32 interfaceId)
+        {
+            return interfaceId == 1422618689 || interfaceId == -1277021679;
+        }
+
+        public override global::System.String GetMethodName(global::System.Int32 interfaceId, global::System.Int32 methodId)
+        {
+            switch (interfaceId)
+            {
+                case 1422618689:
+                    switch (methodId)
+                    {
+                        case 1506728396:
+                            return @"RegisterTimerAndSetSources";
+                        default:
+                            throw new global::System.NotImplementedException(@"interfaceId=" + 1422618689 + @",methodId=" + methodId);
+                    }
+
+                case -1277021679:
+                    switch (methodId)
+                    {
+                        default:
+                            throw new global::System.NotImplementedException(@"interfaceId=" + -1277021679 + @",methodId=" + methodId);
+                    }
+
+                default:
+                    throw new global::System.NotImplementedException(@"interfaceId=" + interfaceId);
+            }
+        }
+
+        public global::System.Threading.Tasks.Task RegisterTimerAndSetSources(global::System.Collections.Generic.List<global::SystemInterfaces.IStreamSource> sources)
+        {
+            return base.InvokeMethodAsync<global::System.Object>(1506728396, new global::System.Object[]{sources});
+        }
+    }
+
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute(typeof (global::SystemInterfaces.ISentenceGenerator), 1422618689), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
+    internal class OrleansCodeGenSentenceGeneratorMethodInvoker : global::Orleans.CodeGeneration.IGrainMethodInvoker
+    {
+        public async global::System.Threading.Tasks.Task<global::System.Object> Invoke(global::Orleans.Runtime.IAddressable grain, global::Orleans.CodeGeneration.InvokeMethodRequest request)
+        {
+            global::System.Int32 interfaceId = request.InterfaceId;
+            global::System.Int32 methodId = request.MethodId;
+            global::System.Object[] arguments = request.Arguments;
+            if (grain == null)
+                throw new global::System.ArgumentNullException(@"grain");
+            switch (interfaceId)
+            {
+                case 1422618689:
+                    switch (methodId)
+                    {
+                        case 1506728396:
+                            await ((global::SystemInterfaces.ISentenceGenerator)grain).RegisterTimerAndSetSources((global::System.Collections.Generic.List<global::SystemInterfaces.IStreamSource>)arguments[0]);
+                            return null;
+                        default:
+                            throw new global::System.NotImplementedException(@"interfaceId=" + 1422618689 + @",methodId=" + methodId);
+                    }
+
+                case -1277021679:
+                    switch (methodId)
+                    {
+                        default:
+                            throw new global::System.NotImplementedException(@"interfaceId=" + -1277021679 + @",methodId=" + methodId);
+                    }
+
+                default:
+                    throw new global::System.NotImplementedException(@"interfaceId=" + interfaceId);
+            }
+        }
+
+        public global::System.Int32 InterfaceId
+        {
+            get
+            {
+                return 1422618689;
             }
         }
 
@@ -1910,13 +2036,14 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen7a15df7d22FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGen5aef3a2304FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {
             feature.Interfaces.Add(new global::Orleans.Metadata.GrainInterfaceMetadata(typeof (global::SystemInterfaces.IBatchCoordinator), typeof (SystemInterfaces.OrleansCodeGenBatchCoordinatorReference), typeof (SystemInterfaces.OrleansCodeGenBatchCoordinatorMethodInvoker), 2046360863));
             feature.Interfaces.Add(new global::Orleans.Metadata.GrainInterfaceMetadata(typeof (global::SystemInterfaces.IBatchTracker), typeof (SystemInterfaces.OrleansCodeGenBatchTrackerReference), typeof (SystemInterfaces.OrleansCodeGenBatchTrackerMethodInvoker), 998595849));
             feature.Interfaces.Add(new global::Orleans.Metadata.GrainInterfaceMetadata(typeof (global::SystemInterfaces.IOperator), typeof (SystemInterfaces.OrleansCodeGenOperatorReference), typeof (SystemInterfaces.OrleansCodeGenOperatorMethodInvoker), -66543353));
+            feature.Interfaces.Add(new global::Orleans.Metadata.GrainInterfaceMetadata(typeof (global::SystemInterfaces.ISentenceGenerator), typeof (SystemInterfaces.OrleansCodeGenSentenceGeneratorReference), typeof (SystemInterfaces.OrleansCodeGenSentenceGeneratorMethodInvoker), 1422618689));
             feature.Interfaces.Add(new global::Orleans.Metadata.GrainInterfaceMetadata(typeof (global::SystemInterfaces.IStatefulOperator), typeof (SystemInterfaces.OrleansCodeGenStatefulOperatorReference), typeof (SystemInterfaces.OrleansCodeGenStatefulOperatorMethodInvoker), 498177181));
             feature.Interfaces.Add(new global::Orleans.Metadata.GrainInterfaceMetadata(typeof (global::SystemInterfaces.IStatelessOperator), typeof (SystemInterfaces.OrleansCodeGenStatelessOperatorReference), typeof (SystemInterfaces.OrleansCodeGenStatelessOperatorMethodInvoker), -1903779801));
             feature.Interfaces.Add(new global::Orleans.Metadata.GrainInterfaceMetadata(typeof (global::SystemInterfaces.IStreamSource), typeof (SystemInterfaces.OrleansCodeGenStreamSourceReference), typeof (SystemInterfaces.OrleansCodeGenStreamSourceMethodInvoker), 710632260));
@@ -5701,6 +5828,7 @@ namespace OrleansGeneratedCode
             feature.AddKnownType(@"SystemInterfaces.IBatchCoordinator,GrainInterfaces", @"SystemInterfaces.IBatchCoordinator");
             feature.AddKnownType(@"SystemInterfaces.IBatchTracker,GrainInterfaces", @"SystemInterfaces.IBatchTracker");
             feature.AddKnownType(@"SystemInterfaces.IOperator,GrainInterfaces", @"SystemInterfaces.IOperator");
+            feature.AddKnownType(@"SystemInterfaces.ISentenceGenerator,GrainInterfaces", @"SystemInterfaces.ISentenceGenerator");
             feature.AddKnownType(@"SystemInterfaces.IStatefulOperator,GrainInterfaces", @"SystemInterfaces.IStatefulOperator");
             feature.AddKnownType(@"SystemInterfaces.IStatelessOperator,GrainInterfaces", @"SystemInterfaces.IStatelessOperator");
             feature.AddKnownType(@"SystemInterfaces.IStreamSource,GrainInterfaces", @"SystemInterfaces.IStreamSource");

@@ -446,18 +446,21 @@ namespace GrainImplementation
         /// Writes the given object instance to a binary file.
         public static Task WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = true)
         {
-            using (Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create))
+            Stream stream;
+            using (stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create))
             {
                 var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
                 binaryFormatter.Serialize(stream, objectToWrite);
             }
+            stream.Close();
 
             return Task.CompletedTask;
         }
 
         public static Task<List<T>> ReadFromBinaryFile<T>(string filePath)
         {
-            using (Stream stream = File.Open(filePath, FileMode.OpenOrCreate))
+            Stream stream;
+            using (stream = File.Open(filePath, FileMode.OpenOrCreate))
             {
                 List<T> statesList = new List<T>();
                 while (stream.Position < stream.Length)
@@ -466,6 +469,7 @@ namespace GrainImplementation
                     T obj = (T)binaryFormatter.Deserialize(stream);
                     statesList.Add(obj);
                 }
+                stream.Close();
                 return Task.FromResult(statesList);
             }
         }
