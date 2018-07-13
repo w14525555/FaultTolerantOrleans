@@ -20,13 +20,15 @@ namespace SystemImplementation
                     throw new EndOfStreamException();
                 }
                 UpdateStatesMap(msg, GetValueFromStatesMap(msg.Key)+ 1);
-                batchCoordinator.AddProcessingTime(DateTime.Now.Millisecond - msg.Start_Time);
+                int processingTime = DateTime.Now.Millisecond - msg.Start_Time;
+                batchCoordinator.AddProcessingTime(processingTime);
                 stream.OnNextAsync(new StreamMessage(msg.Key, GetValueFromStatesMap(msg.Key).ToString()));
             }
             else
             {
                 InsertIntoStatesMap(msg, 1);
-                batchCoordinator.AddProcessingTime(DateTime.Now.Millisecond - msg.Start_Time);
+                int processingTime = DateTime.Now.Millisecond - msg.Start_Time;
+                batchCoordinator.AddProcessingTime(processingTime);
                 stream.OnNextAsync(new StreamMessage(msg.Key, "1"));
             }
             return Task.CompletedTask;

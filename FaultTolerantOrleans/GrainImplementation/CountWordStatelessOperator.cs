@@ -18,6 +18,7 @@ namespace SystemImplementation
                 int index = SystemImplementation.PartitionFunction.PartitionOperatorByKey(msg.Key, downStreamOperators.Count);
                 IOperator op = downStreamOperators.ElementAt(index);
                 StreamMessage newMessage = new StreamMessage(word, null);
+                newMessage.Start_Time = msg.Start_Time;
                 newMessage.BatchID = msg.BatchID;
                 await ExecuteMessagesByDownStreamOperators(newMessage, stream, op);
             }

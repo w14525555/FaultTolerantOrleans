@@ -195,6 +195,7 @@ namespace GrainImplementation
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         private Task ProcessNormalMessage(StreamMessage msg)
         {
+            msg.Start_Time = DateTime.Now.Millisecond;
             //At first find a operator by hashing
             int index = roundRobinValue % downStreamOperators.Count;
             roundRobinValue++;

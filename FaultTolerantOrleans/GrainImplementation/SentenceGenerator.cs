@@ -30,7 +30,6 @@ namespace SystemImplementation
         {
             string sentence = GetRandomSentence();
             var message = new StreamMessage("message", sentence);
-            message.Start_Time = DateTime.Now.Millisecond;
             foreach (var item in sources)
             {
                 item.ProduceMessageAsync(message);
