@@ -89,14 +89,14 @@ namespace GrainImplementation
                 }
                 else
                 {
-                    if (CheckCount(msg))
-                    {
+                    //if (CheckCount(msg))
+                    //{
                         await ProcessSpecialMessage(msg);
                         if (downStreamOperators.Count > 0)
                         {
                             await BroadcastSpecialMessage(msg, stream);
                         }
-                    }
+                    //}
                 }
             }
             else

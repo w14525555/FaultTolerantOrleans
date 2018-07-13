@@ -177,10 +177,10 @@ namespace GrainImplementation
             msg.From = topologyUnit.PrimaryKey;
             if (msg.Key != Constants.System_Key)
             {
+                msg.Start_Time = DateTime.Now.Millisecond;
                 if (msg.messageType != MessageType.Test)
                 {
                     msg.BatchID = currentBatchID;
-                    PrettyConsole.Line("Set ID: " + currentBatchID);
                 }
                 messageBuffer.Add(msg);
                 await ProcessNormalMessage(msg);
@@ -195,7 +195,6 @@ namespace GrainImplementation
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         private Task ProcessNormalMessage(StreamMessage msg)
         {
-            msg.Start_Time = DateTime.Now.Millisecond;
             //At first find a operator by hashing
             int index = roundRobinValue % downStreamOperators.Count;
             roundRobinValue++;
@@ -245,7 +244,7 @@ namespace GrainImplementation
                 currentBatchID = msg.BatchID + 1;
                 PrettyConsole.Line("Increment ID " + currentBatchID);
                 await TrackingBarrierMessages(msg);
-                await batchTracker.CompleteOneOperatorBarrier(info);
+                batchTracker.CompleteOneOperatorBarrier(info);
                 BroadcastSpecialMessage(msg, stream);
             }
             return Task.CompletedTask;

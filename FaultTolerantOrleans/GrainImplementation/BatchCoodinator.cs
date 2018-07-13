@@ -17,10 +17,11 @@ namespace GrainImplementation
         private StreamMessage commitMsg = new StreamMessage(Constants.System_Key, Constants.Commit_Value);
         private StreamMessage recoveryMsg = new StreamMessage(Constants.System_Key, Constants.Recovery_Value);
 
-        private const int Barrier_Interval = 10;
+        private const int Barrier_Interval = 100;
+        private const int Processing_Time_Interval = 100;
         private IDisposable disposable;
-        private TimeSpan barrierTimeInterval = TimeSpan.FromSeconds(Barrier_Interval);
-        private List<int> processTimeList = new List<int>();
+        private TimeSpan barrierTimeInterval = TimeSpan.FromMilliseconds(Barrier_Interval);
+        private List<int> processingTimeList = new List<int>();
 
         private List<IStreamSource> sources = new List<IStreamSource>();
         private IBatchTracker tracker;
@@ -148,11 +149,11 @@ namespace GrainImplementation
 
         public Task AddProcessingTime(int time)
         {
-            processTimeList.Add(time);
-            if (processTimeList.Count >= 20)
+            processingTimeList.Add(time);
+            if (processingTimeList.Count >= Processing_Time_Interval)
             {
                 SaveProcessingTimeIntoFiles();
-                processTimeList.Clear();
+                processingTimeList.Clear();
             }
             return Task.CompletedTask;
         }
@@ -160,14 +161,32 @@ namespace GrainImplementation
         private Task SaveProcessingTimeIntoFiles()
         {
             TextWriter tw = new StreamWriter(@"D:\time.txt", true);
-
-            foreach (int s in processTimeList)
-            {
-                tw.WriteLine(s);
-            }
-
+            int time = CalculateAverageProcessingTime();
+            tw.WriteLine(time);
             tw.Close();
             return Task.CompletedTask;
+        }
+
+        private int CalculateAverageProcessingTime()
+        {
+            int sum = 0;
+            int count = 0;
+            foreach (int item in processingTimeList)
+            {
+                //In the multiprocessor computer, you can get different timing results on different processors
+                //So there might be very few negative result. 
+                if(item > 0)
+                {
+                    sum += item;
+                    count++;
+                }
+            }
+
+            if (count == 0)
+            {
+                throw new InvalidOperationException("All Negative processing time!");
+            }
+            return sum / count;
         }
     }
 }
