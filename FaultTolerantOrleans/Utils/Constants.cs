@@ -18,6 +18,6 @@ namespace Utils
         public const string Sentence_Generator = "Sentence Generator";
         public const string Stateless_Operator_Prefix = "SystemImplementation.CountWordStatelessOperator";
         public const string Stateful_Operator_Prefix = "SystemImplementation.CountWordStatefulOperator";
-        public const int Checkpoint_Interval = 2;
+        public const int Checkpoint_Interval = 50;
     }
 }

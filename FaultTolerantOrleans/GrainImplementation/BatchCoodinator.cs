@@ -17,7 +17,7 @@ namespace GrainImplementation
         private StreamMessage commitMsg = new StreamMessage(Constants.System_Key, Constants.Commit_Value);
         private StreamMessage recoveryMsg = new StreamMessage(Constants.System_Key, Constants.Recovery_Value);
 
-        private const int Barrier_Interval = 100;
+        private const int Barrier_Interval = 5000;
         private const int Processing_Time_Interval = 100;
         private IDisposable disposable;
         private TimeSpan barrierTimeInterval = TimeSpan.FromMilliseconds(Barrier_Interval);
@@ -67,7 +67,7 @@ namespace GrainImplementation
             await tracker.TrackingBarrierMessages(barrierMsg);
             foreach (IStreamSource source in sources)
             {
-                await source.ProduceMessageAsync(barrierMsg);
+                source.ProduceMessageAsync(barrierMsg);
             }
             currentBatchID++;
             return Task.CompletedTask;
@@ -161,13 +161,13 @@ namespace GrainImplementation
         private Task SaveProcessingTimeIntoFiles()
         {
             TextWriter tw = new StreamWriter(@"D:\time.txt", true);
-            int time = CalculateAverageProcessingTime();
+            float time = CalculateAverageProcessingTime();
             tw.WriteLine(time);
             tw.Close();
             return Task.CompletedTask;
         }
 
-        private int CalculateAverageProcessingTime()
+        private float CalculateAverageProcessingTime()
         {
             int sum = 0;
             int count = 0;
@@ -186,7 +186,7 @@ namespace GrainImplementation
             {
                 throw new InvalidOperationException("All Negative processing time!");
             }
-            return sum / count;
+            return (float)sum/(float)count;
         }
     }
 }

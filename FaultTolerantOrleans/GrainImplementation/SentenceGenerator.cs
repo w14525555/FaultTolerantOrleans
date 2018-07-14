@@ -13,7 +13,7 @@ namespace SystemImplementation
         private List<string> words = new List<string>(new string[] { "an", "automobile", "or", "motor", "car", "is", "a", "wheeled", "motor", "vehicle", "used", "for", "transporting", "passengers", "which", "also", "carries", "its", "own", "engine", "or" });
         private List<IStreamSource> sources = new List<IStreamSource>();
         private static Random random = new Random();
-        private TimeSpan sentenceInterval = TimeSpan.FromMilliseconds(10);
+        private TimeSpan sentenceInterval = TimeSpan.FromMilliseconds(100);
 
         private IDisposable disposable;
 

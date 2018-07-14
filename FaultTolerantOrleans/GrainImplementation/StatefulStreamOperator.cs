@@ -257,7 +257,7 @@ namespace GrainImplementation
                             downStreamMessageCountMaps[batchID].Add(key, 1);
                         }
                     }
-                    await op.ExecuteMessage(msg, stream);
+                    op.ExecuteMessage(msg, stream);
                 }
                 catch (Exception e)
                 {

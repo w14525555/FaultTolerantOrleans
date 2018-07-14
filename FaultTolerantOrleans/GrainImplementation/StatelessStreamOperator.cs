@@ -113,7 +113,7 @@ namespace SystemImplementation
             {
                 await IncrementUpStreamCount(msg);
                 msg.From = this.GetPrimaryKey();
-                await CustomExcutionMethod(msg, stream);
+                CustomExcutionMethod(msg, stream);
             }
             else
             {
@@ -151,8 +151,8 @@ namespace SystemImplementation
             {
                 if (CheckCount(msg))
                 {
-                    await HandleBarrierMessages(msg);
-                    await batchTracker.CompleteOneOperatorBarrier(info);
+                    HandleBarrierMessages(msg);
+                    batchTracker.CompleteOneOperatorBarrier(info);
                 }
             }
             else

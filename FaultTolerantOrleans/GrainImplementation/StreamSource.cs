@@ -183,11 +183,11 @@ namespace GrainImplementation
                     msg.BatchID = currentBatchID;
                 }
                 messageBuffer.Add(msg);
-                await ProcessNormalMessage(msg);
+                ProcessNormalMessage(msg);
             }
             else
             {
-                await ProcessSpecialMessage(msg, stream);
+                ProcessSpecialMessage(msg, stream);
             }
             return Task.CompletedTask;
         }
@@ -312,7 +312,7 @@ namespace GrainImplementation
             PrettyConsole.Line("Start Replay!");
             foreach (StreamMessage msg in messageBuffer)
             {
-                await ProcessNormalMessage(msg);
+                ProcessNormalMessage(msg);
             }
             return Task.CompletedTask;
         }
