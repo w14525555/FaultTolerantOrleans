@@ -2,6 +2,7 @@
 using Orleans.Streams;
 using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using SystemInterfaces.Model;
 
@@ -17,7 +18,7 @@ namespace SystemImplementation
                 //Thrid time throw a exception used for testing recovery
                 if (msg.Key == "me" && GetValueFromStatesMap(msg.Key) == 2 && !isARestartOperator)
                 {
-                    throw new EndOfStreamException();
+                    Thread.Sleep(10000);
                 }
                 UpdateStatesMap(msg, GetValueFromStatesMap(msg.Key)+ 1);
                 int processingTime = DateTime.Now.Millisecond - msg.Start_Time;

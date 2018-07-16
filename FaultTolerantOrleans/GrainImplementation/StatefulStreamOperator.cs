@@ -774,5 +774,10 @@ namespace GrainImplementation
 
             return Task.CompletedTask;
         }
+
+        public Task<int> DetectErrors()
+        {
+            return Task.FromResult(1);
+        }
     }
 }

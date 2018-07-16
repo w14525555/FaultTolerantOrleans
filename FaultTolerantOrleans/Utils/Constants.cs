@@ -16,6 +16,7 @@ namespace Utils
         public const string Coordinator = "Coordinator";
         public const string Topology_Manager = "Topology Manager";
         public const string Sentence_Generator = "Sentence Generator";
+        public const string Error_Detector = "Error Detector";
         public const string Stateless_Operator_Prefix = "SystemImplementation.CountWordStatelessOperator";
         public const string Stateful_Operator_Prefix = "SystemImplementation.CountWordStatefulOperator";
         public const int Checkpoint_Interval = 50;

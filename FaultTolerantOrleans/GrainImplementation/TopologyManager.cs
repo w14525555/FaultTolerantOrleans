@@ -245,6 +245,11 @@ namespace SystemImplementation
             return Task.FromResult(topology.GetUnit(key));
         }
 
+        public Task<List<TopologyUnit>> GetAllUnits()
+        {
+            return Task.FromResult(topology.GetAllTopologyUnits());
+        }
+
         public Task<List<IStreamSource>> GetRandomSources(int num)
         {
             CheckNum(num);

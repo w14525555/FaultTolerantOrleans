@@ -17,7 +17,7 @@ namespace GrainImplementation
         private StreamMessage commitMsg = new StreamMessage(Constants.System_Key, Constants.Commit_Value);
         private StreamMessage recoveryMsg = new StreamMessage(Constants.System_Key, Constants.Recovery_Value);
 
-        private const int Barrier_Interval = 5000;
+        private const int Barrier_Interval = 1000;
         private const int Processing_Time_Interval = 100;
         private IDisposable disposable;
         private TimeSpan barrierTimeInterval = TimeSpan.FromMilliseconds(Barrier_Interval);
@@ -26,6 +26,7 @@ namespace GrainImplementation
         private List<IStreamSource> sources = new List<IStreamSource>();
         private IBatchTracker tracker;
         private ITopology topologyManager;
+        private long numOfWordsProcessed = 0;
        
 
         private int currentBatchID { get; set; }
@@ -152,6 +153,11 @@ namespace GrainImplementation
             processingTimeList.Add(time);
             if (processingTimeList.Count >= Processing_Time_Interval)
             {
+                numOfWordsProcessed += Processing_Time_Interval;
+                if (numOfWordsProcessed % 1000 == 0)
+                {
+                    PrettyConsole.Line("Process " + numOfWordsProcessed + " words");
+                }
                 SaveProcessingTimeIntoFiles();
                 processingTimeList.Clear();
             }

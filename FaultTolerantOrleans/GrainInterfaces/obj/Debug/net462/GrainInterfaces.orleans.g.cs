@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGenb22876b04bFeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGena6378a9014FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -422,6 +422,132 @@ namespace SystemInterfaces
         }
     }
 
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::System.SerializableAttribute, global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.GrainReferenceAttribute(typeof (global::SystemInterfaces.IErrorDetector))]
+    internal class OrleansCodeGenErrorDetectorReference : global::Orleans.Runtime.GrainReference, global::SystemInterfaces.IErrorDetector
+    {
+        protected OrleansCodeGenErrorDetectorReference(global::Orleans.Runtime.GrainReference other): base (other)
+        {
+        }
+
+        OrleansCodeGenErrorDetectorReference(global::Orleans.Runtime.GrainReference other, global::Orleans.CodeGeneration.InvokeMethodOptions invokeMethodOptions): base (other, invokeMethodOptions)
+        {
+        }
+
+        protected OrleansCodeGenErrorDetectorReference(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context): base (info, context)
+        {
+        }
+
+        public override global::System.Int32 InterfaceId
+        {
+            get
+            {
+                return 1654829170;
+            }
+        }
+
+        public override global::System.UInt16 InterfaceVersion
+        {
+            get
+            {
+                return 1;
+            }
+        }
+
+        public override global::System.String InterfaceName
+        {
+            get
+            {
+                return @"global::SystemInterfaces.IErrorDetector";
+            }
+        }
+
+        public override global::System.Boolean IsCompatible(global::System.Int32 interfaceId)
+        {
+            return interfaceId == 1654829170 || interfaceId == -1277021679;
+        }
+
+        public override global::System.String GetMethodName(global::System.Int32 interfaceId, global::System.Int32 methodId)
+        {
+            switch (interfaceId)
+            {
+                case 1654829170:
+                    switch (methodId)
+                    {
+                        case 737480785:
+                            return @"RegisterTimerToDetectFailures";
+                        default:
+                            throw new global::System.NotImplementedException(@"interfaceId=" + 1654829170 + @",methodId=" + methodId);
+                    }
+
+                case -1277021679:
+                    switch (methodId)
+                    {
+                        default:
+                            throw new global::System.NotImplementedException(@"interfaceId=" + -1277021679 + @",methodId=" + methodId);
+                    }
+
+                default:
+                    throw new global::System.NotImplementedException(@"interfaceId=" + interfaceId);
+            }
+        }
+
+        public global::System.Threading.Tasks.Task RegisterTimerToDetectFailures()
+        {
+            return base.InvokeMethodAsync<global::System.Object>(737480785, null);
+        }
+    }
+
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute(typeof (global::SystemInterfaces.IErrorDetector), 1654829170), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
+    internal class OrleansCodeGenErrorDetectorMethodInvoker : global::Orleans.CodeGeneration.IGrainMethodInvoker
+    {
+        public async global::System.Threading.Tasks.Task<global::System.Object> Invoke(global::Orleans.Runtime.IAddressable grain, global::Orleans.CodeGeneration.InvokeMethodRequest request)
+        {
+            global::System.Int32 interfaceId = request.InterfaceId;
+            global::System.Int32 methodId = request.MethodId;
+            global::System.Object[] arguments = request.Arguments;
+            if (grain == null)
+                throw new global::System.ArgumentNullException(@"grain");
+            switch (interfaceId)
+            {
+                case 1654829170:
+                    switch (methodId)
+                    {
+                        case 737480785:
+                            await ((global::SystemInterfaces.IErrorDetector)grain).RegisterTimerToDetectFailures();
+                            return null;
+                        default:
+                            throw new global::System.NotImplementedException(@"interfaceId=" + 1654829170 + @",methodId=" + methodId);
+                    }
+
+                case -1277021679:
+                    switch (methodId)
+                    {
+                        default:
+                            throw new global::System.NotImplementedException(@"interfaceId=" + -1277021679 + @",methodId=" + methodId);
+                    }
+
+                default:
+                    throw new global::System.NotImplementedException(@"interfaceId=" + interfaceId);
+            }
+        }
+
+        public global::System.Int32 InterfaceId
+        {
+            get
+            {
+                return 1654829170;
+            }
+        }
+
+        public global::System.UInt16 InterfaceVersion
+        {
+            get
+            {
+                return 1;
+            }
+        }
+    }
+
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::System.SerializableAttribute, global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.GrainReferenceAttribute(typeof (global::SystemInterfaces.IOperator))]
     internal class OrleansCodeGenOperatorReference : global::Orleans.Runtime.GrainReference, global::SystemInterfaces.IOperator
     {
@@ -481,6 +607,8 @@ namespace SystemInterfaces
                             return @"GetTopologyUnit";
                         case -1221400782:
                             return @"ExecuteMessage";
+                        case -2061238574:
+                            return @"DetectErrors";
                         case 2075549514:
                             return @"GetStateInReverseLog";
                         case 408823471:
@@ -514,6 +642,11 @@ namespace SystemInterfaces
         public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> ExecuteMessage(global::SystemInterfaces.Model.StreamMessage msg, global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage> stream)
         {
             return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-1221400782, new global::System.Object[]{msg, stream});
+        }
+
+        public global::System.Threading.Tasks.Task<global::System.Int32> DetectErrors()
+        {
+            return base.InvokeMethodAsync<global::System.Int32>(-2061238574, null);
         }
 
         public global::System.Threading.Tasks.Task<global::System.Int32> GetStateInReverseLog(global::System.String word)
@@ -556,6 +689,8 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.IOperator)grain).GetTopologyUnit();
                         case -1221400782:
                             return await ((global::SystemInterfaces.IOperator)grain).ExecuteMessage((global::SystemInterfaces.Model.StreamMessage)arguments[0], (global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage>)arguments[1]);
+                        case -2061238574:
+                            return await ((global::SystemInterfaces.IOperator)grain).DetectErrors();
                         case 2075549514:
                             return await ((global::SystemInterfaces.IOperator)grain).GetStateInReverseLog((global::System.String)arguments[0]);
                         case 408823471:
@@ -787,6 +922,8 @@ namespace SystemInterfaces
                             return @"GetTopologyUnit";
                         case -1221400782:
                             return @"ExecuteMessage";
+                        case -2061238574:
+                            return @"DetectErrors";
                         case 2075549514:
                             return @"GetStateInReverseLog";
                         case 408823471:
@@ -808,6 +945,8 @@ namespace SystemInterfaces
                             return @"GetTopologyUnit";
                         case -1221400782:
                             return @"ExecuteMessage";
+                        case -2061238574:
+                            return @"DetectErrors";
                         case 2075549514:
                             return @"GetStateInReverseLog";
                         case 408823471:
@@ -878,6 +1017,11 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-1221400782, new global::System.Object[]{msg, stream});
         }
 
+        public global::System.Threading.Tasks.Task<global::System.Int32> DetectErrors()
+        {
+            return base.InvokeMethodAsync<global::System.Int32>(-2061238574, null);
+        }
+
         public global::System.Threading.Tasks.Task<global::System.Int32> GetStateInReverseLog(global::System.String word)
         {
             return base.InvokeMethodAsync<global::System.Int32>(2075549514, new global::System.Object[]{word});
@@ -936,6 +1080,8 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).GetTopologyUnit();
                         case -1221400782:
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).ExecuteMessage((global::SystemInterfaces.Model.StreamMessage)arguments[0], (global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage>)arguments[1]);
+                        case -2061238574:
+                            return await ((global::SystemInterfaces.IStatefulOperator)grain).DetectErrors();
                         case 2075549514:
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).GetStateInReverseLog((global::System.String)arguments[0]);
                         case 408823471:
@@ -958,6 +1104,8 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).GetTopologyUnit();
                         case -1221400782:
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).ExecuteMessage((global::SystemInterfaces.Model.StreamMessage)arguments[0], (global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage>)arguments[1]);
+                        case -2061238574:
+                            return await ((global::SystemInterfaces.IStatefulOperator)grain).DetectErrors();
                         case 2075549514:
                             return await ((global::SystemInterfaces.IStatefulOperator)grain).GetStateInReverseLog((global::System.String)arguments[0]);
                         case 408823471:
@@ -1055,6 +1203,8 @@ namespace SystemInterfaces
                             return @"GetTopologyUnit";
                         case -1221400782:
                             return @"ExecuteMessage";
+                        case -2061238574:
+                            return @"DetectErrors";
                         case 2075549514:
                             return @"GetStateInReverseLog";
                         case 408823471:
@@ -1076,6 +1226,8 @@ namespace SystemInterfaces
                             return @"GetTopologyUnit";
                         case -1221400782:
                             return @"ExecuteMessage";
+                        case -2061238574:
+                            return @"DetectErrors";
                         case 2075549514:
                             return @"GetStateInReverseLog";
                         case 408823471:
@@ -1126,6 +1278,11 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-1221400782, new global::System.Object[]{msg, stream});
         }
 
+        public global::System.Threading.Tasks.Task<global::System.Int32> DetectErrors()
+        {
+            return base.InvokeMethodAsync<global::System.Int32>(-2061238574, null);
+        }
+
         public global::System.Threading.Tasks.Task<global::System.Int32> GetStateInReverseLog(global::System.String word)
         {
             return base.InvokeMethodAsync<global::System.Int32>(2075549514, new global::System.Object[]{word});
@@ -1174,6 +1331,8 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).GetTopologyUnit();
                         case -1221400782:
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).ExecuteMessage((global::SystemInterfaces.Model.StreamMessage)arguments[0], (global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage>)arguments[1]);
+                        case -2061238574:
+                            return await ((global::SystemInterfaces.IStatelessOperator)grain).DetectErrors();
                         case 2075549514:
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).GetStateInReverseLog((global::System.String)arguments[0]);
                         case 408823471:
@@ -1196,6 +1355,8 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).GetTopologyUnit();
                         case -1221400782:
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).ExecuteMessage((global::SystemInterfaces.Model.StreamMessage)arguments[0], (global::Orleans.Streams.IAsyncStream<global::SystemInterfaces.Model.StreamMessage>)arguments[1]);
+                        case -2061238574:
+                            return await ((global::SystemInterfaces.IStatelessOperator)grain).DetectErrors();
                         case 2075549514:
                             return await ((global::SystemInterfaces.IStatelessOperator)grain).GetStateInReverseLog((global::System.String)arguments[0]);
                         case 408823471:
@@ -1311,6 +1472,8 @@ namespace SystemInterfaces
                             return @"RemoveCustomDownStreamOperator";
                         case -976595730:
                             return @"InitDeaultOperators";
+                        case -2061238574:
+                            return @"DetectErrors";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 710632260 + @",methodId=" + methodId);
                     }
@@ -1399,6 +1562,11 @@ namespace SystemInterfaces
         {
             return base.InvokeMethodAsync<global::System.Object>(-976595730, null);
         }
+
+        public global::System.Threading.Tasks.Task<global::System.Int32> DetectErrors()
+        {
+            return base.InvokeMethodAsync<global::System.Int32>(-2061238574, null);
+        }
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute(typeof (global::SystemInterfaces.IStreamSource), 710632260), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
@@ -1453,6 +1621,8 @@ namespace SystemInterfaces
                         case -976595730:
                             await ((global::SystemInterfaces.IStreamSource)grain).InitDeaultOperators();
                             return null;
+                        case -2061238574:
+                            return await ((global::SystemInterfaces.IStreamSource)grain).DetectErrors();
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 710632260 + @",methodId=" + methodId);
                     }
@@ -1534,6 +1704,8 @@ namespace SystemInterfaces
                             return @"AddUnit";
                         case -921546169:
                             return @"RemoveUnit";
+                        case 1293557932:
+                            return @"GetAllUnits";
                         case -1141473739:
                             return @"ConnectUnits";
                         case 837591487:
@@ -1584,6 +1756,11 @@ namespace SystemInterfaces
         public global::System.Threading.Tasks.Task RemoveUnit(global::System.Guid key)
         {
             return base.InvokeMethodAsync<global::System.Object>(-921546169, new global::System.Object[]{key});
+        }
+
+        public global::System.Threading.Tasks.Task<global::System.Collections.Generic.List<global::SystemInterfaces.Model.TopologyUnit>> GetAllUnits()
+        {
+            return base.InvokeMethodAsync<global::System.Collections.Generic.List<global::SystemInterfaces.Model.TopologyUnit>>(1293557932, null);
         }
 
         public global::System.Threading.Tasks.Task ConnectUnits(global::System.Guid upperUnitID, global::System.Guid downStreamID)
@@ -1673,6 +1850,8 @@ namespace SystemInterfaces
                         case -921546169:
                             await ((global::SystemInterfaces.ITopology)grain).RemoveUnit((global::System.Guid)arguments[0]);
                             return null;
+                        case 1293557932:
+                            return await ((global::SystemInterfaces.ITopology)grain).GetAllUnits();
                         case -1141473739:
                             await ((global::SystemInterfaces.ITopology)grain).ConnectUnits((global::System.Guid)arguments[0], (global::System.Guid)arguments[1]);
                             return null;
@@ -2049,12 +2228,13 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGenb22876b04bFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGena6378a9014FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {
             feature.Interfaces.Add(new global::Orleans.Metadata.GrainInterfaceMetadata(typeof (global::SystemInterfaces.IBatchCoordinator), typeof (SystemInterfaces.OrleansCodeGenBatchCoordinatorReference), typeof (SystemInterfaces.OrleansCodeGenBatchCoordinatorMethodInvoker), 2046360863));
             feature.Interfaces.Add(new global::Orleans.Metadata.GrainInterfaceMetadata(typeof (global::SystemInterfaces.IBatchTracker), typeof (SystemInterfaces.OrleansCodeGenBatchTrackerReference), typeof (SystemInterfaces.OrleansCodeGenBatchTrackerMethodInvoker), 998595849));
+            feature.Interfaces.Add(new global::Orleans.Metadata.GrainInterfaceMetadata(typeof (global::SystemInterfaces.IErrorDetector), typeof (SystemInterfaces.OrleansCodeGenErrorDetectorReference), typeof (SystemInterfaces.OrleansCodeGenErrorDetectorMethodInvoker), 1654829170));
             feature.Interfaces.Add(new global::Orleans.Metadata.GrainInterfaceMetadata(typeof (global::SystemInterfaces.IOperator), typeof (SystemInterfaces.OrleansCodeGenOperatorReference), typeof (SystemInterfaces.OrleansCodeGenOperatorMethodInvoker), -66543353));
             feature.Interfaces.Add(new global::Orleans.Metadata.GrainInterfaceMetadata(typeof (global::SystemInterfaces.ISentenceGenerator), typeof (SystemInterfaces.OrleansCodeGenSentenceGeneratorReference), typeof (SystemInterfaces.OrleansCodeGenSentenceGeneratorMethodInvoker), 1422618689));
             feature.Interfaces.Add(new global::Orleans.Metadata.GrainInterfaceMetadata(typeof (global::SystemInterfaces.IStatefulOperator), typeof (SystemInterfaces.OrleansCodeGenStatefulOperatorReference), typeof (SystemInterfaces.OrleansCodeGenStatefulOperatorMethodInvoker), 498177181));
@@ -5840,6 +6020,7 @@ namespace OrleansGeneratedCode
             feature.AddKnownType(@"__DynamicallyInvokableAttribute,System.Core", @"__DynamicallyInvokableAttribute");
             feature.AddKnownType(@"SystemInterfaces.IBatchCoordinator,GrainInterfaces", @"SystemInterfaces.IBatchCoordinator");
             feature.AddKnownType(@"SystemInterfaces.IBatchTracker,GrainInterfaces", @"SystemInterfaces.IBatchTracker");
+            feature.AddKnownType(@"SystemInterfaces.IErrorDetector,GrainInterfaces", @"SystemInterfaces.IErrorDetector");
             feature.AddKnownType(@"SystemInterfaces.IOperator,GrainInterfaces", @"SystemInterfaces.IOperator");
             feature.AddKnownType(@"SystemInterfaces.ISentenceGenerator,GrainInterfaces", @"SystemInterfaces.ISentenceGenerator");
             feature.AddKnownType(@"SystemInterfaces.IStatefulOperator,GrainInterfaces", @"SystemInterfaces.IStatefulOperator");

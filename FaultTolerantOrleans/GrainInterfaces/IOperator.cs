@@ -13,6 +13,7 @@ namespace SystemInterfaces
         Task RemoveCustomDownStreamOperator(Guid guid);
         Task<TopologyUnit> GetTopologyUnit();
         Task<Task> ExecuteMessage(StreamMessage msg, IAsyncStream<StreamMessage> stream);
+        Task<int> DetectErrors();
         //Methods for testing
         Task<int> GetStateInReverseLog(string word);
         Task<int> GetStateInIncrementalLog(string word);

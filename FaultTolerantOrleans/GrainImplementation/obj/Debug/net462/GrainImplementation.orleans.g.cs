@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen50e9ad4826FeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen846186e0b8FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainImplementation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace OrleansGeneratedCode55A989F1
@@ -20,7 +20,7 @@ namespace OrleansGeneratedCode55A989F1
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen50e9ad4826FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGen846186e0b8FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {
@@ -30,6 +30,7 @@ namespace OrleansGeneratedCode
         {
             feature.Classes.Add(new global::Orleans.Metadata.GrainClassMetadata(typeof (global::SystemImplementation.CountWordStatefulOperator)));
             feature.Classes.Add(new global::Orleans.Metadata.GrainClassMetadata(typeof (global::SystemImplementation.CountWordStatelessOperator)));
+            feature.Classes.Add(new global::Orleans.Metadata.GrainClassMetadata(typeof (global::SystemImplementation.ErrorDetector)));
             feature.Classes.Add(new global::Orleans.Metadata.GrainClassMetadata(typeof (global::SystemImplementation.SentenceGenerator)));
             feature.Classes.Add(new global::Orleans.Metadata.GrainClassMetadata(typeof (global::SystemImplementation.TestStatelessOperator)));
             feature.Classes.Add(new global::Orleans.Metadata.GrainClassMetadata(typeof (global::SystemImplementation.TopologyManager)));
@@ -44,6 +45,7 @@ namespace OrleansGeneratedCode
             feature.AddKnownType(@"GrainImplementation.StatefulStreamOperator,GrainImplementation", @"GrainImplementation.StatefulStreamOperator");
             feature.AddKnownType(@"SystemImplementation.CountWordStatelessOperator,GrainImplementation", @"SystemImplementation.CountWordStatelessOperator");
             feature.AddKnownType(@"SystemImplementation.StatelessStreamOperator,GrainImplementation", @"SystemImplementation.StatelessStreamOperator");
+            feature.AddKnownType(@"SystemImplementation.ErrorDetector,GrainImplementation", @"SystemImplementation.ErrorDetector");
             feature.AddKnownType(@"SystemImplementation.PartitionFunction,GrainImplementation", @"SystemImplementation.PartitionFunction");
             feature.AddKnownType(@"SystemImplementation.SentenceGenerator,GrainImplementation", @"SystemImplementation.SentenceGenerator");
             feature.AddKnownType(@"SystemImplementation.TestStatelessOperator,GrainImplementation", @"SystemImplementation.TestStatelessOperator");

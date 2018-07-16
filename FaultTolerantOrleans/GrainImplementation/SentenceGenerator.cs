@@ -13,14 +13,13 @@ namespace SystemImplementation
         private List<string> words = new List<string>(new string[] { "an", "automobile", "or", "motor", "car", "is", "a", "wheeled", "motor", "vehicle", "used", "for", "transporting", "passengers", "which", "also", "carries", "its", "own", "engine", "or" });
         private List<IStreamSource> sources = new List<IStreamSource>();
         private static Random random = new Random();
-        private TimeSpan sentenceInterval = TimeSpan.FromMilliseconds(100);
+        private TimeSpan sentenceInterval = new TimeSpan(1000);
 
         private IDisposable disposable;
 
         public Task RegisterTimerAndSetSources(List<IStreamSource> sources)
         {
             this.sources = sources; 
-            
             disposable = RegisterTimer(GenerateAndSendSentences, null, sentenceInterval, sentenceInterval);
             return Task.CompletedTask;
         }

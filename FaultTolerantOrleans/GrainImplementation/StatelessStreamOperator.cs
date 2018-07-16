@@ -343,5 +343,10 @@ namespace SystemImplementation
         {
             return Task.FromResult(topologyUnit);
         }
+
+        public Task<int> DetectErrors()
+        {
+            return Task.FromResult(1);
+        }
     }
 }

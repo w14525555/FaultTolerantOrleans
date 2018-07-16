@@ -12,6 +12,8 @@ namespace SystemInterfaces
 
         Task RemoveUnit(Guid key);
 
+        Task<List<TopologyUnit>> GetAllUnits();
+
         Task ConnectUnits(Guid upperUnitID, Guid downStreamID);
 
         Task UpdateOperatorSettings(Guid guid, OperatorSettings operatorSettings);

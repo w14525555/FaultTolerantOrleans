@@ -151,6 +151,10 @@ namespace OrleansClient
             var coordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
             await coordinator.StartBarrierTimer();
 
+            //Start Error Detector
+            var detector = client.GetGrain<IErrorDetector>(Constants.Error_Detector);
+            await detector.RegisterTimerToDetectFailures();
+
             //var room2 = client.GetGrain<IStreamSource>("new");
             var streamId = await source.Join(userName);
             //var streamId2 = await room2.Join(userName);
@@ -161,8 +165,8 @@ namespace OrleansClient
                 .CreateLogger($"{joinedChannel} channel"));
 
             //Start Word Generator
-            var sentenceGenerator = client.GetGrain<ISentenceGenerator>(Constants.Sentence_Generator);
-            await sentenceGenerator.RegisterTimerAndSetSources(sources);
+            //var sentenceGenerator = client.GetGrain<ISentenceGenerator>(Constants.Sentence_Generator);
+            //await sentenceGenerator.RegisterTimerAndSetSources(sources);
 
             await stream.SubscribeAsync(observer);
         }
