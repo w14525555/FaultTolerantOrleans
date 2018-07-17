@@ -239,7 +239,7 @@ namespace GrainImplementation
         {
             BarrierOrCommitMsgTrackingInfo info = new BarrierOrCommitMsgTrackingInfo(msg.barrierOrCommitInfo.GetID(), msg.barrierOrCommitInfo.numberOfClientSent);
             info.BatchID = msg.BatchID;
-            if (msg.Value == Constants.Barrier_Value)
+            if (msg.Value == Constants.Barrier_Value && msg.BatchID - currentBatchID < 2)
             {
                 currentBatchID = msg.BatchID + 1;
                 PrettyConsole.Line("Increment ID " + currentBatchID);
@@ -264,10 +264,10 @@ namespace GrainImplementation
             return Task.CompletedTask;
         }
 
-        //Commit Logic
+        //Recovery Logic
         public Task Recovery(StreamMessage msg)
         {
-            currentBatchID = msg.BatchID;
+            currentBatchID = msg.BatchID + 1;
             //tell the tracker recovery is done in this operator
             batchTracker.CompleteOneOperatorRecovery(msg.barrierOrCommitInfo);
             return Task.CompletedTask;

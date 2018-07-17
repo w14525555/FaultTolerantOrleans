@@ -165,8 +165,8 @@ namespace OrleansClient
                 .CreateLogger($"{joinedChannel} channel"));
 
             //Start Word Generator
-            //var sentenceGenerator = client.GetGrain<ISentenceGenerator>(Constants.Sentence_Generator);
-            //await sentenceGenerator.RegisterTimerAndSetSources(sources);
+            var sentenceGenerator = client.GetGrain<ISentenceGenerator>(Constants.Sentence_Generator);
+            await sentenceGenerator.RegisterTimerAndSetSources(sources);
 
             await stream.SubscribeAsync(observer);
         }

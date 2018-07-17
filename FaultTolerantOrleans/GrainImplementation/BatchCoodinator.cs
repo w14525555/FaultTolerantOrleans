@@ -17,7 +17,7 @@ namespace GrainImplementation
         private StreamMessage commitMsg = new StreamMessage(Constants.System_Key, Constants.Commit_Value);
         private StreamMessage recoveryMsg = new StreamMessage(Constants.System_Key, Constants.Recovery_Value);
 
-        private const int Barrier_Interval = 1000;
+        private const int Barrier_Interval = 2000;
         private const int Processing_Time_Interval = 100;
         private IDisposable disposable;
         private TimeSpan barrierTimeInterval = TimeSpan.FromMilliseconds(Barrier_Interval);

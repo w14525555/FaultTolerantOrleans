@@ -68,6 +68,8 @@ namespace SystemImplementation
                 {
                     PrettyConsole.Line("Replace!");
                     await topologyManager.ReplaceTheOldOperator(task.Key);
+                    disposable.Dispose();
+                    break;
                 }
             }
 
