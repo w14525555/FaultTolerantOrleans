@@ -27,6 +27,7 @@ namespace GrainImplementation
         private IBatchTracker tracker;
         private ITopology topologyManager;
         private long numOfWordsProcessed = 0;
+        private int startTime;
        
 
         private int currentBatchID { get; set; }
@@ -86,6 +87,7 @@ namespace GrainImplementation
         //Recovery
         public Task StartRecovery()
         {
+            startTime = System.DateTime.Now.Millisecond;
             //1. Stop the timer
             disposable.Dispose();
             //2. Tell TopologyManager the rollback and reset batchID
@@ -108,6 +110,8 @@ namespace GrainImplementation
                 //ReplayTheMessagesOnRecoveryCompleted();
                 var detector = GrainFactory.GetGrain<IErrorDetector>(Constants.Error_Detector);
                 detector.RegisterTimerToDetectFailures();
+                var recoveryTime = System.DateTime.Now.Millisecond - startTime;
+                PrettyConsole.Line("Recovery Time: " + recoveryTime);
                 return Task.CompletedTask;
             }
             else
