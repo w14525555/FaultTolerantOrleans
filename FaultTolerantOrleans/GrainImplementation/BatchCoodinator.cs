@@ -106,6 +106,8 @@ namespace GrainImplementation
                 currentBatchID = batchID + 1;
                 disposable = RegisterTimer(SendBarrierOnPeriodOfTime, null, barrierTimeInterval, barrierTimeInterval);
                 //ReplayTheMessagesOnRecoveryCompleted();
+                var detector = GrainFactory.GetGrain<IErrorDetector>(Constants.Error_Detector);
+                detector.RegisterTimerToDetectFailures();
                 return Task.CompletedTask;
             }
             else

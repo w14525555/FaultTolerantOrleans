@@ -211,6 +211,7 @@ namespace SystemImplementation
             msg.barrierOrCommitInfo = new BarrierOrCommitMsgTrackingInfo(Guid.NewGuid(), units.Count);
             msg.barrierOrCommitInfo.BatchID = msg.BatchID;
             await batchTracker.TrackingRecoveryMessages(msg);
+
             foreach (TopologyUnit unit in units)
             {
                 if (unit.OperatorType == OperatorType.Source)

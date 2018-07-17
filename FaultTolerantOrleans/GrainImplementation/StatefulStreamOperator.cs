@@ -93,7 +93,7 @@ namespace GrainImplementation
                     await CustomExecutionMethod(msg, stream);
 
                     currentWordsProcessed++;
-                    if (currentWordsProcessed >= numOfMaxProcessWords)
+                    if (!isARestartOperator && currentWordsProcessed >= numOfMaxProcessWords)
                     {
                         Thread.Sleep(10000);
                     }
