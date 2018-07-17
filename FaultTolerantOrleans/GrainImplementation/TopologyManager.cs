@@ -57,8 +57,7 @@ namespace SystemImplementation
             var newUnit = new TopologyUnit(oldUnit.OperatorType, Guid.NewGuid());
             var newGuid = newUnit.PrimaryKey;
 
-            //Remove the old 
-            //await RemoveUnit(oldGuid);
+
 
             //Only the stateful load the settings
             if (newUnit.OperatorType == OperatorType.Stateful)
@@ -129,6 +128,8 @@ namespace SystemImplementation
                 }
             }
 
+            //Remove the old 
+            await RemoveUnit(oldGuid);
             //Start Recovery
             var batchCoordinator = GrainFactory.GetGrain<IBatchCoordinator>(Constants.Coordinator);
             batchCoordinator.StartRecovery();

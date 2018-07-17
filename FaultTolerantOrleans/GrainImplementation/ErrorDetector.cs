@@ -67,7 +67,7 @@ namespace SystemImplementation
                 if (task.Value.Status != TaskStatus.RanToCompletion)
                 {
                     PrettyConsole.Line("Replace!");
-                    topologyManager.ReplaceTheOldOperator(task.Key);
+                    await topologyManager.ReplaceTheOldOperator(task.Key);
                 }
             }
 

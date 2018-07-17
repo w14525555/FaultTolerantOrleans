@@ -7,6 +7,7 @@ using SystemInterfaces.Model;
 using Orleans.Streams;
 using System.IO;
 using System;
+using System.Threading;
 
 namespace GrainImplementation
 {
@@ -37,6 +38,10 @@ namespace GrainImplementation
         protected IAsyncStream<StreamMessage> asyncStream;
         protected ITopology topologyManager;
         protected List<IOperator> downStreamOperators = new List<IOperator>();
+
+        //Use for test failures
+        private const int numOfMaxProcessWords = 5000;
+        private int currentWordsProcessed = 0;
 
         public override Task OnActivateAsync()
         {
@@ -86,6 +91,13 @@ namespace GrainImplementation
                 {
                     await IncrementUpStreamCount(msg);
                     await CustomExecutionMethod(msg, stream);
+
+                    currentWordsProcessed++;
+                    if (currentWordsProcessed >= numOfMaxProcessWords)
+                    {
+                        Thread.Sleep(10000);
+                    }
+
                 }
                 else
                 {
@@ -462,18 +474,18 @@ namespace GrainImplementation
         public static Task<List<T>> ReadFromBinaryFile<T>(string filePath)
         {
             Stream stream;
+            List<T> statesList = new List<T>();
             using (stream = File.Open(filePath, FileMode.OpenOrCreate))
             {
-                List<T> statesList = new List<T>();
                 while (stream.Position < stream.Length)
                 {
                     var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
                     T obj = (T)binaryFormatter.Deserialize(stream);
                     statesList.Add(obj);
                 }
-                stream.Close();
-                return Task.FromResult(statesList);
             }
+            stream.Close();
+            return Task.FromResult(statesList);
         }
 
         public async Task<Task> RevertStateFromReverseLog(int batchID)
