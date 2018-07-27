@@ -22,6 +22,7 @@ namespace GrainImplementation
 		private IAsyncStream<StreamMessage> stream;
         private ITopology topologyManager;
         private Queue<StreamMessage> messageBuffer = new Queue<StreamMessage>();
+        private List<StreamMessage> messagesForRecovery = new List<StreamMessage>();
         private Dictionary<int, Dictionary<Guid, int>> messageCountMaps = new Dictionary<int, Dictionary<Guid, int>>(); 
         private TopologyUnit topologyUnit;
         protected OperatorSettings operatorSettings = new OperatorSettings();
@@ -33,6 +34,7 @@ namespace GrainImplementation
         private TimeSpan sentenceInterval = new TimeSpan(1250);
 
         private IDisposable disposable;
+        private bool isOnRecovery = false;
 
         public Task RegisterTimerForSources()
         {
@@ -41,11 +43,16 @@ namespace GrainImplementation
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
-        private async Task<Task> GenerateAndSendSentences(object org)
+        private Task GenerateAndSendSentences(object org)
         {
             string sentence = GetRandomSentence();
             var message = new StreamMessage("message", sentence);
-            ProduceMessageAsync(message);
+            messageBuffer.Enqueue(message);
+            if (!isOnRecovery)
+            {
+                var nexMsg = messageBuffer.Dequeue();
+                ProduceMessageAsync(nexMsg);
+            }
 
             return Task.CompletedTask;
         }
@@ -220,7 +227,7 @@ namespace GrainImplementation
                 {
                     msg.BatchID = currentBatchID;
                 }
-                messageBuffer.Enqueue(msg);
+                messagesForRecovery.Add(msg);
                 await ProcessNormalMessage(msg);
             }
             else
@@ -294,7 +301,7 @@ namespace GrainImplementation
             //tell the tracker commit is done in this operator
             batchTracker.CompleteOneOperatorCommit(msg.barrierOrCommitInfo);
             //Clean the buffer
-            messageBuffer.Clear();
+            messagesForRecovery.Clear();
             if (messageCountMaps.ContainsKey(msg.BatchID))
             {
                 messageCountMaps.Remove(msg.BatchID);
@@ -348,7 +355,7 @@ namespace GrainImplementation
         public async Task<Task> ReplayTheMessageOnRecoveryCompleted()
         {
             PrettyConsole.Line("Start Replay!");
-            foreach (StreamMessage msg in messageBuffer)
+            foreach (StreamMessage msg in messagesForRecovery)
             {
                 ProcessNormalMessage(msg);
             }
@@ -417,6 +424,18 @@ namespace GrainImplementation
         public Task<int> DetectErrors()
         {
             return Task.FromResult(1);
+        }
+
+        public Task StopSendingMessagesOnRecovery()
+        {
+            isOnRecovery = true;
+            return Task.CompletedTask;
+        }
+
+        public Task StartSendingMessagesOnRecovery()
+        {
+            isOnRecovery = false;
+            return Task.CompletedTask;
         }
 
     }

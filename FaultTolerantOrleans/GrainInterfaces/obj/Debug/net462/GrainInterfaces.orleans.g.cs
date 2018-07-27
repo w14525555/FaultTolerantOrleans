@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGen0487af3b7aFeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGend6277859e0FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -111,9 +111,9 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Object>(-76047527, new global::System.Object[]{ID});
         }
 
-        public global::System.Threading.Tasks.Task StartRecovery()
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> StartRecovery()
         {
-            return base.InvokeMethodAsync<global::System.Object>(-546505175, null);
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(-546505175, null);
         }
 
         public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> SendBarrier()
@@ -126,9 +126,9 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Object>(-698663036, new global::System.Object[]{batchID});
         }
 
-        public global::System.Threading.Tasks.Task CompleteRecovery(global::System.Int32 batchID)
+        public global::System.Threading.Tasks.Task<global::System.Threading.Tasks.Task> CompleteRecovery(global::System.Int32 batchID)
         {
-            return base.InvokeMethodAsync<global::System.Object>(1842635648, new global::System.Object[]{batchID});
+            return base.InvokeMethodAsync<global::System.Threading.Tasks.Task>(1842635648, new global::System.Object[]{batchID});
         }
 
         public global::System.Threading.Tasks.Task<global::System.Int32> GetCommittedBatchID()
@@ -169,16 +169,14 @@ namespace SystemInterfaces
                             await ((global::SystemInterfaces.IBatchCoordinator)grain).StartCommit((global::System.Int32)arguments[0]);
                             return null;
                         case -546505175:
-                            await ((global::SystemInterfaces.IBatchCoordinator)grain).StartRecovery();
-                            return null;
+                            return await ((global::SystemInterfaces.IBatchCoordinator)grain).StartRecovery();
                         case 2046534918:
                             return await ((global::SystemInterfaces.IBatchCoordinator)grain).SendBarrier();
                         case -698663036:
                             await ((global::SystemInterfaces.IBatchCoordinator)grain).CompleteCommit((global::System.Int32)arguments[0]);
                             return null;
                         case 1842635648:
-                            await ((global::SystemInterfaces.IBatchCoordinator)grain).CompleteRecovery((global::System.Int32)arguments[0]);
-                            return null;
+                            return await ((global::SystemInterfaces.IBatchCoordinator)grain).CompleteRecovery((global::System.Int32)arguments[0]);
                         case 1408175506:
                             return await ((global::SystemInterfaces.IBatchCoordinator)grain).GetCommittedBatchID();
                         case 1955114601:
@@ -1476,6 +1474,10 @@ namespace SystemInterfaces
                             return @"DetectErrors";
                         case 182715061:
                             return @"RegisterTimerForSources";
+                        case -1949798378:
+                            return @"StartSendingMessagesOnRecovery";
+                        case -257914908:
+                            return @"StopSendingMessagesOnRecovery";
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 710632260 + @",methodId=" + methodId);
                     }
@@ -1574,6 +1576,16 @@ namespace SystemInterfaces
         {
             return base.InvokeMethodAsync<global::System.Object>(182715061, null);
         }
+
+        public global::System.Threading.Tasks.Task StartSendingMessagesOnRecovery()
+        {
+            return base.InvokeMethodAsync<global::System.Object>(-1949798378, null);
+        }
+
+        public global::System.Threading.Tasks.Task StopSendingMessagesOnRecovery()
+        {
+            return base.InvokeMethodAsync<global::System.Object>(-257914908, null);
+        }
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute(typeof (global::SystemInterfaces.IStreamSource), 710632260), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
@@ -1632,6 +1644,12 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.IStreamSource)grain).DetectErrors();
                         case 182715061:
                             await ((global::SystemInterfaces.IStreamSource)grain).RegisterTimerForSources();
+                            return null;
+                        case -1949798378:
+                            await ((global::SystemInterfaces.IStreamSource)grain).StartSendingMessagesOnRecovery();
+                            return null;
+                        case -257914908:
+                            await ((global::SystemInterfaces.IStreamSource)grain).StopSendingMessagesOnRecovery();
                             return null;
                         default:
                             throw new global::System.NotImplementedException(@"interfaceId=" + 710632260 + @",methodId=" + methodId);
@@ -2238,7 +2256,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGen0487af3b7aFeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGend6277859e0FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {

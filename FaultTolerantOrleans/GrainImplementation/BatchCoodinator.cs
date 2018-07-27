@@ -85,23 +85,29 @@ namespace GrainImplementation
         }
 
         //Recovery
-        public Task StartRecovery()
+        public async Task<Task> StartRecovery()
         {
             startTime = System.DateTime.Now.Millisecond;
             //1. Stop the timer
             disposable.Dispose();
+
+            foreach (var source in sources)
+            {
+                await source.StopSendingMessagesOnRecovery();
+            }
+
             //2. Tell TopologyManager the rollback and reset batchID
             recoveryMsg.BatchID = committedID;
             topologyManager.Recovery(recoveryMsg);
             //3. Clean information in the tracker()
-            tracker.CleanUpOnRecovery();
+            await tracker.CleanUpOnRecovery();
             //6. Register new timer
             return Task.CompletedTask;
         }
 
         //Once the recovery completed, just restart the timer
         //Restart the timer
-        public Task CompleteRecovery(int batchID)
+        public async Task<Task> CompleteRecovery(int batchID)
         {
             if (committedID == batchID)
             {
@@ -110,6 +116,10 @@ namespace GrainImplementation
                 //ReplayTheMessagesOnRecoveryCompleted();
                 //var detector = GrainFactory.GetGrain<IErrorDetector>(Constants.Error_Detector);
                 //detector.RegisterTimerToDetectFailures();
+                foreach (var source in sources)
+                {
+                    await source.StartSendingMessagesOnRecovery();
+                }
                 var recoveryTime = System.DateTime.Now.Millisecond - startTime;
                 PrettyConsole.Line("Recovery Time: " + recoveryTime);
                 return Task.CompletedTask;

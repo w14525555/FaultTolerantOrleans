@@ -11,13 +11,13 @@ namespace SystemInterfaces
 
         Task StartCommit(int ID);
 
-        Task StartRecovery();
+        Task<Task> StartRecovery();
 
         Task<Task> SendBarrier();
 
         Task CompleteCommit(int batchID);
 
-        Task CompleteRecovery(int batchID);
+        Task<Task> CompleteRecovery(int batchID);
 
         Task<int> GetCommittedBatchID();
 
