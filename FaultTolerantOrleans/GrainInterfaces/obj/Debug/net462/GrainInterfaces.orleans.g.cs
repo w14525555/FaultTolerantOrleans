@@ -8,7 +8,7 @@
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
-[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGend6277859e0FeaturePopulator))]
+[assembly: global::Orleans.Metadata.FeaturePopulatorAttribute(typeof (OrleansGeneratedCode.OrleansCodeGena801795d70FeaturePopulator))]
 [assembly: global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
 [assembly: global::Orleans.CodeGeneration.OrleansCodeGenerationTargetAttribute(@"GrainInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
 namespace SystemInterfaces
@@ -1474,8 +1474,6 @@ namespace SystemInterfaces
                             return @"DetectErrors";
                         case 182715061:
                             return @"RegisterTimerForSources";
-                        case -1949798378:
-                            return @"StartSendingMessagesOnRecovery";
                         case -257914908:
                             return @"StopSendingMessagesOnRecovery";
                         default:
@@ -1577,11 +1575,6 @@ namespace SystemInterfaces
             return base.InvokeMethodAsync<global::System.Object>(182715061, null);
         }
 
-        public global::System.Threading.Tasks.Task StartSendingMessagesOnRecovery()
-        {
-            return base.InvokeMethodAsync<global::System.Object>(-1949798378, null);
-        }
-
         public global::System.Threading.Tasks.Task StopSendingMessagesOnRecovery()
         {
             return base.InvokeMethodAsync<global::System.Object>(-257914908, null);
@@ -1644,9 +1637,6 @@ namespace SystemInterfaces
                             return await ((global::SystemInterfaces.IStreamSource)grain).DetectErrors();
                         case 182715061:
                             await ((global::SystemInterfaces.IStreamSource)grain).RegisterTimerForSources();
-                            return null;
-                        case -1949798378:
-                            await ((global::SystemInterfaces.IStreamSource)grain).StartSendingMessagesOnRecovery();
                             return null;
                         case -257914908:
                             await ((global::SystemInterfaces.IStreamSource)grain).StopSendingMessagesOnRecovery();
@@ -2256,7 +2246,7 @@ namespace OrleansGeneratedCode38151279
 namespace OrleansGeneratedCode
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute(@"Orleans-CodeGenerator", @"2.0.0.0")]
-    internal sealed class OrleansCodeGend6277859e0FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
+    internal sealed class OrleansCodeGena801795d70FeaturePopulator : global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainInterfaceFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Metadata.GrainClassFeature>, global::Orleans.Metadata.IFeaturePopulator<global::Orleans.Serialization.SerializerFeature>
     {
         public void Populate(global::Orleans.Metadata.GrainInterfaceFeature feature)
         {

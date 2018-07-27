@@ -111,15 +111,11 @@ namespace GrainImplementation
         {
             if (committedID == batchID)
             {
+                await ReplayTheMessagesOnRecoveryCompleted();
                 currentBatchID = batchID + 1;
                 disposable = RegisterTimer(SendBarrierOnPeriodOfTime, null, barrierTimeInterval, barrierTimeInterval);
-                //ReplayTheMessagesOnRecoveryCompleted();
                 //var detector = GrainFactory.GetGrain<IErrorDetector>(Constants.Error_Detector);
                 //detector.RegisterTimerToDetectFailures();
-                foreach (var source in sources)
-                {
-                    await source.StartSendingMessagesOnRecovery();
-                }
                 var recoveryTime = System.DateTime.Now.Millisecond - startTime;
                 PrettyConsole.Line("Recovery Time: " + recoveryTime);
                 return Task.CompletedTask;
@@ -130,11 +126,11 @@ namespace GrainImplementation
             }
         }
 
-        public Task ReplayTheMessagesOnRecoveryCompleted()
+        public async Task<Task> ReplayTheMessagesOnRecoveryCompleted()
         {
             foreach(var source in sources)
             {
-                source.ReplayTheMessageOnRecoveryCompleted();
+                await source.ReplayTheMessageOnRecoveryCompleted();
             }
             return Task.CompletedTask;
         }

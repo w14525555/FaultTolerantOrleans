@@ -22,7 +22,7 @@ namespace GrainImplementation
 		private IAsyncStream<StreamMessage> stream;
         private ITopology topologyManager;
         private Queue<StreamMessage> messageBuffer = new Queue<StreamMessage>();
-        private List<StreamMessage> messagesForRecovery = new List<StreamMessage>();
+        private Queue<StreamMessage> messagesForRecovery = new Queue<StreamMessage>();
         private Dictionary<int, Dictionary<Guid, int>> messageCountMaps = new Dictionary<int, Dictionary<Guid, int>>(); 
         private TopologyUnit topologyUnit;
         protected OperatorSettings operatorSettings = new OperatorSettings();
@@ -227,7 +227,7 @@ namespace GrainImplementation
                 {
                     msg.BatchID = currentBatchID;
                 }
-                messagesForRecovery.Add(msg);
+                messagesForRecovery.Enqueue(msg);
                 await ProcessNormalMessage(msg);
             }
             else
@@ -357,7 +357,7 @@ namespace GrainImplementation
             PrettyConsole.Line("Start Replay!");
             foreach (StreamMessage msg in messagesForRecovery)
             {
-                ProcessNormalMessage(msg);
+                await ProcessNormalMessage(msg);
             }
             return Task.CompletedTask;
         }
@@ -429,12 +429,6 @@ namespace GrainImplementation
         public Task StopSendingMessagesOnRecovery()
         {
             isOnRecovery = true;
-            return Task.CompletedTask;
-        }
-
-        public Task StartSendingMessagesOnRecovery()
-        {
-            isOnRecovery = false;
             return Task.CompletedTask;
         }
 

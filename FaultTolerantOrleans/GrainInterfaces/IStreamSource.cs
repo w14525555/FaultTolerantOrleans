@@ -28,7 +28,6 @@ namespace SystemInterfaces
         Task<int> DetectErrors();
 
         Task RegisterTimerForSources();
-        Task StartSendingMessagesOnRecovery();
         Task StopSendingMessagesOnRecovery();
     }
 }
