@@ -17,7 +17,7 @@ namespace GrainImplementation
         private StreamMessage commitMsg = new StreamMessage(Constants.System_Key, Constants.Commit_Value);
         private StreamMessage recoveryMsg = new StreamMessage(Constants.System_Key, Constants.Recovery_Value);
 
-        private const int Barrier_Interval = 2000;
+        private const int Barrier_Interval = 1000;
         private const int Processing_Time_Interval = 100;
         private IDisposable disposable;
         private TimeSpan barrierTimeInterval = TimeSpan.FromMilliseconds(Barrier_Interval);
@@ -108,8 +108,8 @@ namespace GrainImplementation
                 currentBatchID = batchID + 1;
                 disposable = RegisterTimer(SendBarrierOnPeriodOfTime, null, barrierTimeInterval, barrierTimeInterval);
                 //ReplayTheMessagesOnRecoveryCompleted();
-                var detector = GrainFactory.GetGrain<IErrorDetector>(Constants.Error_Detector);
-                detector.RegisterTimerToDetectFailures();
+                //var detector = GrainFactory.GetGrain<IErrorDetector>(Constants.Error_Detector);
+                //detector.RegisterTimerToDetectFailures();
                 var recoveryTime = System.DateTime.Now.Millisecond - startTime;
                 PrettyConsole.Line("Recovery Time: " + recoveryTime);
                 return Task.CompletedTask;

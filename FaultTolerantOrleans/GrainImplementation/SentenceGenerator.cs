@@ -29,9 +29,9 @@ namespace SystemImplementation
         {
             string sentence = GetRandomSentence();
             var message = new StreamMessage("message", sentence);
-            foreach (var item in sources)
+            foreach (var source in sources)
             {
-                item.ProduceMessageAsync(message);
+                source.ProduceMessageAsync(message);
             }
 
             return Task.CompletedTask;

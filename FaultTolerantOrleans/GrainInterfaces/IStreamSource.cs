@@ -26,5 +26,7 @@ namespace SystemInterfaces
         Task RemoveCustomDownStreamOperator(Guid guid);
         Task InitDeaultOperators();
         Task<int> DetectErrors();
+
+        Task RegisterTimerForSources();
     }
 }

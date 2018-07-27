@@ -21,14 +21,52 @@ namespace GrainImplementation
         private IBatchTracker batchTracker;
 		private IAsyncStream<StreamMessage> stream;
         private ITopology topologyManager;
-
-        private List<StreamMessage> messageBuffer = new List<StreamMessage>();
+        private Queue<StreamMessage> messageBuffer = new Queue<StreamMessage>();
         private Dictionary<int, Dictionary<Guid, int>> messageCountMaps = new Dictionary<int, Dictionary<Guid, int>>(); 
         private TopologyUnit topologyUnit;
         protected OperatorSettings operatorSettings = new OperatorSettings();
         private int currentBatchID;
         private Guid testAddNewOperatorGuid;
-        private int roundRobinValue = 0;
+
+        private int roundRobinValue = 0; private List<string> words = new List<string>(new string[] { "an", "automobile", "or", "motor", "car", "is", "a", "wheeled", "motor", "vehicle", "used", "for", "transporting", "passengers", "which", "also", "carries", "its", "own", "engine", "or" });
+        private static Random random = new Random();
+        private TimeSpan sentenceInterval = new TimeSpan(1250);
+
+        private IDisposable disposable;
+
+        public Task RegisterTimerForSources()
+        {
+            disposable = RegisterTimer(GenerateAndSendSentences, null, sentenceInterval, sentenceInterval);
+            return Task.CompletedTask;
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
+        private async Task<Task> GenerateAndSendSentences(object org)
+        {
+            string sentence = GetRandomSentence();
+            var message = new StreamMessage("message", sentence);
+            ProduceMessageAsync(message);
+
+            return Task.CompletedTask;
+        }
+
+        private string GetRandomSentence()
+        {
+            //At first get random length
+            int length = random.Next(1, 10);
+            string sentence = "";
+            for (int i = 0; i < length; i++)
+            {
+                sentence = sentence + GetRandomWord();
+            }
+            return sentence;
+        }
+
+        private string GetRandomWord()
+        {
+            int index = random.Next(words.Count - 1);
+            return words[index] + " ";
+        }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         public override Task OnActivateAsync()
@@ -182,12 +220,12 @@ namespace GrainImplementation
                 {
                     msg.BatchID = currentBatchID;
                 }
-                messageBuffer.Add(msg);
-                ProcessNormalMessage(msg);
+                messageBuffer.Enqueue(msg);
+                await ProcessNormalMessage(msg);
             }
             else
             {
-                ProcessSpecialMessage(msg, stream);
+                await ProcessSpecialMessage(msg, stream);
             }
             return Task.CompletedTask;
         }

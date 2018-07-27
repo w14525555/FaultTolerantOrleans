@@ -151,6 +151,8 @@ namespace OrleansClient
             var coordinator = client.GetGrain<IBatchCoordinator>(Constants.Coordinator);
             await coordinator.StartBarrierTimer();
 
+            await source.RegisterTimerForSources();
+
             //Start Error Detector
             var detector = client.GetGrain<IErrorDetector>(Constants.Error_Detector);
             await detector.RegisterTimerToDetectFailures();
@@ -163,10 +165,6 @@ namespace OrleansClient
             //subscribe to the stream to receiver furthur messages sent to the chatroom
             StatefulStreamObserver observer = new StatefulStreamObserver(client.ServiceProvider.GetService<ILoggerFactory>()
                 .CreateLogger($"{joinedChannel} channel"));
-
-            //Start Word Generator
-            var sentenceGenerator = client.GetGrain<ISentenceGenerator>(Constants.Sentence_Generator);
-            await sentenceGenerator.RegisterTimerAndSetSources(sources);
 
             await stream.SubscribeAsync(observer);
         }
