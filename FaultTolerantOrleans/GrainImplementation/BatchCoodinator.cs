@@ -111,13 +111,13 @@ namespace GrainImplementation
         {
             if (committedID == batchID)
             {
-                await ReplayTheMessagesOnRecoveryCompleted();
+                //await ReplayTheMessagesOnRecoveryCompleted();
                 currentBatchID = batchID + 1;
-                disposable = RegisterTimer(SendBarrierOnPeriodOfTime, null, barrierTimeInterval, barrierTimeInterval);
+                //disposable = RegisterTimer(SendBarrierOnPeriodOfTime, null, barrierTimeInterval, barrierTimeInterval);
                 //var detector = GrainFactory.GetGrain<IErrorDetector>(Constants.Error_Detector);
                 //detector.RegisterTimerToDetectFailures();
-                var recoveryTime = System.DateTime.Now.Millisecond - startTime;
-                PrettyConsole.Line("Recovery Time: " + recoveryTime);
+                //var recoveryTime = System.DateTime.Now.Millisecond - startTime;
+                //PrettyConsole.Line("Recovery Time: " + recoveryTime);
                 return Task.CompletedTask;
             }
             else

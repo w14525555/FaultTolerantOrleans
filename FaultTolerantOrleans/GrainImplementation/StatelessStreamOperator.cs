@@ -151,7 +151,7 @@ namespace SystemImplementation
             {
                 if (CheckCount(msg))
                 {
-                    HandleBarrierMessages(msg);
+                    await HandleBarrierMessages(msg);
                     batchTracker.CompleteOneOperatorBarrier(info);
                 }
             }

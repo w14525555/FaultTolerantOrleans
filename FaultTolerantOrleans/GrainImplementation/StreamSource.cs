@@ -29,29 +29,61 @@ namespace GrainImplementation
         private int currentBatchID;
         private Guid testAddNewOperatorGuid;
 
-        private int roundRobinValue = 0; private List<string> words = new List<string>(new string[] { "an", "automobile", "or", "motor", "car", "is", "a", "wheeled", "motor", "vehicle", "used", "for", "transporting", "passengers", "which", "also", "carries", "its", "own", "engine", "or" });
+        private int roundRobinValue = 0;
+        private List<string> words = new List<string>(new string[] { "an", "automobile", "or", "motor", "car", "is", "a", "wheeled", "motor", "vehicle", "used", "for", "transporting", "passengers", "which", "also", "carries", "its", "own", "engine", "or" });
         private static Random random = new Random();
-        private TimeSpan sentenceInterval = new TimeSpan(1250);
+        private TimeSpan sentenceInterval = TimeSpan.FromMilliseconds(100);
+        private TimeSpan startInterval = TimeSpan.FromSeconds(1);
+        private int count = 0;
+        private int startTime = 0;
 
         private IDisposable disposable;
+        private IDisposable recoveryDisposable;
         private bool isOnRecovery = false;
 
         public Task RegisterTimerForSources()
         {
-            disposable = RegisterTimer(GenerateAndSendSentences, null, sentenceInterval, sentenceInterval);
+            disposable = RegisterTimer(GenerateAndSendSentences, null, startInterval, sentenceInterval);
             return Task.CompletedTask;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
-        private Task GenerateAndSendSentences(object org)
+        private async Task<Task> GenerateAndSendSentences(object org)
         {
-            string sentence = GetRandomSentence();
-            var message = new StreamMessage("message", sentence);
-            messageBuffer.Enqueue(message);
-            if (!isOnRecovery)
+            for (int i = 0; i < 60; i++)
             {
-                var nexMsg = messageBuffer.Dequeue();
-                ProduceMessageAsync(nexMsg);
+                string sentence = GetRandomSentence();
+                var message = new StreamMessage("message", sentence);
+                //messageBuffer.Enqueue(message);
+                if (!isOnRecovery)
+                {
+                    //var nexMsg = messageBuffer.Dequeue();
+                    count++;
+                    if (count % 100 == 0)
+                    {
+                        PrettyConsole.Line("Process " + count + " Messages **************");
+                    }
+                    ProduceMessageAsync(message);
+                }
+            }
+            //disposable.Dispose();
+            return Task.CompletedTask;
+        }
+
+        private async Task<Task> ReplayOnRecovery (object org)
+        {
+           if (messagesForRecovery.Count > 0)
+            {
+                var nextReplayMsg = messagesForRecovery.Dequeue();
+                ProduceMessageAsync(nextReplayMsg);
+                PrettyConsole.Line("Message Replay Count: " + messagesForRecovery.Count);
+            }
+           else
+           {
+               var repalyTime = System.DateTime.Now.Second - startTime;
+               PrettyConsole.Line("Replay Time is: " + repalyTime);
+               isOnRecovery = false;
+               recoveryDisposable.Dispose();
             }
 
             return Task.CompletedTask;
@@ -60,7 +92,7 @@ namespace GrainImplementation
         private string GetRandomSentence()
         {
             //At first get random length
-            int length = random.Next(1, 10);
+            int length = random.Next(1, 5);
             string sentence = "";
             for (int i = 0; i < length; i++)
             {
@@ -227,8 +259,11 @@ namespace GrainImplementation
                 {
                     msg.BatchID = currentBatchID;
                 }
-                messagesForRecovery.Enqueue(msg);
-                await ProcessNormalMessage(msg);
+                if (!isOnRecovery)
+                {
+                    messagesForRecovery.Enqueue(msg);
+                }
+                ProcessNormalMessage(msg);
             }
             else
             {
@@ -244,6 +279,7 @@ namespace GrainImplementation
             int index = roundRobinValue % downStreamOperators.Count;
             roundRobinValue++;
             CheckIfOutOfBoundry(downStreamOperators, index);
+            //PrettyConsole.Line(index.ToString());
             var op = downStreamOperators[index];
             IncrementCountMap(op.GetPrimaryKey(), msg.BatchID);
             op.ExecuteMessage(msg, stream);
@@ -289,8 +325,8 @@ namespace GrainImplementation
                 currentBatchID = msg.BatchID + 1;
                 PrettyConsole.Line("Increment ID " + currentBatchID);
                 await TrackingBarrierMessages(msg);
-                batchTracker.CompleteOneOperatorBarrier(info);
-                BroadcastSpecialMessage(msg, stream);
+                await BroadcastSpecialMessage(msg, stream);
+                await batchTracker.CompleteOneOperatorBarrier(info);
             }
             return Task.CompletedTask;
         }
@@ -314,7 +350,10 @@ namespace GrainImplementation
         {
             currentBatchID = msg.BatchID + 1;
             //tell the tracker recovery is done in this operator
+            isOnRecovery = true;
             batchTracker.CompleteOneOperatorRecovery(msg.barrierOrCommitInfo);
+            recoveryDisposable = RegisterTimer(ReplayOnRecovery, null, new TimeSpan(0), new TimeSpan(1000));
+            startTime = System.DateTime.Now.Second;
             return Task.CompletedTask;
         }
 

@@ -42,6 +42,7 @@ namespace GrainImplementation
         //Use for test failures
         private const int numOfMaxProcessWords = 5000;
         private int currentWordsProcessed = 0;
+        private bool isFailureTestOpen = false;
 
         public override Task OnActivateAsync()
         {
@@ -93,7 +94,7 @@ namespace GrainImplementation
                     await CustomExecutionMethod(msg, stream);
 
                     currentWordsProcessed++;
-                    if (!isARestartOperator && currentWordsProcessed >= numOfMaxProcessWords)
+                    if (!isARestartOperator && currentWordsProcessed >= numOfMaxProcessWords && isFailureTestOpen)
                     {
                         Thread.Sleep(10000);
                     }
@@ -101,18 +102,16 @@ namespace GrainImplementation
                 }
                 else
                 {
-                    //if (CheckCount(msg))
-                    //{
-                        await ProcessSpecialMessage(msg);
-                        if (downStreamOperators.Count > 0)
-                        {
-                            await BroadcastSpecialMessage(msg, stream);
-                        }
-                    //}
+                   await ProcessSpecialMessage(msg);
+                   if (downStreamOperators.Count > 0)
+                   {
+                        await BroadcastSpecialMessage(msg, stream);
+                   }
                 }
             }
             else
             {
+                PrettyConsole.Line("ERRROOOOOOROOOR");
                 throw new InvalidOperationException(msg.Key + " " + msg.Value + " The id " + msg.BatchID + " is less than the currentID:" + currentBatchID);
             }
             return Task.CompletedTask;
