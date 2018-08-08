@@ -12,7 +12,7 @@ namespace SystemImplementation
     public class ErrorDetector: Grain, IErrorDetector
     {
         private IDisposable disposable;
-        private TimeSpan detectInterval = TimeSpan.FromSeconds(5);
+        private TimeSpan detectInterval = TimeSpan.FromSeconds(3);
 
         public Task RegisterTimerToDetectFailures()
         {

@@ -40,7 +40,7 @@ namespace GrainImplementation
         protected List<IOperator> downStreamOperators = new List<IOperator>();
 
         //Use for test failures
-        private const int numOfMaxProcessWords = 5000;
+        private const int numOfMaxProcessWords = 8000;
         private int currentWordsProcessed = 0;
         private bool isFailureTestOpen = false;
 

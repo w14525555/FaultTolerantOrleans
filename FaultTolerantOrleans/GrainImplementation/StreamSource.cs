@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Orleans;
 using Orleans.Streams;
@@ -35,7 +36,7 @@ namespace GrainImplementation
         private TimeSpan sentenceInterval = TimeSpan.FromMilliseconds(100);
         private TimeSpan startInterval = TimeSpan.FromSeconds(1);
         private int count = 0;
-        private int startTime = 0;
+        private Stopwatch watch;
 
         private IDisposable disposable;
         private IDisposable recoveryDisposable;
@@ -54,36 +55,41 @@ namespace GrainImplementation
             {
                 string sentence = GetRandomSentence();
                 var message = new StreamMessage("message", sentence);
-                //messageBuffer.Enqueue(message);
+                messageBuffer.Enqueue(message);
                 if (!isOnRecovery)
                 {
-                    //var nexMsg = messageBuffer.Dequeue();
+                    var nexMsg = messageBuffer.Dequeue();
                     count++;
                     if (count % 100 == 0)
                     {
                         PrettyConsole.Line("Process " + count + " Messages **************");
                     }
-                    ProduceMessageAsync(message);
+                    ProduceMessageAsync(nexMsg);
                 }
             }
-            //disposable.Dispose();
             return Task.CompletedTask;
         }
 
         private async Task<Task> ReplayOnRecovery (object org)
         {
-           if (messagesForRecovery.Count > 0)
+            for (int i = 0; i < 60; i++)
             {
-                var nextReplayMsg = messagesForRecovery.Dequeue();
-                ProduceMessageAsync(nextReplayMsg);
-                PrettyConsole.Line("Message Replay Count: " + messagesForRecovery.Count);
-            }
-           else
-           {
-               var repalyTime = System.DateTime.Now.Second - startTime;
-               PrettyConsole.Line("Replay Time is: " + repalyTime);
-               isOnRecovery = false;
-               recoveryDisposable.Dispose();
+                if (messagesForRecovery.Count > 0)
+                {
+                    var nextReplayMsg = messagesForRecovery.Dequeue();
+                    ProduceMessageAsync(nextReplayMsg);
+                    PrettyConsole.Line("Message Replay Count: " + messagesForRecovery.Count);
+                }
+                else
+                {
+                    //var repalyTime = System.DateTime.Now.Millisecond - startTime;
+                    watch.Stop();
+                    var repalyTime = watch.ElapsedMilliseconds;
+                    PrettyConsole.Line("Replay Time is: " + repalyTime);
+                    isOnRecovery = false;
+                    recoveryDisposable.Dispose();
+                    break;
+                }
             }
 
             return Task.CompletedTask;
@@ -352,8 +358,9 @@ namespace GrainImplementation
             //tell the tracker recovery is done in this operator
             isOnRecovery = true;
             batchTracker.CompleteOneOperatorRecovery(msg.barrierOrCommitInfo);
-            recoveryDisposable = RegisterTimer(ReplayOnRecovery, null, new TimeSpan(0), new TimeSpan(1000));
-            startTime = System.DateTime.Now.Second;
+            recoveryDisposable = RegisterTimer(ReplayOnRecovery, null, new TimeSpan(0), TimeSpan.FromMilliseconds(100));
+            //startTime = System.DateTime.Now.Millisecond;
+            watch = System.Diagnostics.Stopwatch.StartNew();
             return Task.CompletedTask;
         }
 

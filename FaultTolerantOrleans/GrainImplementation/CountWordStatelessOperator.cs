@@ -18,9 +18,9 @@ namespace SystemImplementation
             //Then find a operator
             foreach (string word in words)
             {
-                //int index = SystemImplementation.PartitionFunction.PartitionOperatorByKey(msg.Key, downStreamOperators.Count);
-                int index = roundRobinValue % downStreamOperators.Count;
-                roundRobinValue++;
+                int index = SystemImplementation.PartitionFunction.PartitionOperatorByKey(msg.Key, downStreamOperators.Count);
+                //int index = roundRobinValue % downStreamOperators.Count;
+                //roundRobinValue++;
                 IOperator op = downStreamOperators.ElementAt(index);
                 //PrettyConsole.Line(index.ToString());
                 StreamMessage newMessage = new StreamMessage(word, null);
